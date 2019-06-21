@@ -1,0 +1,17 @@
+## Interface: 11302
+## Title: What's Training?
+## Version: 0.1-beta
+## Author: Sveng
+## Notes: Shows you what spells are available at your class trainer
+
+Classes\Druid.lua
+Classes\Hunter.lua
+Classes\Mage.lua
+Classes\Paladin.lua
+Classes\Priest.lua
+Classes\Rogue.lua
+Classes\Shaman.lua
+Classes\Warlock.lua
+Classes\Warrior.lua
+
+WhatsTraining.lua
