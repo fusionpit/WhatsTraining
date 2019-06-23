@@ -7,6 +7,4 @@ What's Training? is an addon for World of Warcraft Classic that adds a list of a
 If you have [Class Trainer Plus](https://github.com/fusionpit/ClassTrainerPlus) installed, What's Training will show Ignored spells at the bottom.
 
 ## Known Issues
- - Rogue Poisons not working well
- - Race Specific stuff not working (Priests, mostly)
- - Mage portals/teleports need filtering
+ - Rogue Poisons not working well, it will show available even if you don't have the required skill level in poisons

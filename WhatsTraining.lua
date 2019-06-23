@@ -111,12 +111,29 @@ local function rebuildIfNotCached(_, fromCache)
     if (fromCache) then return; end
     rebuild(UnitLevel("player"));
 end
+
+local _, _, playerRace = UnitRace("player");
+local function raceMatches(ability)
+    if (ability.race == nil and ability.races == nil) then
+        return true;
+    end
+    if (ability.races == nil) then
+        return ability.race == playerRace;
+    end
+    return ability.races[1] == playerRace or ability.races[2] == playerRace;
+end
+local playerFaction = UnitFactionGroup("player");
+
 for i, v in pairs(byLevel) do
     for _, a in ipairs(v) do
-        getSpell(a.id, rebuildIfNotCached);
-        if (a.requiredIds and #a.requiredIds > 0) then
-            for j = 1, #a.requiredIds do
-                getSpell(a.requiredIds[j], rebuildIfNotCached);
+        local forThisFaction = a.faction == nil or a.faction == playerFaction;
+        local forThisRace = raceMatches(a);
+        if (forThisFaction and forThisRace) then
+            getSpell(a.id, rebuildIfNotCached);
+            if (a.requiredIds and #a.requiredIds > 0) then
+                for j = 1, #a.requiredIds do
+                    getSpell(a.requiredIds[j], rebuildIfNotCached);
+                end
             end
         end
     end
