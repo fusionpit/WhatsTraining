@@ -1,0 +1,4 @@
+* 0.3-beta
+    - Fix WoWI bug 8884
+    - Won't show other faction's mage ports/teles
+    - Won't show other race's priest spells
