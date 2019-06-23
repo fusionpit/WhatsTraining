@@ -50,7 +50,7 @@ local function rebuild(level)
                     if (i <= level+2) then
                         tinsert(spellsByCategory.nextLevel, spell);
                     else
-                    tinsert(spellsByCategory.notLevel, spell);
+                        tinsert(spellsByCategory.notLevel, spell);
                     end
                 elseif (GetSpellInfo(spell.name, spell.subText) ~= nil) then
                     tinsert(spellsByCategory.known, spell);
@@ -211,7 +211,7 @@ function WhatsTraining_CreateFrame()
             mainFrame:Hide();
             for i = 1, MAX_SKILLLINE_TABS do
                 _G["SpellBookSkillLineTab"..i]:SetFrameStrata("MEDIUM");
-        end
+            end
         end
     end);
 
