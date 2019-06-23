@@ -35,8 +35,10 @@ local function rebuild(level)
     local spellsByCategory = {
         available = {},
         missingReqs = {},
+        nextLevel = {},
         notLevel = {},
-        ignored = {}
+        ignored = {},
+        known = {}
     };
     for i, v in pairs(byLevel) do
         for _, a in ipairs(v) do
