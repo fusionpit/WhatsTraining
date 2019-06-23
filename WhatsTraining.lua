@@ -1,5 +1,5 @@
-local MAX_ROWS = 18;
-local ROW_HEIGHT = 18;
+local MAX_ROWS = 22;
+local ROW_HEIGHT = 14;
 
 local _, englishClass = UnitClass("player");
 englishClass = string.gsub(string.lower(englishClass),"^%l", string.upper);
@@ -23,7 +23,8 @@ local function getSpell(spellId, done)
         spellCache[spell:GetSpellID()] = {
             id = spell:GetSpellID(),
             name = spell:GetSpellName(),
-            subText = spell:GetSpellSubtext()
+            subText = spell:GetSpellSubtext(),
+            icon = select(3, GetSpellInfo(spell:GetSpellID()))
         };
         done(spellCache[spell:GetSpellID()], false);
     end);
@@ -46,8 +47,14 @@ local function rebuild(level)
                 if (ClassTrainerPlusDBPC and ClassTrainerPlusDBPC[spell.id]) then
                     tinsert(spellsByCategory.ignored, spell);
                 elseif (i > level) then
+                    if (i <= level+2) then
+                        tinsert(spellsByCategory.nextLevel, spell);
+                    else
                     tinsert(spellsByCategory.notLevel, spell);
-                elseif (GetSpellInfo(spell.name, spell.subText) == nil) then
+                    end
+                elseif (GetSpellInfo(spell.name, spell.subText) ~= nil) then
+                    tinsert(spellsByCategory.known, spell);
+                else
                     local canInsert = true;
                     local hasReqs = true;
                     if (a.requiredIds ~= nil) then
@@ -80,17 +87,21 @@ local function rebuild(level)
         end
         return a.level < b.level;
     end
+    local comingSoonFontColorCode = "|cff82c5ff"
     local categories = {
-        {name = "Available", table = spellsByCategory.available, color = GREEN_FONT_COLOR_CODE},
-        {name = "Missing Requirements", table = spellsByCategory.missingReqs, color = ORANGE_FONT_COLOR_CODE},
+        {name = "Available Now", table = spellsByCategory.available, color = GREEN_FONT_COLOR_CODE, hideLevel = true},
+        {name = "Coming Soon", table = spellsByCategory.nextLevel, color = comingSoonFontColorCode },
+        {name = "Available but Missing Requirements", table = spellsByCategory.missingReqs, color = ORANGE_FONT_COLOR_CODE, hideLevel = true},
         {name = "Not Yet Available", table = spellsByCategory.notLevel, color = RED_FONT_COLOR_CODE},
-        {name = "Ignored", table = spellsByCategory.ignored, color = GRAY_FONT_COLOR_CODE},
-    }
+        {name = "Ignored", table = spellsByCategory.ignored, color = LIGHTYELLOW_FONT_COLOR_CODE},
+        {name = "Already Known", table = spellsByCategory.known, color = GRAY_FONT_COLOR_CODE, hideLevel = true},
+    };
     for _, category in ipairs(categories) do
         if (#category.table > 0) then
             tinsert(spells, {name = category.name, isHeader = true, color = category.color});
             table.sort(category.table, sorter);
             for _, s in ipairs(category.table) do
+                s.hideLevel = category.hideLevel;
                 tinsert(spells, s);
             end
         end
@@ -117,24 +128,37 @@ function WhatsTraining_SetRowSpell(row, spell)
         row:Hide();
         return;
     elseif (spell.isHeader) then
-        row.spell.label:SetText(spell.color..spell.name..FONT_COLOR_CODE_CLOSE);
-        row.spell.label:SetJustifyH("CENTER");
+        row.spell:Hide();
+        row.header:Show();
+        row.header:SetText(spell.color..spell.name..FONT_COLOR_CODE_CLOSE);
         row:SetID(0);
         row.cost = 0;
+        row.highlight:SetTexture(nil);
     elseif (spell ~= nil) then
-        local text = spell.name;
+        row.header:Hide();
+        row.isHeader = false;
+        row.highlight:SetTexture("Interface\\AddOns\\WhatsTraining\\highlight");
+        row.spell:Show();
+        row.spell.label:SetText(spell.name);
         if (spell.subText and spell.subText ~= "") then
-            text = format(text.." "..PARENS_TEMPLATE, spell.subText);
+            row.spell.subLabel:SetText(format(PARENS_TEMPLATE, spell.subText));
+        else
+            row.spell.subLabel:SetText("");
         end
-        text = text..format(" - Level %d", spell.level);
-        row.spell.label:SetText(text)
-        row.spell.label:SetJustifyH("LEFT");
-        row.spell.label:SetTextColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
+        if (not spell.hideLevel) then
+            row.spell.level:Show();
+            row.spell.level:SetText(format("Level %s", spell.level))
+            local color = GetQuestDifficultyColor(spell.level);
+            row.spell.level:SetTextColor(color.r, color.g, color.b);
+        else
+            row.spell.level:Hide()
+        end
         row:SetID(spell.id);
         row.cost = spell.cost;
+        row.spell.icon:SetTexture(spell.icon);
         if (GameTooltip:IsOwned(row)) then
             GameTooltip:SetSpellByID(spell.id);
-            GameTooltip:AddLine(GetCoinTextureString(spell.cost));
+            GameTooltip:AddLine(HIGHLIGHT_FONT_COLOR_CODE..format("Cost: %s", GetCoinTextureString(spell.cost))..FONT_COLOR_CODE_CLOSE);
             GameTooltip:Show();
         end
     end
@@ -143,7 +167,7 @@ end
 
 function WhatsTraining_Update(frame)
     local scrollBar = frame.scrollBar;
-    FauxScrollFrame_Update(scrollBar, #spells, MAX_ROWS, ROW_HEIGHT);
+    FauxScrollFrame_Update(scrollBar, #spells, MAX_ROWS, ROW_HEIGHT, nil, nil, nil, nil, nil, nil, true);
     local offset = FauxScrollFrame_GetOffset(scrollBar);
     for i = 1, MAX_ROWS do
         local spellIndex = i + offset;
@@ -155,15 +179,20 @@ end
 
 function WhatsTraining_CreateFrame()
     local mainFrame = CreateFrame("Frame", "WhatsTrainingFrame", SpellBookFrame);
-    mainFrame:SetPoint("TOPLEFT", "SpellBookFrame", "TOPLEFT", 15, -69);
-    mainFrame:SetPoint("BOTTOMRIGHT", "SpellBookFrame", "BOTTOMRIGHT", -36, 75);
-    mainFrame:SetBackdrop({
-        bgFile = "Interface\\FrameGeneral\\UI-Background-Rock",
-        tile = false, tileSize = 32, edgeSize = 32,
-        insets = {left = 4, right = 4, top = 4, bottom = 4}
-    });
+    mainFrame:SetPoint("TOPLEFT", "SpellBookFrame", "TOPLEFT", 0, 0);
+    mainFrame:SetPoint("BOTTOMRIGHT", "SpellBookFrame", "BOTTOMRIGHT", 0, 0);
     mainFrame:SetFrameStrata("HIGH");
-
+    local left = mainFrame:CreateTexture(nil, "ARTWORK");
+    left:SetTexture("Interface\\AddOns\\WhatsTraining\\left");
+    left:SetWidth(256);
+    left:SetHeight(512);
+    left:SetPoint("TOPLEFT", mainFrame);
+    local right = mainFrame:CreateTexture(nil, "ARTWORK");
+    right:SetTexture("Interface\\AddOns\\WhatsTraining\\right");
+    right:SetWidth(128);
+    right:SetHeight(512);
+    right:SetPoint("TOPRIGHT", mainFrame);
+    mainFrame:SetFrameStrata("HIGH");
     mainFrame:Hide();
    
     hooksecurefunc("SpellBookFrame_UpdateSkillLineTabs", function()
@@ -174,15 +203,21 @@ function WhatsTraining_CreateFrame()
         if ( SpellBookFrame.selectedSkillLine == MAX_SKILLLINE_TABS-1 ) then
             skillLineTab:SetChecked(true);
             mainFrame:Show();
+            for i = 1, MAX_SKILLLINE_TABS do
+                _G["SpellBookSkillLineTab"..i]:SetFrameStrata("HIGH");
+            end
         else
             skillLineTab:SetChecked(false);
             mainFrame:Hide();
+            for i = 1, MAX_SKILLLINE_TABS do
+                _G["SpellBookSkillLineTab"..i]:SetFrameStrata("MEDIUM");
+        end
         end
     end);
 
     local scrollBar = CreateFrame("ScrollFrame", "$parentScrollBar", mainFrame, "FauxScrollFrameTemplate");
-    scrollBar:SetPoint("TOPLEFT", 0, -8);
-    scrollBar:SetPoint("BOTTOMRIGHT", -28, 8);
+    scrollBar:SetPoint("TOPLEFT", 0, -76);
+    scrollBar:SetPoint("BOTTOMRIGHT", -65, 81);
     scrollBar:SetScript("OnVerticalScroll", function(self, offset)
         FauxScrollFrame_OnVerticalScroll(self, offset, ROW_HEIGHT, function()
             WhatsTraining_Update(mainFrame);
@@ -205,31 +240,58 @@ function WhatsTraining_CreateFrame()
             end
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
             GameTooltip:SetSpellByID(self:GetID());
-            GameTooltip:AddLine(GetCoinTextureString(self.cost));
+            GameTooltip:AddLine(HIGHLIGHT_FONT_COLOR_CODE..format("Cost: %s", GetCoinTextureString(self.cost))..FONT_COLOR_CODE_CLOSE);
             GameTooltip:Show();
         end);
         row:SetScript("OnLeave", function(self)
             GameTooltip:Hide();
         end);
+        local highlight = row:CreateTexture("$parentHighlight", "HIGHLIGHT");
+        highlight:SetAllPoints();
 
         local spell = CreateFrame("Frame", "$parentSpell", row);
         spell:SetPoint("LEFT", "WhatsTrainingFrameRow"..i, "LEFT");
         spell:SetPoint("TOP", "WhatsTrainingFrameRow"..i, "TOP");
         spell:SetPoint("BOTTOM", "WhatsTrainingFrameRow"..i, "BOTTOM");
 
-        local spellLabel = spell:CreateFontString(nil, "OVERLAY", "GameFontWhite");
-        spellLabel:SetPoint("TOPLEFT", spell:GetName(), "TOPLEFT");
-        spellLabel:SetPoint("BOTTOMRIGHT", spell:GetName(), "BOTTOMRIGHT");
+        local spellIcon = spell:CreateTexture(nil, "OVERLAY");
+        spellIcon:SetPoint("TOPLEFT", spell:GetName());
+        spellIcon:SetPoint("BOTTOMLEFT", spell:GetName());
+        local iconWidth = ROW_HEIGHT;
+        spellIcon:SetWidth(iconWidth);
+        local spellLabel = spell:CreateFontString("$parentLabel", "OVERLAY", "GameFontNormal");
+        spellLabel:SetPoint("TOPLEFT", spell:GetName(), "TOPLEFT" , iconWidth+4, 0);
+        spellLabel:SetPoint("BOTTOM", spell:GetName());
+        spellLabel:SetJustifyV("MIDDLE");
+        local spellSublabel = spell:CreateFontString("$parentSubLabel", "OVERLAY", "SubSpellFont");
+        spellSublabel:SetPoint("TOPLEFT", spellLabel:GetName(), "TOPRIGHT" , 2, 0);
+        spellSublabel:SetPoint("BOTTOM", spellLabel:GetName());
+        spellSublabel:SetJustifyV("MIDDLE");
+        local spellLevelLabel = spell:CreateFontString("$parentLevelLabel", "OVERLAY", "GameFontWhite");
+        spellLevelLabel:SetPoint("TOPRIGHT", spell:GetName(), -4, 0);
+        spellLevelLabel:SetPoint("BOTTOMLEFT", spellSublabel:GetName(), "BOTTOMRIGHT");
+        spellLevelLabel:SetJustifyH("RIGHT");
+        spellLevelLabel:SetJustifyV("MIDDLE");
+
+        local headerLabel = row:CreateFontString("$HeaderLabel", "OVERLAY", "GameFontWhite");
+        headerLabel:SetAllPoints();
+        headerLabel:SetJustifyV("MIDDLE");
+        headerLabel:SetJustifyH("CENTER");
         
         spell.label = spellLabel;
+        spell.subLabel = spellSublabel;
+        spell.icon = spellIcon;
+        spell.level = spellLevelLabel;
+        row.highlight = highlight;
+        row.header = headerLabel;
         row.spell = spell;
 
         if (lastRow == nil) then
-            row:SetPoint("TOPLEFT", mainFrame, 8, -4);
+            row:SetPoint("TOPLEFT", mainFrame, 26, -78);
         else
             row:SetPoint("TOPLEFT", rows[i-1], "BOTTOMLEFT", 0, -2);
         end
-        row:SetPoint("RIGHT", mainFrame);
+        row:SetPoint("RIGHT", scrollBar);
         lastRow = row;
 
         rawset(rows, i, row);
