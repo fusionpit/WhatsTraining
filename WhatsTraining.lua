@@ -1,6 +1,11 @@
 local MAX_ROWS = 22;
 local ROW_HEIGHT = 14;
 
+local HIGHLIGHT_TEXTURE_FILEID = GetFileIDFromPath("Interface\\AddOns\\WhatsTraining\\highlight");
+local LEFT_BG_TEXTURE_FILEID = GetFileIDFromPath("Interface\\AddOns\\WhatsTraining\\left");
+local RIGHT_BG_TEXTURE_FILEID = GetFileIDFromPath("Interface\\AddOns\\WhatsTraining\\right");
+local TAB_TEXTURE_FILEID = GetFileIDFromPath("Interface\\Icons\\INV_Misc_QuestionMark");
+
 local _, englishClass = UnitClass("player");
 englishClass = string.gsub(string.lower(englishClass),"^%l", string.upper);
 local byLevel = _G[format("WhatsTraining%sAbilitiesByLevel", englishClass)];
@@ -156,7 +161,7 @@ function WhatsTraining_SetRowSpell(row, spell)
     elseif (spell ~= nil) then
         row.header:Hide();
         row.isHeader = false;
-        row.highlight:SetTexture("Interface\\AddOns\\WhatsTraining\\highlight");
+        row.highlight:SetTexture(HIGHLIGHT_TEXTURE_FILEID);
         row.spell:Show();
         row.spell.label:SetText(spell.name);
         if (spell.subText and spell.subText ~= "") then
@@ -202,12 +207,12 @@ function WhatsTraining_CreateFrame()
     mainFrame:SetPoint("BOTTOMRIGHT", "SpellBookFrame", "BOTTOMRIGHT", 0, 0);
     mainFrame:SetFrameStrata("HIGH");
     local left = mainFrame:CreateTexture(nil, "ARTWORK");
-    left:SetTexture("Interface\\AddOns\\WhatsTraining\\left");
+    left:SetTexture(LEFT_BG_TEXTURE_FILEID);
     left:SetWidth(256);
     left:SetHeight(512);
     left:SetPoint("TOPLEFT", mainFrame);
     local right = mainFrame:CreateTexture(nil, "ARTWORK");
-    right:SetTexture("Interface\\AddOns\\WhatsTraining\\right");
+    right:SetTexture(RIGHT_BG_TEXTURE_FILEID);
     right:SetWidth(128);
     right:SetHeight(512);
     right:SetPoint("TOPRIGHT", mainFrame);
@@ -216,7 +221,7 @@ function WhatsTraining_CreateFrame()
    
     hooksecurefunc("SpellBookFrame_UpdateSkillLineTabs", function()
         local skillLineTab = _G["SpellBookSkillLineTab"..MAX_SKILLLINE_TABS-1];
-        skillLineTab:SetNormalTexture(134400);
+        skillLineTab:SetNormalTexture(TAB_TEXTURE_FILEID);
         skillLineTab.tooltip = "What can I train?";
         skillLineTab:Show();
         if ( SpellBookFrame.selectedSkillLine == MAX_SKILLLINE_TABS-1 ) then
