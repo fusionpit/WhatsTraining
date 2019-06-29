@@ -6,6 +6,8 @@ local LEFT_BG_TEXTURE_FILEID = GetFileIDFromPath("Interface\\AddOns\\WhatsTraini
 local RIGHT_BG_TEXTURE_FILEID = GetFileIDFromPath("Interface\\AddOns\\WhatsTraining\\right");
 local TAB_TEXTURE_FILEID = GetFileIDFromPath("Interface\\Icons\\INV_Misc_QuestionMark");
 
+local L = WhatsTrainingText;
+
 local _, englishClass = UnitClass("player");
 englishClass = string.gsub(string.lower(englishClass),"^%l", string.upper);
 local byLevel = _G[format("WhatsTraining%sAbilitiesByLevel", englishClass)];
@@ -96,12 +98,12 @@ local function rebuild(level)
     end
     local comingSoonFontColorCode = "|cff82c5ff"
     local categories = {
-        {name = "Available Now", table = spellsByCategory.available, color = GREEN_FONT_COLOR_CODE, hideLevel = true},
-        {name = "Available but Missing Requirements", table = spellsByCategory.missingReqs, color = ORANGE_FONT_COLOR_CODE, hideLevel = true},
-        {name = "Coming Soon", table = spellsByCategory.nextLevel, color = comingSoonFontColorCode },
-        {name = "Not Yet Available", table = spellsByCategory.notLevel, color = RED_FONT_COLOR_CODE},
-        {name = "Ignored", table = spellsByCategory.ignored, color = LIGHTYELLOW_FONT_COLOR_CODE},
-        {name = "Already Known", table = spellsByCategory.known, color = GRAY_FONT_COLOR_CODE, hideLevel = true},
+        {name = L.AVAILABLE_HEADER, table = spellsByCategory.available, color = GREEN_FONT_COLOR_CODE, hideLevel = true},
+        {name = L.MISSINGREQS_HEADER, table = spellsByCategory.missingReqs, color = ORANGE_FONT_COLOR_CODE, hideLevel = true},
+        {name = L.NEXTLEVEL_HEADER, table = spellsByCategory.nextLevel, color = comingSoonFontColorCode },
+        {name = L.NOTLEVEL_HEADER, table = spellsByCategory.notLevel, color = RED_FONT_COLOR_CODE},
+        {name = L.IGNORED_HEADER, table = spellsByCategory.ignored, color = LIGHTYELLOW_FONT_COLOR_CODE},
+        {name = L.KNOWN_HEADER, table = spellsByCategory.known, color = GRAY_FONT_COLOR_CODE, hideLevel = true},
     };
     for _, category in ipairs(categories) do
         if (#category.table > 0) then
@@ -161,11 +163,9 @@ function WhatsTraining_SetTooltip(spellId, spellCost)
     if (GetMoney() < spellCost) then
         coloredCoinString = RED_FONT_COLOR_CODE..coloredCoinString..FONT_COLOR_CODE_CLOSE;
     end
-    local costString = format("Cost: %s", coloredCoinString);
-    if (not spellId or spellId == 0) then
-        costString = "Total "..costString;
-    end
-    GameTooltip:AddLine(HIGHLIGHT_FONT_COLOR_CODE..costString..FONT_COLOR_CODE_CLOSE);
+    local formatString = (not spellId or spellId == 0) and L.TOTALCOST_FORMAT or L.COST_FORMAT;
+
+    GameTooltip:AddLine(HIGHLIGHT_FONT_COLOR_CODE..format(formatString, coloredCoinString)..FONT_COLOR_CODE_CLOSE);
     GameTooltip:Show();
 end
 
@@ -192,7 +192,7 @@ function WhatsTraining_SetRowSpell(row, spell)
         end
         if (not spell.hideLevel) then
             row.spell.level:Show();
-            row.spell.level:SetText(format("Level %s", spell.level))
+            row.spell.level:SetText(format(L.LEVEL_FORMAT, spell.level))
             local color = GetQuestDifficultyColor(spell.level);
             row.spell.level:SetTextColor(color.r, color.g, color.b);
         else
@@ -241,7 +241,7 @@ function WhatsTraining_CreateFrame()
     hooksecurefunc("SpellBookFrame_UpdateSkillLineTabs", function()
         local skillLineTab = _G["SpellBookSkillLineTab"..MAX_SKILLLINE_TABS-1];
         skillLineTab:SetNormalTexture(TAB_TEXTURE_FILEID);
-        skillLineTab.tooltip = "What can I train?";
+        skillLineTab.tooltip = L.TAB_TEXT;
         skillLineTab:Show();
         if ( SpellBookFrame.selectedSkillLine == MAX_SKILLLINE_TABS-1 ) then
             skillLineTab:SetChecked(true);

@@ -14,4 +14,5 @@ Classes\Shaman.lua
 Classes\Warlock.lua
 Classes\Warrior.lua
 
+Localization.lua
 WhatsTraining.lua
