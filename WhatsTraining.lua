@@ -97,8 +97,8 @@ local function rebuild(level)
     local comingSoonFontColorCode = "|cff82c5ff"
     local categories = {
         {name = "Available Now", table = spellsByCategory.available, color = GREEN_FONT_COLOR_CODE, hideLevel = true},
-        {name = "Coming Soon", table = spellsByCategory.nextLevel, color = comingSoonFontColorCode },
         {name = "Available but Missing Requirements", table = spellsByCategory.missingReqs, color = ORANGE_FONT_COLOR_CODE, hideLevel = true},
+        {name = "Coming Soon", table = spellsByCategory.nextLevel, color = comingSoonFontColorCode },
         {name = "Not Yet Available", table = spellsByCategory.notLevel, color = RED_FONT_COLOR_CODE},
         {name = "Ignored", table = spellsByCategory.ignored, color = LIGHTYELLOW_FONT_COLOR_CODE},
         {name = "Already Known", table = spellsByCategory.known, color = GRAY_FONT_COLOR_CODE, hideLevel = true},
