@@ -147,6 +147,16 @@ for i, v in pairs(byLevel) do
 end
 rebuild(UnitLevel("player"));
 
+function WhatsTraining_SetTooltip(spellId, spellCost)
+    GameTooltip:SetSpellByID(spellId);
+    local coloredCoinString = GetCoinTextureString(spellCost);
+    if (GetMoney() < spellCost) then
+        coloredCoinString = RED_FONT_COLOR_CODE..coloredCoinString..FONT_COLOR_CODE_CLOSE;
+    end
+    GameTooltip:AddLine(HIGHLIGHT_FONT_COLOR_CODE..format("Cost: %s", coloredCoinString)..FONT_COLOR_CODE_CLOSE);
+    GameTooltip:Show();
+end
+
 function WhatsTraining_SetRowSpell(row, spell)
     if (spell == nil) then
         row:Hide();
@@ -181,9 +191,7 @@ function WhatsTraining_SetRowSpell(row, spell)
         row.cost = spell.cost;
         row.spell.icon:SetTexture(spell.icon);
         if (GameTooltip:IsOwned(row)) then
-            GameTooltip:SetSpellByID(spell.id);
-            GameTooltip:AddLine(HIGHLIGHT_FONT_COLOR_CODE..format("Cost: %s", GetCoinTextureString(spell.cost))..FONT_COLOR_CODE_CLOSE);
-            GameTooltip:Show();
+            WhatsTraining_SetTooltip(spell.id, spell.cost);
         end
     end
     row:Show();
@@ -263,9 +271,7 @@ function WhatsTraining_CreateFrame()
                 return;
             end
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-            GameTooltip:SetSpellByID(self:GetID());
-            GameTooltip:AddLine(HIGHLIGHT_FONT_COLOR_CODE..format("Cost: %s", GetCoinTextureString(self.cost))..FONT_COLOR_CODE_CLOSE);
-            GameTooltip:Show();
+            WhatsTraining_SetTooltip(self:GetID(), self.cost)
         end);
         row:SetScript("OnLeave", function(self)
             GameTooltip:Hide();
