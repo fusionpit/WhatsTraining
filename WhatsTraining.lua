@@ -287,7 +287,7 @@ function WhatsTraining_CreateFrame()
         spellLabel:SetPoint("TOPLEFT", spell:GetName(), "TOPLEFT" , iconWidth+4, 0);
         spellLabel:SetPoint("BOTTOM", spell:GetName());
         spellLabel:SetJustifyV("MIDDLE");
-        local spellSublabel = spell:CreateFontString("$parentSubLabel", "OVERLAY", "SubSpellFont");
+        local spellSublabel = spell:CreateFontString("$parentSubLabel", "OVERLAY", "NewSubSpellFont");
         spellSublabel:SetPoint("TOPLEFT", spellLabel:GetName(), "TOPRIGHT" , 2, 0);
         spellSublabel:SetPoint("BOTTOM", spellLabel:GetName());
         spellSublabel:SetJustifyV("MIDDLE");
