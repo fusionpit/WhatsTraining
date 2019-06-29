@@ -1,3 +1,10 @@
+* 0.4-beta
+    - Tab icon should always be '?' now
+    - Change (Rank #) text color to be more visible
+    - Spell cost on tooltip is red if you don't have enough money for it 
+    - Cost of training the entire section added to header mouseover tooltip
+    - Localization added (enUS only, currently)
+ 
 * 0.3-beta
     - Fix WoWI bug 8884
     - Won't show other faction's mage ports/teles

@@ -1,6 +1,6 @@
 ## Interface: 11302
 ## Title: What's Training?
-## Version: 0.3-beta
+## Version: 0.4-beta
 ## Author: Sveng
 ## Notes: Shows you what spells are available at your class trainer
 
