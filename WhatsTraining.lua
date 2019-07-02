@@ -1,3 +1,5 @@
+local _, wt = ...
+
 local MAX_ROWS = 22
 local ROW_HEIGHT = 14
 
@@ -9,8 +11,7 @@ local TAB_TEXTURE_FILEID = GetFileIDFromPath("Interface\\Icons\\INV_Misc_Questio
 local L = WhatsTrainingText
 
 local _, englishClass = UnitClass("player")
-englishClass = string.gsub(string.lower(englishClass), "^%l", string.upper)
-local byLevel = _G[format("WhatsTraining%sAbilitiesByLevel", englishClass)]
+local byLevel = wt.AbilitiesByLevel[englishClass];
 
 local spellCache = {}
 -- done has params spell, cacheHit

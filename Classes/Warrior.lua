@@ -1,4 +1,6 @@
-WhatsTrainingWarriorAbilitiesByLevel = {
+local _, wt = ...
+wt.AbilitiesByLevel = wt.AbilitiesByLevel or {}
+wt.AbilitiesByLevel.WARRIOR = {
 	[1] = {{id = 6673, cost = 10}},
 	[4] = {{id = 100, cost = 100}, {id = 772, cost = 100}},
 	[6] = {{id = 3127, cost = 100}, {id = 6343, cost = 100}},

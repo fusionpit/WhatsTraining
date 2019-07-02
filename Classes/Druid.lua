@@ -1,4 +1,6 @@
-WhatsTrainingDruidAbilitiesByLevel = {
+local _, wt = ...
+wt.AbilitiesByLevel = wt.AbilitiesByLevel or {}
+wt.AbilitiesByLevel.DRUID = {
 	[1] = {{id = 1126, cost = 10}},
 	[4] = {{id = 8921, cost = 100}, {id = 774, cost = 100}},
 	[6] = {{id = 467, cost = 100}, {id = 5177, cost = 100, requiredIds = {5176}}},

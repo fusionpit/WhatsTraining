@@ -1,4 +1,6 @@
-WhatsTrainingRogueAbilitiesByLevel = {
+local _, wt = ...
+wt.AbilitiesByLevel = wt.AbilitiesByLevel or {}
+wt.AbilitiesByLevel.ROGUE = {
 	[1] = {{id = 1784, cost = 10}},
 	[4] = {{id = 53, cost = 100}, {id = 921, cost = 100}},
 	[6] = {{id = 1776, cost = 100}, {id = 1757, cost = 100, requiredIds = {1752}}},
