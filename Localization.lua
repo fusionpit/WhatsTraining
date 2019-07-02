@@ -1,4 +1,8 @@
-WhatsTrainingTextLocales = {
+local _, wt = ...
+
+local GetLocale = GetLocale
+
+local localeText = {
     enUS = {
         AVAILABLE_HEADER = "Available Now",
         MISSINGREQS_HEADER = "Available but Missing Requirements",
@@ -13,11 +17,11 @@ WhatsTrainingTextLocales = {
     }
 }
 
-WhatsTrainingText = WhatsTrainingTextLocales["enUS"]
+wt.L = localeText["enUS"]
 local locale = GetLocale()
-if (locale == "enUS" or locale == "enGB" or WhatsTrainingTextLocales[locale] == nil) then
+if (locale == "enUS" or locale == "enGB" or localeText[locale] == nil) then
     return
 end
-for k, v in pairs(WhatsTrainingTextLocales[locale]) do
-    WhatsTrainingText[k] = v
+for k, v in pairs(localeText[locale]) do
+    wt.L[k] = v
 end
