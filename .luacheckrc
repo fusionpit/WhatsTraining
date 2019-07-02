@@ -34,4 +34,4 @@ read_globals = {
     "PARENS_TEMPLATE",
     "MAX_SKILLLINE_TABS"
 }
-globals = {"ClassTrainerPlusDBPC", "CTP_UpdateService","WhatsTrainingFrame"}
+globals = {"ClassTrainerPlusDBPC", "CTP_UpdateService", "WhatsTrainingFrame"}
