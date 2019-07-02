@@ -5,6 +5,7 @@ local GetMoney = GetMoney
 local GetFileIDFromPath = GetFileIDFromPath
 local GetSpellInfo = GetSpellInfo
 local GetQuestDifficultyColor = GetQuestDifficultyColor
+local IsSpellKnown = IsSpellKnown
 local UnitClass = UnitClass
 local UnitLevel = UnitLevel
 local UnitRace = UnitRace
@@ -35,9 +36,7 @@ local spellCache = {}
 local function getSpell(spellId, done)
     if (spellCache[spellId] ~= nil) then
         done(spellCache[spellId], true)
-        return function()
-            return false
-        end
+        return
     end
     local spell = Spell:CreateFromSpellID(spellId)
     spell:ContinueOnSpellLoad(
@@ -73,7 +72,9 @@ local function rebuild(level)
             if (spell ~= nil) then
                 spell.level = i
                 spell.cost = a.cost
-                if (ClassTrainerPlusDBPC and ClassTrainerPlusDBPC[spell.id]) then
+                if (IsSpellKnown(a.id)) then
+                    tinsert(spellsByCategory.known, spell)
+                elseif (ClassTrainerPlusDBPC and ClassTrainerPlusDBPC[spell.id]) then
                     tinsert(spellsByCategory.ignored, spell)
                 elseif (i > level) then
                     if (i <= level + 2) then
@@ -81,20 +82,13 @@ local function rebuild(level)
                     else
                         tinsert(spellsByCategory.notLevel, spell)
                     end
-                elseif (GetSpellInfo(spell.name, spell.subText) ~= nil) then
-                    tinsert(spellsByCategory.known, spell)
                 else
                     local canInsert = true
                     local hasReqs = true
                     if (a.requiredIds ~= nil) then
                         for j = 1, #a.requiredIds do
                             local reqId = a.requiredIds[j]
-                            local req = spellCache[reqId]
-                            if (req == nil) then
-                                canInsert = false
-                            elseif (hasReqs) then
-                                hasReqs = GetSpellInfo(req.name, req.subText) ~= nil
-                            end
+                            hasReqs = IsSpellKnown(reqId);
                         end
                     end
                     if (canInsert) then
@@ -175,11 +169,6 @@ for _, v in pairs(byLevel) do
         local forThisRace = raceMatches(a)
         if (forThisFaction and forThisRace) then
             getSpell(a.id, rebuildIfNotCached)
-            if (a.requiredIds and #a.requiredIds > 0) then
-                for j = 1, #a.requiredIds do
-                    getSpell(a.requiredIds[j], rebuildIfNotCached)
-                end
-            end
         end
     end
 end

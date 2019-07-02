@@ -6,6 +6,7 @@ read_globals = {
     "GetFileIDFromPath",
     "GetSpellInfo",
     "GetQuestDifficultyColor",
+    "IsSpellKnown",
     "UnitClass",
     "UnitLevel",
     "UnitRace",
