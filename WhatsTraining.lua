@@ -1,5 +1,24 @@
 local _, wt = ...
 
+local GetCoinTextureString = GetCoinTextureString
+local GetMoney = GetMoney
+local GetFileIDFromPath = GetFileIDFromPath
+local GetSpellInfo = GetSpellInfo
+local GetQuestDifficultyColor = GetQuestDifficultyColor
+local UnitClass = UnitClass
+local UnitLevel = UnitLevel
+local UnitRace = UnitRace
+local UnitFactionGroup = UnitFactionGroup
+local FauxScrollFrame_Update = FauxScrollFrame_Update
+local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
+local FauxScrollFrame_OnVerticalScroll = FauxScrollFrame_OnVerticalScroll
+local CreateFrame = CreateFrame
+local tinsert = tinsert
+local format = format
+local hooksecurefunc = hooksecurefunc
+local Spell = Spell
+local GameTooltip = GameTooltip
+
 local MAX_ROWS = 22
 local ROW_HEIGHT = 14
 
@@ -9,7 +28,7 @@ local RIGHT_BG_TEXTURE_FILEID = GetFileIDFromPath("Interface\\AddOns\\WhatsTrain
 local TAB_TEXTURE_FILEID = GetFileIDFromPath("Interface\\Icons\\INV_Misc_QuestionMark")
 
 local _, englishClass = UnitClass("player")
-local byLevel = wt.AbilitiesByLevel[englishClass];
+local byLevel = wt.AbilitiesByLevel[englishClass]
 
 local spellCache = {}
 -- done has params spell, cacheHit
@@ -99,7 +118,12 @@ local function rebuild(level)
     end
     local comingSoonFontColorCode = "|cff82c5ff"
     local categories = {
-        {name = wt.L.AVAILABLE_HEADER, table = spellsByCategory.available, color = GREEN_FONT_COLOR_CODE, hideLevel = true},
+        {
+            name = wt.L.AVAILABLE_HEADER,
+            table = spellsByCategory.available,
+            color = GREEN_FONT_COLOR_CODE,
+            hideLevel = true
+        },
         {
             name = wt.L.MISSINGREQS_HEADER,
             table = spellsByCategory.missingReqs,
@@ -145,7 +169,7 @@ local function raceMatches(ability)
 end
 local playerFaction = UnitFactionGroup("player")
 
-for i, v in pairs(byLevel) do
+for _, v in pairs(byLevel) do
     for _, a in ipairs(v) do
         local forThisFaction = a.faction == nil or a.faction == playerFaction
         local forThisRace = raceMatches(a)
@@ -161,7 +185,7 @@ for i, v in pairs(byLevel) do
 end
 rebuild(UnitLevel("player"))
 
-function WhatsTraining_SetTooltip(spellId, spellCost)
+function wt.SetTooltip(spellId, spellCost)
     if (spellId and spellId > 0) then
         GameTooltip:SetSpellByID(spellId)
     else
@@ -177,7 +201,7 @@ function WhatsTraining_SetTooltip(spellId, spellCost)
     GameTooltip:Show()
 end
 
-function WhatsTraining_SetRowSpell(row, spell)
+function wt.SetRowSpell(row, spell)
     if (spell == nil) then
         row:Hide()
         return
@@ -211,12 +235,12 @@ function WhatsTraining_SetRowSpell(row, spell)
     end
     row.cost = spell.cost
     if (GameTooltip:IsOwned(row)) then
-        WhatsTraining_SetTooltip(spell.id, spell.cost)
+        wt.SetTooltip(spell.id, spell.cost)
     end
     row:Show()
 end
 
-function WhatsTraining_Update(frame)
+function wt.Update(frame)
     local scrollBar = frame.scrollBar
     FauxScrollFrame_Update(scrollBar, #spells, MAX_ROWS, ROW_HEIGHT, nil, nil, nil, nil, nil, nil, true)
     local offset = FauxScrollFrame_GetOffset(scrollBar)
@@ -224,11 +248,11 @@ function WhatsTraining_Update(frame)
         local spellIndex = i + offset
         local spell = spells[spellIndex]
         local row = _G[frame:GetName() .. "Row" .. i]
-        WhatsTraining_SetRowSpell(row, spell)
+        wt.SetRowSpell(row, spell)
     end
 end
 
-function WhatsTraining_CreateFrame()
+function wt.CreateFrame()
     local mainFrame = CreateFrame("Frame", "WhatsTrainingFrame", SpellBookFrame)
     mainFrame:SetPoint("TOPLEFT", "SpellBookFrame", "TOPLEFT", 0, 0)
     mainFrame:SetPoint("BOTTOMRIGHT", "SpellBookFrame", "BOTTOMRIGHT", 0, 0)
@@ -280,7 +304,7 @@ function WhatsTraining_CreateFrame()
                 offset,
                 ROW_HEIGHT,
                 function()
-                    WhatsTraining_Update(mainFrame)
+                    wt.Update(mainFrame)
                 end
             )
         end
@@ -288,7 +312,7 @@ function WhatsTraining_CreateFrame()
     scrollBar:SetScript(
         "OnShow",
         function()
-            WhatsTraining_Update(mainFrame)
+            wt.Update(mainFrame)
         end
     )
     mainFrame.scrollBar = scrollBar
@@ -303,12 +327,12 @@ function WhatsTraining_CreateFrame()
             "OnEnter",
             function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                WhatsTraining_SetTooltip(self:GetID(), self.cost)
+                wt.SetTooltip(self:GetID(), self.cost)
             end
         )
         row:SetScript(
             "OnLeave",
-            function(self)
+            function()
                 GameTooltip:Hide()
             end
         )
@@ -388,19 +412,19 @@ eventFrame:SetScript(
             local isLogin, isReload = ...
             if (isLogin or isReload) then
                 rebuild(UnitLevel("player"))
-                WhatsTraining_CreateFrame()
+                wt.CreateFrame()
             end
             return
         elseif (event == "LEARNED_SPELL_IN_TAB") then
             rebuild(UnitLevel("player"))
             if (WhatsTrainingFrame and WhatsTrainingFrame:IsVisible()) then
-                WhatsTraining_Update(WhatsTrainingFrame)
+                wt.Update(WhatsTrainingFrame)
             end
         elseif (event == "PLAYER_LEVEL_UP") then
             local level = ...
             rebuild(level)
             if (WhatsTrainingFrame and WhatsTrainingFrame:IsVisible()) then
-                WhatsTraining_Update(WhatsTrainingFrame)
+                wt.Update(WhatsTrainingFrame)
             end
         end
     end
