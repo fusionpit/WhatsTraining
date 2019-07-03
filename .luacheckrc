@@ -21,9 +21,9 @@ read_globals = {
     "hooksecurefunc",
     -- api classes
     "Spell",
-    "GameTooltip",
     -- blizzard frames
     "SpellBookFrame",
+    "UIParent",
     -- constants
     "GREEN_FONT_COLOR_CODE",
     "ORANGE_FONT_COLOR_CODE",

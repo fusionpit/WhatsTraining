@@ -18,7 +18,6 @@ local tinsert = tinsert
 local format = format
 local hooksecurefunc = hooksecurefunc
 local Spell = Spell
-local GameTooltip = GameTooltip
 
 local MAX_ROWS = 22
 local ROW_HEIGHT = 14
@@ -174,11 +173,12 @@ for _, v in pairs(byLevel) do
 end
 rebuild(UnitLevel("player"))
 
+local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent, "GameTooltipTemplate")
 function wt.SetTooltip(spellId, spellCost)
     if (spellId and spellId > 0) then
-        GameTooltip:SetSpellByID(spellId)
+        tooltip:SetSpellByID(spellId)
     else
-        GameTooltip:ClearLines()
+        tooltip:ClearLines()
     end
     local coloredCoinString = GetCoinTextureString(spellCost)
     if (GetMoney() < spellCost) then
@@ -186,8 +186,8 @@ function wt.SetTooltip(spellId, spellCost)
     end
     local formatString = (not spellId or spellId == 0) and wt.L.TOTALCOST_FORMAT or wt.L.COST_FORMAT
 
-    GameTooltip:AddLine(HIGHLIGHT_FONT_COLOR_CODE .. format(formatString, coloredCoinString) .. FONT_COLOR_CODE_CLOSE)
-    GameTooltip:Show()
+    tooltip:AddLine(HIGHLIGHT_FONT_COLOR_CODE .. format(formatString, coloredCoinString) .. FONT_COLOR_CODE_CLOSE)
+    tooltip:Show()
 end
 
 function wt.SetRowSpell(row, spell)
@@ -223,7 +223,7 @@ function wt.SetRowSpell(row, spell)
         row.spell.icon:SetTexture(spell.icon)
     end
     row.cost = spell.cost
-    if (GameTooltip:IsOwned(row)) then
+    if (tooltip:IsOwned(row)) then
         wt.SetTooltip(spell.id, spell.cost)
     end
     row:Show()
@@ -315,14 +315,14 @@ function wt.CreateFrame()
         row:SetScript(
             "OnEnter",
             function(self)
-                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                tooltip:SetOwner(self, "ANCHOR_RIGHT")
                 wt.SetTooltip(self:GetID(), self.cost)
             end
         )
         row:SetScript(
             "OnLeave",
             function()
-                GameTooltip:Hide()
+                tooltip:Hide()
             end
         )
         local highlight = row:CreateTexture("$parentHighlight", "HIGHLIGHT")
