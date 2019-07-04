@@ -78,7 +78,7 @@ end
 local categories = {
     {
         name = wt.L.AVAILABLE_HEADER,
-        table = {},
+        spells = {},
         color = GREEN_FONT_COLOR_CODE,
         hideLevel = true,
         isHeader = true,
@@ -86,7 +86,7 @@ local categories = {
     },
     {
         name = wt.L.MISSINGREQS_HEADER,
-        table = {},
+        spells = {},
         color = ORANGE_FONT_COLOR_CODE,
         hideLevel = true,
         isHeader = true,
@@ -94,28 +94,28 @@ local categories = {
     },
     {
         name = wt.L.NEXTLEVEL_HEADER,
-        table = {},
+        spells = {},
         color = comingSoonFontColorCode,
         isHeader = true,
         key = "nextLevel"
     },
     {
         name = wt.L.NOTLEVEL_HEADER,
-        table = {},
+        spells = {},
         color = RED_FONT_COLOR_CODE,
         isHeader = true,
         key = "notLevel"
     },
     {
         name = wt.L.IGNORED_HEADER,
-        table = {},
+        spells = {},
         color = LIGHTYELLOW_FONT_COLOR_CODE,
         isHeader = true,
         key = "ignored"
     },
     {
         name = wt.L.KNOWN_HEADER,
-        table = {},
+        spells = {},
         color = GRAY_FONT_COLOR_CODE,
         hideLevel = true,
         isHeader = true,
@@ -132,7 +132,7 @@ local function rebuild(playerLevel)
     foreach(
         categories,
         function(_, s)
-            wipe(s.table)
+            wipe(s.spells)
         end
     )
     wipe(spells)
@@ -143,17 +143,16 @@ local function rebuild(playerLevel)
                 spell.level = level
                 spell.cost = a.cost
                 if (IsSpellKnown(a.id)) then
-                    tinsert(categoriesByKey.known.table, spell)
+                    tinsert(categoriesByKey.known.spells, spell)
                 elseif (isIgnoredByCTP(spell.id)) then
-                    tinsert(categoriesByKey.ignored.table, spell)
+                    tinsert(categoriesByKey.ignored.spells, spell)
                 elseif (level > playerLevel) then
                     if (level <= playerLevel + 2) then
-                        tinsert(categoriesByKey.nextLevel.table, spell)
+                        tinsert(categoriesByKey.nextLevel.spells, spell)
                     else
-                        tinsert(categoriesByKey.notLevel.table, spell)
+                        tinsert(categoriesByKey.notLevel.spells, spell)
                     end
                 else
-                    local canInsert = true
                     local hasReqs = true
                     if (a.requiredIds ~= nil) then
                         for j = 1, #a.requiredIds do
@@ -161,12 +160,10 @@ local function rebuild(playerLevel)
                             hasReqs = hasReqs and IsSpellKnown(reqId)
                         end
                     end
-                    if (canInsert) then
-                        if (not hasReqs) then
-                            tinsert(categoriesByKey.missingReqs.table, spell)
-                        else
-                            tinsert(categoriesByKey.available.table, spell)
-                        end
+                    if (not hasReqs) then
+                        tinsert(categoriesByKey.missingReqs.spells, spell)
+                    else
+                        tinsert(categoriesByKey.available.spells, spell)
                     end
                 end
             end
@@ -180,11 +177,11 @@ local function rebuild(playerLevel)
         return a.level < b.level
     end
     for _, category in ipairs(categories) do
-        if (#category.table > 0) then
+        if (#category.spells > 0) then
             tinsert(spells, category)
-            table.sort(category.table, sorter)
+            table.sort(category.spells, sorter)
             local totalCost = 0
-            for _, s in ipairs(category.table) do
+            for _, s in ipairs(category.spells) do
                 s.hideLevel = category.hideLevel
                 totalCost = totalCost + s.cost
                 tinsert(spells, s)
