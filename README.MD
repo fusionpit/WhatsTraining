@@ -8,3 +8,5 @@ If you have [Class Trainer Plus](https://github.com/fusionpit/ClassTrainerPlus) 
 
 ## Known Issues
  - Rogue Poisons not working well, it will show available even if you don't have the required skill level in poisons
+ - Additional ranks for talents may or may not work, I have no idea at this point.
+ 
