@@ -18,6 +18,7 @@ local format = format
 local hooksecurefunc = hooksecurefunc
 local foreach = foreach
 local wipe = wipe
+local sort = sort
 local select = select
 local ipairs = ipairs
 local pairs = pairs
@@ -45,27 +46,27 @@ local comingSoonFontColorCode = "|cff82c5ff"
 local _, englishClass = UnitClass("player")
 local byLevel = wt.AbilitiesByLevel[englishClass]
 
-local spellCache = {}
+local spellInfoCache = {}
 -- done has params spell, cacheHit
 local function getSpell(spellId, done)
-    if (spellCache[spellId] ~= nil) then
-        done(spellCache[spellId], true)
+    if (spellInfoCache[spellId] ~= nil) then
+        done(spellInfoCache[spellId], true)
         return
     end
     local spell = Spell:CreateFromSpellID(spellId)
     spell:ContinueOnSpellLoad(
         function()
-            if (spellCache[spell:GetSpellID()] ~= nil) then
-                done(spellCache[spellId], true)
+            if (spellInfoCache[spell:GetSpellID()] ~= nil) then
+                done(spellInfoCache[spellId], true)
                 return
             end
-            spellCache[spell:GetSpellID()] = {
+            spellInfoCache[spell:GetSpellID()] = {
                 id = spell:GetSpellID(),
                 name = spell:GetSpellName(),
                 subText = spell:GetSpellSubtext(),
                 icon = select(3, GetSpellInfo(spell:GetSpellID()))
             }
-            done(spellCache[spell:GetSpellID()], false)
+            done(spellInfoCache[spell:GetSpellID()], false)
         end
     )
 end
@@ -136,21 +137,21 @@ local function rebuild(playerLevel)
         end
     )
     wipe(spells)
-    for level, v in pairs(byLevel) do
-        for _, a in ipairs(v) do
-            local spell = spellCache[a.id]
-            if (spell ~= nil) then
-                spell.level = level
-                spell.cost = a.cost
+    for level, spellsAtLevel in pairs(byLevel) do
+        for _, a in ipairs(spellsAtLevel) do
+            local spellInfo = spellInfoCache[a.id]
+            if (spellInfo ~= nil) then
+                spellInfo.level = level
+                spellInfo.cost = a.cost
                 if (IsSpellKnown(a.id)) then
-                    tinsert(categoriesByKey.known.spells, spell)
-                elseif (isIgnoredByCTP(spell.id)) then
-                    tinsert(categoriesByKey.ignored.spells, spell)
+                    tinsert(categoriesByKey.known.spells, spellInfo)
+                elseif (isIgnoredByCTP(spellInfo.id)) then
+                    tinsert(categoriesByKey.ignored.spells, spellInfo)
                 elseif (level > playerLevel) then
                     if (level <= playerLevel + 2) then
-                        tinsert(categoriesByKey.nextLevel.spells, spell)
+                        tinsert(categoriesByKey.nextLevel.spells, spellInfo)
                     else
-                        tinsert(categoriesByKey.notLevel.spells, spell)
+                        tinsert(categoriesByKey.notLevel.spells, spellInfo)
                     end
                 else
                     local hasReqs = true
@@ -161,9 +162,9 @@ local function rebuild(playerLevel)
                         end
                     end
                     if (not hasReqs) then
-                        tinsert(categoriesByKey.missingReqs.spells, spell)
+                        tinsert(categoriesByKey.missingReqs.spells, spellInfo)
                     else
-                        tinsert(categoriesByKey.available.spells, spell)
+                        tinsert(categoriesByKey.available.spells, spellInfo)
                     end
                 end
             end
@@ -179,7 +180,7 @@ local function rebuild(playerLevel)
     for _, category in ipairs(categories) do
         if (#category.spells > 0) then
             tinsert(spells, category)
-            table.sort(category.spells, sorter)
+            sort(category.spells, sorter)
             local totalCost = 0
             for _, s in ipairs(category.spells) do
                 s.hideLevel = category.hideLevel
