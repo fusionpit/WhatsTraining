@@ -136,8 +136,9 @@ local spells = {}
 local function rebuildSpells(playerLevel)
     foreachi(
         categories,
-        function(_, s)
-            wipe(s.spells)
+        function(_, c)
+            c.cost = 0
+            wipe(c.spells)
         end
     )
     wipe(spells)
@@ -153,12 +154,8 @@ local function rebuildSpells(playerLevel)
                 elseif (isIgnoredByCTP(spellInfo.id)) then
                     categoryKey = IGNORED_KEY
                 elseif (level > playerLevel) then
-                    if (level <= playerLevel + 2) then
-                        categoryKey = NEXTLEVEL_KEY
+                    categoryKey = level <= playerLevel + 2 and NEXTLEVEL_KEY or NOTLEVEL_KEY
                     else
-                        categoryKey = NOTLEVEL_KEY
-                    end
-                else
                     local hasReqs = true
                     if (spell.requiredIds ~= nil) then
                         for j = 1, #spell.requiredIds do
@@ -166,11 +163,7 @@ local function rebuildSpells(playerLevel)
                             hasReqs = hasReqs and IsSpellKnown(reqId)
                         end
                     end
-                    if (not hasReqs) then
-                        categoryKey = MISSINGREQS_KEY
-                    else
-                        categoryKey = AVAILABLE_KEY
-                    end
+                    categoryKey = hasReqs and AVAILABLE_KEY or MISSINGREQS_KEY
                     end
                 if (categoryKey ~= nil) then
                     categories:Insert(categoryKey, spellInfo)
