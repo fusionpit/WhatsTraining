@@ -158,7 +158,7 @@ local function rebuild(playerLevel)
                     if (a.requiredIds ~= nil) then
                         for j = 1, #a.requiredIds do
                             local reqId = a.requiredIds[j]
-                            hasReqs = IsSpellKnown(reqId)
+                            hasReqs = hasReqs and IsSpellKnown(reqId)
                         end
                     end
                     if (canInsert) then
