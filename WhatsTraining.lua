@@ -127,7 +127,7 @@ local categories = {
     Insert = function(self, key, spellInfo)
         tinsert(self._spellsByCategoryKey[key], spellInfo)
     end
-    }
+}
 foreachi(categories, function(_, cat)
     categories._spellsByCategoryKey[cat.key] = cat.spells
 end)
@@ -155,7 +155,7 @@ local function rebuildSpells(playerLevel)
                     categoryKey = IGNORED_KEY
                 elseif (level > playerLevel) then
                     categoryKey = level <= playerLevel + 2 and NEXTLEVEL_KEY or NOTLEVEL_KEY
-                    else
+                else
                     local hasReqs = true
                     if (spell.requiredIds ~= nil) then
                         for j = 1, #spell.requiredIds do
@@ -164,7 +164,7 @@ local function rebuildSpells(playerLevel)
                         end
                     end
                     categoryKey = hasReqs and AVAILABLE_KEY or MISSINGREQS_KEY
-                    end
+                end
                 if (categoryKey ~= nil) then
                     categories:Insert(categoryKey, spellInfo)
                 end
@@ -292,6 +292,7 @@ function wt.Update(frame, forceUpdate)
     lastOffset = offset
 end
 
+local hasFrameShown = false
 function wt.CreateFrame()
     local mainFrame = CreateFrame("Frame", "WhatsTrainingFrame", SpellBookFrame)
     mainFrame:SetPoint("TOPLEFT", "SpellBookFrame", "TOPLEFT", 0, 0)
@@ -352,7 +353,11 @@ function wt.CreateFrame()
     scrollBar:SetScript(
         "OnShow",
         function()
-            wt.Update(mainFrame)
+            if (not hasFrameShown) then
+                rebuildSpells(UnitLevel("player"))
+                hasFrameShown = true
+            end
+            wt.Update(mainFrame, true)
         end
     )
     mainFrame.scrollBar = scrollBar
