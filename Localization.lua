@@ -10,6 +10,7 @@ local localeText = {
         KNOWN_HEADER = "Already Known",
         COST_FORMAT = "Cost: %s",
         TOTALCOST_FORMAT = "Total Cost: %s",
+        TOTALSAVINGS_FORMAT = "Total Savings: %s",
         LEVEL_FORMAT = "Level %s",
         TAB_TEXT = "What can I train?"
     }

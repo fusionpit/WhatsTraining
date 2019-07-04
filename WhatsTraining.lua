@@ -113,6 +113,7 @@ local categories = {
         spells = {},
         color = LIGHTYELLOW_FONT_COLOR_CODE,
         isHeader = true,
+        costFormat = wt.L.TOTALSAVINGS_FORMAT,
         key = IGNORED_KEY
     },
     {
@@ -222,17 +223,17 @@ end
 rebuildSpells(UnitLevel("player"))
 
 local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent, "GameTooltipTemplate")
-function wt.SetTooltip(spellId, spellCost)
-    if (spellId and spellId > 0) then
-        tooltip:SetSpellByID(spellId)
+function wt.SetTooltip(spellInfo)
+    if (spellInfo.id) then
+        tooltip:SetSpellByID(spellInfo.id)
     else
         tooltip:ClearLines()
     end
-    local coloredCoinString = GetCoinTextureString(spellCost)
-    if (GetMoney() < spellCost) then
+    local coloredCoinString = GetCoinTextureString(spellInfo.cost)
+    if (GetMoney() < spellInfo.cost) then
         coloredCoinString = RED_FONT_COLOR_CODE .. coloredCoinString .. FONT_COLOR_CODE_CLOSE
     end
-    local formatString = (not spellId or spellId == 0) and wt.L.TOTALCOST_FORMAT or wt.L.COST_FORMAT
+    local formatString = spellInfo.isHeader and (spellInfo.costFormat or wt.L.TOTALCOST_FORMAT) or wt.L.COST_FORMAT
 
     tooltip:AddLine(HIGHLIGHT_FONT_COLOR_CODE .. format(formatString, coloredCoinString) .. FONT_COLOR_CODE_CLOSE)
     tooltip:Show()
@@ -240,6 +241,7 @@ end
 
 function wt.SetRowSpell(row, spell)
     if (spell == nil) then
+        row.currentSpell = nil
         row:Hide()
         return
     elseif (spell.isHeader) then
@@ -270,9 +272,9 @@ function wt.SetRowSpell(row, spell)
         row:SetID(spell.id)
         row.spell.icon:SetTexture(spell.icon)
     end
-    row.cost = spell.cost
+    row.currentSpell = spell
     if (tooltip:IsOwned(row)) then
-        wt.SetTooltip(spell.id, spell.cost)
+        wt.SetTooltip(spell)
     end
     row:Show()
 end
@@ -372,7 +374,7 @@ function wt.CreateFrame()
             "OnEnter",
             function(self)
                 tooltip:SetOwner(self, "ANCHOR_RIGHT")
-                wt.SetTooltip(self:GetID(), self.cost)
+                wt.SetTooltip(self.currentSpell)
             end
         )
         row:SetScript(
