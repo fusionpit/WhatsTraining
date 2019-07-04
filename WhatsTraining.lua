@@ -277,16 +277,19 @@ function wt.SetRowSpell(row, spell)
     row:Show()
 end
 
-function wt.Update(frame)
+local lastOffset = -1
+function wt.Update(frame, forceUpdate)
     local scrollBar = frame.scrollBar
     FauxScrollFrame_Update(scrollBar, #spells, MAX_ROWS, ROW_HEIGHT, nil, nil, nil, nil, nil, nil, true)
     local offset = FauxScrollFrame_GetOffset(scrollBar)
+    if (offset == lastOffset and not forceUpdate) then return end
     for i = 1, MAX_ROWS do
         local spellIndex = i + offset
         local spell = spells[spellIndex]
         local row = _G[frame:GetName() .. "Row" .. i]
         wt.SetRowSpell(row, spell)
     end
+    lastOffset = offset
 end
 
 function wt.CreateFrame()
