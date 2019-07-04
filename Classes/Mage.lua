@@ -1,6 +1,6 @@
 local _, wt = ...
-wt.AbilitiesByLevel = wt.AbilitiesByLevel or {}
-wt.AbilitiesByLevel.MAGE = {
+if (wt.currentClass ~= "MAGE") then return end
+wt.SpellsByLevel = {
 	[1] = {{id = 1459, cost = 10}},
 	[4] = {{id = 5504, cost = 100}, {id = 116, cost = 100}},
 	[6] = {{id = 587, cost = 100}, {id = 2136, cost = 100}, {id = 143, cost = 100, requiredIds = {133}}},

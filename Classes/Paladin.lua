@@ -1,6 +1,6 @@
 local _, wt = ...
-wt.AbilitiesByLevel = wt.AbilitiesByLevel or {}
-wt.AbilitiesByLevel.PALADIN = {
+if (wt.currentClass ~= "PALADIN") then return end
+wt.SpellsByLevel = {
 	[1] = {{id = 465, cost = 10}},
 	[4] = {{id = 19740, cost = 100}, {id = 20271, cost = 100}},
 	[6] = {{id = 498, cost = 100}, {id = 639, cost = 100, requiredIds = {635}}, {id = 21082, cost = 100}},

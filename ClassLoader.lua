@@ -1,0 +1,3 @@
+local _, wt = ...
+
+wt.currentClass = select(2, UnitClass("player"));

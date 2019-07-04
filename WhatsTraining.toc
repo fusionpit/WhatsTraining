@@ -4,6 +4,8 @@
 ## Author: Sveng
 ## Notes: Shows you what spells are available at your class trainer
 
+ClassLoader.lua
+
 Classes\Druid.lua
 Classes\Hunter.lua
 Classes\Mage.lua

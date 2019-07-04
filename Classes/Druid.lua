@@ -1,6 +1,6 @@
 local _, wt = ...
-wt.AbilitiesByLevel = wt.AbilitiesByLevel or {}
-wt.AbilitiesByLevel.DRUID = {
+if (wt.currentClass ~= "DRUID") then return end
+wt.SpellsByLevel = {
 	[1] = {{id = 1126, cost = 10}},
 	[4] = {{id = 8921, cost = 100}, {id = 774, cost = 100}},
 	[6] = {{id = 467, cost = 100}, {id = 5177, cost = 100, requiredIds = {5176}}},

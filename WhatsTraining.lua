@@ -48,9 +48,6 @@ local IGNORED_KEY = "ignored"
 local KNOWN_KEY = "known"
 local COMINGSOON_FONT_COLOR_CODE = "|cff82c5ff"
 
-local _, englishClass = UnitClass("player")
-local byLevel = wt.AbilitiesByLevel[englishClass]
-
 local spellInfoCache = {}
 -- done has params spell, cacheHit
 local function getSpellInfo(spellId, done)
