@@ -16,7 +16,6 @@ local CreateFrame = CreateFrame
 local tinsert = tinsert
 local format = format
 local hooksecurefunc = hooksecurefunc
-local foreach = foreach
 local foreachi = foreachi
 local wipe = wipe
 local sort = sort

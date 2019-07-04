@@ -19,6 +19,9 @@ read_globals = {
     "tinsert",
     "format",
     "hooksecurefunc",
+    "foreachi",
+    "wipe",
+    "sort",
     -- api classes
     "Spell",
     -- blizzard frames
