@@ -73,9 +73,8 @@ local function getSpellInfo(spellId, done)
     )
 end
 
-local ctpDb
 local function isIgnoredByCTP(spellId)
-    return ctpDb ~= nil and ctpDb[spellId]
+    return wt.ctpDb ~= nil and wt.ctpDb[spellId]
 end
 
 local categories = {
@@ -142,7 +141,7 @@ local function rebuildSpells(playerLevel)
         end
     )
     wipe(spells)
-    for level, spellsAtLevel in pairs(byLevel) do
+    for level, spellsAtLevel in pairs(wt.SpellsByLevel) do
         for _, spell in ipairs(spellsAtLevel) do
             local spellInfo = spellInfoCache[spell.id]
             if (spellInfo ~= nil) then
@@ -201,29 +200,29 @@ local function rebuildSpells(playerLevel)
     end
 end
 local function rebuildIfNotCached(_, fromCache)
-    if (fromCache) then
+    if (fromCache or wt.MainFrame == nil) then
         return
     end
     rebuildSpells(UnitLevel("player"))
 end
 
 local _, _, playerRace = UnitRace("player")
-local function raceMatches(ability)
-    if (ability.race == nil and ability.races == nil) then
+local function raceMatches(spell)
+    if (spell.race == nil and spell.races == nil) then
         return true
     end
-    if (ability.races == nil) then
-        return ability.race == playerRace
+    if (spell.races == nil) then
+        return spell.race == playerRace
     end
-    return ability.races[1] == playerRace or ability.races[2] == playerRace
+    return spell.races[1] == playerRace or spell.races[2] == playerRace
 end
 local playerFaction = UnitFactionGroup("player")
-for _, v in pairs(byLevel) do
-    for _, a in ipairs(v) do
-        local forThisFaction = a.faction == nil or a.faction == playerFaction
-        local forThisRace = raceMatches(a)
+for _, spellsByLevel in pairs(wt.SpellsByLevel) do
+    for _, spell in ipairs(spellsByLevel) do
+        local forThisFaction = spell.faction == nil or spell.faction == playerFaction
+        local forThisRace = raceMatches(spell)
         if (forThisFaction and forThisRace) then
-            getSpellInfo(a.id, rebuildIfNotCached)
+            getSpellInfo(spell.id, rebuildIfNotCached)
         end
     end
 end
@@ -253,7 +252,7 @@ function wt.SetRowSpell(row, spell)
     elseif (spell.isHeader) then
         row.spell:Hide()
         row.header:Show()
-        row.header:SetText(spell.color .. spell.name .. FONT_COLOR_CODE_CLOSE)
+        row.header:SetText(format("%s%s%s", spell.color, spell.name, FONT_COLOR_CODE_CLOSE))
         row:SetID(0)
         row.highlight:SetTexture(nil)
     elseif (spell ~= nil) then
@@ -431,10 +430,11 @@ function wt.CreateFrame()
 
         rawset(rows, i, row)
     end
-    return mainFrame
+    wt.MainFrame = mainFrame
 end
 
 local function hookCTP()
+    wt.ctpDb = ClassTrainerPlusDBPC
     hooksecurefunc(
         "CTP_UpdateService",
         function()
@@ -444,36 +444,26 @@ local function hookCTP()
 end
 
 if (CTP_UpdateService) then
-    ctpDb = ClassTrainerPlusDBPC
     hookCTP()
 end
 
-local mainFrame
 local eventFrame = CreateFrame("Frame")
 eventFrame:SetScript(
     "OnEvent",
     function(self, event, ...)
         if (event == "ADDON_LOADED" and ... == "ClassTrainerPlus") then
-            ctpDb = ClassTrainerPlusDBPC
             hookCTP()
             self:UnregisterEvent("ADDON_LOADED")
         elseif (event == "PLAYER_ENTERING_WORLD") then
             local isLogin, isReload = ...
             if (isLogin or isReload) then
                 rebuildSpells(UnitLevel("player"))
-                mainFrame = wt.CreateFrame()
+                wt.CreateFrame()
             end
-            return
-        elseif (event == "LEARNED_SPELL_IN_TAB") then
-            rebuildSpells(UnitLevel("player"))
-            if (mainFrame and mainFrame:IsVisible()) then
-                wt.Update(mainFrame)
-            end
-        elseif (event == "PLAYER_LEVEL_UP") then
-            local level = ...
-            rebuildSpells(level)
-            if (mainFrame and mainFrame:IsVisible()) then
-                wt.Update(mainFrame)
+        elseif (event == "LEARNED_SPELL_IN_TAB" or event == "PLAYER_LEVEL_UP") then
+            rebuildSpells(event == "PLAYER_LEVEL_UP" and ... or UnitLevel("player"))
+            if (wt.MainFrame and wt.MainFrame:IsVisible()) then
+                wt.Update(wt.MainFrame, true)
             end
         end
     end

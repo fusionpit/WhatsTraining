@@ -1,7 +1,5 @@
 local _, wt = ...
 
-local GetLocale = GetLocale
-
 local localeText = {
     enUS = {
         AVAILABLE_HEADER = "Available Now",
