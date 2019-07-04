@@ -1,14 +1,13 @@
 local _, wt = ...
 
+local _G = _G
 local GetCoinTextureString = GetCoinTextureString
 local GetMoney = GetMoney
 local GetFileIDFromPath = GetFileIDFromPath
 local GetSpellInfo = GetSpellInfo
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local IsSpellKnown = IsSpellKnown
-local UnitClass = UnitClass
 local UnitLevel = UnitLevel
-local UnitRace = UnitRace
 local UnitFactionGroup = UnitFactionGroup
 local FauxScrollFrame_Update = FauxScrollFrame_Update
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
@@ -17,7 +16,21 @@ local CreateFrame = CreateFrame
 local tinsert = tinsert
 local format = format
 local hooksecurefunc = hooksecurefunc
+local foreach = foreach
+local wipe = wipe
+local select = select
+local ipairs = ipairs
+local pairs = pairs
 local Spell = Spell
+local MAX_SKILLLINE_TABS = MAX_SKILLLINE_TABS
+local GREEN_FONT_COLOR_CODE = GREEN_FONT_COLOR_CODE
+local ORANGE_FONT_COLOR_CODE = ORANGE_FONT_COLOR_CODE
+local RED_FONT_COLOR_CODE = RED_FONT_COLOR_CODE
+local LIGHTYELLOW_FONT_COLOR_CODE = LIGHTYELLOW_FONT_COLOR_CODE
+local GRAY_FONT_COLOR_CODE = GRAY_FONT_COLOR_CODE
+local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
+local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
+local PARENS_TEMPLATE = PARENS_TEMPLATE
 
 local MAX_ROWS = 22
 local ROW_HEIGHT = 14
@@ -26,6 +39,8 @@ local HIGHLIGHT_TEXTURE_FILEID = GetFileIDFromPath("Interface\\AddOns\\WhatsTrai
 local LEFT_BG_TEXTURE_FILEID = GetFileIDFromPath("Interface\\AddOns\\WhatsTraining\\left")
 local RIGHT_BG_TEXTURE_FILEID = GetFileIDFromPath("Interface\\AddOns\\WhatsTraining\\right")
 local TAB_TEXTURE_FILEID = GetFileIDFromPath("Interface\\Icons\\INV_Misc_QuestionMark")
+
+local comingSoonFontColorCode = "|cff82c5ff"
 
 local _, englishClass = UnitClass("player")
 local byLevel = wt.AbilitiesByLevel[englishClass]
@@ -55,31 +70,87 @@ local function getSpell(spellId, done)
     )
 end
 
-local spells = {}
-local function rebuild(level)
-    local spellsByCategory = {
-        available = {},
-        missingReqs = {},
-        nextLevel = {},
-        notLevel = {},
-        ignored = {},
-        known = {}
+local ctpDb
+local function isIgnoredByCTP(spellId)
+    return ctpDb ~= nil and ctpDb[spellId]
+end
+
+local categories = {
+    {
+        name = wt.L.AVAILABLE_HEADER,
+        table = {},
+        color = GREEN_FONT_COLOR_CODE,
+        hideLevel = true,
+        isHeader = true,
+        key = "available"
+    },
+    {
+        name = wt.L.MISSINGREQS_HEADER,
+        table = {},
+        color = ORANGE_FONT_COLOR_CODE,
+        hideLevel = true,
+        isHeader = true,
+        key = "missingReqs"
+    },
+    {
+        name = wt.L.NEXTLEVEL_HEADER,
+        table = {},
+        color = comingSoonFontColorCode,
+        isHeader = true,
+        key = "nextLevel"
+    },
+    {
+        name = wt.L.NOTLEVEL_HEADER,
+        table = {},
+        color = RED_FONT_COLOR_CODE,
+        isHeader = true,
+        key = "notLevel"
+    },
+    {
+        name = wt.L.IGNORED_HEADER,
+        table = {},
+        color = LIGHTYELLOW_FONT_COLOR_CODE,
+        isHeader = true,
+        key = "ignored"
+    },
+    {
+        name = wt.L.KNOWN_HEADER,
+        table = {},
+        color = GRAY_FONT_COLOR_CODE,
+        hideLevel = true,
+        isHeader = true,
+        key = "known"
     }
-    for i, v in pairs(byLevel) do
+}
+local categoriesByKey = {}
+foreachi(categories, function(_, cat)
+    categoriesByKey[cat.key] = cat
+end)
+
+local spells = {}
+local function rebuild(playerLevel)
+    foreach(
+        categories,
+        function(_, s)
+            wipe(s.table)
+        end
+    )
+    wipe(spells)
+    for level, v in pairs(byLevel) do
         for _, a in ipairs(v) do
             local spell = spellCache[a.id]
             if (spell ~= nil) then
-                spell.level = i
+                spell.level = level
                 spell.cost = a.cost
                 if (IsSpellKnown(a.id)) then
-                    tinsert(spellsByCategory.known, spell)
-                elseif (ClassTrainerPlusDBPC and ClassTrainerPlusDBPC[spell.id]) then
-                    tinsert(spellsByCategory.ignored, spell)
-                elseif (i > level) then
-                    if (i <= level + 2) then
-                        tinsert(spellsByCategory.nextLevel, spell)
+                    tinsert(categoriesByKey.known.table, spell)
+                elseif (isIgnoredByCTP(spell.id)) then
+                    tinsert(categoriesByKey.ignored.table, spell)
+                elseif (level > playerLevel) then
+                    if (level <= playerLevel + 2) then
+                        tinsert(categoriesByKey.nextLevel.table, spell)
                     else
-                        tinsert(spellsByCategory.notLevel, spell)
+                        tinsert(categoriesByKey.notLevel.table, spell)
                     end
                 else
                     local canInsert = true
@@ -87,14 +158,14 @@ local function rebuild(level)
                     if (a.requiredIds ~= nil) then
                         for j = 1, #a.requiredIds do
                             local reqId = a.requiredIds[j]
-                            hasReqs = IsSpellKnown(reqId);
+                            hasReqs = IsSpellKnown(reqId)
                         end
                     end
                     if (canInsert) then
                         if (not hasReqs) then
-                            tinsert(spellsByCategory.missingReqs, spell)
+                            tinsert(categoriesByKey.missingReqs.table, spell)
                         else
-                            tinsert(spellsByCategory.available, spell)
+                            tinsert(categoriesByKey.available.table, spell)
                         end
                     end
                 end
@@ -102,36 +173,15 @@ local function rebuild(level)
         end
     end
 
-    spells = {}
     local function sorter(a, b)
         if (a.level == b.level) then
             return a.name < b.name
         end
         return a.level < b.level
     end
-    local comingSoonFontColorCode = "|cff82c5ff"
-    local categories = {
-        {
-            name = wt.L.AVAILABLE_HEADER,
-            table = spellsByCategory.available,
-            color = GREEN_FONT_COLOR_CODE,
-            hideLevel = true
-        },
-        {
-            name = wt.L.MISSINGREQS_HEADER,
-            table = spellsByCategory.missingReqs,
-            color = ORANGE_FONT_COLOR_CODE,
-            hideLevel = true
-        },
-        {name = wt.L.NEXTLEVEL_HEADER, table = spellsByCategory.nextLevel, color = comingSoonFontColorCode},
-        {name = wt.L.NOTLEVEL_HEADER, table = spellsByCategory.notLevel, color = RED_FONT_COLOR_CODE},
-        {name = wt.L.IGNORED_HEADER, table = spellsByCategory.ignored, color = LIGHTYELLOW_FONT_COLOR_CODE},
-        {name = wt.L.KNOWN_HEADER, table = spellsByCategory.known, color = GRAY_FONT_COLOR_CODE, hideLevel = true}
-    }
     for _, category in ipairs(categories) do
         if (#category.table > 0) then
-            local header = {name = category.name, isHeader = true, color = category.color}
-            tinsert(spells, header)
+            tinsert(spells, category)
             table.sort(category.table, sorter)
             local totalCost = 0
             for _, s in ipairs(category.table) do
@@ -139,7 +189,7 @@ local function rebuild(level)
                 totalCost = totalCost + s.cost
                 tinsert(spells, s)
             end
-            header.cost = totalCost
+            category.cost = totalCost
         end
     end
 end
@@ -161,7 +211,6 @@ local function raceMatches(ability)
     return ability.races[1] == playerRace or ability.races[2] == playerRace
 end
 local playerFaction = UnitFactionGroup("player")
-
 for _, v in pairs(byLevel) do
     for _, a in ipairs(v) do
         local forThisFaction = a.faction == nil or a.faction == playerFaction
@@ -375,6 +424,7 @@ function wt.CreateFrame()
 
         rawset(rows, i, row)
     end
+    return mainFrame
 end
 
 local function hookCTP()
@@ -387,33 +437,36 @@ local function hookCTP()
 end
 
 if (CTP_UpdateService) then
+    ctpDb = ClassTrainerPlusDBPC
     hookCTP()
 end
 
+local mainFrame
 local eventFrame = CreateFrame("Frame")
 eventFrame:SetScript(
     "OnEvent",
     function(self, event, ...)
         if (event == "ADDON_LOADED" and ... == "ClassTrainerPlus") then
+            ctpDb = ClassTrainerPlusDBPC
             hookCTP()
             self:UnregisterEvent("ADDON_LOADED")
         elseif (event == "PLAYER_ENTERING_WORLD") then
             local isLogin, isReload = ...
             if (isLogin or isReload) then
                 rebuild(UnitLevel("player"))
-                wt.CreateFrame()
+                mainFrame = wt.CreateFrame()
             end
             return
         elseif (event == "LEARNED_SPELL_IN_TAB") then
             rebuild(UnitLevel("player"))
-            if (WhatsTrainingFrame and WhatsTrainingFrame:IsVisible()) then
-                wt.Update(WhatsTrainingFrame)
+            if (mainFrame and mainFrame:IsVisible()) then
+                wt.Update(mainFrame)
             end
         elseif (event == "PLAYER_LEVEL_UP") then
             local level = ...
             rebuild(level)
-            if (WhatsTrainingFrame and WhatsTrainingFrame:IsVisible()) then
-                wt.Update(WhatsTrainingFrame)
+            if (mainFrame and mainFrame:IsVisible()) then
+                wt.Update(mainFrame)
             end
         end
     end
