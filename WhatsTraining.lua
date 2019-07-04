@@ -17,6 +17,7 @@ local tinsert = tinsert
 local format = format
 local hooksecurefunc = hooksecurefunc
 local foreach = foreach
+local foreachi = foreachi
 local wipe = wipe
 local sort = sort
 local select = select
@@ -35,20 +36,24 @@ local PARENS_TEMPLATE = PARENS_TEMPLATE
 
 local MAX_ROWS = 22
 local ROW_HEIGHT = 14
-
 local HIGHLIGHT_TEXTURE_FILEID = GetFileIDFromPath("Interface\\AddOns\\WhatsTraining\\highlight")
 local LEFT_BG_TEXTURE_FILEID = GetFileIDFromPath("Interface\\AddOns\\WhatsTraining\\left")
 local RIGHT_BG_TEXTURE_FILEID = GetFileIDFromPath("Interface\\AddOns\\WhatsTraining\\right")
 local TAB_TEXTURE_FILEID = GetFileIDFromPath("Interface\\Icons\\INV_Misc_QuestionMark")
-
-local comingSoonFontColorCode = "|cff82c5ff"
+local AVAILABLE_KEY = "available"
+local MISSINGREQS_KEY = "missingReqs"
+local NEXTLEVEL_KEY = "nextLevel"
+local NOTLEVEL_KEY = "notLevel"
+local IGNORED_KEY = "ignored"
+local KNOWN_KEY = "known"
+local COMINGSOON_FONT_COLOR_CODE = "|cff82c5ff"
 
 local _, englishClass = UnitClass("player")
 local byLevel = wt.AbilitiesByLevel[englishClass]
 
 local spellInfoCache = {}
 -- done has params spell, cacheHit
-local function getSpell(spellId, done)
+local function getSpellInfo(spellId, done)
     if (spellInfoCache[spellId] ~= nil) then
         done(spellInfoCache[spellId], true)
         return
@@ -83,7 +88,7 @@ local categories = {
         color = GREEN_FONT_COLOR_CODE,
         hideLevel = true,
         isHeader = true,
-        key = "available"
+        key = AVAILABLE_KEY
     },
     {
         name = wt.L.MISSINGREQS_HEADER,
@@ -91,28 +96,28 @@ local categories = {
         color = ORANGE_FONT_COLOR_CODE,
         hideLevel = true,
         isHeader = true,
-        key = "missingReqs"
+        key = MISSINGREQS_KEY
     },
     {
         name = wt.L.NEXTLEVEL_HEADER,
         spells = {},
-        color = comingSoonFontColorCode,
+        color = COMINGSOON_FONT_COLOR_CODE,
         isHeader = true,
-        key = "nextLevel"
+        key = NEXTLEVEL_KEY
     },
     {
         name = wt.L.NOTLEVEL_HEADER,
         spells = {},
         color = RED_FONT_COLOR_CODE,
         isHeader = true,
-        key = "notLevel"
+        key = NOTLEVEL_KEY
     },
     {
         name = wt.L.IGNORED_HEADER,
         spells = {},
         color = LIGHTYELLOW_FONT_COLOR_CODE,
         isHeader = true,
-        key = "ignored"
+        key = IGNORED_KEY
     },
     {
         name = wt.L.KNOWN_HEADER,
@@ -120,17 +125,20 @@ local categories = {
         color = GRAY_FONT_COLOR_CODE,
         hideLevel = true,
         isHeader = true,
-        key = "known"
+        key = KNOWN_KEY
+    },
+    _spellsByCategoryKey = {},
+    Insert = function(self, key, spellInfo)
+        tinsert(self._spellsByCategoryKey[key], spellInfo)
+    end
     }
-}
-local categoriesByKey = {}
 foreachi(categories, function(_, cat)
-    categoriesByKey[cat.key] = cat
+    categories._spellsByCategoryKey[cat.key] = cat.spells
 end)
 
 local spells = {}
-local function rebuild(playerLevel)
-    foreach(
+local function rebuildSpells(playerLevel)
+    foreachi(
         categories,
         function(_, s)
             wipe(s.spells)
@@ -138,34 +146,38 @@ local function rebuild(playerLevel)
     )
     wipe(spells)
     for level, spellsAtLevel in pairs(byLevel) do
-        for _, a in ipairs(spellsAtLevel) do
-            local spellInfo = spellInfoCache[a.id]
+        for _, spell in ipairs(spellsAtLevel) do
+            local spellInfo = spellInfoCache[spell.id]
             if (spellInfo ~= nil) then
+                local categoryKey
                 spellInfo.level = level
-                spellInfo.cost = a.cost
-                if (IsSpellKnown(a.id)) then
-                    tinsert(categoriesByKey.known.spells, spellInfo)
+                spellInfo.cost = spell.cost
+                if (IsSpellKnown(spell.id)) then
+                    categoryKey = KNOWN_KEY
                 elseif (isIgnoredByCTP(spellInfo.id)) then
-                    tinsert(categoriesByKey.ignored.spells, spellInfo)
+                    categoryKey = IGNORED_KEY
                 elseif (level > playerLevel) then
                     if (level <= playerLevel + 2) then
-                        tinsert(categoriesByKey.nextLevel.spells, spellInfo)
+                        categoryKey = NEXTLEVEL_KEY
                     else
-                        tinsert(categoriesByKey.notLevel.spells, spellInfo)
+                        categoryKey = NOTLEVEL_KEY
                     end
                 else
                     local hasReqs = true
-                    if (a.requiredIds ~= nil) then
-                        for j = 1, #a.requiredIds do
-                            local reqId = a.requiredIds[j]
+                    if (spell.requiredIds ~= nil) then
+                        for j = 1, #spell.requiredIds do
+                            local reqId = spell.requiredIds[j]
                             hasReqs = hasReqs and IsSpellKnown(reqId)
                         end
                     end
                     if (not hasReqs) then
-                        tinsert(categoriesByKey.missingReqs.spells, spellInfo)
+                        categoryKey = MISSINGREQS_KEY
                     else
-                        tinsert(categoriesByKey.available.spells, spellInfo)
+                        categoryKey = AVAILABLE_KEY
                     end
+                    end
+                if (categoryKey ~= nil) then
+                    categories:Insert(categoryKey, spellInfo)
                 end
             end
         end
@@ -195,7 +207,7 @@ local function rebuildIfNotCached(_, fromCache)
     if (fromCache) then
         return
     end
-    rebuild(UnitLevel("player"))
+    rebuildSpells(UnitLevel("player"))
 end
 
 local _, _, playerRace = UnitRace("player")
@@ -214,11 +226,11 @@ for _, v in pairs(byLevel) do
         local forThisFaction = a.faction == nil or a.faction == playerFaction
         local forThisRace = raceMatches(a)
         if (forThisFaction and forThisRace) then
-            getSpell(a.id, rebuildIfNotCached)
+            getSpellInfo(a.id, rebuildIfNotCached)
         end
     end
 end
-rebuild(UnitLevel("player"))
+rebuildSpells(UnitLevel("player"))
 
 local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent, "GameTooltipTemplate")
 function wt.SetTooltip(spellId, spellCost)
@@ -429,7 +441,7 @@ local function hookCTP()
     hooksecurefunc(
         "CTP_UpdateService",
         function()
-            rebuild(UnitLevel("player"))
+            rebuildSpells(UnitLevel("player"))
         end
     )
 end
@@ -451,18 +463,18 @@ eventFrame:SetScript(
         elseif (event == "PLAYER_ENTERING_WORLD") then
             local isLogin, isReload = ...
             if (isLogin or isReload) then
-                rebuild(UnitLevel("player"))
+                rebuildSpells(UnitLevel("player"))
                 mainFrame = wt.CreateFrame()
             end
             return
         elseif (event == "LEARNED_SPELL_IN_TAB") then
-            rebuild(UnitLevel("player"))
+            rebuildSpells(UnitLevel("player"))
             if (mainFrame and mainFrame:IsVisible()) then
                 wt.Update(mainFrame)
             end
         elseif (event == "PLAYER_LEVEL_UP") then
             local level = ...
-            rebuild(level)
+            rebuildSpells(level)
             if (mainFrame and mainFrame:IsVisible()) then
                 wt.Update(mainFrame)
             end
