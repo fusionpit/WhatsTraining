@@ -332,7 +332,7 @@ function wt.CreateFrame()
     )
 
     local scrollBar = CreateFrame("ScrollFrame", "$parentScrollBar", mainFrame, "FauxScrollFrameTemplate")
-    scrollBar:SetPoint("TOPLEFT", 0, -76)
+    scrollBar:SetPoint("TOPLEFT", 0, -75)
     scrollBar:SetPoint("BOTTOMRIGHT", -65, 81)
     scrollBar:SetScript(
         "OnVerticalScroll",
