@@ -309,7 +309,6 @@ function wt.CreateFrame()
     right:SetWidth(128)
     right:SetHeight(512)
     right:SetPoint("TOPRIGHT", mainFrame)
-    mainFrame:SetFrameStrata("HIGH")
     mainFrame:Hide()
 
     hooksecurefunc(
@@ -319,18 +318,15 @@ function wt.CreateFrame()
             skillLineTab:SetNormalTexture(TAB_TEXTURE_FILEID)
             skillLineTab.tooltip = wt.L.TAB_TEXT
             skillLineTab:Show()
+            for i = 1, MAX_SKILLLINE_TABS do
+                _G["SpellBookSkillLineTab" .. i]:SetFrameStrata("HIGH")
+            end
             if (SpellBookFrame.selectedSkillLine == MAX_SKILLLINE_TABS - 1) then
                 skillLineTab:SetChecked(true)
                 mainFrame:Show()
-                for i = 1, MAX_SKILLLINE_TABS do
-                    _G["SpellBookSkillLineTab" .. i]:SetFrameStrata("HIGH")
-                end
             else
                 skillLineTab:SetChecked(false)
                 mainFrame:Hide()
-                for i = 1, MAX_SKILLLINE_TABS do
-                    _G["SpellBookSkillLineTab" .. i]:SetFrameStrata("MEDIUM")
-                end
             end
         end
     )
