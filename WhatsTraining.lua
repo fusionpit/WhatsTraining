@@ -318,14 +318,9 @@ function wt.CreateFrame()
             skillLineTab:SetNormalTexture(TAB_TEXTURE_FILEID)
             skillLineTab.tooltip = wt.L.TAB_TEXT
             skillLineTab:Show()
-            for i = 1, MAX_SKILLLINE_TABS do
-                _G["SpellBookSkillLineTab" .. i]:SetFrameStrata("HIGH")
-            end
             if (SpellBookFrame.selectedSkillLine == MAX_SKILLLINE_TABS - 1) then
-                skillLineTab:SetChecked(true)
                 mainFrame:Show()
             else
-                skillLineTab:SetChecked(false)
                 mainFrame:Hide()
             end
         end
