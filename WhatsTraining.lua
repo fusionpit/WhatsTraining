@@ -319,8 +319,10 @@ function wt.CreateFrame()
             skillLineTab.tooltip = wt.L.TAB_TEXT
             skillLineTab:Show()
             if (SpellBookFrame.selectedSkillLine == MAX_SKILLLINE_TABS - 1) then
+                skillLineTab:SetChecked(true)
                 mainFrame:Show()
             else
+                skillLineTab:SetChecked(false)
                 mainFrame:Hide()
             end
         end
