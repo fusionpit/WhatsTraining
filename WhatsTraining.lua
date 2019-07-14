@@ -15,7 +15,6 @@ local CreateFrame = CreateFrame
 local tinsert = tinsert
 local format = format
 local hooksecurefunc = hooksecurefunc
-local foreachi = foreachi
 local wipe = wipe
 local sort = sort
 local select = select
@@ -88,7 +87,6 @@ local categories = {
         spells = {},
         color = GREEN_FONT_COLOR_CODE,
         hideLevel = true,
-        isHeader = true,
         key = AVAILABLE_KEY
     },
     {
@@ -96,28 +94,24 @@ local categories = {
         spells = {},
         color = ORANGE_FONT_COLOR_CODE,
         hideLevel = true,
-        isHeader = true,
         key = MISSINGREQS_KEY
     },
     {
         name = wt.L.NEXTLEVEL_HEADER,
         spells = {},
         color = COMINGSOON_FONT_COLOR_CODE,
-        isHeader = true,
         key = NEXTLEVEL_KEY
     },
     {
         name = wt.L.NOTLEVEL_HEADER,
         spells = {},
         color = RED_FONT_COLOR_CODE,
-        isHeader = true,
         key = NOTLEVEL_KEY
     },
     {
         name = wt.L.IGNORED_HEADER,
         spells = {},
         color = LIGHTYELLOW_FONT_COLOR_CODE,
-        isHeader = true,
         costFormat = wt.L.TOTALSAVINGS_FORMAT,
         key = IGNORED_KEY
     },
@@ -126,27 +120,38 @@ local categories = {
         spells = {},
         color = GRAY_FONT_COLOR_CODE,
         hideLevel = true,
-        isHeader = true,
         key = KNOWN_KEY
     },
     _spellsByCategoryKey = {},
     Insert = function(self, key, spellInfo)
         tinsert(self._spellsByCategoryKey[key], spellInfo)
+    end,
+    Initialize = function(self)
+        for _, cat in ipairs(self) do
+            self._spellsByCategoryKey[cat.key] = cat.spells
+            cat.formattedName = cat.color .. cat.name .. FONT_COLOR_CODE_CLOSE
+            cat.isHeader = true
+    end
+    end,
+    ClearSpells = function(self)
+        for _, cat in ipairs(self) do
+            cat.cost = 0
+            wipe(cat.spells)
+        end
     end
 }
-foreachi(categories, function(_, cat)
-    categories._spellsByCategoryKey[cat.key] = cat.spells
-end)
+categories:Initialize()
 
+local spellsAndHeaders = {}
 local function rebuildSpells(playerLevel, isLevelUpEvent)
+    categories:ClearSpells()
+    wipe(spellsAndHeaders)
     for level, spellsAtLevel in pairs(wt.SpellsByLevel) do
         for _, spell in ipairs(spellsAtLevel) do
             local spellInfo = spellInfoCache[spell.id]
             if (spellInfo ~= nil) then
                 local categoryKey
-                spellInfo.level = level
-                spellInfo.cost = spell.cost
-                if (IsSpellKnown(spell.id)) then
+                if (IsSpellKnown(spellInfo.id)) then
                     categoryKey = KNOWN_KEY
                 elseif (isIgnoredByCTP(spellInfo.id)) then
                     categoryKey = IGNORED_KEY
@@ -169,7 +174,7 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
         end
     end
 
-    local function sorter(a, b)
+    local function byNameAndLevel(a, b)
         if (a.level == b.level) then
             return a.name < b.name
         end
@@ -177,8 +182,8 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
     end
     for _, category in ipairs(categories) do
         if (#category.spells > 0) then
-            tinsert(spells, category)
-            sort(category.spells, sorter)
+            tinsert(spellsAndHeaders, category)
+            sort(category.spells, byNameAndLevel)
             local totalCost = 0
             for _, s in ipairs(category.spells) do
                 local effectiveLevel = s.level
@@ -190,13 +195,29 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
                 s.levelColor = GetQuestDifficultyColor(effectiveLevel)
                 s.hideLevel = category.hideLevel
                 totalCost = totalCost + s.cost
-                tinsert(spells, s)
+                tinsert(spellsAndHeaders, s)
             end
             category.cost = totalCost
         end
     end
+    if (wt.MainFrame == nil) then
+        return
 end
-local function rebuildIfNotCached(_, fromCache)
+    FauxScrollFrame_Update(
+        wt.MainFrame.scrollBar,
+        #spellsAndHeaders,
+        MAX_ROWS,
+        ROW_HEIGHT,
+        nil,
+        nil,
+        nil,
+        nil,
+        nil,
+        nil,
+        true
+    )
+end
+local function rebuildIfNotCached(fromCache)
     if (fromCache or wt.MainFrame == nil) then
         return
     end
