@@ -47,26 +47,33 @@ local KNOWN_KEY = "known"
 local COMINGSOON_FONT_COLOR_CODE = "|cff82c5ff"
 
 local spellInfoCache = {}
--- done has params spell, cacheHit
-local function getSpellInfo(spellId, done)
-    if (spellInfoCache[spellId] ~= nil) then
-        done(spellInfoCache[spellId], true)
+-- done has param cacheHit
+local function getSpellInfo(spell, level, done)
+    if (spellInfoCache[spell.id] ~= nil) then
+        done(true)
         return
     end
-    local spell = Spell:CreateFromSpellID(spellId)
-    spell:ContinueOnSpellLoad(
+    local si = Spell:CreateFromSpellID(spell.id)
+    si:ContinueOnSpellLoad(
         function()
-            if (spellInfoCache[spell:GetSpellID()] ~= nil) then
-                done(spellInfoCache[spellId], true)
+            if (spellInfoCache[spell.id] ~= nil) then
+                done(true)
                 return
             end
-            spellInfoCache[spell:GetSpellID()] = {
-                id = spell:GetSpellID(),
-                name = spell:GetSpellName(),
-                subText = spell:GetSpellSubtext(),
-                icon = select(3, GetSpellInfo(spell:GetSpellID()))
+            local subText = si:GetSpellSubtext()
+            local formattedSubText = (subText and subText ~= "") and format(PARENS_TEMPLATE, subText) or ""
+            spellInfoCache[spell.id] = {
+                id = spell.id,
+                name = si:GetSpellName(),
+                subText = subText,
+                formattedSubText = formattedSubText,
+                icon = select(3, GetSpellInfo(spell.id)),
+                cost = spell.cost,
+                formattedCost = GetCoinTextureString(spell.cost),
+                level = level,
+                formattedLevel = format(wt.L.LEVEL_FORMAT, level)
             }
-            done(spellInfoCache[spell:GetSpellID()], false)
+            done(false)
         end
     )
 end
@@ -210,7 +217,7 @@ function wt.SetTooltip(spellInfo)
     else
         tooltip:ClearLines()
     end
-    local coloredCoinString = GetCoinTextureString(spellInfo.cost)
+    local coloredCoinString = spellInfo.formattedCost or GetCoinTextureString(spellInfo.cost)
     if (GetMoney() < spellInfo.cost) then
         coloredCoinString = RED_FONT_COLOR_CODE .. coloredCoinString .. FONT_COLOR_CODE_CLOSE
     end
@@ -228,30 +235,27 @@ function wt.SetRowSpell(row, spell)
     elseif (spell.isHeader) then
         row.spell:Hide()
         row.header:Show()
-        row.header:SetText(format("%s%s%s", spell.color, spell.name, FONT_COLOR_CODE_CLOSE))
+        row.header:SetText(spell.formattedName)
         row:SetID(0)
         row.highlight:SetTexture(nil)
     elseif (spell ~= nil) then
+        local rowSpell = row.spell
         row.header:Hide()
         row.isHeader = false
         row.highlight:SetTexture(HIGHLIGHT_TEXTURE_FILEID)
-        row.spell:Show()
-        row.spell.label:SetText(spell.name)
-        if (spell.subText and spell.subText ~= "") then
-            row.spell.subLabel:SetText(format(PARENS_TEMPLATE, spell.subText))
-        else
-            row.spell.subLabel:SetText("")
-        end
+        rowSpell:Show()
+        rowSpell.label:SetText(spell.name)
+        rowSpell.subLabel:SetText(spell.formattedSubText)
         if (not spell.hideLevel) then
-            row.spell.level:Show()
-            row.spell.level:SetText(format(wt.L.LEVEL_FORMAT, spell.level))
-            local color = GetQuestDifficultyColor(spell.level)
-            row.spell.level:SetTextColor(color.r, color.g, color.b)
+            rowSpell.level:Show()
+            rowSpell.level:SetText(spell.formattedLevel)
+            local color = spell.levelColor
+            rowSpell.level:SetTextColor(color.r, color.g, color.b)
         else
-            row.spell.level:Hide()
+            rowSpell.level:Hide()
         end
         row:SetID(spell.id)
-        row.spell.icon:SetTexture(spell.icon)
+        rowSpell.icon:SetTexture(spell.icon)
     end
     row.currentSpell = spell
     if (tooltip:IsOwned(row)) then
