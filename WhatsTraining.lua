@@ -8,7 +8,6 @@ local GetSpellInfo = GetSpellInfo
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local IsSpellKnown = IsSpellKnown
 local UnitLevel = UnitLevel
-local UnitFactionGroup = UnitFactionGroup
 local FauxScrollFrame_Update = FauxScrollFrame_Update
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 local FauxScrollFrame_OnVerticalScroll = FauxScrollFrame_OnVerticalScroll
@@ -199,26 +198,11 @@ local function rebuildIfNotCached(_, fromCache)
     rebuildSpells(UnitLevel("player"))
 end
 
-local _, _, playerRace = UnitRace("player")
-local function raceMatches(spell)
-    if (spell.race == nil and spell.races == nil) then
-        return true
-    end
-    if (spell.races == nil) then
-        return spell.race == playerRace
-    end
-    return spell.races[1] == playerRace or spell.races[2] == playerRace
-end
-local playerFaction = UnitFactionGroup("player")
-for _, spellsByLevel in pairs(wt.SpellsByLevel) do
+for level, spellsByLevel in pairs(wt.SpellsByLevel) do
     for _, spell in ipairs(spellsByLevel) do
-        local forThisFaction = spell.faction == nil or spell.faction == playerFaction
-        local forThisRace = raceMatches(spell)
-        if (forThisFaction and forThisRace) then
-            getSpellInfo(spell.id, rebuildIfNotCached)
+        getSpellInfo(spell, level, rebuildIfNotCached)
         end
     end
-end
 rebuildSpells(UnitLevel("player"))
 
 local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent, "GameTooltipTemplate")

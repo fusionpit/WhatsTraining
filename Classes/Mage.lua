@@ -1,6 +1,6 @@
 local _, wt = ...
 if (wt.currentClass ~= "MAGE") then return end
-wt.SpellsByLevel = {
+wt.SpellsByLevel = wt.FactionFilter({
 	[1] = {{id = 1459, cost = 10}},
 	[4] = {{id = 5504, cost = 100}, {id = 116, cost = 100}},
 	[6] = {{id = 587, cost = 100}, {id = 2136, cost = 100}, {id = 143, cost = 100, requiredIds = {133}}},
@@ -198,4 +198,4 @@ wt.SpellsByLevel = {
 		{id = 12826, cost = 42000, requiredIds = {12825}},
 		{id = 18809, cost = 1890, requiredIds = {12526}}
 	}
-}
+})

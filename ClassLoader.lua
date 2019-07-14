@@ -1,3 +1,43 @@
 local _, wt = ...
 
-wt.currentClass = select(2, UnitClass("player"));
+local tinsert = tinsert
+local ipairs = ipairs
+
+wt.currentClass = select(2, UnitClass("player"))
+
+local function filter(spellsByLevel, pred)
+    local output = {}
+    for level, spells in pairs(spellsByLevel) do
+        output[level] = {}
+        for _, spell in ipairs(spells) do
+            if (pred(spell) == true) then
+                tinsert(output[level], spell)
+            end
+        end
+    end
+    return output
+end
+local playerFaction = UnitFactionGroup("player")
+function wt.FactionFilter(spellsByLevel)
+    return filter(
+        spellsByLevel,
+        function(spell)
+            return spell.faction == nil or spell.faction == playerFaction
+        end
+    )
+end
+local playerRace = select(3, UnitRace("player"))
+function wt.RaceFilter(spellsByLevel)
+    return filter(
+        spellsByLevel,
+        function(spell)
+            if (spell.race == nil and spell.races == nil) then
+                return true
+            end
+            if (spell.races == nil) then
+                return spell.race == playerRace
+            end
+            return spell.races[1] == playerRace or spell.races[2] == playerRace
+        end
+    )
+end
