@@ -285,16 +285,18 @@ function wt.SetRowSpell(row, spell)
     row:Show()
 end
 
+-- When holding down left mouse on the slider knob, it will keep firing update even though
+-- the offset hasn't changed so this will help throttle that
 local lastOffset = -1
 function wt.Update(frame, forceUpdate)
     local scrollBar = frame.scrollBar
-    FauxScrollFrame_Update(scrollBar, #spells, MAX_ROWS, ROW_HEIGHT, nil, nil, nil, nil, nil, nil, true)
     local offset = FauxScrollFrame_GetOffset(scrollBar)
-    if (offset == lastOffset and not forceUpdate) then return end
-    for i = 1, MAX_ROWS do
+    if (offset == lastOffset and not forceUpdate) then
+        return
+    end
+    for i, row in ipairs(frame.rows) do
         local spellIndex = i + offset
-        local spell = spells[spellIndex]
-        local row = _G[frame:GetName() .. "Row" .. i]
+        local spell = spellsAndHeaders[spellIndex]
         wt.SetRowSpell(row, spell)
     end
     lastOffset = offset
