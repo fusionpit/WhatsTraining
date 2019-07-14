@@ -131,16 +131,7 @@ foreachi(categories, function(_, cat)
     categories._spellsByCategoryKey[cat.key] = cat.spells
 end)
 
-local spells = {}
-local function rebuildSpells(playerLevel)
-    foreachi(
-        categories,
-        function(_, c)
-            c.cost = 0
-            wipe(c.spells)
-        end
-    )
-    wipe(spells)
+local function rebuildSpells(playerLevel, isLevelUpEvent)
     for level, spellsAtLevel in pairs(wt.SpellsByLevel) do
         for _, spell in ipairs(spellsAtLevel) do
             local spellInfo = spellInfoCache[spell.id]
@@ -183,6 +174,13 @@ local function rebuildSpells(playerLevel)
             sort(category.spells, sorter)
             local totalCost = 0
             for _, s in ipairs(category.spells) do
+                local effectiveLevel = s.level
+                -- when a player levels up and this is triggered from that event, GetQuestDifficultyColor won't
+                -- have the correct player level, it will be off by 1 for whatever reason (just like UnitLevel)
+                if (isLevelUpEvent) then
+                    effectiveLevel = effectiveLevel - 1
+                end
+                s.levelColor = GetQuestDifficultyColor(effectiveLevel)
                 s.hideLevel = category.hideLevel
                 totalCost = totalCost + s.cost
                 tinsert(spells, s)
@@ -440,7 +438,8 @@ eventFrame:SetScript(
                 wt.CreateFrame()
             end
         elseif (event == "LEARNED_SPELL_IN_TAB" or event == "PLAYER_LEVEL_UP") then
-            rebuildSpells(event == "PLAYER_LEVEL_UP" and ... or UnitLevel("player"))
+            local isLevelUp = event == "PLAYER_LEVEL_UP"
+            rebuildSpells(isLevelUp and ... or UnitLevel("player"), isLevelUp)
             if (wt.MainFrame and wt.MainFrame:IsVisible()) then
                 wt.Update(wt.MainFrame, true)
             end
