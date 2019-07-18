@@ -1,3 +1,8 @@
+* 0.5-beta
+    - Added category for spells that you can't train because you lack the necessary talent
+    - Fixed some minor visual issues
+    - Performance enhancements
+
 * 0.4-beta
     - Tab icon should always be '?' now
     - Change (Rank #) text color to be more visible
