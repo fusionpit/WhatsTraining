@@ -81,56 +81,55 @@ local function isIgnoredByCTP(spellId)
     return wt.ctpDb ~= nil and wt.ctpDb[spellId]
 end
 
-local categories = {
+local headers = {
     {
         name = wt.L.AVAILABLE_HEADER,
-        spells = {},
         color = GREEN_FONT_COLOR_CODE,
         hideLevel = true,
         key = AVAILABLE_KEY
     },
     {
         name = wt.L.MISSINGREQS_HEADER,
-        spells = {},
         color = ORANGE_FONT_COLOR_CODE,
         hideLevel = true,
         key = MISSINGREQS_KEY
     },
     {
         name = wt.L.NEXTLEVEL_HEADER,
-        spells = {},
         color = COMINGSOON_FONT_COLOR_CODE,
         key = NEXTLEVEL_KEY
     },
     {
         name = wt.L.NOTLEVEL_HEADER,
-        spells = {},
         color = RED_FONT_COLOR_CODE,
         key = NOTLEVEL_KEY
     },
     {
         name = wt.L.IGNORED_HEADER,
-        spells = {},
         color = LIGHTYELLOW_FONT_COLOR_CODE,
         costFormat = wt.L.TOTALSAVINGS_FORMAT,
         key = IGNORED_KEY
     },
     {
         name = wt.L.KNOWN_HEADER,
-        spells = {},
         color = GRAY_FONT_COLOR_CODE,
         hideLevel = true,
         key = KNOWN_KEY
-    },
+    }
+}
+
+local categories = {
     _spellsByCategoryKey = {},
     Insert = function(self, key, spellInfo)
         tinsert(self._spellsByCategoryKey[key], spellInfo)
     end,
     Initialize = function(self)
-        for _, cat in ipairs(self) do
+        for _, cat in ipairs(headers) do
+            cat.spells = {}
             self._spellsByCategoryKey[cat.key] = cat.spells
             cat.formattedName = cat.color .. cat.name .. FONT_COLOR_CODE_CLOSE
             cat.isHeader = true
+            tinsert(self, cat)
         end
     end,
     ClearSpells = function(self)
