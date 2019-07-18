@@ -28,7 +28,7 @@ wt.SpellsByLevel = {
 		{id = 770, cost = 1900},
 		{id = 2637, cost = 1900},
 		{id = 6808, cost = 1900, requiredIds = {6807}},
-		{id = 16810, cost = 95, requiredIds = {16689}},
+		{id = 16810, cost = 95, requiredIds = {16689}, requiredTalentId = 16689},
 		{id = 8938, cost = 1900, requiredIds = {8936}}
 	},
 	[20] = {
@@ -70,15 +70,15 @@ wt.SpellsByLevel = {
 		{id = 8998, cost = 5000, requiredIds = {768}},
 		{id = 5195, cost = 5000, requiredIds = {1062}},
 		{id = 8927, cost = 5000, requiredIds = {8926}},
-		{id = 16811, cost = 250, requiredIds = {16810}},
+		{id = 16811, cost = 250, requiredIds = {16810}, requiredTalentId = 16689},
 		{id = 2091, cost = 5000, requiredIds = {2090}},
 		{id = 9492, cost = 5000, requiredIds = {1079}}
 	},
 	[30] = {
 		{id = 6798, cost = 6000, requiredIds = {5211}},
 		{id = 778, cost = 6000, requiredIds = {770}},
-		{id = 17390, cost = 300, requiredIds = {16857}},
-		{id = 24974, cost = 300, requiredIds = {5570}},
+		{id = 17390, cost = 300, requiredIds = {16857}, requiredTalentId = 16857},
+		{id = 24974, cost = 300, requiredIds = {5570}, requiredTalentId = 5570},
 		{id = 5234, cost = 6000, requiredIds = {6756}},
 		{id = 20739, cost = 6000, requiredIds = {20484}},
 		{id = 8940, cost = 6000, requiredIds = {8939}},
@@ -115,7 +115,7 @@ wt.SpellsByLevel = {
 		{id = 5196, cost = 12000, requiredIds = {5195}},
 		{id = 8903, cost = 12000, requiredIds = {6778}},
 		{id = 18657, cost = 12000, requiredIds = {2637}},
-		{id = 16812, cost = 600, requiredIds = {16811}},
+		{id = 16812, cost = 600, requiredIds = {16811}, requiredTalentId = 16689},
 		{id = 8992, cost = 12000, requiredIds = {6800}},
 		{id = 8955, cost = 12000, requiredIds = {2908}},
 		{id = 6780, cost = 12000, requiredIds = {5180}}
@@ -127,7 +127,7 @@ wt.SpellsByLevel = {
 		{id = 22827, cost = 14000, requiredIds = {22568}},
 		{id = 16914, cost = 14000},
 		{id = 29166, cost = 14000},
-		{id = 24975, cost = 700, requiredIds = {24974}},
+		{id = 24975, cost = 700, requiredIds = {24974}, requiredTalentId = 5570},
 		{id = 8907, cost = 14000, requiredIds = {5234}},
 		{id = 8929, cost = 14000, requiredIds = {8928}},
 		{id = 6783, cost = 14000, requiredIds = {5215}},
@@ -138,7 +138,7 @@ wt.SpellsByLevel = {
 	[42] = {
 		{id = 9747, cost = 16000, requiredIds = {9490}},
 		{id = 9749, cost = 16000, requiredIds = {778}},
-		{id = 17391, cost = 800, requiredIds = {17390}},
+		{id = 17391, cost = 800, requiredIds = {17390}, requiredTalentId = 16857},
 		{id = 9745, cost = 16000, requiredIds = {8972}},
 		{id = 6787, cost = 16000, requiredIds = {6785}},
 		{id = 9750, cost = 16000, requiredIds = {8941}},
@@ -166,14 +166,14 @@ wt.SpellsByLevel = {
 		{id = 9849, cost = 22000, requiredIds = {5201}},
 		{id = 9852, cost = 22000, requiredIds = {5196}},
 		{id = 22828, cost = 22000, requiredIds = {22827}},
-		{id = 16813, cost = 1100, requiredIds = {16812}},
+		{id = 16813, cost = 1100, requiredIds = {16812}, requiredTalentId = 16689},
 		{id = 9856, cost = 22000, requiredIds = {9750}},
 		{id = 9845, cost = 22000, requiredIds = {6793}}
 	},
 	[50] = {
 		{id = 9888, cost = 23000, requiredIds = {9758}},
 		{id = 17401, cost = 23000, requiredIds = {16914}},
-		{id = 24976, cost = 1150, requiredIds = {24975}},
+		{id = 24976, cost = 1150, requiredIds = {24975}, requiredTalentId = 5570},
 		{id = 9884, cost = 23000, requiredIds = {8907}},
 		{id = 9880, cost = 23000, requiredIds = {9745}},
 		{id = 9866, cost = 23000, requiredIds = {6787}},
@@ -190,7 +190,7 @@ wt.SpellsByLevel = {
 	},
 	[54] = {
 		{id = 9907, cost = 28000, requiredIds = {9749}},
-		{id = 17392, cost = 1400, requiredIds = {17391}},
+		{id = 17392, cost = 1400, requiredIds = {17391}, requiredTalentId = 16857},
 		{id = 9904, cost = 28000, requiredIds = {1824}},
 		{id = 9857, cost = 28000, requiredIds = {9856}},
 		{id = 9830, cost = 28000, requiredIds = {9829}},
@@ -211,14 +211,14 @@ wt.SpellsByLevel = {
 		{id = 18658, cost = 32000, requiredIds = {18657}},
 		{id = 9881, cost = 32000, requiredIds = {9880}},
 		{id = 9835, cost = 32000, requiredIds = {9834}},
-		{id = 17329, cost = 1600, requiredIds = {16813}},
+		{id = 17329, cost = 1600, requiredIds = {16813}, requiredTalentId = 16689},
 		{id = 9867, cost = 32000, requiredIds = {9866}},
 		{id = 9841, cost = 32000, requiredIds = {9840}},
 		{id = 9876, cost = 32000, requiredIds = {9875}}
 	},
 	[60] = {
 		{id = 17402, cost = 34000, requiredIds = {17401}},
-		{id = 24977, cost = 1700, requiredIds = {24976}},
+		{id = 24977, cost = 1700, requiredIds = {24976}, requiredTalentId = 5570},
 		{id = 9885, cost = 34000, requiredIds = {9884}},
 		{id = 9913, cost = 34000, requiredIds = {6783}},
 		{id = 20748, cost = 34000, requiredIds = {20747}},

@@ -52,7 +52,7 @@ wt.SpellsByLevel = wt.FactionFilter({
 		{id = 8450, cost = 4000, requiredIds = {604}},
 		{id = 8400, cost = 4000, requiredIds = {3140}},
 		{id = 2121, cost = 4000, requiredIds = {2120}},
-		{id = 12505, cost = 200, requiredIds = {11366}}
+		{id = 12505, cost = 200, requiredIds = {11366}, requiredTalentId = 11366}
 	},
 	[26] = {
 		{id = 120, cost = 5000},
@@ -74,7 +74,7 @@ wt.SpellsByLevel = wt.FactionFilter({
 		{id = 8457, cost = 8000, requiredIds = {543}},
 		{id = 8401, cost = 8000, requiredIds = {8400}},
 		{id = 7302, cost = 8000},
-		{id = 12522, cost = 400, requiredIds = {12505}},
+		{id = 12522, cost = 400, requiredIds = {12505}, requiredTalentId = 11366},
 		{id = 3565, cost = 8000, faction = "Alliance"},
 		{id = 3566, cost = 8000, faction = "Horde"}
 	},
@@ -91,12 +91,12 @@ wt.SpellsByLevel = wt.FactionFilter({
 		{id = 8445, cost = 12000, requiredIds = {8444}}
 	},
 	[36] = {
-		{id = 13018, cost = 650, requiredIds = {11113}},
+		{id = 13018, cost = 650, requiredIds = {11113}, requiredTalentId = 11113},
 		{id = 8427, cost = 13000, requiredIds = {6141}},
 		{id = 8451, cost = 15000, requiredIds = {8450}},
 		{id = 8402, cost = 13000, requiredIds = {8401}},
 		{id = 8495, cost = 13000, requiredIds = {8494}},
-		{id = 12523, cost = 650, requiredIds = {12522}}
+		{id = 12523, cost = 650, requiredIds = {12522}, requiredTalentId = 11366}
 	},
 	[38] = {
 		{id = 8439, cost = 14000, requiredIds = {8438}},
@@ -125,10 +125,10 @@ wt.SpellsByLevel = wt.FactionFilter({
 		{id = 10144, cost = 22750, requiredIds = {6129}},
 		{id = 10148, cost = 22750, requiredIds = {8402}},
 		{id = 8462, cost = 18000, requiredIds = {8461}},
-		{id = 12524, cost = 900, requiredIds = {12523}}
+		{id = 12524, cost = 900, requiredIds = {12523}, requiredTalentId = 11366}
 	},
 	[44] = {
-		{id = 13019, cost = 1150, requiredIds = {13018}},
+		{id = 13019, cost = 1150, requiredIds = {13018}, requiredTalentId = 11113},
 		{id = 10185, cost = 23000, requiredIds = {8427}},
 		{id = 10179, cost = 23000, requiredIds = {8408}},
 		{id = 10191, cost = 23000, requiredIds = {8495}}
@@ -136,7 +136,7 @@ wt.SpellsByLevel = wt.FactionFilter({
 	[46] = {
 		{id = 10201, cost = 26000, requiredIds = {8439}},
 		{id = 10197, cost = 26000, requiredIds = {8413}},
-		{id = 13031, cost = 6500, requiredIds = {11426}},
+		{id = 13031, cost = 6500, requiredIds = {11426}, requiredTalentId = 11426},
 		{id = 22782, cost = 28000, requiredIds = {6117}},
 		{id = 10205, cost = 26000, requiredIds = {8446}}
 	},
@@ -146,7 +146,7 @@ wt.SpellsByLevel = wt.FactionFilter({
 		{id = 10173, cost = 28000, requiredIds = {8451}},
 		{id = 10149, cost = 28000, requiredIds = {10148}},
 		{id = 10215, cost = 28000, requiredIds = {8423}},
-		{id = 12525, cost = 900, requiredIds = {12524}}
+		{id = 12525, cost = 900, requiredIds = {12524}, requiredTalentId = 11366}
 	},
 	[50] = {
 		{id = 10160, cost = 32000, requiredIds = {10159}},
@@ -158,11 +158,11 @@ wt.SpellsByLevel = wt.FactionFilter({
 		{id = 11420, cost = 28800, faction = "Horde"}
 	},
 	[52] = {
-		{id = 13020, cost = 1750, requiredIds = {13019}},
+		{id = 13020, cost = 1750, requiredIds = {13019}, requiredTalentId = 11113},
 		{id = 10186, cost = 35000, requiredIds = {10185}},
 		{id = 10145, cost = 35000, requiredIds = {10144}},
 		{id = 10177, cost = 35000, requiredIds = {8462}},
-		{id = 13032, cost = 8750, requiredIds = {13031}},
+		{id = 13032, cost = 8750, requiredIds = {13031}, requiredTalentId = 11426},
 		{id = 10192, cost = 35000, requiredIds = {10191}},
 		{id = 10206, cost = 35000, requiredIds = {10205}}
 	},
@@ -172,7 +172,7 @@ wt.SpellsByLevel = wt.FactionFilter({
 		{id = 10199, cost = 36000, requiredIds = {10197}},
 		{id = 10150, cost = 36000, requiredIds = {10149}},
 		{id = 10230, cost = 36000, requiredIds = {6131}},
-		{id = 12526, cost = 1800, requiredIds = {12525}}
+		{id = 12526, cost = 1800, requiredIds = {12525}, requiredTalentId = 11366}
 	},
 	[56] = {
 		{id = 10157, cost = 38000, requiredIds = {10156}},
@@ -183,12 +183,12 @@ wt.SpellsByLevel = wt.FactionFilter({
 	[58] = {
 		{id = 10161, cost = 40000, requiredIds = {10160}},
 		{id = 10054, cost = 40000, requiredIds = {10053}},
-		{id = 13033, cost = 9000, requiredIds = {13032}},
+		{id = 13033, cost = 9000, requiredIds = {13032}, requiredTalentId = 11426},
 		{id = 22783, cost = 40000, requiredIds = {22782}},
 		{id = 10207, cost = 40000, requiredIds = {10206}}
 	},
 	[60] = {
-		{id = 13021, cost = 2100, requiredIds = {13020}},
+		{id = 13021, cost = 2100, requiredIds = {13020}, requiredTalentId = 11113},
 		{id = 10187, cost = 42000, requiredIds = {10186}},
 		{id = 10174, cost = 42000, requiredIds = {10173}},
 		{id = 10225, cost = 42000, requiredIds = {10223}},
@@ -196,6 +196,6 @@ wt.SpellsByLevel = wt.FactionFilter({
 		{id = 10220, cost = 42000, requiredIds = {10219}},
 		{id = 10193, cost = 42000, requiredIds = {10192}},
 		{id = 12826, cost = 42000, requiredIds = {12825}},
-		{id = 18809, cost = 1890, requiredIds = {12526}}
+		{id = 18809, cost = 1890, requiredIds = {12526}, requiredTalentId = 11366}
 	}
 })
