@@ -41,9 +41,11 @@ local AVAILABLE_KEY = "available"
 local MISSINGREQS_KEY = "missingReqs"
 local NEXTLEVEL_KEY = "nextLevel"
 local NOTLEVEL_KEY = "notLevel"
+local MISSINGTALENT_KEY = "missingTalent"
 local IGNORED_KEY = "ignored"
 local KNOWN_KEY = "known"
 local COMINGSOON_FONT_COLOR_CODE = "|cff82c5ff"
+local MISSINGTALENT_FONT_COLOR_CODE = "|cffffffff"
 
 local spellInfoCache = {}
 -- done has param cacheHit
@@ -105,6 +107,11 @@ local headers = {
         key = NOTLEVEL_KEY
     },
     {
+        name = wt.L.MISSINGTALENT_HEADER,
+        color = MISSINGTALENT_FONT_COLOR_CODE,
+        key = MISSINGTALENT_KEY
+    },
+    {
         name = wt.L.IGNORED_HEADER,
         color = LIGHTYELLOW_FONT_COLOR_CODE,
         costFormat = wt.L.TOTALSAVINGS_FORMAT,
@@ -154,6 +161,8 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
                     categoryKey = KNOWN_KEY
                 elseif (isIgnoredByCTP(spellInfo.id)) then
                     categoryKey = IGNORED_KEY
+                elseif (spell.requiredTalentId ~= nil and not IsSpellKnown(spell.requiredTalentId)) then
+                    categoryKey = MISSINGTALENT_KEY
                 elseif (level > playerLevel) then
                     categoryKey = level <= playerLevel + 2 and NEXTLEVEL_KEY or NOTLEVEL_KEY
                 else
@@ -173,16 +182,24 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
         end
     end
 
-    local function byNameAndLevel(a, b)
+    local function byLevelAndName(a, b)
         if (a.level == b.level) then
             return a.name < b.name
         end
         return a.level < b.level
     end
+    local function byNameAndLevel(a, b)
+        if (a.name == b.name) then
+            return a.level < b.level
+        end
+        return a.name < b.name
+    end
     for _, category in ipairs(categories) do
         if (#category.spells > 0) then
             tinsert(spellsAndHeaders, category)
-            sort(category.spells, byNameAndLevel)
+            local sortFunc =
+                (category.key == MISSINGTALENT_KEY or category.key == IGNORED_KEY) and byNameAndLevel or byLevelAndName
+            sort(category.spells, sortFunc)
             local totalCost = 0
             for _, s in ipairs(category.spells) do
                 local effectiveLevel = s.level

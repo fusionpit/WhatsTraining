@@ -6,6 +6,7 @@ local localeText = {
         MISSINGREQS_HEADER = "Available but Missing Requirements",
         NEXTLEVEL_HEADER = "Coming Soon",
         NOTLEVEL_HEADER = "Not Yet Available",
+        MISSINGTALENT_HEADER = "Missing Required Talents",
         IGNORED_HEADER = "Ignored",
         KNOWN_HEADER = "Already Known",
         COST_FORMAT = "Cost: %s",
