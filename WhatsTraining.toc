@@ -1,8 +1,10 @@
 ## Interface: 11302
 ## Title: What's Training?
-## Version: 0.4-beta
+## Version: @project-version@
 ## Author: Sveng
 ## Notes: Shows you what spells are available at your class trainer
+## X-Curse-Project-ID: 324944
+## X-WoWI-ID: 25031
 
 ClassLoader.lua
 

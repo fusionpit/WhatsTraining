@@ -1,0 +1,10 @@
+enable-nolib-creation: no
+
+ignore:
+  - README.MD
+
+manual-changelog:
+  filename: changes.log
+  markup-type: markdown
+
+license-output: LICENSE
