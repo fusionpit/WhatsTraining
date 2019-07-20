@@ -182,13 +182,13 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
         end
     end
 
-    local function byLevelAndName(a, b)
+    local function byLevelThenName(a, b)
         if (a.level == b.level) then
             return a.name < b.name
         end
         return a.level < b.level
     end
-    local function byNameAndLevel(a, b)
+    local function byNameThenLevel(a, b)
         if (a.name == b.name) then
             return a.level < b.level
         end
@@ -198,7 +198,7 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
         if (#category.spells > 0) then
             tinsert(spellsAndHeaders, category)
             local sortFunc =
-                (category.key == MISSINGTALENT_KEY or category.key == IGNORED_KEY) and byNameAndLevel or byLevelAndName
+                (category.key == MISSINGTALENT_KEY or category.key == IGNORED_KEY) and byNameThenLevel or byLevelThenName
             sort(category.spells, sortFunc)
             local totalCost = 0
             for _, s in ipairs(category.spells) do
@@ -417,14 +417,16 @@ function wt.CreateFrame()
         spellLabel:SetPoint("BOTTOM", spell)
         spellLabel:SetJustifyV("MIDDLE")
         local spellSublabel = spell:CreateFontString("$parentSubLabel", "OVERLAY", "NewSubSpellFont")
+        spellSublabel:SetJustifyH("LEFT")
         spellSublabel:SetPoint("TOPLEFT", spellLabel, "TOPRIGHT", 2, 0)
         spellSublabel:SetPoint("BOTTOM", spellLabel)
-        spellSublabel:SetJustifyV("MIDDLE")
         local spellLevelLabel = spell:CreateFontString("$parentLevelLabel", "OVERLAY", "GameFontWhite")
         spellLevelLabel:SetPoint("TOPRIGHT", spell, -4, 0)
-        spellLevelLabel:SetPoint("BOTTOMLEFT", spellSublabel, "BOTTOMRIGHT")
+        spellLevelLabel:SetPoint("BOTTOM", spellLabel)
         spellLevelLabel:SetJustifyH("RIGHT")
         spellLevelLabel:SetJustifyV("MIDDLE")
+        spellSublabel:SetPoint("RIGHT", spellLevelLabel, "LEFT")
+        spellSublabel:SetJustifyV("MIDDLE")
 
         local headerLabel = row:CreateFontString("$parentHeaderLabel", "OVERLAY", "GameFontWhite")
         headerLabel:SetAllPoints()
