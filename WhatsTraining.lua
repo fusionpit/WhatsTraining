@@ -198,7 +198,8 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
         if (#category.spells > 0) then
             tinsert(spellsAndHeaders, category)
             local sortFunc =
-                (category.key == MISSINGTALENT_KEY or category.key == IGNORED_KEY) and byNameThenLevel or byLevelThenName
+                (category.key == MISSINGTALENT_KEY or category.key == IGNORED_KEY) and byNameThenLevel or
+                byLevelThenName
             sort(category.spells, sortFunc)
             local totalCost = 0
             for _, s in ipairs(category.spells) do
@@ -456,15 +457,12 @@ end
 
 local function hookCTP()
     wt.ctpDb = ClassTrainerPlusDBPC
-    hooksecurefunc(
-        "CTP_UpdateService",
-        function()
-            rebuildSpells(UnitLevel("player"))
-        end
-    )
+    HookCTPUpdate(function()
+        rebuildSpells(UnitLevel("player"))
+    end)
 end
 
-if (CTP_UpdateService) then
+if (HookCTPUpdate) then
     hookCTP()
 end
 
