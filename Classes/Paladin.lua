@@ -1,5 +1,34 @@
 local _, wt = ...
 if (wt.currentClass ~= "PALADIN") then return end
+
+-- Paladin Auras are special in that you never have multiple ranks in the spellbook, only the latest one
+-- Even so, IsSpellKnown will only return true for your current rank
+
+-- These tables are ordered by rank
+local devotionAura = {465, 10290, 643, 10291, 1032, 10292, 10293}
+local retAura = {7294, 10298, 10299, 10300, 10301}
+local fireResAura = {19891, 19899, 19900}
+local frostResAura = {19888, 19897, 19898}
+local shadowResAura = {19876, 19895, 19896}
+
+local auraMap = {}
+for _, auras in ipairs({devotionAura, retAura, fireResAura, frostResAura, shadowResAura}) do
+	for _, auraId in ipairs(auras) do
+		auraMap[auraId] = auras
+	end
+end
+function wt.IsPreviouslyLearnedAura(spellId)
+	print(spellId)
+	if (not auraMap[spellId]) then return false end
+	local spellIndex, knownIndex = 0, 0
+	for i, otherId in ipairs(auraMap[spellId]) do
+		if (otherId == spellId) then spellIndex = i end
+		if (IsSpellKnown(otherId)) then knownIndex = i end
+	end
+	print(spellId, spellIndex, knownIndex)
+	return spellIndex <= knownIndex
+end
+
 wt.SpellsByLevel = {
 	[1] = {{id = 465, cost = 10}},
 	[4] = {{id = 19740, cost = 100}, {id = 20271, cost = 100}},

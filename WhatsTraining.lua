@@ -165,6 +165,9 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
                     categoryKey = MISSINGTALENT_KEY
                 elseif (level > playerLevel) then
                     categoryKey = level <= playerLevel + 2 and NEXTLEVEL_KEY or NOTLEVEL_KEY
+                elseif (wt.IsPreviouslyLearnedAura and wt.IsPreviouslyLearnedAura(spellInfo.id)) then
+                    -- special case for paladin auras, since new ranks totally replace old ranks
+                    categoryKey = KNOWN_KEY
                 else
                     local hasReqs = true
                     if (spell.requiredIds ~= nil) then
@@ -457,9 +460,11 @@ end
 
 local function hookCTP()
     wt.ctpDb = ClassTrainerPlusDBPC
-    HookCTPUpdate(function()
-        rebuildSpells(UnitLevel("player"))
-    end)
+    HookCTPUpdate(
+        function()
+            rebuildSpells(UnitLevel("player"))
+        end
+    )
 end
 
 if (HookCTPUpdate) then

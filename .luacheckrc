@@ -36,6 +36,8 @@ read_globals = {
     "FONT_COLOR_CODE_CLOSE",
     "HIGHLIGHT_FONT_COLOR_CODE",
     "PARENS_TEMPLATE",
-    "MAX_SKILLLINE_TABS"
+    "MAX_SKILLLINE_TABS",
+
+    "HookCTPUpdate"
 }
 globals = {"ClassTrainerPlusDBPC", "CTP_UpdateService", "WhatsTrainingFrame"}

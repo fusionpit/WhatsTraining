@@ -1,3 +1,6 @@
+* 1.2
+    - Fixed old Paladin Aura ranks being listed as "Available Now" after training a new rank
+
 * 1.0
     - Added category for spells that you can't train because you lack the necessary talent
     - Fixed some minor visual issues
@@ -14,3 +17,4 @@
     - Fix WoWI bug 8884
     - Won't show other faction's mage ports/teles
     - Won't show other race's priest spells
+    
