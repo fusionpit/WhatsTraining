@@ -18,14 +18,12 @@ for _, auras in ipairs({devotionAura, retAura, fireResAura, frostResAura, shadow
 	end
 end
 function wt.IsPreviouslyLearnedAura(spellId)
-	print(spellId)
 	if (not auraMap[spellId]) then return false end
 	local spellIndex, knownIndex = 0, 0
 	for i, otherId in ipairs(auraMap[spellId]) do
 		if (otherId == spellId) then spellIndex = i end
 		if (IsSpellKnown(otherId)) then knownIndex = i end
 	end
-	print(spellId, spellIndex, knownIndex)
 	return spellIndex <= knownIndex
 end
 
