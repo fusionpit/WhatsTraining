@@ -1,5 +1,64 @@
 local _, wt = ...
-if (wt.currentClass ~= "HUNTER") then return end
+if (wt.currentClass ~= "HUNTER") then
+  return
+end
+local petSpells = {
+  24493,
+  24497,
+  24500,
+  24501,
+  23992,
+  24439,
+  24444,
+  24445,
+  24446,
+  24447,
+  24448,
+  24449,
+  4187,
+  5042,
+  4188,
+  4189,
+  4190,
+  4191,
+  4192,
+  4193,
+  4194,
+  5041,
+  2649,
+  14916,
+  14917,
+  14918,
+  14919,
+  14920,
+  14921,
+  24545,
+  24630,
+  24549,
+  24550,
+  24551,
+  24552,
+  24553,
+  24554,
+  24555,
+  24629,
+  24492,
+  24502,
+  24503,
+  24504,
+  24488,
+  24505,
+  24506,
+  24507
+}
+local petSpellMap = {}
+for _, v in ipairs(petSpells) do
+  petSpellMap[v] = true
+end
+function wt.IsPetSpell(spellId)
+  return petSpellMap[spellId] == true
+end
+
 wt.SpellsByLevel = {
   [1] = {{id = 1494, cost = 10}},
   [4] = {{id = 13163, cost = 100}, {id = 1978, cost = 100}},

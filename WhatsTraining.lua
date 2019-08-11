@@ -44,8 +44,10 @@ local NOTLEVEL_KEY = "notLevel"
 local MISSINGTALENT_KEY = "missingTalent"
 local IGNORED_KEY = "ignored"
 local KNOWN_KEY = "known"
+local PET_KEY = "pet"
 local COMINGSOON_FONT_COLOR_CODE = "|cff82c5ff"
 local MISSINGTALENT_FONT_COLOR_CODE = "|cffffffff"
+local PET_FONT_COLOR_CODE = "|cffffffff"
 
 local spellInfoCache = {}
 -- done has param cacheHit
@@ -107,15 +109,23 @@ local headers = {
         key = NOTLEVEL_KEY
     },
     {
+        name = wt.L.PET_HEADER,
+        color = PET_FONT_COLOR_CODE,
+        key = PET_KEY,
+        nameSort = true
+    },
+    {
         name = wt.L.MISSINGTALENT_HEADER,
         color = MISSINGTALENT_FONT_COLOR_CODE,
-        key = MISSINGTALENT_KEY
+        key = MISSINGTALENT_KEY,
+        nameSort = true
     },
     {
         name = wt.L.IGNORED_HEADER,
         color = LIGHTYELLOW_FONT_COLOR_CODE,
         costFormat = wt.L.TOTALSAVINGS_FORMAT,
-        key = IGNORED_KEY
+        key = IGNORED_KEY,
+        nameSort = true
     },
     {
         name = wt.L.KNOWN_HEADER,
@@ -157,7 +167,11 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
             local spellInfo = spellInfoCache[spell.id]
             if (spellInfo ~= nil) then
                 local categoryKey
-                if (IsSpellKnown(spellInfo.id)) then
+                -- there's no good way to handle pet spells, since IsSpellKnown(id, true) will return true only if the
+                -- current active pet has that spell, and IsSpellKnown(petSpellId) always returns false
+                if (wt.IsPetSpell and wt.IsPetSpell(spellInfo.id)) then
+                    categoryKey = PET_KEY
+                elseif (IsSpellKnown(spellInfo.id)) then
                     categoryKey = KNOWN_KEY
                 elseif (isIgnoredByCTP(spellInfo.id)) then
                     categoryKey = IGNORED_KEY
@@ -200,9 +214,7 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
     for _, category in ipairs(categories) do
         if (#category.spells > 0) then
             tinsert(spellsAndHeaders, category)
-            local sortFunc =
-                (category.key == MISSINGTALENT_KEY or category.key == IGNORED_KEY) and byNameThenLevel or
-                byLevelThenName
+            local sortFunc = category.nameSort and byNameThenLevel or byLevelThenName
             sort(category.spells, sortFunc)
             local totalCost = 0
             for _, s in ipairs(category.spells) do

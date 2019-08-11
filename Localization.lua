@@ -9,6 +9,7 @@ local localeText = {
         MISSINGTALENT_HEADER = "Missing Required Talents",
         IGNORED_HEADER = "Ignored",
         KNOWN_HEADER = "Already Known",
+        PET_HEADER = "Pet Abilities",
         COST_FORMAT = "Cost: %s",
         TOTALCOST_FORMAT = "Total Cost: %s",
         TOTALSAVINGS_FORMAT = "Total Savings: %s",
