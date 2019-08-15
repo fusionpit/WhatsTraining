@@ -80,6 +80,37 @@ local function getSpellInfo(spell, level, done)
         end
     )
 end
+local itemInfoCache = {}
+-- for warlock pet tomes, the name includes the rank
+-- however, this will cause overlap with the level text and there's no good way to fix it with setting points
+-- instead, strip the rank text out of the name and put it as the subText
+local parensPattern = " (%(.+%))"
+local function getItemInfo(item, level, done)
+    if (itemInfoCache[item.id] ~= nil) then
+        done(true)
+        return
+    end
+    local ii = Item:CreateFromItemID(item.id)
+    ii:ContinueOnItemLoad(function()
+        if (itemInfoCache[item.id] ~= nil) then
+            done(true)
+            return
+        end
+        local rankText = string.match(ii:GetItemName(), parensPattern)
+        itemInfoCache[item.id] = {
+            id = item.id,
+            name = string.gsub(ii:GetItemName(), parensPattern, ""),
+            formattedSubText = rankText,
+            icon = ii:GetItemIcon(),
+            cost = item.cost,
+            formattedCost = GetCoinTextureString(item.cost),
+            level = level,
+            formattedLevel = format(wt.L.LEVEL_FORMAT, level),
+            isItem = true
+        }
+        done(false)
+    end)
+end
 
 local function isIgnoredByCTP(spellId)
     return wt.ctpDb ~= nil and wt.ctpDb[spellId]
@@ -162,6 +193,16 @@ local spellsAndHeaders = {}
 local function rebuildSpells(playerLevel, isLevelUpEvent)
     categories:ClearSpells()
     wipe(spellsAndHeaders)
+    if (wt.TomesByLevel) then
+        for _, tomesAtLevel in pairs(wt.TomesByLevel) do
+            for _, tome in ipairs(tomesAtLevel) do
+                local itemInfo = itemInfoCache[tome.id]
+                if (itemInfo ~= nil) then
+                    categories:Insert(PET_KEY, itemInfo)
+                end
+            end
+        end
+    end
     for level, spellsAtLevel in pairs(wt.SpellsByLevel) do
         for _, spell in ipairs(spellsAtLevel) do
             local spellInfo = spellInfoCache[spell.id]
@@ -256,6 +297,13 @@ local function rebuildIfNotCached(fromCache)
     rebuildSpells(UnitLevel("player"))
 end
 
+if (wt.TomesByLevel) then
+    for level, tomesByLevel in pairs(wt.TomesByLevel) do
+        for _, tome in ipairs(tomesByLevel) do
+            getItemInfo(tome, level, rebuildIfNotCached)
+        end
+    end
+end
 for level, spellsByLevel in pairs(wt.SpellsByLevel) do
     for _, spell in ipairs(spellsByLevel) do
         getSpellInfo(spell, level, rebuildIfNotCached)
@@ -265,7 +313,9 @@ rebuildSpells(UnitLevel("player"))
 
 local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent, "GameTooltipTemplate")
 function wt.SetTooltip(spellInfo)
-    if (spellInfo.id) then
+    if (spellInfo.isItem) then
+        tooltip:SetItemByID(spellInfo.id)
+    elseif (spellInfo.id) then
         tooltip:SetSpellByID(spellInfo.id)
     else
         tooltip:ClearLines()
@@ -432,13 +482,14 @@ function wt.CreateFrame()
         spellLabel:SetPoint("TOPLEFT", spell, "TOPLEFT", iconWidth + 4, 0)
         spellLabel:SetPoint("BOTTOM", spell)
         spellLabel:SetJustifyV("MIDDLE")
+        spellLabel:SetJustifyH("LEFT")
         local spellSublabel = spell:CreateFontString("$parentSubLabel", "OVERLAY", "NewSubSpellFont")
         spellSublabel:SetJustifyH("LEFT")
         spellSublabel:SetPoint("TOPLEFT", spellLabel, "TOPRIGHT", 2, 0)
         spellSublabel:SetPoint("BOTTOM", spellLabel)
         local spellLevelLabel = spell:CreateFontString("$parentLevelLabel", "OVERLAY", "GameFontWhite")
         spellLevelLabel:SetPoint("TOPRIGHT", spell, -4, 0)
-        spellLevelLabel:SetPoint("BOTTOM", spellLabel)
+        spellLevelLabel:SetPoint("BOTTOM", spell)
         spellLevelLabel:SetJustifyH("RIGHT")
         spellLevelLabel:SetJustifyV("MIDDLE")
         spellSublabel:SetPoint("RIGHT", spellLevelLabel, "LEFT")
