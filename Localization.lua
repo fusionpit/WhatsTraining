@@ -15,6 +15,21 @@ local localeText = {
         TOTALSAVINGS_FORMAT = "Total Savings: %s",
         LEVEL_FORMAT = "Level %s",
         TAB_TEXT = "What can I train?"
+    },
+    frFR = {
+        AVAILABLE_HEADER = "Disponible",
+        MISSINGREQS_HEADER = "Disponible mais pré-requis manquants",
+        NEXTLEVEL_HEADER = "Bientôt disponible",
+        NOTLEVEL_HEADER = "Pas encore disponible",
+        MISSINGTALENT_HEADER = "Talents requis manquants",
+        IGNORED_HEADER = "Ignoré",
+        KNOWN_HEADER = "Déjà connu",
+        PET_HEADER = "Techniques de familier",
+        COST_FORMAT = "Coût : %s",
+        TOTALCOST_FORMAT = "Coût total : %s",
+        TOTALSAVINGS_FORMAT = "Coût économisé : %s",
+        LEVEL_FORMAT = "Niveau %s",
+        TAB_TEXT = "Que puis-je apprendre ?"
     }
 }
 
