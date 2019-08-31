@@ -43,6 +43,15 @@ local demoralizingShout = {
 }
 local shieldBash = {72 --[[Rank 1]], 1671 --[[Rank 2]], 1672 --[[Rank 3]]}
 local charge = {100, 6178, 11578}
+local battleShout = {
+	6673 --[[Rank 1]],
+	5242 --[[Rank 2]],
+	6192 --[[Rank 3]],
+	11549 --[[Rank 4]],
+	11550 --[[Rank 5]],
+	11551 --[[Rank 6]],
+	25289 --[[Rank 7]]
+}
 
 wt:SetPreviousAbilityMap(
 	{
@@ -64,7 +73,8 @@ wt:SetPreviousAbilityMap(
 		hamstring,
 		demoralizingShout,
 		shieldBash,
-		charge
+		charge,
+		battleShout
 	}
 )
 
