@@ -1,3 +1,12 @@
+* 1.6
+    - Fixed warrior abilities showing up as available after a later rank is trained
+    - Fixed rogue abilities showing up as available after a later rank is trained
+    - Fixed druid abilities showing up as available after a later rank is trained
+    - Order pet abilities by level instead of by name
+    - Ignored hunter pet abilities are now displayed in the ignored category
+    - Removed Mail and Plate Mail for the four classes that have it due to it always being displayed as available
+    - Added Russian localization (Thanks to Hubbotu on GitHub!)
+
 * 1.5
     - Added French localization (Thanks to yannlugrin on GitHub!)
 
