@@ -1,5 +1,12 @@
 local _, wt = ...
 if (wt.currentClass ~= "WARRIOR") then return end
+
+-- ordered by rank
+local rend = {772, 6546, 6547, 6548, 11572, 11573, 11574}
+local heroicStrike = {78, 284, 285, 1608, 11564, 11565, 11566, 11567, 25286}
+
+wt:SetPreviousAbilityMap({rend, heroicStrike})
+
 wt.SpellsByLevel = {
 	[1] = {{id = 6673, cost = 10}},
 	[4] = {{id = 100, cost = 100}, {id = 772, cost = 100}},
