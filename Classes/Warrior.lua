@@ -1,11 +1,72 @@
 local _, wt = ...
-if (wt.currentClass ~= "WARRIOR") then return end
+if (wt.currentClass ~= "WARRIOR") then
+	return
+end
 
 -- ordered by rank
 local rend = {772, 6546, 6547, 6548, 11572, 11573, 11574}
 local heroicStrike = {78, 284, 285, 1608, 11564, 11565, 11566, 11567, 25286}
+local bloodthirst = {23881 --[[Rank 1]], 23892 --[[Rank 2]], 23893 --[[Rank 3]], 23894 --[[Rank 4]]}
+local intercept = {20252 --[[Rank 1]], 20616 --[[Rank 2]], 20617 --[[Rank 3]]}
+local mortalStrike = {12294 --[[Rank 1]], 21551 --[[Rank 2]], 21552 --[[Rank 3]], 21553 --[[Rank 4]]}
+local shieldSlam = {23922 --[[Rank 1]], 23923 --[[Rank 2]], 23924 --[[Rank 3]], 23925 --[[Rank 4]]}
+local overpower = {7384 --[[Rank 1]], 7887 --[[Rank 2]], 11584 --[[Rank 3]], 11585 --[[Rank 4]]}
+local cleave = {845 --[[Rank 1]], 7369 --[[Rank 2]], 11608 --[[Rank 3]], 11609 --[[Rank 4]], 20569 --[[Rank 5]]}
+local thunderClap = {
+	6343 --[[Rank 1]],
+	8198 --[[Rank 2]],
+	8204 --[[Rank 3]],
+	8205 --[[Rank 4]],
+	11580 --[[Rank 5]],
+	11581 --[[Rank 6]]
+}
+local sunderArmor = {7386 --[[Rank 1]], 7405 --[[Rank 2]], 8380 --[[Rank 3]], 11596 --[[Rank 4]], 11597 --[[Rank 5]]}
+local pummel = {6552, 6554}
+local mockingBlow = {694 --[[Rank 1]], 7400 --[[Rank 2]], 7402 --[[Rank 3]], 20559 --[[Rank 4]], 20560 --[[Rank 5]]}
+local execute = {5308 --[[Rank 1]], 20658 --[[Rank 2]], 20660 --[[Rank 3]], 20661 --[[Rank 4]], 20662 --[[Rank 5]]}
+local slam = {1464 --[[Rank 1]], 8820 --[[Rank 2]], 11604 --[[Rank 3]], 11605 --[[Rank 4]]}
+local revenge = {
+	6572 --[[Rank 1]],
+	6574 --[[Rank 2]],
+	7379 --[[Rank 3]],
+	11600 --[[Rank 4]],
+	11601 --[[Rank 5]],
+	25288 --[[Rank 6]]
+}
+local hamstring = {1715 --[[Rank 1]], 7372 --[[Rank 2]], 7373 --[[Rank 3]]}
+local demoralizingShout = {
+	1160 --[[Rank 1]],
+	6190 --[[Rank 2]],
+	11554 --[[Rank 3]],
+	11555 --[[Rank 4]],
+	11556 --[[Rank 5]]
+}
+local shieldBash = {72 --[[Rank 1]], 1671 --[[Rank 2]], 1672 --[[Rank 3]]}
+local charge = {100, 6178, 11578}
 
-wt:SetPreviousAbilityMap({rend, heroicStrike})
+wt:SetPreviousAbilityMap(
+	{
+		rend,
+		heroicStrike,
+		bloodthirst,
+		intercept,
+		mortalStrike,
+		shieldSlam,
+		overpower,
+		cleave,
+		thunderClap,
+		sunderArmor,
+		pummel,
+		mockingBlow,
+		execute,
+		slam,
+		revenge,
+		hamstring,
+		demoralizingShout,
+		shieldBash,
+		charge
+	}
+)
 
 wt.SpellsByLevel = {
 	[1] = {{id = 6673, cost = 10}},
