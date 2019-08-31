@@ -30,9 +30,11 @@ local GRAY_FONT_COLOR_CODE = GRAY_FONT_COLOR_CODE
 local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
 local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
 local PARENS_TEMPLATE = PARENS_TEMPLATE
+local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 
 local MAX_ROWS = 22
 local ROW_HEIGHT = 14
+local SKILL_LINE_TAB = MAX_SKILLLINE_TABS - 1
 local HIGHLIGHT_TEXTURE_FILEID = GetFileIDFromPath("Interface\\AddOns\\WhatsTraining\\highlight")
 local LEFT_BG_TEXTURE_FILEID = GetFileIDFromPath("Interface\\AddOns\\WhatsTraining\\left")
 local RIGHT_BG_TEXTURE_FILEID = GetFileIDFromPath("Interface\\AddOns\\WhatsTraining\\right")
@@ -416,19 +418,29 @@ function wt.CreateFrame()
     right:SetPoint("TOPRIGHT", mainFrame)
     mainFrame:Hide()
 
-    local skillLineTab = _G["SpellBookSkillLineTab" .. MAX_SKILLLINE_TABS - 1]
+    local skillLineTab = _G["SpellBookSkillLineTab" .. SKILL_LINE_TAB]
     hooksecurefunc(
         "SpellBookFrame_UpdateSkillLineTabs",
         function()
             skillLineTab:SetNormalTexture(TAB_TEXTURE_FILEID)
             skillLineTab.tooltip = wt.L.TAB_TEXT
             skillLineTab:Show()
-            if (SpellBookFrame.selectedSkillLine == MAX_SKILLLINE_TABS - 1) then
+            if (SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB) then
                 skillLineTab:SetChecked(true)
                 mainFrame:Show()
             else
                 skillLineTab:SetChecked(false)
                 mainFrame:Hide()
+            end
+        end
+    )
+    hooksecurefunc(
+        "SpellBookFrame_Update",
+        function()
+            if (SpellBookFrame.bookType ~= BOOKTYPE_SPELL) then
+                mainFrame:Hide()
+            elseif (SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB) then
+                mainFrame:Show()
             end
         end
     )
