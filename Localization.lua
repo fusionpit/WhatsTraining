@@ -30,7 +30,22 @@ local localeText = {
         TOTALSAVINGS_FORMAT = "Coût économisé : %s",
         LEVEL_FORMAT = "Niveau %s",
         TAB_TEXT = "Que puis-je apprendre ?"
-    }
+    },
+    ruRU = {
+        AVAILABLE_HEADER = "Доступен сейчас",
+        MISSINGREQS_HEADER = "Доступно, но отсутствуют требования",
+        NEXTLEVEL_HEADER = "Скоро будет",
+        NOTLEVEL_HEADER = "Пока недоступно",
+        MISSINGTALENT_HEADER = "Отсутствующие необходимые таланты",
+        IGNORED_HEADER = "Игнорируется",
+        KNOWN_HEADER = "Уже известно",
+        PET_HEADER = "Способности питомца",
+        COST_FORMAT = "Стоимость: %s",
+        TOTALCOST_FORMAT = "Общая стоимость: %s",
+        TOTALSAVINGS_FORMAT = "Все сбережения: %s",
+        LEVEL_FORMAT = "Уровень %s",
+        TAB_TEXT = "Что я могу изучить?"
+    },
 }
 
 wt.L = localeText["enUS"]
