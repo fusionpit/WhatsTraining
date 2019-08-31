@@ -143,7 +143,7 @@ local headers = {
         name = wt.L.PET_HEADER,
         color = PET_FONT_COLOR_CODE,
         key = PET_KEY,
-        nameSort = true
+        --nameSort = true
     },
     {
         name = wt.L.MISSINGTALENT_HEADER,
@@ -162,7 +162,8 @@ local headers = {
         name = wt.L.KNOWN_HEADER,
         color = GRAY_FONT_COLOR_CODE,
         hideLevel = true,
-        key = KNOWN_KEY
+        key = KNOWN_KEY,
+        nameSort = true
     }
 }
 
