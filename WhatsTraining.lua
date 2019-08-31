@@ -229,7 +229,7 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
                 -- there's no good way to handle pet spells, since IsSpellKnown(id, true) will return true only if the
                 -- current active pet has that spell, and IsSpellKnown(petSpellId) always returns false
                 elseif (wt.IsPetSpell and wt.IsPetSpell(spellInfo.id)) then
-                    categoryKey = PET_KEY
+                        categoryKey = PET_KEY
                 elseif (spell.requiredTalentId ~= nil and not IsSpellKnown(spell.requiredTalentId)) then
                     categoryKey = MISSINGTALENT_KEY
                 elseif (isPreviouslyLearnedAbility(spellInfo.id)) then

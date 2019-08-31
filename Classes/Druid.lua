@@ -1,5 +1,60 @@
 local _, wt = ...
-if (wt.currentClass ~= "DRUID") then return end
+if (wt.currentClass ~= "DRUID") then
+	return
+end
+
+local faerieFireFeral = {16857 --[[Rank 1]], 17390 --[[Rank 2]], 17391 --[[Rank 3]], 17392 --[[Rank 4]]}
+local ravage = {6785 --[[Rank 1]], 6787 --[[Rank 2]], 9866 --[[Rank 3]], 9867 --[[Rank 4]]}
+local maul = {
+	6807 --[[Rank 1]],
+	6808 --[[Rank 2]],
+	6809 --[[Rank 3]],
+	8972 --[[Rank 4]],
+	9745 --[[Rank 5]],
+	9880 --[[Rank 6]],
+	9881 --[[Rank 7]]
+}
+local demoralizingRoar = {99 --[[Rank 1]], 1735 --[[Rank 2]], 9490 --[[Rank 3]], 9747 --[[Rank 4]], 9898 --[[Rank 5]]}
+local cower = {8998, 9000, 9892}
+local swipe = {779 --[[Rank 1]], 780 --[[Rank 2]], 769 --[[Rank 3]], 9754 --[[Rank 4]], 9908 --[[Rank 5]]}
+local shred = {5221 --[[Rank 1]], 6800 --[[Rank 2]], 8992 --[[Rank 3]], 9829 --[[Rank 4]], 9830 --[[Rank 5]]}
+local rake = {1822 --[[Rank 1]], 1823 --[[Rank 2]], 1824 --[[Rank 3]], 9904 --[[Rank 4]]}
+local pounce = {9005 --[[Rank 1]], 9823 --[[Rank 2]], 9827 --[[Rank 3]]}
+local frenziedRegeneration = {22842 --[[Rank 1]], 22895 --[[Rank 2]], 22896 --[[Rank 3]]}
+local freociousBite = {
+	22568 --[[Rank 1]],
+	22827 --[[Rank 2]],
+	22828 --[[Rank 3]],
+	22829 --[[Rank 4]],
+	31018 --[[Rank 5]]
+}
+local claw = {1082 --[[Rank 1]], 3029 --[[Rank 2]], 5201 --[[Rank 3]], 9849 --[[Rank 4]], 9850}
+local tigersFury = {5217 --[[Rank 1]], 6793 --[[Rank 2]], 9845 --[[Rank 3]], 9846 --[[Rank 4]]}
+local prowl = {5215, 6783, 9913}
+local rip = {1079 --[[Rank 1]], 9492 --[[Rank 2]], 9493 --[[Rank 3]], 9752 --[[Rank 4]], 9894 --[[Rank 5]], 9896}
+local bash = {5211, 6798, 8983}
+
+wt:SetPreviousAbilityMap(
+	{
+		faerieFireFeral,
+		ravage,
+		maul,
+		demoralizingRoar,
+		cower,
+		swipe,
+		shred,
+		rake,
+		pounce,
+		frenziedRegeneration,
+		freociousBite,
+		claw,
+		tigersFury,
+		prowl,
+		rip,
+		bash
+	}
+)
+
 wt.SpellsByLevel = {
 	[1] = {{id = 1126, cost = 10}},
 	[4] = {{id = 8921, cost = 100}, {id = 774, cost = 100}},
