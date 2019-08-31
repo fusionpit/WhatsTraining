@@ -41,3 +41,14 @@ function wt.RaceFilter(spellsByLevel)
         end
     )
 end
+
+function wt:SetPreviousAbilityMap(t)
+    local abilityMap = {}
+    for _, abilityIds in ipairs(t) do
+        for _, abilityId in ipairs(abilityIds) do
+            abilityMap[abilityId] = abilityIds
+        end
+    end
+    self.previousAbilityMap = abilityMap
+end
+

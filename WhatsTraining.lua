@@ -49,6 +49,18 @@ local COMINGSOON_FONT_COLOR_CODE = "|cff82c5ff"
 local MISSINGTALENT_FONT_COLOR_CODE = "|cffffffff"
 local PET_FONT_COLOR_CODE = "|cffffffff"
 
+local function isPreviouslyLearnedAbility(spellId)
+    if (wt.previousAbilityMap == nil) then return false end
+
+    if (not wt.previousAbilityMap[spellId]) then return false end
+	local spellIndex, knownIndex = 0, 0
+	for i, otherId in ipairs(wt.previousAbilityMap[spellId]) do
+		if (otherId == spellId) then spellIndex = i end
+		if (IsSpellKnown(otherId)) then knownIndex = i end
+    end
+    return spellIndex <= knownIndex
+end
+
 local spellInfoCache = {}
 -- done has param cacheHit
 local function getSpellInfo(spell, level, done)
