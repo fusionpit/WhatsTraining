@@ -221,21 +221,22 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
             local spellInfo = spellInfoCache[spell.id]
             if (spellInfo ~= nil) then
                 local categoryKey
-                -- there's no good way to handle pet spells, since IsSpellKnown(id, true) will return true only if the
-                -- current active pet has that spell, and IsSpellKnown(petSpellId) always returns false
-                if (wt.IsPetSpell and wt.IsPetSpell(spellInfo.id)) then
-                    categoryKey = PET_KEY
-                elseif (IsSpellKnown(spellInfo.id)) then
+
+                if (IsSpellKnown(spellInfo.id)) then
                     categoryKey = KNOWN_KEY
                 elseif (isIgnoredByCTP(spellInfo.id)) then
                     categoryKey = IGNORED_KEY
+                -- there's no good way to handle pet spells, since IsSpellKnown(id, true) will return true only if the
+                -- current active pet has that spell, and IsSpellKnown(petSpellId) always returns false
+                elseif (wt.IsPetSpell and wt.IsPetSpell(spellInfo.id)) then
+                    categoryKey = PET_KEY
                 elseif (spell.requiredTalentId ~= nil and not IsSpellKnown(spell.requiredTalentId)) then
                     categoryKey = MISSINGTALENT_KEY
+                elseif (isPreviouslyLearnedAbility(spellInfo.id)) then
+                    -- special case for abilities that don't have multiple ranks in the spellbook
+                    categoryKey = KNOWN_KEY
                 elseif (level > playerLevel) then
                     categoryKey = level <= playerLevel + 2 and NEXTLEVEL_KEY or NOTLEVEL_KEY
-                elseif (wt.IsPreviouslyLearnedAura and wt.IsPreviouslyLearnedAura(spellInfo.id)) then
-                    -- special case for paladin auras, since new ranks totally replace old ranks
-                    categoryKey = KNOWN_KEY
                 else
                     local hasReqs = true
                     if (spell.requiredIds ~= nil) then
