@@ -1,5 +1,7 @@
 local _, wt = ...
-if (wt.currentClass ~= "SHAMAN") then return end
+if (wt.currentClass ~= "SHAMAN") then
+	return
+end
 wt.SpellsByLevel = {
 	[1] = {{id = 8017, cost = 10}},
 	[4] = {{id = 8042, cost = 100}},
@@ -19,7 +21,6 @@ wt.SpellsByLevel = {
 		{id = 370, cost = 720}
 	},
 	[14] = {
-		{id = 2870, cost = 900},
 		{id = 8045, cost = 900, requiredIds = {8044}},
 		{id = 548, cost = 900, requiredIds = {529}},
 		{id = 8154, cost = 900}
@@ -44,7 +45,12 @@ wt.SpellsByLevel = {
 		{id = 915, cost = 2200, requiredIds = {548}},
 		{id = 6363, cost = 2200}
 	},
-	[22] = {{id = 8498, cost = 3000, requiredIds = {1535}}, {id = 8166, cost = 3000}, {id = 131, cost = 3000}},
+	[22] = {
+		{id = 8498, cost = 3000, requiredIds = {1535}},
+		{id = 8166, cost = 3000},
+		{id = 131, cost = 3000},
+		{id = 2870, cost = 900}
+	},
 	[24] = {
 		{id = 20609, cost = 3500, requiredIds = {2008}},
 		{id = 8046, cost = 3500, requiredIds = {8045}},
