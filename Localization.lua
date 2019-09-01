@@ -46,6 +46,21 @@ local localeText = {
         LEVEL_FORMAT = "Уровень %s",
         TAB_TEXT = "Что я могу изучить?"
     },
+    zhCN = {
+        AVAILABLE_HEADER = "可学",
+        MISSINGREQS_HEADER = "满足条件方可学习",
+        NEXTLEVEL_HEADER = "即将学习",
+        NOTLEVEL_HEADER = "等级不够",
+        MISSINGTALENT_HEADER = "缺少相关天赋",
+        IGNORED_HEADER = "已忽略技能",
+        KNOWN_HEADER = "已学技能",
+        PET_HEADER = "宠物技能",
+        COST_FORMAT = "花费: %s",
+        TOTALCOST_FORMAT = "总花费: %s",
+        TOTALSAVINGS_FORMAT = "总共节省: %s",
+        LEVEL_FORMAT = "等级 %s",
+        TAB_TEXT = "我能学什么技能?"
+    }
 }
 
 wt.L = localeText["enUS"]
