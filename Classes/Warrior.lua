@@ -91,11 +91,10 @@ wt.SpellsByLevel = {
 	[20] = {
 		{id = 845, cost = 4000},
 		{id = 674, cost = 4000},
-		{id = 5246, cost = 6000},
 		{id = 6547, cost = 4000, requiredIds = {6546}},
 		{id = 20230, cost = 4000}
 	},
-	[22] = {{id = 6192, cost = 6000, requiredIds = {5242}}, {id = 7405, cost = 6000}},
+	[22] = {{id = 6192, cost = 6000, requiredIds = {5242}}, {id = 7405, cost = 6000}, {id = 5246, cost = 6000}},
 	[24] = {
 		{id = 6190, cost = 8000, requiredIds = {1160}},
 		{id = 5308, cost = 8000},
