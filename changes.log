@@ -1,3 +1,7 @@
+* 1.6.1
+    - Fixed Intimidating Shout being shown at the wrong level
+    - Fixed shaman's Cure Disease being shown at the wrong level
+
 * 1.6
     - Fixed warrior abilities showing up as available after a later rank is trained
     - Fixed rogue abilities showing up as available after a later rank is trained
