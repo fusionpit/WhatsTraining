@@ -1,3 +1,6 @@
+* 1.7.1
+    - Fixed additional talent ranks for non-mana users breaking after training rank 2 and above
+
 * 1.7
     - Added Chinese localization (Thanks to dingj on GitHub!)
 
