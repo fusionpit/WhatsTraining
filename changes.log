@@ -1,3 +1,8 @@
+* 1.8.1
+    - Added Traditional Chinese localization (Thanks to class2u on GitHub!)
+    - Rogue poisons always showing always available fixed
+    - Fixed sprint and dash
+
 * 1.7.1
     - Fixed additional talent ranks for non-mana users breaking after training rank 2 and above
 
