@@ -7,6 +7,7 @@ local GetFileIDFromPath = GetFileIDFromPath
 local GetSpellInfo = GetSpellInfo
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local IsSpellKnown = IsSpellKnown
+local IsPlayerSpell = IsPlayerSpell
 local UnitLevel = UnitLevel
 local FauxScrollFrame_Update = FauxScrollFrame_Update
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
@@ -21,6 +22,7 @@ local select = select
 local ipairs = ipairs
 local pairs = pairs
 local Spell = Spell
+local Item = Item
 local MAX_SKILLLINE_TABS = MAX_SKILLLINE_TABS
 local GREEN_FONT_COLOR_CODE = GREEN_FONT_COLOR_CODE
 local ORANGE_FONT_COLOR_CODE = ORANGE_FONT_COLOR_CODE
@@ -234,7 +236,7 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
             if (spellInfo ~= nil) then
                 local categoryKey
 
-                if (IsSpellKnown(spellInfo.id)) then
+                if (IsSpellKnown(spellInfo.id) or IsPlayerSpell(spellInfo.id)) then
                     categoryKey = KNOWN_KEY
                 elseif (isIgnoredByCTP(spellInfo.id)) then
                     categoryKey = IGNORED_KEY
@@ -246,6 +248,7 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
                     -- talent abilities for non-mana users don't have multiple ranks in the spellbook
                     (spell.requiredTalentId ~= nil and
                         (not IsSpellKnown(spell.requiredTalentId) and
+                            not IsPlayerSpell(spell.requiredTalentId) and
                             not isPreviouslyLearnedAbility(spell.requiredTalentId)))
                  then
                     categoryKey = MISSINGTALENT_KEY
@@ -259,7 +262,7 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
                     if (spell.requiredIds ~= nil) then
                         for j = 1, #spell.requiredIds do
                             local reqId = spell.requiredIds[j]
-                            hasReqs = hasReqs and IsSpellKnown(reqId)
+                            hasReqs = hasReqs and (IsSpellKnown(reqId) or IsPlayerSpell(reqId))
                         end
                     end
                     categoryKey = hasReqs and AVAILABLE_KEY or MISSINGREQS_KEY
