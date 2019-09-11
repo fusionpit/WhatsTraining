@@ -66,7 +66,7 @@ local function isPreviouslyLearnedAbility(spellId)
         if (otherId == spellId) then
             spellIndex = i
         end
-        if (IsSpellKnown(otherId)) then
+        if (IsSpellKnown(otherId) or IsPlayerSpell(otherId)) then
             knownIndex = i
         end
     end
@@ -247,8 +247,7 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
                 elseif
                     -- talent abilities for non-mana users don't have multiple ranks in the spellbook
                     (spell.requiredTalentId ~= nil and
-                        (not IsSpellKnown(spell.requiredTalentId) and
-                            not IsPlayerSpell(spell.requiredTalentId) and
+                        (not IsSpellKnown(spell.requiredTalentId) and not IsPlayerSpell(spell.requiredTalentId) and
                             not isPreviouslyLearnedAbility(spell.requiredTalentId)))
                  then
                     categoryKey = MISSINGTALENT_KEY
@@ -262,7 +261,9 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
                     if (spell.requiredIds ~= nil) then
                         for j = 1, #spell.requiredIds do
                             local reqId = spell.requiredIds[j]
-                            hasReqs = hasReqs and (IsSpellKnown(reqId) or IsPlayerSpell(reqId))
+                            hasReqs =
+                                hasReqs and
+                                (IsSpellKnown(reqId) or IsPlayerSpell(reqId) or isPreviouslyLearnedAbility(reqId))
                         end
                     end
                     categoryKey = hasReqs and AVAILABLE_KEY or MISSINGREQS_KEY
