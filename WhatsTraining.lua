@@ -310,19 +310,6 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
     if (wt.MainFrame == nil) then
         return
     end
-    FauxScrollFrame_Update(
-        wt.MainFrame.scrollBar,
-        #spellsAndHeaders,
-        MAX_ROWS,
-        ROW_HEIGHT,
-        nil,
-        nil,
-        nil,
-        nil,
-        nil,
-        nil,
-        true
-    )
 end
 local function rebuildIfNotCached(fromCache)
     if (fromCache or wt.MainFrame == nil) then
@@ -415,6 +402,19 @@ function wt.Update(frame, forceUpdate)
         local spell = spellsAndHeaders[spellIndex]
         wt.SetRowSpell(row, spell)
     end
+    FauxScrollFrame_Update(
+        wt.MainFrame.scrollBar,
+        #spellsAndHeaders,
+        MAX_ROWS,
+        ROW_HEIGHT,
+        nil,
+        nil,
+        nil,
+        nil,
+        nil,
+        nil,
+        true
+    )
     lastOffset = offset
 end
 
