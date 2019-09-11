@@ -75,6 +75,21 @@ local localeText = {
         TOTALSAVINGS_FORMAT = "總共省下: %s",
         LEVEL_FORMAT = "等級 %s",
         TAB_TEXT = "我可以接受什麼訓練?"
+    },
+     deDE = {
+        AVAILABLE_HEADER = "Jetzt verfügbar",
+        MISSINGREQS_HEADER = "Verfügbar, aber fehlende Anforderungen",
+        NEXTLEVEL_HEADER = "Demnächst",
+        NOTLEVEL_HEADER = "Noch nicht verfügbar",
+        MISSINGTALENT_HEADER = "Fehlende Talente",
+        IGNORED_HEADER = "Ignoriert",
+        KNOWN_HEADER = "Bereits bekannt",
+        PET_HEADER = "Pet Fähigkeiten",
+        COST_FORMAT = "Kosten: %s",
+        TOTALCOST_FORMAT = "Gesamtkosten: %s",
+        TOTALSAVINGS_FORMAT = "Gesamtersparnis: %s",
+        LEVEL_FORMAT = "Level %s",
+        TAB_TEXT = "Was kann ich Lernen?"
     }
 }
 
