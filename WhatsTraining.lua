@@ -54,7 +54,7 @@ local MISSINGTALENT_FONT_COLOR_CODE = "|cffffffff"
 local PET_FONT_COLOR_CODE = "|cffffffff"
 
 local function isPreviouslyLearnedAbility(spellId)
-    if (wt.previousAbilityMap == nil) then
+    if (wt.previousAbilityMap == nil or not wt.previousAbilityMap[spellId]) then
         return false
     end
 
@@ -71,6 +71,13 @@ local function isPreviouslyLearnedAbility(spellId)
         end
     end
     return spellIndex <= knownIndex
+end
+
+
+local function isAbilityKnown(spellId)
+    if (IsSpellKnown(spellId) or IsPlayerSpell(spellId) or isPreviouslyLearnedAbility(spellId)) then
+        return true
+    end
 end
 
 local spellInfoCache = {}
@@ -236,7 +243,7 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
             if (spellInfo ~= nil) then
                 local categoryKey
 
-                if (IsSpellKnown(spellInfo.id) or IsPlayerSpell(spellInfo.id)) then
+                if (isAbilityKnown(spellInfo.id)) then
                     categoryKey = KNOWN_KEY
                 elseif (isIgnoredByCTP(spellInfo.id)) then
                     categoryKey = IGNORED_KEY
@@ -251,9 +258,6 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
                             not isPreviouslyLearnedAbility(spell.requiredTalentId)))
                  then
                     categoryKey = MISSINGTALENT_KEY
-                elseif (isPreviouslyLearnedAbility(spellInfo.id)) then
-                    -- special case for abilities that don't have multiple ranks in the spellbook
-                    categoryKey = KNOWN_KEY
                 elseif (level > playerLevel) then
                     categoryKey = level <= playerLevel + 2 and NEXTLEVEL_KEY or NOTLEVEL_KEY
                 else
