@@ -1,4 +1,4 @@
-local _, wt = ...
+local addonName, wt = ...
 
 local _G = _G
 local GetCoinTextureString = GetCoinTextureString
@@ -570,7 +570,8 @@ function wt.CreateFrame()
     wt.MainFrame = mainFrame
 end
 
-local function hookCTP()
+if (HookCTPUpdate) then
+
     wt.ctpDb = ClassTrainerPlusDBPC
     HookCTPUpdate(
         function()
@@ -579,16 +580,11 @@ local function hookCTP()
     )
 end
 
-if (HookCTPUpdate) then
-    hookCTP()
-end
-
 local eventFrame = CreateFrame("Frame")
 eventFrame:SetScript(
     "OnEvent",
     function(self, event, ...)
-        if (event == "ADDON_LOADED" and ... == "ClassTrainerPlus") then
-            hookCTP()
+        if (event == "ADDON_LOADED" and ... == addonName) then
             self:UnregisterEvent("ADDON_LOADED")
         elseif (event == "PLAYER_ENTERING_WORLD") then
             local isLogin, isReload = ...

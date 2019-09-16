@@ -3,6 +3,7 @@
 ## Version: @project-version@
 ## Author: Sveng
 ## Notes: Shows you what spells are available at your class trainer
+## OptionalDeps: ClassTrainerPlus
 ## X-Curse-Project-ID: 324944
 ## X-WoWI-ID: 25031
 
