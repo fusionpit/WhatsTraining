@@ -149,7 +149,6 @@ wt.SpellsByLevel = {
 		{id = 11659, cost = 12000, requiredIds = {7641}}
 	},
 	[46] = {
-		{id = 18647, cost = 13000, requiredIds = {710}},
 		{id = 17952, cost = 13000, requiredIds = {17951}},
 		{id = 11729, cost = 13000, requiredIds = {5699}},
 		{id = 11721, cost = 13000, requiredIds = {1490}},
@@ -158,6 +157,7 @@ wt.SpellsByLevel = {
 		{id = 11677, cost = 13000, requiredIds = {6219}}
 	},
 	[48] = {
+		{id = 18647, cost = 13000, requiredIds = {710}},
 		{id = 18930, cost = 700, requiredTalentId = 17962},
 		{id = 17727, cost = 14000, requiredIds = {2362}},
 		{id = 11712, cost = 14000, requiredIds = {11711}},
