@@ -76,7 +76,7 @@ local localeText = {
         LEVEL_FORMAT = "等級 %s",
         TAB_TEXT = "我可以接受什麼訓練?"
     },
-     deDE = {
+    deDE = {
         AVAILABLE_HEADER = "Jetzt verfügbar",
         MISSINGREQS_HEADER = "Verfügbar, aber fehlende Anforderungen",
         NEXTLEVEL_HEADER = "Demnächst",
@@ -90,6 +90,21 @@ local localeText = {
         TOTALSAVINGS_FORMAT = "Gesamtersparnis: %s",
         LEVEL_FORMAT = "Level %s",
         TAB_TEXT = "Was kann ich Lernen?"
+    },
+    koKR = {
+        AVAILABLE_HEADER = "지금 사용 가능",
+        MISSINGREQS_HEADER = "사용 가능하지만 누락된 요구 사항",
+        NEXTLEVEL_HEADER = "곧 사용 가능",
+        NOTLEVEL_HEADER = "아직 사용 불가",
+        MISSINGTALENT_HEADER = "필수 특성 누락",
+        IGNORED_HEADER = "무시됨",
+        KNOWN_HEADER = "이미 배움",
+        PET_HEADER = "소환수 능력",
+        COST_FORMAT = "비용: %s",
+        TOTALCOST_FORMAT = "총 비용: %s",
+        TOTALSAVINGS_FORMAT = "총 절감: %s",
+        LEVEL_FORMAT = "레벨 %s",
+        TAB_TEXT = "무엇을 훈련할 수 있나요?"
     }
 }
 
