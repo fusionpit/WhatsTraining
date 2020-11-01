@@ -2,7 +2,7 @@ local _, wt = ...
 if (wt.currentClass ~= "HUNTER") then
   return
 end
-local petSpells = {
+local petAbilities = {
   24493,
   24497,
   24500,
@@ -51,13 +51,44 @@ local petSpells = {
   24506,
   24507
 }
-local petSpellMap = {}
-for _, v in ipairs(petSpells) do
-  petSpellMap[v] = true
+local petAbilityMap = {}
+for _, v in ipairs(petAbilities) do
+  petAbilityMap[v] = true
 end
-function wt.IsPetSpell(spellId)
-  return petSpellMap[spellId] == true
-end
+wt.petAbilityMap = petAbilityMap
+
+local GetNumCrafts = GetNumCrafts
+local GetCraftDisplaySkillLine = GetCraftDisplaySkillLine
+local GetCraftInfo = GetCraftInfo
+local petAbilityUpdateFrame = CreateFrame("Frame")
+petAbilityUpdateFrame:SetScript("OnEvent", function()
+  -- Beast training should always have at least one craft, and
+  -- display skill line should always return nil for beast training
+  local numCrafts = GetNumCrafts()
+  if (numCrafts == 0 or GetCraftDisplaySkillLine()) then
+    return
+  end
+  for i = 1, numCrafts do
+    local name, rank = GetCraftInfo(i)
+    if (wt.learnedPetAbilityMap[name] == nil) then
+      wt.learnedPetAbilityMap[name] = {}
+    end
+    wt.learnedPetAbilityMap[name][rank]= true
+  end
+  wt.afterPetUpdate()
+end)
+petAbilityUpdateFrame:RegisterEvent("CRAFT_UPDATE")
+petAbilityUpdateFrame:RegisterEvent("SPELLS_CHANGED")
+
+local learnedSpellMatchPattern = string.gsub(ERR_LEARN_SPELL_S, "%%s", "(.+)")
+local petChatParserFrame = CreateFrame("Frame")
+petChatParserFrame:SetScript("OnEvent", function(_, _, ...)
+  local matchedSpellName = string.match(select(1, ...), learnedSpellMatchPattern)
+  if (matchedSpellName ~= nil) then
+    wt.onSpellLearned(matchedSpellName)
+  end
+end)
+petChatParserFrame:RegisterEvent("CHAT_MSG_SYSTEM")
 
 wt.SpellsByLevel = {
   [1] = {{id = 1494, cost = 10}},

@@ -9,12 +9,15 @@ local localeText = {
         MISSINGTALENT_HEADER = "Missing Required Talents",
         IGNORED_HEADER = "Ignored",
         KNOWN_HEADER = "Already Known",
+        KNOWN_PET_HEADER = "Already Known (Pet)",
         PET_HEADER = "Pet Abilities",
         COST_FORMAT = "Cost: %s",
         TOTALCOST_FORMAT = "Total Cost: %s",
         TOTALSAVINGS_FORMAT = "Total Savings: %s",
         LEVEL_FORMAT = "Level %s",
-        TAB_TEXT = "What can I train?"
+        TAB_TEXT = "What can I train?",
+        OPEN_BEAST_TRAINING = "Please open the Beast Training UI",
+        CLICK_TO_OPEN = "Click to open Beast Training"
     },
     frFR = {
         AVAILABLE_HEADER = "Disponible",

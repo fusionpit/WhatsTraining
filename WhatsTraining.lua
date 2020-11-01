@@ -48,38 +48,16 @@ local NOTLEVEL_KEY = "notLevel"
 local MISSINGTALENT_KEY = "missingTalent"
 local IGNORED_KEY = "ignored"
 local KNOWN_KEY = "known"
+local KNOWN_PET_KEY = "knownPet"
 local PET_KEY = "pet"
 local COMINGSOON_FONT_COLOR_CODE = "|cff82c5ff"
 local MISSINGTALENT_FONT_COLOR_CODE = "|cffffffff"
 local PET_FONT_COLOR_CODE = "|cffffffff"
 
-local function isPreviouslyLearnedAbility(spellId)
-    if (wt.previousAbilityMap == nil or not wt.previousAbilityMap[spellId]) then
-        return false
+local petAbilityNames = {}
+local function isPetAbility(spellId)
+    return wt.petAbilityMap ~= nil and wt.petAbilityMap[spellId]
     end
-
-    if (not wt.previousAbilityMap[spellId]) then
-        return false
-    end
-    local spellIndex, knownIndex = 0, 0
-    for i, otherId in ipairs(wt.previousAbilityMap[spellId]) do
-        if (otherId == spellId) then
-            spellIndex = i
-        end
-        if (IsSpellKnown(otherId) or IsPlayerSpell(otherId)) then
-            knownIndex = i
-        end
-    end
-    return spellIndex <= knownIndex
-end
-
-
-local function isAbilityKnown(spellId)
-    if (IsSpellKnown(spellId) or IsPlayerSpell(spellId) or isPreviouslyLearnedAbility(spellId)) then
-        return true
-    end
-end
-
 local spellInfoCache = {}
 -- done has param cacheHit
 local function getSpellInfo(spell, level, done)
@@ -107,6 +85,13 @@ local function getSpellInfo(spell, level, done)
                 level = level,
                 formattedLevel = format(wt.L.LEVEL_FORMAT, level)
             }
+            if (isPetAbility(spell.id)) then
+                if (formattedSubText ~= "") then
+                    petAbilityNames[si:GetSpellName().." "..formattedSubText] = spellInfoCache[spell.id]
+                else
+                    petAbilityNames[si:GetSpellName()] = spellInfoCache[spell.id]
+                end
+            end
             done(false)
         end
     )
@@ -229,6 +214,13 @@ local headers = {
         hideLevel = true,
         key = KNOWN_KEY,
         nameSort = true
+    },
+    {
+        name = wt.L.KNOWN_PET_HEADER,
+        color = GRAY_FONT_COLOR_CODE,
+        hideLevel = true,
+        key = KNOWN_PET_KEY,
+        nameSort = true
     }
 }
 
@@ -276,30 +268,20 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
                 local categoryKey
 
                 if (isAbilityKnown(spellInfo.id)) then
-                    categoryKey = KNOWN_KEY
+                    categoryKey = isPetAbility(spellInfo.id) and KNOWN_PET_KEY or KNOWN_KEY
                 elseif (isIgnoredByCTP(spellInfo.id)) then
                     categoryKey = IGNORED_KEY
-                elseif (wt.IsPetSpell and wt.IsPetSpell(spellInfo.id)) then
-                    -- there's no good way to handle pet spells, since IsSpellKnown(id, true) will return true only if the
-                    -- current active pet has that spell, and IsSpellKnown(petSpellId) always returns false
+                elseif (isPetAbility(spellInfo.id)) then
                     categoryKey = PET_KEY
-                elseif
-                    -- talent abilities for non-mana users don't have multiple ranks in the spellbook
-                    (spell.requiredTalentId ~= nil and
-                        (not IsSpellKnown(spell.requiredTalentId) and not IsPlayerSpell(spell.requiredTalentId) and
-                            not isPreviouslyLearnedAbility(spell.requiredTalentId)))
-                 then
+                elseif (spell.requiredTalentId ~= nil and not isAbilityKnown(spell.requiredTalentId)) then
                     categoryKey = MISSINGTALENT_KEY
                 elseif (level > playerLevel) then
                     categoryKey = level <= playerLevel + 2 and NEXTLEVEL_KEY or NOTLEVEL_KEY
                 else
                     local hasReqs = true
                     if (spell.requiredIds ~= nil) then
-                        for j = 1, #spell.requiredIds do
-                            local reqId = spell.requiredIds[j]
-                            hasReqs =
-                                hasReqs and
-                                (IsSpellKnown(reqId) or IsPlayerSpell(reqId) or isPreviouslyLearnedAbility(reqId))
+                        for _, reqId in ipairs(spell.requiredIds) do
+                            hasReqs = hasReqs and isAbilityKnown(reqId)
                         end
                     end
                     categoryKey = hasReqs and AVAILABLE_KEY or MISSINGREQS_KEY
@@ -329,6 +311,17 @@ local function rebuildSpells(playerLevel, isLevelUpEvent)
             local sortFunc = category.nameSort and byNameThenLevel or byLevelThenName
             sort(category.spells, sortFunc)
             local totalCost = 0
+            if (category.key == PET_KEY and WT_NeedsToOpenBeastTraining == true) then
+                tinsert(spellsAndHeaders, {
+                    formattedName = ORANGE_FONT_COLOR_CODE..wt.L.OPEN_BEAST_TRAINING..FONT_COLOR_CODE_CLOSE,
+                    isHeader = true,
+                    cost = 0,
+                    tooltip = wt.L.CLICK_TO_OPEN,
+                    click = function()
+                        CastSpellByID(5149)
+                    end
+                })
+            end
             for _, s in ipairs(category.spells) do
                 local effectiveLevel = s.level
                 -- when a player levels up and this is triggered from that event, GetQuestDifficultyColor won't
@@ -355,6 +348,32 @@ local function rebuildIfNotCached(fromCache)
     rebuildSpells(UnitLevel("player"))
 end
 
+local function rebuildAndUpdate()
+    rebuildSpells(UnitLevel("player"))
+    if (wt.MainFrame and wt.MainFrame:IsVisible()) then
+        wt.Update(wt.MainFrame, true)
+    end
+end
+
+function wt.afterPetUpdate()
+    WT_NeedsToOpenBeastTraining = false
+    rebuildAndUpdate()
+end
+
+function wt.onSpellLearned(name)
+    local petAbility = petAbilityNames[name]
+    if (petAbility == nil) then return end
+    if (petAbility.subText) then
+        if (wt.learnedPetAbilityMap[petAbility.name] == nil) then
+            wt.learnedPetAbilityMap[petAbility.name] = {}
+        end
+        wt.learnedPetAbilityMap[petAbility.name][petAbility.subText] = true
+    else
+        WT_NeedsToOpenBeastTraining = true
+    end
+    rebuildAndUpdate()
+end
+
 if (wt.TomesByLevel) then
     for level, tomesByLevel in pairs(wt.TomesByLevel) do
         for _, tome in ipairs(tomesByLevel) do
@@ -367,7 +386,6 @@ for level, spellsByLevel in pairs(wt.SpellsByLevel) do
         getSpellInfo(spell, level, rebuildIfNotCached)
     end
 end
-rebuildSpells(UnitLevel("player"))
 
 local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent, "GameTooltipTemplate")
 function wt.SetTooltip(spellInfo)
@@ -378,6 +396,7 @@ function wt.SetTooltip(spellInfo)
     else
         tooltip:ClearLines()
     end
+    if (spellInfo.cost > 0) then
     local coloredCoinString = spellInfo.formattedCost or GetCoinTextureString(spellInfo.cost)
     if (GetMoney() < spellInfo.cost) then
         coloredCoinString = RED_FONT_COLOR_CODE .. coloredCoinString .. FONT_COLOR_CODE_CLOSE
@@ -385,6 +404,10 @@ function wt.SetTooltip(spellInfo)
     local formatString = spellInfo.isHeader and (spellInfo.costFormat or wt.L.TOTALCOST_FORMAT) or wt.L.COST_FORMAT
 
     tooltip:AddLine(HIGHLIGHT_FONT_COLOR_CODE .. format(formatString, coloredCoinString) .. FONT_COLOR_CODE_CLOSE)
+    end
+    if (spellInfo.tooltip) then
+        tooltip:AddLine(spellInfo.tooltip)
+    end
     tooltip:Show()
 end
 
@@ -399,7 +422,7 @@ function wt.SetRowSpell(row, spell)
         row.header:SetText(spell.formattedName)
         row:SetID(0)
         row.highlight:SetTexture(nil)
-    elseif (spell ~= nil) then
+    else
         local rowSpell = row.spell
         row.header:Hide()
         row.isHeader = false
@@ -418,6 +441,7 @@ function wt.SetRowSpell(row, spell)
         row:SetID(spell.id)
         rowSpell.icon:SetTexture(spell.icon)
     end
+    row:SetScript("OnClick", spell.click)
     row.currentSpell = spell
     if (tooltip:IsOwned(row)) then
         wt.SetTooltip(spell)
@@ -530,7 +554,7 @@ function wt.CreateFrame()
 
     local rows = {}
     for i = 1, MAX_ROWS do
-        local row = CreateFrame("Frame", "$parentRow" .. i, mainFrame)
+        local row = CreateFrame("Button", "$parentRow" .. i, mainFrame)
         row:SetHeight(ROW_HEIGHT)
         row:EnableMouse()
         row:SetScript(
@@ -603,7 +627,6 @@ function wt.CreateFrame()
 end
 
 if (HookCTPUpdate) then
-
     wt.ctpDb = ClassTrainerPlusDBPC
     HookCTPUpdate(
         function()
@@ -617,6 +640,15 @@ eventFrame:SetScript(
     "OnEvent",
     function(self, event, ...)
         if (event == "ADDON_LOADED" and ... == addonName) then
+            if (WT_LearnedPetAbilities == nil) then
+                WT_LearnedPetAbilities = {}
+                WT_NeedsToOpenBeastTraining = wt.currentClass == "HUNTER"
+            end
+
+            wt.learnedPetAbilityMap = WT_LearnedPetAbilities
+            if (WT_NeedsToOpenBeastTraining == nil and wt.currentClass == "HUNTER") then
+                WT_NeedsToOpenBeastTraining = true
+            end
             self:UnregisterEvent("ADDON_LOADED")
         elseif (event == "PLAYER_ENTERING_WORLD") then
             local isLogin, isReload = ...
