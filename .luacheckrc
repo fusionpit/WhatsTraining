@@ -1,12 +1,18 @@
 read_globals = {
     -- api functions
+    "CastSpellByID",
     "GetLocale",
     "GetCoinTextureString",
+    "GetCraftDisplaySkillLine",
+    "GetCraftInfo",
+    "GetNumCrafts",
     "GetMoney",
     "GetFileIDFromPath",
     "GetSpellInfo",
+    "GetSpellSubtext",
     "GetQuestDifficultyColor",
     "IsSpellKnown",
+    "IsPlayerSpell",
     "UnitClass",
     "UnitLevel",
     "UnitRace",
@@ -24,6 +30,7 @@ read_globals = {
     "sort",
     -- api classes
     "Spell",
+    "Item",
     -- blizzard frames
     "SpellBookFrame",
     "UIParent",
@@ -37,7 +44,15 @@ read_globals = {
     "HIGHLIGHT_FONT_COLOR_CODE",
     "PARENS_TEMPLATE",
     "MAX_SKILLLINE_TABS",
+    "BOOKTYPE_SPELL",
+    "ERR_LEARN_SPELL_S",
 
     "HookCTPUpdate"
 }
-globals = {"ClassTrainerPlusDBPC", "CTP_UpdateService", "WhatsTrainingFrame"}
+globals = {
+    "ClassTrainerPlusDBPC", 
+    "CTP_UpdateService", 
+    "WhatsTrainingFrame",
+    "WT_NeedsToOpenBeastTraining",
+    "WT_LearnedPetAbilities"
+}
