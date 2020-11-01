@@ -7,7 +7,7 @@
 ## X-Curse-Project-ID: 324944
 ## X-WoWI-ID: 25031
 
-ClassLoader.lua
+Utils.lua
 
 Classes\Druid.lua
 Classes\Hunter.lua

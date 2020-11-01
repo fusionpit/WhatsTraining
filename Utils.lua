@@ -42,13 +42,18 @@ function wt.RaceFilter(spellsByLevel)
     )
 end
 
-function wt:SetPreviousAbilityMap(t)
+--[[
+    varargs is just a set of tables, where each table is a list of spell ids that
+    totally overwrite a previous rank of that ability ordered by rank.
+    Most warrior and rogue abilities are like this, as they cost the same amount
+    of resources but just last longer or do more damage.
+]]
+function wt:AddOverriddenSpells(...)
     local abilityMap = {}
-    for _, abilityIds in ipairs(t) do
+    for _, abilityIds in ipairs({...}) do
         for _, abilityId in ipairs(abilityIds) do
             abilityMap[abilityId] = abilityIds
         end
     end
-    self.previousAbilityMap = abilityMap
+    self.overriddenSpellsMap = abilityMap
 end
-
