@@ -103,28 +103,29 @@ local eviscerate = {
 local sprint = {2983 --[[Rank 1]], 8696 --[[Rank 2]], 11305 --[[Rank 3]]}
 local sliceAndDice = {5171 --[[Rank 1]], 6774 --[[Rank 2]]}
 local vanish = {1856 --[[Rank 1]], 1857 --[[Rank 2]]}
+local kidneyShot = {408, 8643}
 
 wt:AddOverriddenSpells(
-		stealth,
-		backstab,
-		gouge,
-		sap,
-		garrote,
-		feint,
-		rupture,
-		ambush,
-		exposeArmor,
-		kick,
-		cripplingPoison,
-		mindNumbingPoison,
-		instantPoiston,
-		deadlyPoison,
-		sinisterStrike,
-		eviscerate,
-		sprint,
-		sliceAndDice,
-		vanish
-	}
+	stealth,
+	backstab,
+	gouge,
+	sap,
+	garrote,
+	feint,
+	rupture,
+	ambush,
+	exposeArmor,
+	kick,
+	cripplingPoison,
+	mindNumbingPoison,
+	instantPoiston,
+	deadlyPoison,
+	sinisterStrike,
+	eviscerate,
+	sprint,
+	sliceAndDice,
+	vanish,
+	kidneyShot
 )
 
 wt.SpellsByLevel = {
