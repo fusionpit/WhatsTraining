@@ -1,3 +1,7 @@
+* 1.9.0
+    - Added support for known hunter pet abilities
+    - Fixed some rogue abilities not being marked as known
+
 * 1.8.7
     - Fixed price of final rank of Wing Clip
 
