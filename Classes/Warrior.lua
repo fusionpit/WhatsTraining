@@ -53,29 +53,27 @@ local battleShout = {
 	25289 --[[Rank 7]]
 }
 
-wt:SetPreviousAbilityMap(
-	{
-		rend,
-		heroicStrike,
-		bloodthirst,
-		intercept,
-		mortalStrike,
-		shieldSlam,
-		overpower,
-		cleave,
-		thunderClap,
-		sunderArmor,
-		pummel,
-		mockingBlow,
-		execute,
-		slam,
-		revenge,
-		hamstring,
-		demoralizingShout,
-		shieldBash,
-		charge,
-		battleShout
-	}
+wt:AddOverriddenSpells(
+	rend,
+	heroicStrike,
+	bloodthirst,
+	intercept,
+	mortalStrike,
+	shieldSlam,
+	overpower,
+	cleave,
+	thunderClap,
+	sunderArmor,
+	pummel,
+	mockingBlow,
+	execute,
+	slam,
+	revenge,
+	hamstring,
+	demoralizingShout,
+	shieldBash,
+	charge,
+	battleShout
 )
 
 wt.SpellsByLevel = {

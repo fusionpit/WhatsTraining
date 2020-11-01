@@ -35,26 +35,24 @@ local rip = {1079 --[[Rank 1]], 9492 --[[Rank 2]], 9493 --[[Rank 3]], 9752 --[[R
 local bash = {5211, 6798, 8983}
 local dash = {1850, 9821}
 
-wt:SetPreviousAbilityMap(
-	{
-		faerieFireFeral,
-		ravage,
-		maul,
-		demoralizingRoar,
-		cower,
-		swipe,
-		shred,
-		rake,
-		pounce,
-		frenziedRegeneration,
-		freociousBite,
-		claw,
-		tigersFury,
-		prowl,
-		rip,
-		bash,
-		dash
-	}
+wt:AddOverriddenSpells(
+	faerieFireFeral,
+	ravage,
+	maul,
+	demoralizingRoar,
+	cower,
+	swipe,
+	shred,
+	rake,
+	pounce,
+	frenziedRegeneration,
+	freociousBite,
+	claw,
+	tigersFury,
+	prowl,
+	rip,
+	bash,
+	dash
 )
 
 wt.SpellsByLevel = {

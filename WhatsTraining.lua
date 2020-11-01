@@ -145,6 +145,38 @@ local function getItemInfo(item, level, done)
     )
 end
 
+local function isPreviouslyLearnedAbility(spellId)
+    if (wt.overriddenSpellsMap == nil or not wt.overriddenSpellsMap[spellId]) then
+        return false
+    end
+
+    local spellIndex, knownIndex = 0, 0
+    for i, otherId in ipairs(wt.overriddenSpellsMap[spellId]) do
+        if (otherId == spellId) then
+            spellIndex = i
+        end
+        if (IsSpellKnown(otherId) or IsPlayerSpell(otherId)) then
+            knownIndex = i
+        end
+    end
+    return spellIndex <= knownIndex
+end
+
+local function isAbilityKnown(spellId)
+    if (IsSpellKnown(spellId) or IsPlayerSpell(spellId) or isPreviouslyLearnedAbility(spellId)) then
+        return true
+    end
+    if (not isPetAbility(spellId)) then
+        return false
+    end
+    local info = spellInfoCache[spellId]
+
+    if (wt.learnedPetAbilityMap[info.name] == nil) then
+        return false
+    end
+
+    return wt.learnedPetAbilityMap[info.name][info.subText]
+end
 local function isIgnoredByCTP(spellId)
     return wt.ctpDb ~= nil and wt.ctpDb[spellId]
 end
