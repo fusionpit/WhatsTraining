@@ -73,7 +73,10 @@ petAbilityUpdateFrame:SetScript("OnEvent", function()
     if (wt.learnedPetAbilityMap[name] == nil) then
       wt.learnedPetAbilityMap[name] = {}
     end
-    wt.learnedPetAbilityMap[name][rank]= true
+    -- some locales may not provide a rank, need more investigation
+    if (rank ~= nil) then
+      wt.learnedPetAbilityMap[name][rank]= true
+    end
   end
   wt.afterPetUpdate()
 end)
