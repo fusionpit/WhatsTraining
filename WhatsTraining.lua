@@ -156,7 +156,7 @@ local function isAbilityKnown(spellId)
     end
     local info = spellInfoCache[spellId]
 
-    if (wt.learnedPetAbilityMap[info.name] == nil) then
+    if (info.subText == nil or wt.learnedPetAbilityMap[info.name] == nil) then
         return false
     end
 
