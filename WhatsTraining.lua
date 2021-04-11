@@ -311,247 +311,116 @@ for level, spellsByLevel in pairs(wt.SpellsByLevel) do
     end
 end
 
-local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent, "GameTooltipTemplate")
-function wt.SetTooltip(spellInfo)
-    if (spellInfo.isItem) then
-        tooltip:SetItemByID(spellInfo.id)
-    elseif (spellInfo.id) then
-        tooltip:SetSpellByID(spellInfo.id)
-    else
-        tooltip:ClearLines()
-    end
-    if (spellInfo.cost > 0) then
-    local coloredCoinString = spellInfo.formattedCost or GetCoinTextureString(spellInfo.cost)
-    if (GetMoney() < spellInfo.cost) then
-        coloredCoinString = RED_FONT_COLOR_CODE .. coloredCoinString .. FONT_COLOR_CODE_CLOSE
-    end
-    local formatString = spellInfo.isHeader and (spellInfo.costFormat or wt.L.TOTALCOST_FORMAT) or wt.L.COST_FORMAT
-
-    tooltip:AddLine(HIGHLIGHT_FONT_COLOR_CODE .. format(formatString, coloredCoinString) .. FONT_COLOR_CODE_CLOSE)
-    end
-    if (spellInfo.tooltip) then
-        tooltip:AddLine(spellInfo.tooltip)
-    end
-    tooltip:Show()
-end
-
-function wt.SetRowSpell(row, spell)
-    if (spell == nil) then
-        row.currentSpell = nil
-        row:Hide()
-        return
-    elseif (spell.isHeader) then
-        row.spell:Hide()
-        row.header:Show()
-        row.header:SetText(spell.formattedName)
-        row:SetID(0)
-        row.highlight:SetTexture(nil)
-    else
-        local rowSpell = row.spell
-        row.header:Hide()
-        row.isHeader = false
-        row.highlight:SetTexture(HIGHLIGHT_TEXTURE_FILEID)
-        rowSpell:Show()
-        rowSpell.label:SetText(spell.name)
-        rowSpell.subLabel:SetText(spell.formattedSubText)
-        if (not spell.hideLevel) then
-            rowSpell.level:Show()
-            rowSpell.level:SetText(spell.formattedLevel)
-            local color = spell.levelColor
-            rowSpell.level:SetTextColor(color.r, color.g, color.b)
-        else
-            rowSpell.level:Hide()
-        end
-        row:SetID(spell.id)
-        rowSpell.icon:SetTexture(spell.icon)
-    end
-    row:SetScript("OnClick", spell.click)
-    row.currentSpell = spell
-    if (tooltip:IsOwned(row)) then
-        wt.SetTooltip(spell)
-    end
-    row:Show()
-end
-
--- When holding down left mouse on the slider knob, it will keep firing update even though
--- the offset hasn't changed so this will help throttle that
-local lastOffset = -1
-function wt.Update(frame, forceUpdate)
-    local scrollBar = frame.scrollBar
-    local offset = FauxScrollFrame_GetOffset(scrollBar)
-    if (offset == lastOffset and not forceUpdate) then
-        return
-    end
-    for i, row in ipairs(frame.rows) do
-        local spellIndex = i + offset
-        local spell = spellsAndHeaders[spellIndex]
-        wt.SetRowSpell(row, spell)
-    end
-    FauxScrollFrame_Update(
-        wt.MainFrame.scrollBar,
-        #spellsAndHeaders,
-        MAX_ROWS,
-        ROW_HEIGHT,
-        nil,
-        nil,
-        nil,
-        nil,
-        nil,
-        nil,
-        true
-    )
-    lastOffset = offset
-end
-
-local hasFrameShown = false
-function wt.CreateFrame()
-    local mainFrame = CreateFrame("Frame", "WhatsTrainingFrame", SpellBookFrame)
-    mainFrame:SetPoint("TOPLEFT", SpellBookFrame, "TOPLEFT", 0, 0)
-    mainFrame:SetPoint("BOTTOMRIGHT", SpellBookFrame, "BOTTOMRIGHT", 0, 0)
-    mainFrame:SetFrameStrata("HIGH")
-    local left = mainFrame:CreateTexture(nil, "ARTWORK")
-    left:SetTexture(LEFT_BG_TEXTURE_FILEID)
-    left:SetWidth(256)
-    left:SetHeight(512)
-    left:SetPoint("TOPLEFT", mainFrame)
-    local right = mainFrame:CreateTexture(nil, "ARTWORK")
-    right:SetTexture(RIGHT_BG_TEXTURE_FILEID)
-    right:SetWidth(128)
-    right:SetHeight(512)
-    right:SetPoint("TOPRIGHT", mainFrame)
-    mainFrame:Hide()
-
-    local skillLineTab = _G["SpellBookSkillLineTab" .. SKILL_LINE_TAB]
-    hooksecurefunc(
-        "SpellBookFrame_UpdateSkillLineTabs",
-        function()
-            skillLineTab:SetNormalTexture(TAB_TEXTURE_FILEID)
-            skillLineTab.tooltip = wt.L.TAB_TEXT
-            skillLineTab:Show()
-            if (SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB) then
-                skillLineTab:SetChecked(true)
-                mainFrame:Show()
-            else
-                skillLineTab:SetChecked(false)
-                mainFrame:Hide()
-            end
-        end
-    )
-    hooksecurefunc(
-        "SpellBookFrame_Update",
-        function()
-            if (SpellBookFrame.bookType ~= BOOKTYPE_SPELL) then
-                mainFrame:Hide()
-            elseif (SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB) then
-                mainFrame:Show()
-            end
-        end
-    )
-
-    local scrollBar = CreateFrame("ScrollFrame", "$parentScrollBar", mainFrame, "FauxScrollFrameTemplate")
-    scrollBar:SetPoint("TOPLEFT", 0, -75)
-    scrollBar:SetPoint("BOTTOMRIGHT", -65, 81)
-    scrollBar:SetScript(
-        "OnVerticalScroll",
-        function(self, offset)
-            FauxScrollFrame_OnVerticalScroll(
-                self,
-                offset,
-                ROW_HEIGHT,
-                function()
-                    wt.Update(mainFrame)
-                end
-            )
-        end
-    )
-    scrollBar:SetScript(
-        "OnShow",
-        function()
-            if (not hasFrameShown) then
-                rebuildSpells(UnitLevel("player"))
-                hasFrameShown = true
-            end
-            wt.Update(mainFrame, true)
-        end
-    )
-    mainFrame.scrollBar = scrollBar
-
-    local rows = {}
-    for i = 1, MAX_ROWS do
-        local row = CreateFrame("Button", "$parentRow" .. i, mainFrame)
-        row:SetHeight(ROW_HEIGHT)
-        row:EnableMouse()
-        row:SetScript(
-            "OnEnter",
-            function(self)
-                tooltip:SetOwner(self, "ANCHOR_RIGHT")
-                wt.SetTooltip(self.currentSpell)
-            end
-        )
-        row:SetScript(
-            "OnLeave",
-            function()
-                tooltip:Hide()
-            end
-        )
-        local highlight = row:CreateTexture("$parentHighlight", "HIGHLIGHT")
-        highlight:SetAllPoints()
-
-        local spell = CreateFrame("Frame", "$parentSpell", row)
-        spell:SetPoint("LEFT", row, "LEFT")
-        spell:SetPoint("TOP", row, "TOP")
-        spell:SetPoint("BOTTOM", row, "BOTTOM")
-
-        local spellIcon = spell:CreateTexture(nil, "OVERLAY")
-        spellIcon:SetPoint("TOPLEFT", spell)
-        spellIcon:SetPoint("BOTTOMLEFT", spell)
-        local iconWidth = ROW_HEIGHT
-        spellIcon:SetWidth(iconWidth)
-        local spellLabel = spell:CreateFontString("$parentLabel", "OVERLAY", "GameFontNormal")
-        spellLabel:SetPoint("TOPLEFT", spell, "TOPLEFT", iconWidth + 4, 0)
-        spellLabel:SetPoint("BOTTOM", spell)
-        spellLabel:SetJustifyV("MIDDLE")
-        spellLabel:SetJustifyH("LEFT")
-        local spellSublabel = spell:CreateFontString("$parentSubLabel", "OVERLAY", "NewSubSpellFont")
-        spellSublabel:SetJustifyH("LEFT")
-        spellSublabel:SetPoint("TOPLEFT", spellLabel, "TOPRIGHT", 2, 0)
-        spellSublabel:SetPoint("BOTTOM", spellLabel)
-        local spellLevelLabel = spell:CreateFontString("$parentLevelLabel", "OVERLAY", "GameFontWhite")
-        spellLevelLabel:SetPoint("TOPRIGHT", spell, -4, 0)
-        spellLevelLabel:SetPoint("BOTTOM", spell)
-        spellLevelLabel:SetJustifyH("RIGHT")
-        spellLevelLabel:SetJustifyV("MIDDLE")
-        spellSublabel:SetPoint("RIGHT", spellLevelLabel, "LEFT")
-        spellSublabel:SetJustifyV("MIDDLE")
-
-        local headerLabel = row:CreateFontString("$parentHeaderLabel", "OVERLAY", "GameFontWhite")
-        headerLabel:SetAllPoints()
-        headerLabel:SetJustifyV("MIDDLE")
-        headerLabel:SetJustifyH("CENTER")
-
-        spell.label = spellLabel
-        spell.subLabel = spellSublabel
-        spell.icon = spellIcon
-        spell.level = spellLevelLabel
-        row.highlight = highlight
-        row.header = headerLabel
-        row.spell = spell
-
-        if (rows[i - 1] == nil) then
-            row:SetPoint("TOPLEFT", mainFrame, 26, -78)
-        else
-            row:SetPoint("TOPLEFT", rows[i - 1], "BOTTOMLEFT", 0, -2)
-        end
-        row:SetPoint("RIGHT", scrollBar)
-
-        rawset(rows, i, row)
-    end
-    mainFrame.rows = rows
-    wt.MainFrame = mainFrame
-end
-
 if (HookCTPUpdate) then
     wt.ctpDb = ClassTrainerPlusDBPC
+    HookCTPUpdate(function()
+        wt:RebuildData()
+    end)
+end
+
+local eventFrame = CreateFrame("Frame")
+eventFrame:SetScript("OnEvent", function(self, event, ...)
+    if (event == "ADDON_LOADED" and ... == addonName) then
+        if (WT_LearnedPetAbilities == nil) then
+            WT_LearnedPetAbilities = {}
+            WT_NeedsToOpenBeastTraining = wt.currentClass == "HUNTER"
+        end
+
+        wt.learnedPetAbilityMap = WT_LearnedPetAbilities
+        if (WT_NeedsToOpenBeastTraining == nil and wt.currentClass == "HUNTER") then
+            WT_NeedsToOpenBeastTraining = true
+        end
+        self:UnregisterEvent("ADDON_LOADED")
+    elseif (event == "PLAYER_ENTERING_WORLD") then
+        local isLogin, isReload = ...
+        if (isLogin or isReload) then
+            rebuildData(UnitLevel("player"))
+            wt.CreateFrame()
+        end
+    elseif (event == "LEARNED_SPELL_IN_TAB" or event == "PLAYER_LEVEL_UP") then
+        local isLevelUp = event == "PLAYER_LEVEL_UP"
+        rebuildData(isLevelUp and ... or UnitLevel("player"), isLevelUp)
+        if (wt.MainFrame and wt.MainFrame:IsVisible()) then
+            wt.Update(wt.MainFrame, true)
+        end
+    end
+end)
+eventFrame:RegisterEvent("ADDON_LOADED")
+eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+eventFrame:RegisterEvent("LEARNED_SPELL_IN_TAB")
+eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
+
+if (wt.currentClass == "WARLOCK") then
+    local scan = CreateFrame("GameTooltip", "WTWarlockTomeScanningTooltip", nil,
+                             "GameTooltipTemplate")
+    scan:SetOwner(UIParent, "ANCHOR_NONE")
+    local requiresLevelPattern = SPELL_REQUIRED_FORM .. '?'
+    local function isKnown(merchantIndex)
+        scan:ClearLines()
+        local link = GetMerchantItemLink(merchantIndex)
+        scan:SetHyperlink(link)
+        local lines = scan:NumLines()
+        for i = lines, 1, -1 do
+            local text =
+                _G['WTWarlockTomeScanningTooltipTextLeft' .. i]:GetText()
+            -- the "Requires Level x" line is above the "Already Known" line
+            -- we can stop searching when we hit it
+            if (string.match(text, requiresLevelPattern)) then
+                return false
+            end
+            if (text == ITEM_SPELL_KNOWN) then return true end
+        end
+        return false
+    end
+
+    local tomeMerchantIds = {
+        [5520] = true,
+        [5753] = true,
+        [1277] = true,
+        [6027] = true,
+        [6374] = true,
+        [6373] = true,
+        [6376] = true,
+        [1280] = true,
+        [5749] = true,
+        [5750] = true,
+        [6382] = true,
+        [5815] = true,
+        [6328] = true
+    }
+    local function updateMerchantFrame()
+        local guid = UnitGUID("npc")
+        if (guid == nil) then return end
+        local npcId = select(6, strsplit("-", guid))
+        if (npcId == nil) then return end
+        npcId = tonumber(npcId)
+        if (not tomeMerchantIds[npcId]) then return end
+
+        local numMerchantItems = GetMerchantNumItems();
+        for i = 1, MERCHANT_ITEMS_PER_PAGE do
+            local index =
+                (((MerchantFrame.page - 1) * MERCHANT_ITEMS_PER_PAGE) + i);
+            local itemButton = _G["MerchantItem" .. i .. "ItemButton"];
+            local merchantButton = _G["MerchantItem" .. i];
+            if (index <= numMerchantItems) then
+                local merchantItemID = GetMerchantItemID(index)
+                if (wt.TomeIds[merchantItemID]) then
+                    if (wt.learnedPetAbilityMap[merchantItemID] == nil) then
+                        if (isKnown(index)) then
+                            wt.learnedPetAbilityMap[merchantItemID] = true
+                        end
+                    end
+                end
+                if (wt.learnedPetAbilityMap[merchantItemID]) then
+                    SetItemButtonNameFrameVertexColor(merchantButton, 0.5, 0, 0);
+                    SetItemButtonSlotVertexColor(merchantButton, 0.5, 0, 0);
+                    SetItemButtonTextureVertexColor(itemButton, 0.5, 0, 0);
+                    SetItemButtonNormalTextureVertexColor(itemButton, 0.5, 0, 0);
+                end
+            end
+
+        end
+    end
     HookCTPUpdate(
         function()
             rebuildSpells(UnitLevel("player"))

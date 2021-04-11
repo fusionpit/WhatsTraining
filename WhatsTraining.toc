@@ -22,4 +22,5 @@ Classes\Warlock.lua
 Classes\Warrior.lua
 
 Localization.lua
+WhatsTrainingUI.lua
 WhatsTraining.lua
