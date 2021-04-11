@@ -9,6 +9,7 @@
 ## X-WoWI-ID: 25031
 
 Utils.lua
+Cache.lua
 
 Classes\Druid.lua
 Classes\Hunter.lua
