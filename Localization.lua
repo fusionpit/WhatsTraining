@@ -17,7 +17,9 @@ local localeText = {
         LEVEL_FORMAT = "Level %s",
         TAB_TEXT = "What can I train?",
         OPEN_BEAST_TRAINING = "Please open the Beast Training UI",
-        CLICK_TO_OPEN = "Click to open Beast Training"
+        CLICK_TO_OPEN = "Click to open Beast Training",
+        TOME_HEADER = "Has this been learned?",
+        TOME_LEARNED = "Grimoire learned"
     },
     frFR = {
         AVAILABLE_HEADER = "Disponible",
