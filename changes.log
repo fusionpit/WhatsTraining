@@ -1,3 +1,6 @@
+* 2.0.0
+    - Added ability to mark warlock Grimoire's as learned so they are displayed differently in the vendor
+
 * 1.9.2
     - Fix hunter error for some locales
 
