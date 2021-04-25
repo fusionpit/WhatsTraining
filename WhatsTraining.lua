@@ -302,6 +302,7 @@ if (wt.currentClass == "WARLOCK") then
     local function isKnown(merchantIndex)
         scan:ClearLines()
         local link = GetMerchantItemLink(merchantIndex)
+        if (not link) then return false end
         scan:SetHyperlink(link)
         local lines = scan:NumLines()
         for i = lines, 1, -1 do
