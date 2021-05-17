@@ -11,15 +11,15 @@
 Utils.lua
 Cache.lua
 
-Classes\Druid.lua
-Classes\Hunter.lua
-Classes\Mage.lua
-Classes\Paladin.lua
-Classes\Priest.lua
-Classes\Rogue.lua
-Classes\Shaman.lua
-Classes\Warlock.lua
-Classes\Warrior.lua
+Classes\Classic\Druid.lua
+Classes\Classic\Hunter.lua
+Classes\Classic\Mage.lua
+Classes\Classic\Paladin.lua
+Classes\Classic\Priest.lua
+Classes\Classic\Rogue.lua
+Classes\Classic\Shaman.lua
+Classes\Classic\Warlock.lua
+Classes\Classic\Warrior.lua
 
 Localization.lua
 WhatsTrainingUI.lua
