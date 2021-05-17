@@ -334,6 +334,7 @@ if (wt.currentClass == "WARLOCK") then
         [6328] = true
     }
     local function updateMerchantFrame()
+        if (IsAddOnLoaded('GrimoireKeeper')) then return end
         local guid = UnitGUID("npc")
         if (guid == nil) then return end
         local npcId = select(6, strsplit("-", guid))
