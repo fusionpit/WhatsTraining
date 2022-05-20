@@ -17,6 +17,7 @@ local TAB_TEXTURE_FILEID = GetFileIDFromPath(
 local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent,
                             "GameTooltipTemplate")
 local function setTooltip(spellInfo)
+    tooltip:ClearLines()
     if (spellInfo.isItem) then
         tooltip:SetItemByID(spellInfo.id)
     elseif (spellInfo.id) then
