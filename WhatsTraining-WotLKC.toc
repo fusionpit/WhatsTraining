@@ -1,0 +1,27 @@
+## Interface: 30400
+## Title: What's Training?
+## Version: @project-version@
+## Author: Sveng
+## Notes: Shows you what spells are available at your class trainer
+## SavedVariablesPerCharacter: WT_LearnedPetAbilities, WT_NeedsToOpenBeastTraining
+## OptionalDeps: ClassTrainerPlus
+## X-Curse-Project-ID: 324944
+## X-WoWI-ID: 25031
+
+Utils.lua
+Cache.lua
+
+Classes\Wrath\DeathKnight.lua
+Classes\Wrath\Druid.lua
+Classes\Wrath\Hunter.lua
+Classes\Wrath\Mage.lua
+Classes\Wrath\Paladin.lua
+Classes\Wrath\Priest.lua
+Classes\Wrath\Rogue.lua
+Classes\Wrath\Shaman.lua
+Classes\Wrath\Warlock.lua
+Classes\Wrath\Warrior.lua
+
+Localization.lua
+WhatsTrainingUI.lua
+WhatsTraining.lua
