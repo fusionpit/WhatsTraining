@@ -2,6 +2,21 @@ local _, wt = ...
 if (wt.currentClass ~= "DEATHKNIGHT") then
 	return
 end
+local deathandDecay = {43265,49936,49937,49938}
+local plagueStrike = {45462,49917,49918,49919,49920,49921}
+local deathStrike = {49998,49999,45463,49923,49924}
+local icyTouch = {45477,49896,49903,49904,49909}
+local bloodStrike = {45902,49926,49927,49928,49929,49930}
+local deathCoil = {47541,62900,49892,62901,49893,62902,49894,62903,49895,62904}
+local bloodBoil = {48721,49939,49940,49941}
+local obliterate = {49020,66198,51423,51424,51425}
+local hornofWinter = {57330,57623}
+local frostStrike = {49143,51416,51417,51418,51419,55268}
+local corpseExplosion = {49158,51325,51326,51327,51328}
+local howlingBlast = {49184,51409,51410,51411}
+local heartStrike = {55050,55258,55259,55260,55261,55262}
+local scourgeStrike = {55090,55265,55270,55271}
+wt:AddOverriddenSpells(deathandDecay,plagueStrike,deathStrike,icyTouch,bloodStrike,deathCoil,bloodBoil,obliterate,hornofWinter,frostStrike,corpseExplosion,howlingBlast,heartStrike,scourgeStrike)
 wt.SpellsByLevel = {
 	[55] = {{id = 53341, cost = 55000},{id = 53343, cost = 55000},},
 	[56] = {{id = 50842, cost = 5600},{id = 49998, cost = 5600},{id = 46584, cost = 5600},},
