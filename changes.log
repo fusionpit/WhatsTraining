@@ -1,3 +1,10 @@
+* 4.0.0
+    - WotLK Classic support
+
+* 3.0.0
+    - Add TBC Classic support
+    - Fix clashing with GrimoireKeeper
+
 * 2.0.2
     - Updated toc version
 
