@@ -19,9 +19,10 @@ local sliceandDice = {5171,6774}
 local evasion = {5277,26669}
 local exposeArmor = {8647}
 local ambush = {8676,8724,8725,11267,11268,11269,27441,48689,48690,48691}
+local deadlyThrow = {26679,48673,48674}
 local envenom = {32645,32684,57992,57993}
 local mutilate = {1329,34411,34412,34413,48663,48666}
-wt:AddOverriddenSpells(backstab,kidneyShot,garrote,sinisterStrike,kick,gouge,stealth,vanish,rupture,feint,sap,eviscerate,sprint,sliceandDice,evasion,exposeArmor,ambush,envenom,mutilate)
+wt:AddOverriddenSpells(backstab,kidneyShot,garrote,sinisterStrike,kick,gouge,stealth,vanish,rupture,feint,sap,eviscerate,sprint,sliceandDice,evasion,exposeArmor,ambush,deadlyThrow,envenom,mutilate)
 wt.SpellsByLevel = {
 	[1] = {{id = 674, cost = 300},{id = 1784, cost = 10},},
 	[4] = {{id = 53, cost = 100},{id = 921, cost = 100},},
