@@ -5,6 +5,7 @@ end
 local shieldBash = {72}
 local heroicStrike = {78,284,285,1608,11564,11565,11566,11567,25286,29707,30324,47449,47450}
 local charge = {100,6178,11578}
+local commandingShout = {469,47439,47440}
 local mockingBlow = {694}
 local rend = {772,6546,6547,6548,11572,11573,11574,25208,46845,47465}
 local cleave = {845,7369,11608,11609,20569,25231,47519,47520}
@@ -24,7 +25,7 @@ local mortalStrike = {12294,21551,21552,21553,25248,30330,47485,47486}
 local devastate = {20243,30016,30022,47497,47498}
 local bloodthirst = {23881}
 local rampage = {29801}
-wt:AddOverriddenSpells(shieldBash,heroicStrike,charge,mockingBlow,rend,cleave,demoralizingShout,slam,hamstring,battleShout,execute,thunderClap,pummel,revenge,overpower,sunderArmor,intercept,shieldSlam,mortalStrike,devastate,bloodthirst,rampage)
+wt:AddOverriddenSpells(shieldBash,heroicStrike,charge,commandingShout,mockingBlow,rend,cleave,demoralizingShout,slam,hamstring,battleShout,execute,thunderClap,pummel,revenge,overpower,sunderArmor,intercept,shieldSlam,mortalStrike,devastate,bloodthirst,rampage)
 wt.SpellsByLevel = {
 	[1] = {{id = 6673, cost = 10},},
 	[4] = {{id = 100, cost = 100},{id = 772, cost = 100},},
