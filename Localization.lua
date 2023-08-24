@@ -19,7 +19,12 @@ local localeText = {
         OPEN_BEAST_TRAINING = "Please open the Beast Training UI",
         CLICK_TO_OPEN = "Click to open Beast Training",
         TOME_HEADER = "Has this been learned?",
-        TOME_LEARNED = "Grimoire learned"
+        TOME_LEARNED = "Grimoire learned",
+        RIGHT_CLICK_LEARNED = "Right-click to mark abilities as learned",
+        NEW_IGNORE_FEATURE = "Right-click to ignore abilities",
+        CLICK_TO_DISMISS = "Click header to dismiss",
+        IGNORED_TT = "Ignored",
+        IGNORE_ALL_TT = "Ignore all ranks"
     },
     frFR = {
         AVAILABLE_HEADER = "Disponible",

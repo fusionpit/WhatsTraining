@@ -17,7 +17,6 @@ local TAB_TEXTURE_FILEID = GetFileIDFromPath(
 local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent,
                             "GameTooltipTemplate")
 local function setTooltip(spellInfo)
-    tooltip:ClearLines()
     if (spellInfo.isItem) then
         tooltip:SetItemByID(spellInfo.id)
     elseif (spellInfo.id) then
@@ -44,6 +43,8 @@ local function setTooltip(spellInfo)
     tooltip:Show()
 end
 
+local menuFrame = CreateFrame("Frame", "WTRightClickFrame", UIParent,
+                              "UIDropDownMenuTemplate")
 local function setRowSpell(row, spell)
     if (spell == nil) then
         row.currentSpell = nil
@@ -74,13 +75,13 @@ local function setRowSpell(row, spell)
         row:SetID(spell.id)
         rowSpell.icon:SetTexture(spell.icon)
     end
-    if (spell.click) then
+    if spell.click then
         row:SetScript("OnClick", spell.click)
     elseif (not spell.isHeader) then
         row:SetScript("OnClick", function(_, button)
             if (not wt.ClickHook) then return end
             if (button == "RightButton") then
-                wt.ClickHook(spell.id, function()
+                wt.ClickHook(spell, function()
                     wt:RebuildData()
                 end)
             end
@@ -240,15 +241,64 @@ function wt.CreateFrame()
     wt.MainFrame = mainFrame
 end
 
-if (wt.currentClass ~= "WARLOCK") then return end
 
-local menuFrame = CreateFrame("Frame", "WTWarlockTomeLearnedFrame", UIParent,
-                              "UIDropDownMenuTemplate")
-wt.ClickHook = function(tomeId, afterClick)
-    if (not wt.TomeIds[tomeId]) then return end
+wt.ClickHook = function(spell, afterClick)
+    local tomeId = spell.id
+    if (not wt.TomeIds or not wt.TomeIds[tomeId]) then
+        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+        local isIgnored = wt.ignoredSpells[spell.id]
+        local menuTitle = spell.formattedFullName
+        local menu = {
+            {text = menuTitle, isTitle = true, classicChecks = true},
+            {
+                text = wt.L.IGNORED_TT,
+                checked = isIgnored,
+                func = function()
+                    PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+                    if isIgnored then
+                        wt.ignoredSpells[spell.id] = nil
+                    else
+                        wt.ignoredSpells[spell.id] = true
+                    end
+                    afterClick()
+                end,
+                isNotRadio = true
+                -- classicChecks = true
+            }
+        }
+
+        local allRanks = wt:AllRanks(spell.id)
+
+        if allRanks and #allRanks > 1 then
+            local allIgnored = true
+            for _, id in ipairs(allRanks) do
+                allIgnored = allIgnored and wt.ignoredSpells[id]
+            end
+            tinsert(menu, {
+                text = wt.L.IGNORE_ALL_TT,
+                checked = allIgnored,
+                func = function()
+                    PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+                    for _, id in ipairs(allRanks) do
+                        if allIgnored then
+                            wt.ignoredSpells[id] = nil
+                        else
+                            wt.ignoredSpells[id] = true
+                        end
+                    end
+                    afterClick()
+                end,
+                isNotRadio = true,
+            })
+        end
+
+        EasyMenu(menu, menuFrame, "cursor", 10, 35, "MENU")
+        return
+    end
 
     local checked = wt.learnedPetAbilityMap[tomeId]
     PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+    local isIgnored = wt.ignoredSpells[spell.id]
     local menu = {
         {text = wt.L.TOME_HEADER, isTitle = true, classicChecks = true},
         {
@@ -260,6 +310,22 @@ wt.ClickHook = function(tomeId, afterClick)
                 afterClick()
             end,
             isNotRadio = true
+        },
+        {text = spell.name, isTitle = true, classicChecks = true},
+        {
+            text = wt.L.IGNORED_TT,
+            checked = isIgnored,
+            func = function()
+                PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+                if isIgnored then
+                    wt.ignoredSpells[spell.id] = nil
+                else
+                    wt.ignoredSpells[spell.id] = true
+                end
+                afterClick()
+            end,
+            isNotRadio = true
+            -- classicChecks = true
         }
     }
     EasyMenu(menu, menuFrame, "cursor", 10, 35, "MENU")

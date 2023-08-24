@@ -3,6 +3,8 @@ local _, wt = ...
 -- Spell Cache
 wt.petAbilities = {}
 wt.spellInfoCache = {}
+wt.allRanksCache = {}
+wt.idToRanks = {}
 
 -- done has param cacheHit
 function wt:CacheSpell(spell, level, done)
@@ -19,23 +21,31 @@ function wt:CacheSpell(spell, level, done)
         local subText = si:GetSpellSubtext()
         local formattedSubText = (subText and subText ~= "") and
                                      format(PARENS_TEMPLATE, subText) or ""
+        local name = si:GetSpellName()
+        local formattedFullName = (subText and subText ~= "") and format("%s %s", name, formattedSubText) or name 
         self.spellInfoCache[spell.id] = {
             id = spell.id,
-            name = si:GetSpellName(),
+            name = name,
             subText = subText,
             formattedSubText = formattedSubText,
             icon = select(3, GetSpellInfo(spell.id)),
             cost = spell.cost,
             formattedCost = GetCoinTextureString(spell.cost),
             level = level,
-            formattedLevel = format(wt.L.LEVEL_FORMAT, level)
+            formattedLevel = format(wt.L.LEVEL_FORMAT, level),
+            formattedFullName = formattedFullName,
         }
+        if self.allRanksCache[name] == nil then
+            self.allRanksCache[name] = {}
+        end
+        tinsert(self.allRanksCache[name], spell.id)
+        self.idToRanks[spell.id] = self.allRanksCache[name]
         if (self:IsPetAbility(spell.id)) then
             if (formattedSubText ~= "") then
-                self.petAbilities[si:GetSpellName() .. " " .. formattedSubText] =
+                self.petAbilities[name .. " " .. formattedSubText] =
                     self.spellInfoCache[spell.id]
             else
-                self.petAbilities[si:GetSpellName()] =
+                self.petAbilities[name] =
                     self.spellInfoCache[spell.id]
             end
         end
@@ -46,6 +56,8 @@ end
 function wt:SpellInfo(spellId) return self.spellInfoCache[spellId] end
 
 function wt:PetAbility(forName) return self.petAbilities[forName] end
+
+function wt:AllRanks(spellId) return self.idToRanks[spellId] end
 
 -- Item Cache
 wt.itemInfoCache = {}

@@ -1,4 +1,5 @@
 enable-nolib-creation: no
+package-as: WhatsTraining
 
 ignore:
   - README.MD
