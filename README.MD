@@ -3,10 +3,8 @@ What's Training? is an addon for World of Warcraft Classic that adds a list of a
 
 ![What's Training Example Screenshot](https://i.imgur.com/XLL83Ll.png "What's Training Example Screenshot")
 
-## Class Trainer Plus support
-If you have [Class Trainer Plus](https://github.com/fusionpit/ClassTrainerPlus) installed, What's Training will show Ignored spells at the bottom.
+New in version 5.0.0: Right-click a spell to ignore it
 
 ## Known Issues
  - Rogue Poisons not working well, it will show available even if you don't have the required skill level in poisons
- - Additional ranks for talents may or may not work, I have no idea at this point.
  
