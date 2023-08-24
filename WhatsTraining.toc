@@ -1,4 +1,4 @@
-## Interface: 30400
+## Interface: 30402
 ## Title: What's Training?
 ## Version: @project-version@
 ## Author: Sveng
