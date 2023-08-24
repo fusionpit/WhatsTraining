@@ -1,5 +1,13 @@
+* 5.0.1
+    - Include some Wrath changes that were not pushed to the main repository branch
+
 * 5.0.0
     - Right-click to ignore spells
+
+* 4.0.5
+    - Fix more Druid spells
+    - Fix Priest's Hymn of Hope spell
+    - Fix Shaman's Fire Nova spell
 
 * 4.0.4
     - Fix Warrior's Commanding Shout spell

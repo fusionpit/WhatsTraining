@@ -18,10 +18,13 @@ local cower = {8998,9000,9892,31709,27004,48575}
 local pounce = {9005,9823,9827,27006,49803}
 local faerieFireFeral = {16857}
 local ferociousBite = {22568,22827,22828,22829,31018,24248,48576,48577}
+local maim = {22570,49802}
 local frenziedRegeneration = {22842}
+local lacerate = {33745,48567,48568}
 local mangleCat = {33876,33982,33983,48565,48566}
 local mangleBear = {33878,33986,33987,48563,48564}
-wt:AddOverriddenSpells(demoralizingRoar,swipeBear,rip,claw,rake,dash,bash,prowl,tigersFury,shred,ravage,maul,cower,pounce,faerieFireFeral,ferociousBite,frenziedRegeneration,mangleCat,mangleBear)
+local flightForm = {33943,40120}
+wt:AddOverriddenSpells(demoralizingRoar,swipeBear,rip,claw,rake,dash,bash,prowl,tigersFury,shred,ravage,maul,cower,pounce,faerieFireFeral,ferociousBite,maim,frenziedRegeneration,lacerate,mangleCat,mangleBear,flightForm)
 wt.SpellsByLevel = {
 	[1] = {{id = 1126, cost = 10},},
 	[4] = {{id = 8921, cost = 100},{id = 774, cost = 100},},
