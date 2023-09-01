@@ -1,4 +1,5 @@
 local addonName, wt = ...
+local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
 
 local AVAILABLE_KEY = "available"
 local MISSINGREQS_KEY = "missingReqs"
@@ -39,12 +40,6 @@ local function isAbilityKnown(spellId)
     end
 
     return wt.learnedPetAbilityMap[info.name][info.subText]
-end
-local function isIgnoredByCTP(spellId)
-    return wt.ctpDb ~= nil and wt.ctpDb[spellId]
-end
-local function isIgnoredByWT(spellId)
-    return wt.ignoredSpells ~= nil and wt.ignoredSpells[spellId]
 end
 
 local headers = {
@@ -132,7 +127,7 @@ local function rebuildData(playerLevel, isLevelUpEvent)
                 if (itemInfo ~= nil) then
                     local key = wt.learnedPetAbilityMap[tome.id] and
                                     KNOWN_PET_KEY or PET_KEY
-                    if wt.ignoredSpells[tome.id] then
+                    if ignoreStore:IsIgnored(tome.id) then
                         key = IGNORED_KEY
                     end
                     categories:Insert(key, itemInfo)
@@ -149,7 +144,7 @@ local function rebuildData(playerLevel, isLevelUpEvent)
                 if (isAbilityKnown(spellInfo.id)) then
                     categoryKey = wt:IsPetAbility(spellInfo.id) and
                                       KNOWN_PET_KEY or KNOWN_KEY
-                elseif (isIgnoredByWT(spellInfo.id) or isIgnoredByCTP(spellInfo.id)) then
+                elseif (ignoreStore:IsIgnored(spellInfo.id)) then
                     categoryKey = IGNORED_KEY
                 elseif (wt:IsPetAbility(spellInfo.id)) then
                     categoryKey = PET_KEY
@@ -285,12 +280,9 @@ for level, spellsByLevel in pairs(wt.SpellsByLevel) do
     end
 end
 
-if (HookCTPUpdate) then
-    wt.ctpDb = ClassTrainerPlusDBPC
-    HookCTPUpdate(function()
-        wt:RebuildData()
-    end)
-end
+ignoreStore:AddSubscription(function()
+    wt:RebuildData()
+end)
 
 local eventFrame = CreateFrame("Frame")
 eventFrame:SetScript("OnEvent", function(self, event, ...)
@@ -304,7 +296,8 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         if (WT_IgnoredSpells == nil) then
             WT_IgnoredSpells = {}
         end
-        wt.ignoredSpells = WT_IgnoredSpells
+        ignoreStore:MigrateOrUse(WT_IgnoredSpells)
+        -- wt.ignoredSpells = WT_IgnoredSpells
         if (WT_LearnedPetAbilities == nil) then
             WT_LearnedPetAbilities = {}
             WT_NeedsToOpenBeastTraining = wt.currentClass == "HUNTER"

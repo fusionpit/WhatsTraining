@@ -1,4 +1,5 @@
 local _, wt = ...
+local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
 
 local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 
@@ -246,7 +247,7 @@ wt.ClickHook = function(spell, afterClick)
     local tomeId = spell.id
     if (not wt.TomeIds or not wt.TomeIds[tomeId]) then
         PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-        local isIgnored = wt.ignoredSpells[spell.id]
+        local isIgnored = ignoreStore:IsIgnored(spell.id)
         local menuTitle = spell.formattedFullName
         local menu = {
             {text = menuTitle, isTitle = true, classicChecks = true},
@@ -255,11 +256,7 @@ wt.ClickHook = function(spell, afterClick)
                 checked = isIgnored,
                 func = function()
                     PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-                    if isIgnored then
-                        wt.ignoredSpells[spell.id] = nil
-                    else
-                        wt.ignoredSpells[spell.id] = true
-                    end
+                    ignoreStore:Flip(spell.id)
                     afterClick()
                 end,
                 isNotRadio = true
@@ -272,20 +269,14 @@ wt.ClickHook = function(spell, afterClick)
         if allRanks and #allRanks > 1 then
             local allIgnored = true
             for _, id in ipairs(allRanks) do
-                allIgnored = allIgnored and wt.ignoredSpells[id]
+                allIgnored = allIgnored and ignoreStore:IsIgnored(id)
             end
             tinsert(menu, {
                 text = wt.L.IGNORE_ALL_TT,
                 checked = allIgnored,
                 func = function()
                     PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-                    for _, id in ipairs(allRanks) do
-                        if allIgnored then
-                            wt.ignoredSpells[id] = nil
-                        else
-                            wt.ignoredSpells[id] = true
-                        end
-                    end
+                    ignoreStore:UpdateMany(allRanks, not allIgnored)
                     afterClick()
                 end,
                 isNotRadio = true,
@@ -298,7 +289,7 @@ wt.ClickHook = function(spell, afterClick)
 
     local checked = wt.learnedPetAbilityMap[tomeId]
     PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-    local isIgnored = wt.ignoredSpells[spell.id]
+    local isIgnored = ignoreStore:IsIgnored(spell.id)
     local menu = {
         {text = wt.L.TOME_HEADER, isTitle = true, classicChecks = true},
         {
@@ -317,11 +308,7 @@ wt.ClickHook = function(spell, afterClick)
             checked = isIgnored,
             func = function()
                 PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-                if isIgnored then
-                    wt.ignoredSpells[spell.id] = nil
-                else
-                    wt.ignoredSpells[spell.id] = true
-                end
+                ignoreStore:Flip(spell.id)
                 afterClick()
             end,
             isNotRadio = true
