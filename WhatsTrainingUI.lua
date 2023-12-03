@@ -130,6 +130,22 @@ function wt.CreateFrame()
     right:SetPoint("TOPRIGHT", mainFrame)
     mainFrame:Hide()
 
+    -- Fix for Season of Discovery's Shaman 'Way of the Earth' rune
+    -- When this rune is engraved, it constantly causes a `SPELLS_CHANGED` event
+    -- That event will keep switching the tab back to the first non-general tab when fired
+    local deferredPriorTabSelection = SpellBookFrame.selectedSkillLine
+    SpellBookFrame:HookScript("OnEvent", function(self, event)
+        if event == "SPELLS_CHANGED"
+            and deferredPriorTabSelection == SKILL_LINE_TAB 
+            and SpellBookFrame.selectedSkillLine ~= SKILL_LINE_TAB 
+        then
+            SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB
+            if SpellBookFrame:IsVisible() then
+                SpellBookFrame_Update()
+            end
+        end
+    end)
+
     local skillLineTab = _G["SpellBookSkillLineTab" .. SKILL_LINE_TAB]
     hooksecurefunc("SpellBookFrame_UpdateSkillLineTabs", function()
         skillLineTab:SetNormalTexture(TAB_TEXTURE_FILEID)
@@ -149,6 +165,9 @@ function wt.CreateFrame()
         elseif (SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB) then
             mainFrame:Show()
         end
+        C_Timer.After(0, function()
+            deferredPriorTabSelection = SpellBookFrame.selectedSkillLine
+        end)
     end)
 
     local scrollBar = CreateFrame("ScrollFrame", "$parentScrollBar", mainFrame,
