@@ -1,4 +1,4 @@
-## Interface: 30403
+## Interface: 11502
 ## Title: What's Training?
 ## Version: @project-version@
 ## Author: Sveng
@@ -8,6 +8,7 @@
 ## OptionalDeps: ClassTrainerPlus
 ## X-Curse-Project-ID: 324944
 ## X-WoWI-ID: 25031
+## X-Thanks: capitano666 on curse for Shaman SoD info
 
 libs\LibStub.lua
 libs\FusionIgnoreStore\IgnoreStore.lua
@@ -15,16 +16,15 @@ libs\FusionIgnoreStore\IgnoreStore.lua
 Utils.lua
 Cache.lua
 
-Classes\WotLK\DeathKnight.lua
-Classes\WotLK\Druid.lua
-Classes\WotLK\Hunter.lua
-Classes\WotLK\Mage.lua
-Classes\WotLK\Paladin.lua
-Classes\WotLK\Priest.lua
-Classes\WotLK\Rogue.lua
-Classes\WotLK\Shaman.lua
-Classes\WotLK\Warlock.lua
-Classes\WotLK\Warrior.lua
+Classes\Classic\Druid.lua
+Classes\Classic\Hunter.lua
+Classes\Classic\Mage.lua
+Classes\Classic\Paladin.lua
+Classes\Classic\Priest.lua
+Classes\Classic\Rogue.lua
+Classes\Classic\Shaman.lua
+Classes\Classic\Warlock.lua
+Classes\Classic\Warrior.lua
 
 Localization.lua
 WhatsTrainingUI.lua
