@@ -1,6 +1,11 @@
 local _, wt = ...
 local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
 
+local isCata;
+if (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC) then
+   isCata = true;
+end
+
 local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 
 local MAX_ROWS = 22
@@ -129,6 +134,14 @@ function wt.CreateFrame()
     right:SetHeight(512)
     right:SetPoint("TOPRIGHT", mainFrame)
     mainFrame:Hide()
+    
+    if (isCata) then
+    	left:SetWidth(350)
+    	left:SetHeight(536)
+    	left:SetPoint("TOPLEFT", mainFrame, 72, 8)
+    	right:SetHeight(536)
+    	right:SetPoint("TOPRIGHT", mainFrame, 0, 8)
+    end
 
     -- Fix for Season of Discovery's Shaman 'Way of the Earth' rune
     -- When this rune is engraved, it constantly causes a `SPELLS_CHANGED` event
@@ -249,7 +262,11 @@ function wt.CreateFrame()
         row.spell = spell
 
         if (rows[i - 1] == nil) then
-            row:SetPoint("TOPLEFT", mainFrame, 26, -78)
+        	if (isCata) then
+        		row:SetPoint("TOPLEFT", mainFrame, 110, -78)
+        	else
+            	row:SetPoint("TOPLEFT", mainFrame, 26, -78)
+            end
         else
             row:SetPoint("TOPLEFT", rows[i - 1], "BOTTOMLEFT", 0, -2)
         end
