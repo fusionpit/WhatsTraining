@@ -2,7 +2,6 @@ local _, wt = ...
 if (wt.currentClass ~= "DEATHKNIGHT") then
 	return
 end
-print(1)
 wt.SpellsByLevel = {
 	[58] = {
 		{
