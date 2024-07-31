@@ -1,4 +1,4 @@
-if (wt.currentClass ~= "ROGUE") then
+if (WT.currentClass ~= "ROGUE") then
   return
 end
 
@@ -81,7 +81,7 @@ local sliceAndDice = { 5171 --[[Rank 1]], 6774 --[[Rank 2]] }
 local vanish = { 1856 --[[Rank 1]], 1857 --[[Rank 2]] }
 local kidneyShot = { 408, 8643 }
 
-wt:AddOverriddenSpells(
+WT:AddOverriddenSpells(
   stealth,
   backstab,
   gouge,
@@ -104,7 +104,7 @@ wt:AddOverriddenSpells(
   kidneyShot
 )
 
-wt.SpellsByLevel = {
+WT.SpellsByLevel = {
   [1] = { { id = 1784, cost = 10 } },
   [4] = { { id = 53, cost = 100 }, { id = 921, cost = 100 } },
   [6] = { { id = 1776, cost = 100 }, { id = 1757, cost = 100, requiredIds = { 1752 } } },

@@ -25,8 +25,8 @@ local function setTooltip(spellInfo)
       coloredCoinString = RED_FONT_COLOR_CODE .. coloredCoinString .. FONT_COLOR_CODE_CLOSE
     end
     local formatString = spellInfo.isHeader and
-        (spellInfo.costFormat or wt.L.TOTALCOST_FORMAT) or
-        wt.L.COST_FORMAT
+        (spellInfo.costFormat or WT.L.TOTALCOST_FORMAT) or
+        WT.L.COST_FORMAT
 
     tooltip:AddLine(HIGHLIGHT_FONT_COLOR_CODE ..
       format(formatString, coloredCoinString) ..
@@ -72,10 +72,10 @@ local function setRowSpell(row, spell)
     row:SetScript("OnClick", spell.click)
   elseif (not spell.isHeader) then
     row:SetScript("OnClick", function(_, button)
-      if (not wt.ClickHook) then return end
+      if (not WT.ClickHook) then return end
       if (button == "RightButton") then
-        wt.ClickHook(spell, function()
-          wt:RebuildData()
+        WT.ClickHook(spell, function()
+          WT:RebuildData()
         end)
       end
     end)
@@ -90,23 +90,23 @@ end
 -- When holding down left mouse on the slider knob, it will keep firing update even though
 -- the offset hasn't changed so this will help throttle that
 local lastOffset = -1
-function wt.Update(frame, forceUpdate)
+function WT.Update(frame, forceUpdate)
   local scrollBar = frame.scrollBar
   local offset = FauxScrollFrame_GetOffset(scrollBar)
   if (offset == lastOffset and not forceUpdate) then return end
   for i, row in ipairs(frame.rows) do
     local spellIndex = i + offset
-    local spell = wt.data[spellIndex]
+    local spell = WT.data[spellIndex]
     setRowSpell(row, spell)
   end
-  local dataLength = tablelength(wt.data)
-  FauxScrollFrame_Update(wt.MainFrame.scrollBar, dataLength, MAX_ROWS,
+  local dataLength = Tablelength(WT.data)
+  FauxScrollFrame_Update(WT.MainFrame.scrollBar, dataLength, MAX_ROWS,
     ROW_HEIGHT, nil, nil, nil, nil, nil, nil, true)
   lastOffset = offset
 end
 
 local hasFrameShown = false
-function wt.CreateFrame()
+function WT.CreateFrame()
   local mainFrame = CreateFrame("Frame", "WhatsTrainingFrame", SpellBookFrame)
   mainFrame:SetPoint("TOPLEFT", SpellBookFrame, "TOPLEFT", 0, 0)
   mainFrame:SetPoint("BOTTOMRIGHT", SpellBookFrame, "BOTTOMRIGHT", 0, 0)
@@ -142,7 +142,7 @@ function wt.CreateFrame()
   local skillLineTab = _G["SpellBookSkillLineTab" .. SKILL_LINE_TAB]
   hooksecurefunc("SpellBookFrame_UpdateSkillLineTabs", function()
     skillLineTab:SetNormalTexture(TAB_TEXTURE_FILEID)
-    skillLineTab.tooltip = wt.L.TAB_TEXT
+    skillLineTab.tooltip = WT.L.TAB_TEXT
     skillLineTab:Show()
     if (SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB) then
       skillLineTab:SetChecked(true)
@@ -169,14 +169,14 @@ function wt.CreateFrame()
   scrollBar:SetPoint("BOTTOMRIGHT", -65, 81)
   scrollBar:SetScript("OnVerticalScroll", function(self, offset)
     FauxScrollFrame_OnVerticalScroll(self, offset, ROW_HEIGHT,
-      function() wt.Update(mainFrame) end)
+      function() WT.Update(mainFrame) end)
   end)
   scrollBar:SetScript("OnShow", function()
     if (not hasFrameShown) then
-      wt:RebuildData()
+      WT:RebuildData()
       hasFrameShown = true
     end
-    wt.Update(mainFrame, true)
+    WT.Update(mainFrame, true)
   end)
   mainFrame.scrollBar = scrollBar
 
@@ -255,19 +255,19 @@ function wt.CreateFrame()
     rawset(rows, i, row)
   end
   mainFrame.rows = rows
-  wt.MainFrame = mainFrame
+  WT.MainFrame = mainFrame
 end
 
-wt.ClickHook = function(spell, afterClick)
+WT.ClickHook = function(spell, afterClick)
   local tomeId = spell.id
-  if (not wt.TomeIds or not wt.TomeIds[tomeId]) then
+  if (not WT.TomeIds or not WT.TomeIds[tomeId]) then
     PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
     local isIgnored = ignoreStore:IsIgnored(spell.id)
     local menuTitle = spell.formattedFullName
     local menu = {
       { text = menuTitle, isTitle = true, classicChecks = true },
       {
-        text = wt.L.IGNORED_TT,
+        text = WT.L.IGNORED_TT,
         checked = isIgnored,
         func = function()
           PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
@@ -279,8 +279,8 @@ wt.ClickHook = function(spell, afterClick)
       }
     }
 
-    local allRanks = wt:AllRanks(spell.id)
-    local numRanks = tablelength(allRanks)
+    local allRanks = WT:AllRanks(spell.id)
+    local numRanks = Tablelength(allRanks)
 
     if allRanks and numRanks > 1 then
       local allIgnored = true
@@ -288,7 +288,7 @@ wt.ClickHook = function(spell, afterClick)
         allIgnored = allIgnored and ignoreStore:IsIgnored(id)
       end
       tinsert(menu, {
-        text = wt.L.IGNORE_ALL_TT,
+        text = WT.L.IGNORE_ALL_TT,
         checked = allIgnored,
         func = function()
           PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
@@ -303,24 +303,24 @@ wt.ClickHook = function(spell, afterClick)
     return
   end
 
-  local checked = wt.learnedPetAbilityMap[tomeId]
+  local checked = WT.learnedPetAbilityMap[tomeId]
   PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
   local isIgnored = ignoreStore:IsIgnored(spell.id)
   local menu = {
-    { text = wt.L.TOME_HEADER, isTitle = true, classicChecks = true },
+    { text = WT.L.TOME_HEADER, isTitle = true, classicChecks = true },
     {
-      text = wt.L.TOME_LEARNED,
+      text = WT.L.TOME_LEARNED,
       checked = checked,
       func = function()
         PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-        wt.learnedPetAbilityMap[tomeId] = not checked
+        WT.learnedPetAbilityMap[tomeId] = not checked
         afterClick()
       end,
       isNotRadio = true
     },
     { text = spell.name,       isTitle = true, classicChecks = true },
     {
-      text = wt.L.IGNORED_TT,
+      text = WT.L.IGNORED_TT,
       checked = isIgnored,
       func = function()
         PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)

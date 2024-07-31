@@ -116,11 +116,11 @@ local localeText = {
   }
 }
 
-wt.L = localeText["enUS"]
+WT.L = localeText["enUS"]
 local locale = GetLocale()
 if (locale == "enUS" or locale == "enGB" or localeText[locale] == nil) then
   return
 end
 for k, v in pairs(localeText[locale]) do
-  wt.L[k] = v
+  WT.L[k] = v
 end

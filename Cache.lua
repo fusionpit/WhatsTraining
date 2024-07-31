@@ -1,11 +1,11 @@
 -- Spell Cache
-wt.petAbilities = {}
-wt.spellInfoCache = {}
-wt.allRanksCache = {}
-wt.idToRanks = {}
+WT.petAbilities = {}
+WT.spellInfoCache = {}
+WT.allRanksCache = {}
+WT.idToRanks = {}
 
 -- done has param cacheHit
-function wt:CacheSpell(spell, level, done)
+function WT:CacheSpell(spell, level, done)
   if (self.spellInfoCache[spell.id] ~= nil) then
     done(true)
     return
@@ -30,7 +30,7 @@ function wt:CacheSpell(spell, level, done)
       cost = spell.cost,
       formattedCost = GetCoinTextureString(spell.cost),
       level = level,
-      formattedLevel = format(wt.L.LEVEL_FORMAT, level),
+      formattedLevel = format(WT.L.LEVEL_FORMAT, level),
       formattedFullName = formattedFullName,
     }
     if self.allRanksCache[name] == nil then
@@ -51,19 +51,19 @@ function wt:CacheSpell(spell, level, done)
   end)
 end
 
-function wt:SpellInfo(spellId) return self.spellInfoCache[spellId] end
+function WT:SpellInfo(spellId) return self.spellInfoCache[spellId] end
 
-function wt:PetAbility(forName) return self.petAbilities[forName] end
+function WT:PetAbility(forName) return self.petAbilities[forName] end
 
-function wt:AllRanks(spellId) return self.idToRanks[spellId] end
+function WT:AllRanks(spellId) return self.idToRanks[spellId] end
 
 -- Item Cache
-wt.itemInfoCache = {}
+WT.itemInfoCache = {}
 -- for warlock pet tomes, the name includes the rank
 -- however, this will cause overlap with the level text and there's no good way to fix it with setting points
 -- instead, strip the rank text out of the name and put it as the subText
 local parensPattern = " (%(.+%))"
-function wt:CacheItem(item, level, done)
+function WT:CacheItem(item, level, done)
   if (self.itemInfoCache[item.id] ~= nil) then
     done(true)
     return
@@ -83,11 +83,11 @@ function wt:CacheItem(item, level, done)
       cost = item.cost,
       formattedCost = GetCoinTextureString(item.cost),
       level = level,
-      formattedLevel = format(wt.L.LEVEL_FORMAT, level),
+      formattedLevel = format(WT.L.LEVEL_FORMAT, level),
       isItem = true
     }
     done(false)
   end)
 end
 
-function wt:ItemInfo(itemId) return self.itemInfoCache[itemId] end
+function WT:ItemInfo(itemId) return self.itemInfoCache[itemId] end

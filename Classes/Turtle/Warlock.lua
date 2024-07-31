@@ -1,6 +1,6 @@
-if (wt.currentClass ~= "WARLOCK") then return end
+if (WT.currentClass ~= "WARLOCK") then return end
 
-wt.TomesByLevel = {
+WT.TomesByLevel = {
   [4] = { { id = 16321, cost = 100 } },
   [8] = { { id = 16302, cost = 100 } },
   [12] = { { id = 16331, cost = 600 } },
@@ -62,11 +62,11 @@ wt.TomesByLevel = {
     { id = 16374, cost = 26000 }
   }
 }
-wt.TomeIds = {}
-for _, tomesByLevel in pairs(wt.TomesByLevel) do
-  for _, tome in ipairs(tomesByLevel) do wt.TomeIds[tome.id] = true end
+WT.TomeIds = {}
+for _, tomesByLevel in pairs(WT.TomesByLevel) do
+  for _, tome in ipairs(tomesByLevel) do WT.TomeIds[tome.id] = true end
 end
-wt.SpellsByLevel = {
+WT.SpellsByLevel = {
   [1] = { { id = 348, cost = 10 } },
   [4] = { { id = 172, cost = 100 }, { id = 702, cost = 100 } },
   [6] = { { id = 1454, cost = 100 }, { id = 695, cost = 100, requiredIds = { 686 } } },

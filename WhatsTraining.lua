@@ -13,13 +13,17 @@ local COMINGSOON_FONT_COLOR_CODE = "|cff82c5ff"
 local MISSINGTALENT_FONT_COLOR_CODE = "|cffffffff"
 local PET_FONT_COLOR_CODE = "|cffffffff"
 
+local _, classFilename, _ = UnitClass("player")
+
+WT.currentClass = classFilename
+
 local function isPreviouslyLearnedAbility(spellId)
-  if (wt.overriddenSpellsMap == nil or not wt.overriddenSpellsMap[spellId]) then
+  if (WT.overriddenSpellsMap == nil or not WT.overriddenSpellsMap[spellId]) then
     return false
   end
 
   local spellIndex, knownIndex = 0, 0
-  for i, otherId in ipairs(wt.overriddenSpellsMap[spellId]) do
+  for i, otherId in ipairs(WT.overriddenSpellsMap[spellId]) do
     if (otherId == spellId) then spellIndex = i end
     if (IsSpellKnown(otherId) or IsPlayerSpell(otherId)) then
       knownIndex = i
@@ -33,66 +37,62 @@ local function isAbilityKnown(spellId)
         isPreviouslyLearnedAbility(spellId)) then
     return true
   end
-  if (not wt:IsPetAbility(spellId)) then return false end
-  local info = wt:SpellInfo(spellId)
+  if (not WT:IsPetAbility(spellId)) then return false end
+  local info = WT:SpellInfo(spellId)
 
-  if (info.subText == nil or wt.learnedPetAbilityMap[info.name] == nil) then
+  if (info.subText == nil or WT.learnedPetAbilityMap[info.name] == nil) then
     return false
   end
 
-  return wt.learnedPetAbilityMap[info.name][info.subText]
+  return WT.learnedPetAbilityMap[info.name][info.subText]
 end
 
-local headers = {
-  {
-    name = wt.L.AVAILABLE_HEADER,
-    color = GREEN_FONT_COLOR_CODE,
-    hideLevel = true,
-    key = AVAILABLE_KEY
-  }, {
-  name = wt.L.MISSINGREQS_HEADER,
+local headers = { {
+  name = WT.L.AVAILABLE_HEADER,
+  color = GREEN_FONT_COLOR_CODE,
+  hideLevel = true,
+  key = AVAILABLE_KEY
+}, {
+  name = WT.L.MISSINGREQS_HEADER,
   color = ORANGE_FONT_COLOR_CODE,
   hideLevel = true,
   key = MISSINGREQS_KEY
 }, {
-  name = wt.L.NEXTLEVEL_HEADER,
+  name = WT.L.NEXTLEVEL_HEADER,
   color = COMINGSOON_FONT_COLOR_CODE,
   key = NEXTLEVEL_KEY
-},
-  {
-    name = wt.L.NOTLEVEL_HEADER,
-    color = RED_FONT_COLOR_CODE,
-    key = NOTLEVEL_KEY
-  }, {
-  name = wt.L.PET_HEADER,
+}, {
+  name = WT.L.NOTLEVEL_HEADER,
+  color = RED_FONT_COLOR_CODE,
+  key = NOTLEVEL_KEY
+}, {
+  name = WT.L.PET_HEADER,
   color = PET_FONT_COLOR_CODE,
   key = PET_KEY
-  -- nameSort = true
 }, {
-  name = wt.L.MISSINGTALENT_HEADER,
+  name = WT.L.MISSINGTALENT_HEADER,
   color = MISSINGTALENT_FONT_COLOR_CODE,
   key = MISSINGTALENT_KEY,
   nameSort = true
 }, {
-  name = wt.L.IGNORED_HEADER,
+  name = WT.L.IGNORED_HEADER,
   color = LIGHTYELLOW_FONT_COLOR_CODE,
-  costFormat = wt.L.TOTALSAVINGS_FORMAT,
+  costFormat = WT.L.TOTALSAVINGS_FORMAT,
   key = IGNORED_KEY,
   nameSort = true
 }, {
-  name = wt.L.KNOWN_HEADER,
+  name = WT.L.KNOWN_HEADER,
   color = GRAY_FONT_COLOR_CODE,
   hideLevel = true,
   key = KNOWN_KEY,
   nameSort = true
 }, {
-  name = wt.L.KNOWN_PET_HEADER,
+  name = WT.L.KNOWN_PET_HEADER,
   color = GRAY_FONT_COLOR_CODE,
   hideLevel = true,
   key = KNOWN_PET_KEY,
   nameSort = true
-}
-}
+} }
 
 local categories = {
   _spellsByCategoryKey = {},
@@ -118,16 +118,16 @@ local categories = {
 }
 categories:Initialize()
 
-wt.data = {}
+WT.data = {}
 local function rebuildData(playerLevel, isLevelUpEvent)
   categories:ClearSpells()
-  wipe(wt.data)
-  if (wt.TomesByLevel) then
-    for _, tomesAtLevel in pairs(wt.TomesByLevel) do
+  wipe(WT.data)
+  if (WT.TomesByLevel) then
+    for _, tomesAtLevel in pairs(WT.TomesByLevel) do
       for _, tome in ipairs(tomesAtLevel) do
-        local itemInfo = wt:ItemInfo(tome.id)
+        local itemInfo = WT:ItemInfo(tome.id)
         if (itemInfo ~= nil) then
-          local key = wt.learnedPetAbilityMap[tome.id] and
+          local key = WT.learnedPetAbilityMap[tome.id] and
               KNOWN_PET_KEY or PET_KEY
           if ignoreStore:IsIgnored(tome.id) then
             key = IGNORED_KEY
@@ -137,18 +137,18 @@ local function rebuildData(playerLevel, isLevelUpEvent)
       end
     end
   end
-  for level, spellsAtLevel in pairs(wt.SpellsByLevel) do
+  for level, spellsAtLevel in pairs(WT.SpellsByLevel) do
     for _, spell in ipairs(spellsAtLevel) do
-      local spellInfo = wt:SpellInfo(spell.id)
+      local spellInfo = WT:SpellInfo(spell.id)
       if (spellInfo ~= nil) then
         local categoryKey
 
         if (isAbilityKnown(spellInfo.id)) then
-          categoryKey = wt:IsPetAbility(spellInfo.id) and
+          categoryKey = WT:IsPetAbility(spellInfo.id) and
               KNOWN_PET_KEY or KNOWN_KEY
         elseif (ignoreStore:IsIgnored(spellInfo.id)) then
           categoryKey = IGNORED_KEY
-        elseif (wt:IsPetAbility(spellInfo.id)) then
+        elseif (WT:IsPetAbility(spellInfo.id)) then
           categoryKey = PET_KEY
         elseif (spell.requiredTalentId ~= nil and
               not isAbilityKnown(spell.requiredTalentId)) then
@@ -181,44 +181,44 @@ local function rebuildData(playerLevel, isLevelUpEvent)
     return a.name < b.name
   end
   if WT_ShowIgnoreNotice == true then
-    tinsert(wt.data, {
-      formattedName = wt.L.NEW_IGNORE_FEATURE,
+    tinsert(WT.data, {
+      formattedName = WT.L.NEW_IGNORE_FEATURE,
       isHeader = true,
       cost = 0,
-      tooltip = wt.L.CLICK_TO_DISMISS,
+      tooltip = WT.L.CLICK_TO_DISMISS,
       click = function()
         WT_ShowIgnoreNotice = false
-        wt:RebuildData()
+        WT:RebuildData()
       end
     })
   end
   for _, category in ipairs(categories) do
     local totalCategorySpells = tableLength(category.spells)
     if (totalCategorySpells > 0) then
-      tinsert(wt.data, category)
+      tinsert(WT.data, category)
       local sortFunc = category.nameSort and byNameThenLevel or
           byLevelThenName
       sort(category.spells, sortFunc)
       local totalCost = 0
       if (category.key == PET_KEY and WT_NeedsToOpenBeastTraining == true) then
-        tinsert(wt.data, {
+        tinsert(WT.data, {
           formattedName = ORANGE_FONT_COLOR_CODE ..
-              wt.L.OPEN_BEAST_TRAINING .. FONT_COLOR_CODE_CLOSE,
+              WT.L.OPEN_BEAST_TRAINING .. FONT_COLOR_CODE_CLOSE,
           isHeader = true,
           cost = 0,
-          tooltip = wt.L.CLICK_TO_OPEN,
+          tooltip = WT.L.CLICK_TO_OPEN,
           click = function() CastSpellByID(5149) end
         })
       end
-      if (WT_ShowLearnedNotice == true and category.key == PET_KEY and wt.currentClass == "WARLOCK") then
-        tinsert(wt.data, {
-          formattedName = wt.L.RIGHT_CLICK_LEARNED,
+      if (WT_ShowLearnedNotice == true and category.key == PET_KEY and WT.currentClass == "WARLOCK") then
+        tinsert(WT.data, {
+          formattedName = WT.L.RIGHT_CLICK_LEARNED,
           isHeader = true,
           cost = 0,
-          tooltip = wt.L.CLICK_TO_DISMISS,
+          tooltip = WT.L.CLICK_TO_DISMISS,
           click = function()
             WT_ShowLearnedNotice = false
-            wt:RebuildData()
+            WT:RebuildData()
           end
         })
       end
@@ -232,60 +232,60 @@ local function rebuildData(playerLevel, isLevelUpEvent)
         s.levelColor = GetQuestDifficultyColor(effectiveLevel)
         s.hideLevel = category.hideLevel
         totalCost = totalCost + s.cost
-        tinsert(wt.data, s)
+        tinsert(WT.data, s)
       end
       category.cost = totalCost
     end
   end
-  if (wt.MainFrame == nil) then return end
+  if (WT.MainFrame == nil) then return end
 end
 local function rebuildIfNotCached(fromCache)
-  if (fromCache or wt.MainFrame == nil) then return end
+  if (fromCache or WT.MainFrame == nil) then return end
   rebuildData(UnitLevel("player"))
 end
 
-function wt:RebuildData()
+function WT:RebuildData()
   rebuildData(UnitLevel("player"))
   if (self.MainFrame and self.MainFrame:IsVisible()) then
     self.Update(self.MainFrame, true)
   end
 end
 
-function wt.afterPetUpdate()
+function WT.afterPetUpdate()
   WT_NeedsToOpenBeastTraining = false
-  wt:RebuildData()
+  WT:RebuildData()
 end
 
-function wt.onSpellLearned(name)
-  local petAbility = wt:PetAbility(name)
+function WT.onSpellLearned(name)
+  local petAbility = WT:PetAbility(name)
   if (petAbility == nil) then return end
   if (petAbility.subText) then
-    if (wt.learnedPetAbilityMap[petAbility.name] == nil) then
-      wt.learnedPetAbilityMap[petAbility.name] = {}
+    if (WT.learnedPetAbilityMap[petAbility.name] == nil) then
+      WT.learnedPetAbilityMap[petAbility.name] = {}
     end
-    wt.learnedPetAbilityMap[petAbility.name][petAbility.subText] = true
+    WT.learnedPetAbilityMap[petAbility.name][petAbility.subText] = true
   else
     WT_NeedsToOpenBeastTraining = true
   end
-  wt:RebuildData()
+  WT:RebuildData()
 end
 
-if (wt.TomesByLevel) then
-  for level, tomesByLevel in pairs(wt.TomesByLevel) do
+if (WT.TomesByLevel) then
+  for level, tomesByLevel in pairs(WT.TomesByLevel) do
     for _, tome in ipairs(tomesByLevel) do
-      wt:CacheItem(tome, level, rebuildIfNotCached)
+      WT:CacheItem(tome, level, rebuildIfNotCached)
     end
   end
 end
-for level, spellsByLevel in pairs(wt.SpellsByLevel) do
+for level, spellsByLevel in pairs(WT.SpellsByLevel) do
   for _, spell in ipairs(spellsByLevel) do
     DEFAULT_CHAT_FRAME:AddMessage(spell.id)
-    -- wt:CacheSpell(spell, level, rebuildIfNotCached)
+    -- WT:CacheSpell(spell, level, rebuildIfNotCached)
   end
 end
 
 ignoreStore:AddSubscription(function()
-  wt:RebuildData()
+  WT:RebuildData()
 end)
 
 local eventFrame = CreateFrame("Frame")
@@ -301,14 +301,14 @@ eventFrame:SetScript("OnEvent", function(self, event, other)
       WT_IgnoredSpells = {}
     end
     ignoreStore:MigrateOrUse(WT_IgnoredSpells)
-    -- wt.ignoredSpells = WT_IgnoredSpells
+    -- WT.ignoredSpells = WT_IgnoredSpells
     if (WT_LearnedPetAbilities == nil) then
       WT_LearnedPetAbilities = {}
-      WT_NeedsToOpenBeastTraining = wt.currentClass == "HUNTER"
+      WT_NeedsToOpenBeastTraining = WT.currentClass == "HUNTER"
     end
 
-    wt.learnedPetAbilityMap = WT_LearnedPetAbilities
-    if (WT_NeedsToOpenBeastTraining == nil and wt.currentClass == "HUNTER") then
+    WT.learnedPetAbilityMap = WT_LearnedPetAbilities
+    if (WT_NeedsToOpenBeastTraining == nil and WT.currentClass == "HUNTER") then
       WT_NeedsToOpenBeastTraining = true
     end
     self:UnregisterEvent("ADDON_LOADED")
@@ -316,13 +316,13 @@ eventFrame:SetScript("OnEvent", function(self, event, other)
     local isLogin, isReload = other
     if (isLogin or isReload) then
       rebuildData(UnitLevel("player"))
-      wt.CreateFrame()
+      WT.CreateFrame()
     end
   elseif (event == "LEARNED_SPELL_IN_TAB" or event == "PLAYER_LEVEL_UP") then
     local isLevelUp = event == "PLAYER_LEVEL_UP"
     rebuildData(isLevelUp and other or UnitLevel("player"), isLevelUp)
-    if (wt.MainFrame and wt.MainFrame:IsVisible()) then
-      wt.Update(wt.MainFrame, true)
+    if (WT.MainFrame and WT.MainFrame:IsVisible()) then
+      WT.Update(WT.MainFrame, true)
     end
   end
 end)
@@ -331,7 +331,7 @@ eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 eventFrame:RegisterEvent("LEARNED_SPELL_IN_TAB")
 eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
 
--- if (wt.currentClass == "WARLOCK") then
+-- if (WT.currentClass == "WARLOCK") then
 --     local scan = CreateFrame("GameTooltip", "WTWarlockTomeScanningTooltip", nil,
 --                              "GameTooltipTemplate")
 --     scan:SetOwner(UIParent, "ANCHOR_NONE")
@@ -387,14 +387,14 @@ eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
 --             local merchantButton = _G["MerchantItem" .. i];
 --             if (index <= numMerchantItems) then
 --                 local merchantItemID = GetMerchantItemID(index)
---                 if (wt.TomeIds[merchantItemID]) then
---                     if (wt.learnedPetAbilityMap[merchantItemID] == nil) then
+--                 if (WT.TomeIds[merchantItemID]) then
+--                     if (WT.learnedPetAbilityMap[merchantItemID] == nil) then
 --                         if (isKnown(index)) then
---                             wt.learnedPetAbilityMap[merchantItemID] = true
+--                             WT.learnedPetAbilityMap[merchantItemID] = true
 --                         end
 --                     end
 --                 end
---                 if (wt.learnedPetAbilityMap[merchantItemID]) then
+--                 if (WT.learnedPetAbilityMap[merchantItemID]) then
 --                     SetItemButtonNameFrameVertexColor(merchantButton, 0.5, 0, 0);
 --                     SetItemButtonSlotVertexColor(merchantButton, 0.5, 0, 0);
 --                     SetItemButtonTextureVertexColor(itemButton, 0.5, 0, 0);
@@ -407,7 +407,7 @@ eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
 --     hooksecurefunc("MerchantFrame_UpdateMerchantInfo", updateMerchantFrame)
 -- end
 
--- if (wt.currentClass == "HUNTER") then
+-- if (WT.currentClass == "HUNTER") then
 --     local petAbilityUpdateFrame = CreateFrame("Frame")
 --     petAbilityUpdateFrame:SetScript("OnEvent", function()
 --         -- Beast training should always have at least one craft, and
@@ -416,15 +416,15 @@ eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
 --         if (numCrafts == 0 or GetCraftDisplaySkillLine()) then return end
 --         for i = 1, numCrafts do
 --             local name, rank = GetCraftInfo(i)
---             if (wt.learnedPetAbilityMap[name] == nil) then
---                 wt.learnedPetAbilityMap[name] = {}
+--             if (WT.learnedPetAbilityMap[name] == nil) then
+--                 WT.learnedPetAbilityMap[name] = {}
 --             end
 --             -- some locales may not provide a rank, need more investigation
 --             if (rank ~= nil) then
---                 wt.learnedPetAbilityMap[name][rank] = true
+--                 WT.learnedPetAbilityMap[name][rank] = true
 --             end
 --         end
---         wt.afterPetUpdate()
+--         WT.afterPetUpdate()
 --     end)
 --     petAbilityUpdateFrame:RegisterEvent("CRAFT_UPDATE")
 --     petAbilityUpdateFrame:RegisterEvent("SPELLS_CHANGED")
@@ -436,7 +436,7 @@ eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
 --         local matchedSpellName = string.match(select(1, ...),
 --                                               learnedSpellMatchPattern)
 --         if (matchedSpellName ~= nil) then
---             wt.onSpellLearned(matchedSpellName)
+--             WT.onSpellLearned(matchedSpellName)
 --         end
 --     end)
 --     petChatParserFrame:RegisterEvent("CHAT_MSG_SYSTEM")

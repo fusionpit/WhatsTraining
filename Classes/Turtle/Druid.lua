@@ -1,4 +1,4 @@
-if (wt.currentClass ~= "DRUID") then
+if (WT.currentClass ~= "DRUID") then
   return
 end
 
@@ -34,7 +34,7 @@ local rip = { 1079 --[[Rank 1]], 9492 --[[Rank 2]], 9493 --[[Rank 3]], 9752 --[[
 local bash = { 5211, 6798, 8983 }
 local dash = { 1850, 9821 }
 
-wt:AddOverriddenSpells(
+WT:AddOverriddenSpells(
   faerieFireFeral,
   ravage,
   maul,
@@ -54,7 +54,7 @@ wt:AddOverriddenSpells(
   dash
 )
 
-wt.SpellsByLevel = {
+WT.SpellsByLevel = {
   [1] = { { id = 1126, cost = 10 } },
   [4] = { { id = 8921, cost = 100 }, { id = 774, cost = 100 } },
   [6] = { { id = 467, cost = 100 }, { id = 5177, cost = 100, requiredIds = { 5176 } } },
@@ -132,7 +132,7 @@ wt.SpellsByLevel = {
     { id = 6798,  cost = 6000, requiredIds = { 5211 } },
     { id = 778,   cost = 6000, requiredIds = { 770 } },
     { id = 17390, cost = 300,  requiredIds = { 16857 }, requiredTalentId = 16857 },
-    { id = 24974, cost = 300,  requiredIds = { 5570 }, requiredTalentId = 5570 },
+    { id = 24974, cost = 300,  requiredIds = { 5570 },  requiredTalentId = 5570 },
     { id = 5234,  cost = 6000, requiredIds = { 6756 } },
     { id = 20739, cost = 6000, requiredIds = { 20484 } },
     { id = 8940,  cost = 6000, requiredIds = { 8939 } },

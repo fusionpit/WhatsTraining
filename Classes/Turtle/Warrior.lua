@@ -1,4 +1,4 @@
-if (wt.currentClass ~= "WARRIOR") then
+if (WT.currentClass ~= "WARRIOR") then
   return
 end
 
@@ -52,7 +52,7 @@ local battleShout = {
   25289 --[[Rank 7]]
 }
 
-wt:AddOverriddenSpells(
+WT:AddOverriddenSpells(
   rend,
   heroicStrike,
   bloodthirst,
@@ -75,7 +75,7 @@ wt:AddOverriddenSpells(
   battleShout
 )
 
-wt.SpellsByLevel = {
+WT.SpellsByLevel = {
   [1] = { { id = 6673, cost = 10 } },
   [4] = { { id = 100, cost = 100 }, { id = 772, cost = 100 } },
   [6] = { { id = 3127, cost = 100 }, { id = 6343, cost = 100 } },
