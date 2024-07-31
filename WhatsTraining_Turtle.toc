@@ -1,14 +1,14 @@
-## Interface: 40400
+## Interface: 11200
 ## Title: What's Training?
 ## Version: @project-version@
-## Author: Sveng
+## Author: Sveng, Turtle Port: Spawnedc
 ## Notes: Shows you what spells are available at your class trainer
 ## SavedVariables: WT_ShowIgnoreNotice, WT_ShowLearnedNotice
 ## SavedVariablesPerCharacter: WT_LearnedPetAbilities, WT_NeedsToOpenBeastTraining, WT_IgnoredSpells
 ## OptionalDeps: ClassTrainerPlus
 ## X-Curse-Project-ID: 324944
 ## X-WoWI-ID: 25031
-## X-Thanks: Venomisto on curse for updating everything to Cataclysm!
+## X-Thanks: capitano666 on curse for Shaman SoD info
 
 libs\LibStub.lua
 libs\FusionIgnoreStore\IgnoreStore.lua
@@ -16,16 +16,15 @@ libs\FusionIgnoreStore\IgnoreStore.lua
 Utils.lua
 Cache.lua
 
-Classes\Cata\DeathKnight.lua
-Classes\Cata\Druid.lua
-Classes\Cata\Hunter.lua
-Classes\Cata\Mage.lua
-Classes\Cata\Paladin.lua
-Classes\Cata\Priest.lua
-Classes\Cata\Rogue.lua
-Classes\Cata\Shaman.lua
-Classes\Cata\Warlock.lua
-Classes\Cata\Warrior.lua
+Classes\Turtle\Druid.lua
+Classes\Turtle\Hunter.lua
+Classes\Turtle\Mage.lua
+Classes\Turtle\Paladin.lua
+Classes\Turtle\Priest.lua
+Classes\Turtle\Rogue.lua
+Classes\Turtle\Shaman.lua
+Classes\Turtle\Warlock.lua
+Classes\Turtle\Warrior.lua
 
 Localization.lua
 WhatsTrainingUI.lua

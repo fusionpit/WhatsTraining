@@ -1,35 +1,40 @@
-local _, wt = ...
+wt = {}
 
 local tinsert = tinsert
 local ipairs = ipairs
 
-wt.currentClass = select(2, UnitClass("player"))
+local _, classFilename, _ = UnitClass("player")
+
+wt.currentClass = classFilename
 
 local function filter(spellsByLevel, pred)
-    local output = {}
-    for level, spells in pairs(spellsByLevel) do
-        output[level] = {}
-        for _, spell in ipairs(spells) do
-            if (pred(spell) == true) then
-                tinsert(output[level], spell)
-            end
-        end
+  local output = {}
+  for level, spells in pairs(spellsByLevel) do
+    output[level] = {}
+    for _, spell in ipairs(spells) do
+      if (pred(spell) == true) then
+        tinsert(output[level], spell)
+      end
     end
-    return output
+  end
+  return output
 end
+
 local playerFaction = UnitFactionGroup("player")
 function wt.FactionFilter(spellsByLevel)
-    return filter(spellsByLevel, function(spell)
-        return spell.faction == nil or spell.faction == playerFaction
-    end)
+  return filter(spellsByLevel, function(spell)
+    return spell.faction == nil or spell.faction == playerFaction
+  end)
 end
-local playerRace = select(3, UnitRace("player"))
+
+local playerRace = UnitRace("player")
+DEFAULT_CHAT_FRAME:AddMessage(playerRace)
 function wt.RaceFilter(spellsByLevel)
-    return filter(spellsByLevel, function(spell)
-        if (spell.race == nil and spell.races == nil) then return true end
-        if (spell.races == nil) then return spell.race == playerRace end
-        return spell.races[1] == playerRace or spell.races[2] == playerRace
-    end)
+  return filter(spellsByLevel, function(spell)
+    if (spell.race == nil and spell.races == nil) then return true end
+    if (spell.races == nil) then return spell.race == playerRace end
+    return spell.races[1] == playerRace or spell.races[2] == playerRace
+  end)
 end
 
 --[[
@@ -38,16 +43,22 @@ end
     Most warrior and rogue abilities are like this, as they cost the same amount
     of resources but just last longer or do more damage.
 ]]
-function wt:AddOverriddenSpells(...)
-    local abilityMap = {}
-    for _, abilityIds in ipairs({...}) do
-        for _, abilityId in ipairs(abilityIds) do
-            abilityMap[abilityId] = abilityIds
-        end
+function wt:AddOverriddenSpells(spells)
+  local abilityMap = {}
+  for _, abilityIds in ipairs(spells) do
+    for _, abilityId in ipairs(abilityIds) do
+      abilityMap[abilityId] = abilityIds
     end
-    self.overriddenSpellsMap = abilityMap
+  end
+  self.overriddenSpellsMap = abilityMap
 end
 
 function wt:IsPetAbility(spellId)
-    return self.PetAbilityIds ~= nil and self.PetAbilityIds[spellId]
+  return self.PetAbilityIds ~= nil and self.PetAbilityIds[spellId]
+end
+
+function tablelength(T)
+  local count = 0
+  for _ in pairs(T) do count = count + 1 end
+  return count
 end
