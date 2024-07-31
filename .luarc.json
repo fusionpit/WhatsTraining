@@ -71,6 +71,9 @@
     "LibStub",
     "GetSpellTexture",
     "DEFAULT_CHAT_FRAME",
-    "addonName"
+    "addonName",
+    "C_Timer",
+    "SpellBookFrame_Update",
+    "TableLength"
   ]
 }

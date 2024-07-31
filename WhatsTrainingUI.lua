@@ -242,11 +242,7 @@ function WT.CreateFrame()
     row.spell = spell
 
     if (rows[i - 1] == nil) then
-      if (isCata) then
-        row:SetPoint("TOPLEFT", mainFrame, 110, -78)
-      else
-        row:SetPoint("TOPLEFT", mainFrame, 26, -78)
-      end
+      row:SetPoint("TOPLEFT", mainFrame, 26, -78)
     else
       row:SetPoint("TOPLEFT", rows[i - 1], "BOTTOMLEFT", 0, -2)
     end
@@ -275,7 +271,6 @@ WT.ClickHook = function(spell, afterClick)
           afterClick()
         end,
         isNotRadio = true
-        -- classicChecks = true
       }
     }
 

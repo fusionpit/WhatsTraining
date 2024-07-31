@@ -13,10 +13,6 @@ local COMINGSOON_FONT_COLOR_CODE = "|cff82c5ff"
 local MISSINGTALENT_FONT_COLOR_CODE = "|cffffffff"
 local PET_FONT_COLOR_CODE = "|cffffffff"
 
-local _, classFilename, _ = UnitClass("player")
-
-WT.currentClass = classFilename
-
 local function isPreviouslyLearnedAbility(spellId)
   if (WT.overriddenSpellsMap == nil or not WT.overriddenSpellsMap[spellId]) then
     return false
@@ -193,7 +189,7 @@ local function rebuildData(playerLevel, isLevelUpEvent)
     })
   end
   for _, category in ipairs(categories) do
-    local totalCategorySpells = tableLength(category.spells)
+    local totalCategorySpells = TableLength(category.spells)
     if (totalCategorySpells > 0) then
       tinsert(WT.data, category)
       local sortFunc = category.nameSort and byNameThenLevel or
