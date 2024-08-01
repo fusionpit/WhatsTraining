@@ -10,8 +10,35 @@ local KNOWN_KEY = "known"
 local KNOWN_PET_KEY = "knownPet"
 local PET_KEY = "pet"
 local COMINGSOON_FONT_COLOR_CODE = "|cff82c5ff"
-local MISSINGTALENT_FONT_COLOR_CODE = "|cffffffff"
+local MISSINGTALENT_FONT_COLOR_CODE = "|cffffd200"
 local PET_FONT_COLOR_CODE = "|cffffffff"
+local GRAY_FONT_COLOR_CODE = "|c66666666";
+local HIGHLIGHT_FONT_COLOR_CODE = "|cffffffff";
+local RED_FONT_COLOR_CODE = "|cffff2020";
+local GREEN_FONT_COLOR_CODE = "|cff20ff20";
+
+local function isKnownSpell(spellId)
+  local spellName, spellRank = GetSpellInfoById(spellId)
+
+  local i = 1
+  local isKnown = false
+
+  while true do
+    local name, rank = GetSpellName(i, BOOKTYPE_SPELL)
+    if not name then
+      break
+    end
+
+    if name == spellName and rank == spellRank then
+      isKnown = true
+      break
+    else
+      i = i + 1
+    end
+  end
+
+  return isKnown
+end
 
 local function isPreviouslyLearnedAbility(spellId)
   if (WT.overriddenSpellsMap == nil or not WT.overriddenSpellsMap[spellId]) then
@@ -21,7 +48,7 @@ local function isPreviouslyLearnedAbility(spellId)
   local spellIndex, knownIndex = 0, 0
   for i, otherId in ipairs(WT.overriddenSpellsMap[spellId]) do
     if (otherId == spellId) then spellIndex = i end
-    if (IsSpellKnown(otherId) or IsPlayerSpell(otherId)) then
+    if (isKnownSpell(otherId)) then
       knownIndex = i
     end
   end
@@ -29,8 +56,7 @@ local function isPreviouslyLearnedAbility(spellId)
 end
 
 local function isAbilityKnown(spellId)
-  if (IsSpellKnown(spellId) or IsPlayerSpell(spellId) or
-        isPreviouslyLearnedAbility(spellId)) then
+  if (isKnownSpell(spellId) or isPreviouslyLearnedAbility(spellId)) then
     return true
   end
   if (not WT:IsPetAbility(spellId)) then return false end
@@ -50,7 +76,7 @@ local headers = { {
   key = AVAILABLE_KEY
 }, {
   name = WT.L.MISSINGREQS_HEADER,
-  color = ORANGE_FONT_COLOR_CODE,
+  color = HIGHLIGHT_FONT_COLOR_CODE,
   hideLevel = true,
   key = MISSINGREQS_KEY
 }, {
@@ -72,7 +98,7 @@ local headers = { {
   nameSort = true
 }, {
   name = WT.L.IGNORED_HEADER,
-  color = LIGHTYELLOW_FONT_COLOR_CODE,
+  color = "|c1eff00", --LIGHTYELLOW_FONT_COLOR_CODE,
   costFormat = WT.L.TOTALSAVINGS_FORMAT,
   key = IGNORED_KEY,
   nameSort = true
@@ -99,16 +125,17 @@ local categories = {
     for _, cat in ipairs(headers) do
       cat.spells = {}
       self._spellsByCategoryKey[cat.key] = cat.spells
-      -- cat.formattedName = cat.color .. cat.name .. FONT_COLOR_CODE_CLOSE
-      cat.formattedName = cat.name .. FONT_COLOR_CODE_CLOSE
+      cat.formattedName = cat.color .. cat.name .. "|r"
       cat.isHeader = true
       tinsert(self, cat)
     end
   end,
   ClearSpells = function(self)
+    DEFAULT_CHAT_FRAME:AddMessage("Clearing categories")
     for _, cat in ipairs(self) do
       cat.cost = 0
-      wipe(cat.spells)
+      cat.spells = {}
+      self._spellsByCategoryKey[cat.key] = {}
     end
   end
 }
@@ -117,7 +144,7 @@ categories:Initialize()
 WT.data = {}
 local function rebuildData(playerLevel, isLevelUpEvent)
   categories:ClearSpells()
-  wipe(WT.data)
+  WT.data = {}
   if (WT.TomesByLevel) then
     for _, tomesAtLevel in pairs(WT.TomesByLevel) do
       for _, tome in ipairs(tomesAtLevel) do
@@ -189,12 +216,13 @@ local function rebuildData(playerLevel, isLevelUpEvent)
     })
   end
   for _, category in ipairs(categories) do
-    local totalCategorySpells = TableLength(category.spells)
+    local categorySpells = categories._spellsByCategoryKey[category.key]
+    local totalCategorySpells = TableLength(categorySpells)
     if (totalCategorySpells > 0) then
       tinsert(WT.data, category)
       local sortFunc = category.nameSort and byNameThenLevel or
           byLevelThenName
-      sort(category.spells, sortFunc)
+      sort(categorySpells, sortFunc)
       local totalCost = 0
       if (category.key == PET_KEY and WT_NeedsToOpenBeastTraining == true) then
         tinsert(WT.data, {
@@ -218,14 +246,14 @@ local function rebuildData(playerLevel, isLevelUpEvent)
           end
         })
       end
-      for _, s in ipairs(category.spells) do
+      for _, s in ipairs(categorySpells) do
         local effectiveLevel = s.level
-        -- when a player levels up and this is triggered from that event, GetQuestDifficultyColor won't
+        -- when a player levels up and this is triggered from that event, GetDifficultyColor won't
         -- have the correct player level, it will be off by 1 for whatever reason (just like UnitLevel)
         if (isLevelUpEvent) then
           effectiveLevel = effectiveLevel - 1
         end
-        s.levelColor = GetQuestDifficultyColor(effectiveLevel)
+        s.levelColor = GetDifficultyColor(effectiveLevel)
         s.hideLevel = category.hideLevel
         totalCost = totalCost + s.cost
         tinsert(WT.data, s)
@@ -275,8 +303,7 @@ if (WT.TomesByLevel) then
 end
 for level, spellsByLevel in pairs(WT.SpellsByLevel) do
   for _, spell in ipairs(spellsByLevel) do
-    DEFAULT_CHAT_FRAME:AddMessage(spell.id)
-    -- WT:CacheSpell(spell, level, rebuildIfNotCached)
+    WT:CacheSpell(spell, level, rebuildIfNotCached)
   end
 end
 
@@ -285,8 +312,14 @@ ignoreStore:AddSubscription(function()
 end)
 
 local eventFrame = CreateFrame("Frame")
-eventFrame:SetScript("OnEvent", function(self, event, other)
-  if (event == "ADDON_LOADED" and other == addonName) then
+
+eventFrame:RegisterEvent("ADDON_LOADED")
+eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+eventFrame:RegisterEvent("LEARNED_SPELL_IN_TAB")
+eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
+
+eventFrame:SetScript("OnEvent", function()
+  if (event == "ADDON_LOADED") then
     if (WT_ShowLearnedNotice == nil) then
       WT_ShowLearnedNotice = true
     end
@@ -307,25 +340,18 @@ eventFrame:SetScript("OnEvent", function(self, event, other)
     if (WT_NeedsToOpenBeastTraining == nil and WT.currentClass == "HUNTER") then
       WT_NeedsToOpenBeastTraining = true
     end
-    self:UnregisterEvent("ADDON_LOADED")
+    eventFrame:UnregisterEvent("ADDON_LOADED")
   elseif (event == "PLAYER_ENTERING_WORLD") then
-    local isLogin, isReload = other
-    if (isLogin or isReload) then
-      rebuildData(UnitLevel("player"))
-      WT.CreateFrame()
-    end
+    rebuildData(UnitLevel("player"))
+    WT.CreateFrame()
   elseif (event == "LEARNED_SPELL_IN_TAB" or event == "PLAYER_LEVEL_UP") then
     local isLevelUp = event == "PLAYER_LEVEL_UP"
-    rebuildData(isLevelUp and other or UnitLevel("player"), isLevelUp)
+    rebuildData(isLevelUp and arg1 or UnitLevel("player"), isLevelUp)
     if (WT.MainFrame and WT.MainFrame:IsVisible()) then
       WT.Update(WT.MainFrame, true)
     end
   end
 end)
-eventFrame:RegisterEvent("ADDON_LOADED")
-eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-eventFrame:RegisterEvent("LEARNED_SPELL_IN_TAB")
-eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
 
 -- if (WT.currentClass == "WARLOCK") then
 --     local scan = CreateFrame("GameTooltip", "WTWarlockTomeScanningTooltip", nil,

@@ -1,15 +1,18 @@
 local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
 
-local MAX_ROWS = 22
+local MAX_ROWS = 20
 local ROW_HEIGHT = 14
 local SKILL_LINE_TAB = MAX_SKILLLINE_TABS - 1
-local HIGHLIGHT_TEXTURE_FILEID = "Interface\\AddOns\\WhatsTraining\\highlight"
-local LEFT_BG_TEXTURE_FILEID = "Interface\\AddOns\\WhatsTraining\\left"
-local RIGHT_BG_TEXTURE_FILEID = "Interface\\AddOns\\WhatsTraining\\right"
+local HIGHLIGHT_TEXTURE_FILEID = "Interface\\AddOns\\WhatsTraining_Turtle\\highlight"
+local LEFT_BG_TEXTURE_FILEID = "Interface\\AddOns\\WhatsTraining_Turtle\\left"
+local RIGHT_BG_TEXTURE_FILEID = "Interface\\AddOns\\WhatsTraining_Turtle\\right"
 local TAB_TEXTURE_FILEID = "Interface\\Icons\\INV_Misc_QuestionMark"
+
+local _G = getfenv()
 
 local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent,
   "GameTooltipTemplate")
+
 local function setTooltip(spellInfo)
   if (spellInfo.isItem) then
     tooltip:SetItemByID(spellInfo.id)
@@ -99,7 +102,7 @@ function WT.Update(frame, forceUpdate)
     local spell = WT.data[spellIndex]
     setRowSpell(row, spell)
   end
-  local dataLength = Tablelength(WT.data)
+  local dataLength = TableLength(WT.data)
   FauxScrollFrame_Update(WT.MainFrame.scrollBar, dataLength, MAX_ROWS,
     ROW_HEIGHT, nil, nil, nil, nil, nil, nil, true)
   lastOffset = offset
@@ -123,24 +126,9 @@ function WT.CreateFrame()
   right:SetPoint("TOPRIGHT", mainFrame)
   mainFrame:Hide()
 
-  -- Fix for Season of Discovery's Shaman 'Way of the Earth' rune
-  -- When this rune is engraved, it constantly causes a `SPELLS_CHANGED` event
-  -- That event will keep switching the tab back to the first non-general tab when fired
-  local deferredPriorTabSelection = SpellBookFrame.selectedSkillLine
-  SpellBookFrame:HookScript("OnEvent", function(self, event)
-    if event == "SPELLS_CHANGED"
-        and deferredPriorTabSelection == SKILL_LINE_TAB
-        and SpellBookFrame.selectedSkillLine ~= SKILL_LINE_TAB
-    then
-      SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB
-      if SpellBookFrame:IsVisible() then
-        SpellBookFrame_Update()
-      end
-    end
-  end)
-
   local skillLineTab = _G["SpellBookSkillLineTab" .. SKILL_LINE_TAB]
-  hooksecurefunc("SpellBookFrame_UpdateSkillLineTabs", function()
+
+  SpellBookFrame:SetScript("OnEvent", function()
     skillLineTab:SetNormalTexture(TAB_TEXTURE_FILEID)
     skillLineTab.tooltip = WT.L.TAB_TEXT
     skillLineTab:Show()
@@ -152,23 +140,13 @@ function WT.CreateFrame()
       mainFrame:Hide()
     end
   end)
-  hooksecurefunc("SpellBookFrame_Update", function()
-    if (SpellBookFrame.bookType ~= BOOKTYPE_SPELL) then
-      mainFrame:Hide()
-    elseif (SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB) then
-      mainFrame:Show()
-    end
-    C_Timer.After(0, function()
-      deferredPriorTabSelection = SpellBookFrame.selectedSkillLine
-    end)
-  end)
 
   local scrollBar = CreateFrame("ScrollFrame", "$parentScrollBar", mainFrame,
     "FauxScrollFrameTemplate")
   scrollBar:SetPoint("TOPLEFT", 0, -75)
   scrollBar:SetPoint("BOTTOMRIGHT", -65, 81)
-  scrollBar:SetScript("OnVerticalScroll", function(self, offset)
-    FauxScrollFrame_OnVerticalScroll(self, offset, ROW_HEIGHT,
+  scrollBar:SetScript("OnVerticalScroll", function()
+    FauxScrollFrame_OnVerticalScroll(ROW_HEIGHT,
       function() WT.Update(mainFrame) end)
   end)
   scrollBar:SetScript("OnShow", function()
@@ -187,8 +165,9 @@ function WT.CreateFrame()
     row:EnableMouse(true)
     row:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     row:SetScript("OnEnter", function(self)
-      tooltip:SetOwner(self, "ANCHOR_RIGHT")
-      setTooltip(self.currentSpell)
+      -- TODO: This doesn't work
+      -- tooltip:SetOwner(row, "ANCHOR_RIGHT")
+      -- setTooltip(self.currentSpell)
     end)
     row:SetScript("OnLeave", function() tooltip:Hide() end)
 
@@ -213,7 +192,7 @@ function WT.CreateFrame()
     spellLabel:SetJustifyH("LEFT")
     local spellSublabel = spell:CreateFontString("$parentSubLabel",
       "OVERLAY",
-      "NewSubSpellFont")
+      "GameFontHighlight")
     spellSublabel:SetJustifyH("LEFT")
     spellSublabel:SetPoint("TOPLEFT", spellLabel, "TOPRIGHT", 2, 0)
     spellSublabel:SetPoint("BOTTOM", spellLabel)
@@ -275,7 +254,7 @@ WT.ClickHook = function(spell, afterClick)
     }
 
     local allRanks = WT:AllRanks(spell.id)
-    local numRanks = Tablelength(allRanks)
+    local numRanks = TableLength(allRanks)
 
     if allRanks and numRanks > 1 then
       local allIgnored = true

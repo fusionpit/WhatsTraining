@@ -10,45 +10,78 @@ function WT:CacheSpell(spell, level, done)
     done(true)
     return
   end
-  local si = Spell:CreateFromSpellID(spell.id)
-  si:ContinueOnSpellLoad(function()
-    if (self.spellInfoCache[spell.id] ~= nil) then
-      done(true)
-      return
+  local name, spellRank, icon, cost, isFunnel, powerType = GetSpellInfoById(spell.id, BOOKTYPE_SPELL)
+  -- DEFAULT_CHAT_FRAME:AddMessage(name .. ' (' .. spellRank .. ')')
+
+  local formattedSubText = (spellRank and spellRank ~= "") and format(PARENS_TEMPLATE, spellRank) or ""
+  local formattedFullName = (spellRank and spellRank ~= "") and format("%s %s", name, formattedSubText) or name
+
+  self.spellInfoCache[spell.id] = {
+    id = spell.id,
+    name = name,
+    subText = spellRank,
+    formattedSubText = formattedSubText,
+    icon = icon,
+    cost = spell.cost,
+    formattedCost = spell.cost, -- TODO
+    level = level,
+    formattedLevel = format(WT.L.LEVEL_FORMAT, level),
+    formattedFullName = formattedFullName,
+  }
+  if self.allRanksCache[name] == nil then
+    self.allRanksCache[name] = {}
+  end
+  tinsert(self.allRanksCache[name], spell.id)
+  self.idToRanks[spell.id] = self.allRanksCache[name]
+  if (self:IsPetAbility(spell.id)) then
+    if (formattedSubText ~= "") then
+      self.petAbilities[name .. " " .. formattedSubText] =
+          self.spellInfoCache[spell.id]
+    else
+      self.petAbilities[name] =
+          self.spellInfoCache[spell.id]
     end
-    local subText = si:GetSpellSubtext()
-    local formattedSubText = (subText and subText ~= "") and
-        format(PARENS_TEMPLATE, subText) or ""
-    local name = si:GetSpellName()
-    local formattedFullName = (subText and subText ~= "") and format("%s %s", name, formattedSubText) or name
-    self.spellInfoCache[spell.id] = {
-      id = spell.id,
-      name = name,
-      subText = subText,
-      formattedSubText = formattedSubText,
-      icon = GetSpellTexture(spell.id),
-      cost = spell.cost,
-      formattedCost = GetCoinTextureString(spell.cost),
-      level = level,
-      formattedLevel = format(WT.L.LEVEL_FORMAT, level),
-      formattedFullName = formattedFullName,
-    }
-    if self.allRanksCache[name] == nil then
-      self.allRanksCache[name] = {}
-    end
-    tinsert(self.allRanksCache[name], spell.id)
-    self.idToRanks[spell.id] = self.allRanksCache[name]
-    if (self:IsPetAbility(spell.id)) then
-      if (formattedSubText ~= "") then
-        self.petAbilities[name .. " " .. formattedSubText] =
-            self.spellInfoCache[spell.id]
-      else
-        self.petAbilities[name] =
-            self.spellInfoCache[spell.id]
-      end
-    end
-    done(false)
-  end)
+  end
+  done(false)
+  -- local si = Spell:CreateFromSpellID(spell.id)
+  -- si:ContinueOnSpellLoad(function()
+  --   if (self.spellInfoCache[spell.id] ~= nil) then
+  --     done(true)
+  --     return
+  --   end
+  --   local subText = si:GetSpellSubtext()
+  --   local formattedSubText = (subText and subText ~= "") and
+  --       format(PARENS_TEMPLATE, subText) or ""
+  --   local name = si:GetSpellName()
+  --   local formattedFullName = (subText and subText ~= "") and format("%s %s", name, formattedSubText) or name
+  --   self.spellInfoCache[spell.id] = {
+  --     id = spell.id,
+  --     name = name,
+  --     subText = subText,
+  --     formattedSubText = formattedSubText,
+  --     icon = GetSpellTexture(spell.id),
+  --     cost = spell.cost,
+  --     formattedCost = GetCoinTextureString(spell.cost),
+  --     level = level,
+  --     formattedLevel = format(WT.L.LEVEL_FORMAT, level),
+  --     formattedFullName = formattedFullName,
+  --   }
+  --   if self.allRanksCache[name] == nil then
+  --     self.allRanksCache[name] = {}
+  --   end
+  --   tinsert(self.allRanksCache[name], spell.id)
+  --   self.idToRanks[spell.id] = self.allRanksCache[name]
+  --   if (self:IsPetAbility(spell.id)) then
+  --     if (formattedSubText ~= "") then
+  --       self.petAbilities[name .. " " .. formattedSubText] =
+  --           self.spellInfoCache[spell.id]
+  --     else
+  --       self.petAbilities[name] =
+  --           self.spellInfoCache[spell.id]
+  --     end
+  --   end
+  --   done(false)
+  -- end)
 end
 
 function WT:SpellInfo(spellId) return self.spellInfoCache[spellId] end

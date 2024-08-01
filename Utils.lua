@@ -53,7 +53,7 @@ function WT:IsPetAbility(spellId)
   return self.PetAbilityIds ~= nil and self.PetAbilityIds[spellId]
 end
 
-function Tablelength(T)
+function TableLength(T)
   local count = 0
   for _ in pairs(T) do count = count + 1 end
   return count

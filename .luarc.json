@@ -64,16 +64,19 @@
     "ClassTrainerPlusDBPC",
     "CTP_UpdateService",
 
-    "WT",
-    "WhatsTrainingFrame",
-    "WT_NeedsToOpenBeastTraining",
-    "WT_LearnedPetAbilities",
-    "LibStub",
-    "GetSpellTexture",
-    "DEFAULT_CHAT_FRAME",
     "addonName",
     "C_Timer",
+    "DEFAULT_CHAT_FRAME",
+    "GetDifficultyColor",
+    "GetSpellInfoById",
+    "GetSpellName",
+    "GetSpellTexture",
+    "LibStub",
     "SpellBookFrame_Update",
-    "TableLength"
+    "TableLength",
+    "WhatsTrainingFrame",
+    "WT_LearnedPetAbilities",
+    "WT_NeedsToOpenBeastTraining",
+    "WT"
   ]
 }

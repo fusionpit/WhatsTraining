@@ -35,7 +35,7 @@ function lib:MaybeMigrate(addonTable)
 end
 
 function lib:Clear()
-  wipe(self.ignored)
+  self.ignored = {}
   notifySubs()
 end
 
