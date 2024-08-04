@@ -18,7 +18,10 @@ local RED_FONT_COLOR_CODE = "|cffff2020";
 local GREEN_FONT_COLOR_CODE = "|cff20ff20";
 
 local function isKnownSpell(spellId)
-  local spellName, spellRank = GetSpellInfoById(spellId)
+  local spellInfo = WT:SpellInfo(spellId)
+  if not spellInfo then
+    return false
+  end
 
   local i = 1
   local isKnown = false
@@ -29,7 +32,7 @@ local function isKnownSpell(spellId)
       break
     end
 
-    if name == spellName and rank == spellRank then
+    if name == spellInfo.name and rank == spellInfo.subText then
       isKnown = true
       break
     else
@@ -95,6 +98,7 @@ local headers = { {
   name = WT.L.MISSINGTALENT_HEADER,
   color = MISSINGTALENT_FONT_COLOR_CODE,
   key = MISSINGTALENT_KEY,
+  hideLevel = true,
   nameSort = true
 }, {
   name = WT.L.IGNORED_HEADER,
@@ -131,7 +135,7 @@ local categories = {
     end
   end,
   ClearSpells = function(self)
-    DEFAULT_CHAT_FRAME:AddMessage("Clearing categories")
+    -- DEFAULT_CHAT_FRAME:AddMessage("Clearing categories")
     for _, cat in ipairs(self) do
       cat.cost = 0
       cat.spells = {}

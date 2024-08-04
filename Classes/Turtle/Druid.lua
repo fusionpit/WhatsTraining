@@ -1,284 +1,295 @@
-if (WT.currentClass ~= "DRUID") then
-  return
-end
-
-local faerieFireFeral = { 16857 --[[Rank 1]], 17390 --[[Rank 2]], 17391 --[[Rank 3]], 17392 --[[Rank 4]] }
-local ravage = { 6785 --[[Rank 1]], 6787 --[[Rank 2]], 9866 --[[Rank 3]], 9867 --[[Rank 4]] }
-local maul = {
-  6807 --[[Rank 1]],
-  6808 --[[Rank 2]],
-  6809 --[[Rank 3]],
-  8972 --[[Rank 4]],
-  9745 --[[Rank 5]],
-  9880 --[[Rank 6]],
-  9881 --[[Rank 7]]
-}
-local demoralizingRoar = { 99 --[[Rank 1]], 1735 --[[Rank 2]], 9490 --[[Rank 3]], 9747 --[[Rank 4]], 9898 --[[Rank 5]] }
-local cower = { 8998, 9000, 9892 }
-local swipe = { 779 --[[Rank 1]], 780 --[[Rank 2]], 769 --[[Rank 3]], 9754 --[[Rank 4]], 9908 --[[Rank 5]] }
-local shred = { 5221 --[[Rank 1]], 6800 --[[Rank 2]], 8992 --[[Rank 3]], 9829 --[[Rank 4]], 9830 --[[Rank 5]] }
-local rake = { 1822 --[[Rank 1]], 1823 --[[Rank 2]], 1824 --[[Rank 3]], 9904 --[[Rank 4]] }
-local pounce = { 9005 --[[Rank 1]], 9823 --[[Rank 2]], 9827 --[[Rank 3]] }
-local frenziedRegeneration = { 22842 --[[Rank 1]], 22895 --[[Rank 2]], 22896 --[[Rank 3]] }
-local freociousBite = {
-  22568 --[[Rank 1]],
-  22827 --[[Rank 2]],
-  22828 --[[Rank 3]],
-  22829 --[[Rank 4]],
-  31018 --[[Rank 5]]
-}
-local claw = { 1082 --[[Rank 1]], 3029 --[[Rank 2]], 5201 --[[Rank 3]], 9849 --[[Rank 4]], 9850 }
-local tigersFury = { 5217 --[[Rank 1]], 6793 --[[Rank 2]], 9845 --[[Rank 3]], 9846 --[[Rank 4]] }
-local prowl = { 5215, 6783, 9913 }
-local rip = { 1079 --[[Rank 1]], 9492 --[[Rank 2]], 9493 --[[Rank 3]], 9752 --[[Rank 4]], 9894 --[[Rank 5]], 9896 }
-local bash = { 5211, 6798, 8983 }
-local dash = { 1850, 9821 }
-
-WT:AddOverriddenSpells(
-  faerieFireFeral,
-  ravage,
-  maul,
-  demoralizingRoar,
-  cower,
-  swipe,
-  shred,
-  rake,
-  pounce,
-  frenziedRegeneration,
-  freociousBite,
-  claw,
-  tigersFury,
-  prowl,
-  rip,
-  bash,
-  dash
-)
-
+if (WT.currentClass ~= "DRUID") then return end
+WT:AddOverriddenSpells({
+	{99,1735,9490,9747,9898},
+	{779,780,769,9754,9908},
+	{1079,9492,9493,9752,9894,9896},
+	{1082,3029,16828,5201,16829,9849,16830,9850,16831,16832,3010,3009},
+	{1742,1753,9000,1754,9892,1755,1756,16697},
+	{1822,1823,1824,9904},
+	{5211,6798,8983},
+	{5215,6783,24452,9913,24453},
+	{5217,6793,9845,9846},
+	{5221,6800,8992,9829,9830,45969},
+	{5487,9634},
+	{6785,6787,9866,9867},
+	{6807,6808,6809,8972,9745,9880,9881},
+	{9005,9823,9827},
+	{9007,9824,9826},
+	{9821,23109,23110},
+	{14916,14917,14918,14919,14920,14921},
+	{22568,22827,22828,22829,31018},
+	{22842,22895,22896}
+})
 WT.SpellsByLevel = {
-  [1] = { { id = 1126, cost = 10 } },
-  [4] = { { id = 8921, cost = 100 }, { id = 774, cost = 100 } },
-  [6] = { { id = 467, cost = 100 }, { id = 5177, cost = 100, requiredIds = { 5176 } } },
-  [8] = { { id = 339, cost = 200 }, { id = 5186, cost = 200, requiredIds = { 5185 } } },
-  [10] = {
-    { id = 99,   cost = 300, requiredIds = { 5487 } },
-    { id = 5232, cost = 300, requiredIds = { 1126 } },
-    { id = 8924, cost = 300, requiredIds = { 8921 } },
-    { id = 1058, cost = 300, requiredIds = { 774 } }
-  },
-  [12] = { { id = 5229, cost = 800, requiredIds = { 5487 } }, { id = 8936, cost = 800 } },
-  [14] = {
-    { id = 5211, cost = 900, requiredIds = { 5487 } },
-    { id = 5187, cost = 900, requiredIds = { 5186 } },
-    { id = 782,  cost = 900, requiredIds = { 467 } },
-    { id = 5178, cost = 900, requiredIds = { 5177 } }
-  },
-  [16] = {
-    { id = 8925, cost = 1800, requiredIds = { 8924 } },
-    { id = 1430, cost = 1800, requiredIds = { 1058 } },
-    { id = 779,  cost = 1800, requiredIds = { 5487 } }
-  },
-  [18] = {
-    { id = 1062,  cost = 1900, requiredIds = { 339 } },
-    { id = 770,   cost = 1900 },
-    { id = 2637,  cost = 1900 },
-    { id = 6808,  cost = 1900, requiredIds = { 6807 } },
-    { id = 16810, cost = 95,   requiredIds = { 16689 }, requiredTalentId = 16689 },
-    { id = 8938,  cost = 1900, requiredIds = { 8936 } }
-  },
-  [20] = {
-    { id = 768,   cost = 2000 },
-    { id = 1082,  cost = 2000, requiredIds = { 768 } },
-    { id = 1735,  cost = 2000, requiredIds = { 99 } },
-    { id = 5188,  cost = 2000, requiredIds = { 5187 } },
-    { id = 6756,  cost = 2000, requiredIds = { 5232 } },
-    { id = 5215,  cost = 2000, requiredIds = { 768 } },
-    { id = 20484, cost = 2000 },
-    { id = 1079,  cost = 2000, requiredIds = { 768 } },
-    { id = 2912,  cost = 2000 }
-  },
-  [22] = {
-    { id = 8926, cost = 3000, requiredIds = { 8925 } },
-    { id = 2090, cost = 3000, requiredIds = { 1430 } },
-    { id = 5221, cost = 3000, requiredIds = { 768 } },
-    { id = 2908, cost = 3000 },
-    { id = 5179, cost = 3000, requiredIds = { 5178 } }
-  },
-  [24] = {
-    { id = 1822, cost = 4000, requiredIds = { 768 } },
-    { id = 8939, cost = 4000, requiredIds = { 8938 } },
-    { id = 2782, cost = 4000 },
-    { id = 780,  cost = 4000, requiredIds = { 779 } },
-    { id = 1075, cost = 4000, requiredIds = { 782 } },
-    { id = 5217, cost = 4000, requiredIds = { 768 } }
-  },
-  [26] = {
-    { id = 2893, cost = 4500 },
-    { id = 1850, cost = 4500, requiredIds = { 768 } },
-    { id = 5189, cost = 4500, requiredIds = { 5188 } },
-    { id = 6809, cost = 4500, requiredIds = { 6808 } },
-    { id = 8949, cost = 4500, requiredIds = { 2912 } }
-  },
-  [28] = {
-    { id = 5209,  cost = 5000, requiredIds = { 5487 } },
-    { id = 3029,  cost = 5000, requiredIds = { 1082 } },
-    { id = 8998,  cost = 5000, requiredIds = { 768 } },
-    { id = 5195,  cost = 5000, requiredIds = { 1062 } },
-    { id = 8927,  cost = 5000, requiredIds = { 8926 } },
-    { id = 16811, cost = 250,  requiredIds = { 16810 }, requiredTalentId = 16689 },
-    { id = 2091,  cost = 5000, requiredIds = { 2090 } },
-    { id = 9492,  cost = 5000, requiredIds = { 1079 } }
-  },
-  [30] = {
-    { id = 6798,  cost = 6000, requiredIds = { 5211 } },
-    { id = 778,   cost = 6000, requiredIds = { 770 } },
-    { id = 17390, cost = 300,  requiredIds = { 16857 }, requiredTalentId = 16857 },
-    { id = 24974, cost = 300,  requiredIds = { 5570 },  requiredTalentId = 5570 },
-    { id = 5234,  cost = 6000, requiredIds = { 6756 } },
-    { id = 20739, cost = 6000, requiredIds = { 20484 } },
-    { id = 8940,  cost = 6000, requiredIds = { 8939 } },
-    { id = 6800,  cost = 6000, requiredIds = { 5221 } },
-    { id = 740,   cost = 6000 },
-    { id = 783,   cost = 6000 },
-    { id = 5180,  cost = 6000, requiredIds = { 5179 } }
-  },
-  [32] = {
-    { id = 9490,  cost = 8000, requiredIds = { 1735 } },
-    { id = 22568, cost = 8000, requiredIds = { 768 } },
-    { id = 6778,  cost = 8000, requiredIds = { 5189 } },
-    { id = 6785,  cost = 8000, requiredIds = { 768 } },
-    { id = 5225,  cost = 8000 }
-  },
-  [34] = {
-    { id = 8972, cost = 10000, requiredIds = { 6809 } },
-    { id = 8928, cost = 10000, requiredIds = { 8927 } },
-    { id = 1823, cost = 10000, requiredIds = { 1822 } },
-    { id = 3627, cost = 10000, requiredIds = { 2091 } },
-    { id = 8950, cost = 10000, requiredIds = { 8949 } },
-    { id = 769,  cost = 10000, requiredIds = { 780 } },
-    { id = 8914, cost = 10000, requiredIds = { 1075 } }
-  },
-  [36] = {
-    { id = 22842, cost = 11000, requiredIds = { 5487 } },
-    { id = 9005,  cost = 11000, requiredIds = { 768 } },
-    { id = 8941,  cost = 11000, requiredIds = { 8940 } },
-    { id = 9493,  cost = 11000, requiredIds = { 9492 } },
-    { id = 6793,  cost = 11000, requiredIds = { 5217 } }
-  },
-  [38] = {
-    { id = 5201,  cost = 12000, requiredIds = { 3029 } },
-    { id = 5196,  cost = 12000, requiredIds = { 5195 } },
-    { id = 8903,  cost = 12000, requiredIds = { 6778 } },
-    { id = 18657, cost = 12000, requiredIds = { 2637 } },
-    { id = 16812, cost = 600,   requiredIds = { 16811 }, requiredTalentId = 16689 },
-    { id = 8992,  cost = 12000, requiredIds = { 6800 } },
-    { id = 8955,  cost = 12000, requiredIds = { 2908 } },
-    { id = 6780,  cost = 12000, requiredIds = { 5180 } }
-  },
-  [40] = {
-    { id = 9000,  cost = 14000, requiredIds = { 8998 } },
-    { id = 9634,  cost = 14000, requiredIds = { 5487 } },
-    { id = 20719, cost = 14000, requiredIds = { 768 } },
-    { id = 22827, cost = 14000, requiredIds = { 22568 } },
-    { id = 16914, cost = 14000 },
-    { id = 29166, cost = 14000 },
-    { id = 24975, cost = 700,   requiredIds = { 24974 }, requiredTalentId = 5570 },
-    { id = 8907,  cost = 14000, requiredIds = { 5234 } },
-    { id = 8929,  cost = 14000, requiredIds = { 8928 } },
-    { id = 6783,  cost = 14000, requiredIds = { 5215 } },
-    { id = 20742, cost = 14000, requiredIds = { 20739 } },
-    { id = 8910,  cost = 14000, requiredIds = { 3627 } },
-    { id = 8918,  cost = 14000, requiredIds = { 740 } }
-  },
-  [42] = {
-    { id = 9747,  cost = 16000, requiredIds = { 9490 } },
-    { id = 9749,  cost = 16000, requiredIds = { 778 } },
-    { id = 17391, cost = 800,   requiredIds = { 17390 }, requiredTalentId = 16857 },
-    { id = 9745,  cost = 16000, requiredIds = { 8972 } },
-    { id = 6787,  cost = 16000, requiredIds = { 6785 } },
-    { id = 9750,  cost = 16000, requiredIds = { 8941 } },
-    { id = 8951,  cost = 16000, requiredIds = { 8950 } }
-  },
-  [44] = {
-    { id = 22812, cost = 18000 },
-    { id = 9758,  cost = 18000, requiredIds = { 8903 } },
-    { id = 1824,  cost = 18000, requiredIds = { 1823 } },
-    { id = 9752,  cost = 18000, requiredIds = { 9493 } },
-    { id = 9754,  cost = 18000, requiredIds = { 769 } },
-    { id = 9756,  cost = 18000, requiredIds = { 8914 } }
-  },
-  [46] = {
-    { id = 8983,  cost = 20000, requiredIds = { 6798 } },
-    { id = 9821,  cost = 20000, requiredIds = { 1850 } },
-    { id = 22895, cost = 20000, requiredIds = { 22842 } },
-    { id = 9833,  cost = 20000, requiredIds = { 8929 } },
-    { id = 9823,  cost = 20000, requiredIds = { 9005 } },
-    { id = 9839,  cost = 20000, requiredIds = { 8910 } },
-    { id = 9829,  cost = 20000, requiredIds = { 8992 } },
-    { id = 8905,  cost = 20000, requiredIds = { 6780 } }
-  },
-  [48] = {
-    { id = 9849,  cost = 22000, requiredIds = { 5201 } },
-    { id = 9852,  cost = 22000, requiredIds = { 5196 } },
-    { id = 22828, cost = 22000, requiredIds = { 22827 } },
-    { id = 16813, cost = 1100,  requiredIds = { 16812 }, requiredTalentId = 16689 },
-    { id = 9856,  cost = 22000, requiredIds = { 9750 } },
-    { id = 9845,  cost = 22000, requiredIds = { 6793 } }
-  },
-  [50] = {
-    { id = 9888,  cost = 23000, requiredIds = { 9758 } },
-    { id = 17401, cost = 23000, requiredIds = { 16914 } },
-    { id = 24976, cost = 1150,  requiredIds = { 24975 }, requiredTalentId = 5570 },
-    { id = 9884,  cost = 23000, requiredIds = { 8907 } },
-    { id = 9880,  cost = 23000, requiredIds = { 9745 } },
-    { id = 9866,  cost = 23000, requiredIds = { 6787 } },
-    { id = 20747, cost = 23000, requiredIds = { 20742 } },
-    { id = 9875,  cost = 23000, requiredIds = { 8951 } },
-    { id = 9862,  cost = 23000, requiredIds = { 8918 } }
-  },
-  [52] = {
-    { id = 9892, cost = 26000, requiredIds = { 9000 } },
-    { id = 9898, cost = 26000, requiredIds = { 9747 } },
-    { id = 9834, cost = 26000, requiredIds = { 9833 } },
-    { id = 9840, cost = 26000, requiredIds = { 9839 } },
-    { id = 9894, cost = 26000, requiredIds = { 9752 } }
-  },
-  [54] = {
-    { id = 9907,  cost = 28000, requiredIds = { 9749 } },
-    { id = 17392, cost = 1400,  requiredIds = { 17391 }, requiredTalentId = 16857 },
-    { id = 9904,  cost = 28000, requiredIds = { 1824 } },
-    { id = 9857,  cost = 28000, requiredIds = { 9856 } },
-    { id = 9830,  cost = 28000, requiredIds = { 9829 } },
-    { id = 9901,  cost = 28000, requiredIds = { 8955 } },
-    { id = 9908,  cost = 28000, requiredIds = { 9754 } },
-    { id = 9910,  cost = 28000, requiredIds = { 9756 } },
-    { id = 9912,  cost = 28000, requiredIds = { 8905 } }
-  },
-  [56] = {
-    { id = 22829, cost = 30000, requiredIds = { 22828 } },
-    { id = 22896, cost = 30000, requiredIds = { 22895 } },
-    { id = 9889,  cost = 30000, requiredIds = { 9888 } },
-    { id = 9827,  cost = 30000, requiredIds = { 9823 } }
-  },
-  [58] = {
-    { id = 9850,  cost = 32000, requiredIds = { 9849 } },
-    { id = 9853,  cost = 32000, requiredIds = { 9852 } },
-    { id = 18658, cost = 32000, requiredIds = { 18657 } },
-    { id = 9881,  cost = 32000, requiredIds = { 9880 } },
-    { id = 9835,  cost = 32000, requiredIds = { 9834 } },
-    { id = 17329, cost = 1600,  requiredIds = { 16813 }, requiredTalentId = 16689 },
-    { id = 9867,  cost = 32000, requiredIds = { 9866 } },
-    { id = 9841,  cost = 32000, requiredIds = { 9840 } },
-    { id = 9876,  cost = 32000, requiredIds = { 9875 } }
-  },
-  [60] = {
-    { id = 17402, cost = 34000, requiredIds = { 17401 } },
-    { id = 24977, cost = 1700,  requiredIds = { 24976 }, requiredTalentId = 5570 },
-    { id = 9885,  cost = 34000, requiredIds = { 9884 } },
-    { id = 9913,  cost = 34000, requiredIds = { 6783 } },
-    { id = 20748, cost = 34000, requiredIds = { 20747 } },
-    { id = 9858,  cost = 34000, requiredIds = { 9857 } },
-    { id = 9896,  cost = 34000, requiredIds = { 9894 } },
-    { id = 9846,  cost = 34000, requiredIds = { 9845 } },
-    { id = 9863,  cost = 34000, requiredIds = { 9862 } }
-  }
+	[1] = {
+		{id=5185,name="Healing Touch",subText="Rank 1",level=1,skillLineId=573,skillLineAbilityId=6261,icon="Interface\\Icons\\Spell_Nature_HealingTouch"},
+		{id=1126,name="Mark of the Wild",subText="Rank 1",level=1,skillLineId=573,skillLineAbilityId=6271,icon="Interface\\Icons\\Spell_Nature_Regeneration"},
+		{id=5176,name="Wrath",subText="Rank 1",level=1,skillLineId=574,skillLineAbilityId=6319,icon="Interface\\Icons\\Spell_Nature_AbolishMagic"}
+	},
+	[4] = {
+		{id=774,name="Rejuvenation",subText="Rank 1",level=4,skillLineId=573,skillLineAbilityId=6278,icon="Interface\\Icons\\Spell_Nature_Rejuvenation"},
+		{id=8921,name="Moonfire",subText="Rank 1",level=4,skillLineId=574,skillLineAbilityId=6333,icon="Interface\\Icons\\Spell_Nature_StarFall"}
+	},
+	[6] = {
+		{id=467,name="Thorns",subText="Rank 1",level=6,skillLineId=574,skillLineAbilityId=6309,icon="Interface\\Icons\\Spell_Nature_Thorns"},
+		{id=5177,name="Wrath",subText="Rank 2",level=6,skillLineId=574,skillLineAbilityId=6320,icon="Interface\\Icons\\Spell_Nature_AbolishMagic",requiredIds={5176}},
+		{id=22570,name="Mangle",subText="Rank 1",level=6,skillLineId=134,skillLineAbilityId=12257,icon="Interface\\Icons\\Ability_Druid_Mangle.tga"}
+	},
+	[8] = {
+		{id=5186,name="Healing Touch",subText="Rank 2",level=8,skillLineId=573,skillLineAbilityId=6262,icon="Interface\\Icons\\Spell_Nature_HealingTouch",requiredIds={25297}},
+		{id=339,name="Entangling Roots",subText="Rank 1",level=8,skillLineId=574,skillLineAbilityId=6343,icon="Interface\\Icons\\Spell_Nature_StrangleVines"}
+	},
+	[10] = {
+		{id=99,name="Demoralizing Roar",subText="Rank 1",level=10,skillLineId=134,skillLineAbilityId=3304,icon="Interface\\Icons\\Ability_Druid_DemoralizingRoar"},
+		{id=5487,name="Bear Form",subText="Shapeshift",level=10,skillLineId=134,skillLineAbilityId=3470,icon="Interface\\Icons\\Ability_Racial_BearForm"},
+		{id=6807,name="Maul",subText="Rank 1",level=10,skillLineId=134,skillLineAbilityId=4073,icon="Interface\\Icons\\Ability_Druid_Maul"},
+		{id=1178,name="Bear Form (Passive)",subText="Passive",level=10,skillLineId=134,skillLineAbilityId=4140,icon="Interface\\Icons\\Ability_Racial_BearForm"},
+		{id=6795,name="Growl",subText="",level=10,skillLineId=134,skillLineAbilityId=6255,icon="Interface\\Icons\\Ability_Physical_Taunt"},
+		{id=5232,name="Mark of the Wild",subText="Rank 2",level=10,skillLineId=573,skillLineAbilityId=6272,icon="Interface\\Icons\\Spell_Nature_Regeneration",requiredIds={1126}},
+		{id=1058,name="Rejuvenation",subText="Rank 2",level=10,skillLineId=573,skillLineAbilityId=6279,icon="Interface\\Icons\\Spell_Nature_Rejuvenation",requiredIds={25299}},
+		{id=8924,name="Moonfire",subText="Rank 2",level=10,skillLineId=574,skillLineAbilityId=6334,icon="Interface\\Icons\\Spell_Nature_StarFall",requiredIds={9835}},
+		{id=16689,name="Nature's Grasp",subText="Rank 1",level=10,skillLineId=574,skillLineAbilityId=9395,icon="Interface\\Icons\\Spell_Nature_NaturesWrath",requiredTalentId=761},
+		{id=18960,name="Teleport: Moonglade",subText="",level=10,skillLineId=574,skillLineAbilityId=10737,icon="Interface\\Icons\\Spell_Arcane_TeleportMoonglade"}
+	},
+	[12] = {
+		{id=8936,name="Regrowth",subText="Rank 1",level=12,skillLineId=573,skillLineAbilityId=6296,icon="Interface\\Icons\\Spell_Nature_ResistNature"}
+	},
+	[14] = {
+		{id=5211,name="Bash",subText="Rank 1",level=14,skillLineId=134,skillLineAbilityId=3307,icon="Interface\\Icons\\Ability_Druid_Bash"},
+		{id=5187,name="Healing Touch",subText="Rank 3",level=14,skillLineId=573,skillLineAbilityId=6263,icon="Interface\\Icons\\Spell_Nature_HealingTouch",requiredIds={5186}},
+		{id=782,name="Thorns",subText="Rank 2",level=14,skillLineId=574,skillLineAbilityId=6310,icon="Interface\\Icons\\Spell_Nature_Thorns",requiredIds={467}},
+		{id=5178,name="Wrath",subText="Rank 3",level=14,skillLineId=574,skillLineAbilityId=6321,icon="Interface\\Icons\\Spell_Nature_AbolishMagic",requiredIds={5177}},
+		{id=8946,name="Cure Poison",subText="",level=14,skillLineId=573,skillLineAbilityId=6351,icon="Interface\\Icons\\Spell_Nature_NullifyPoison"}
+	},
+	[16] = {
+		{id=779,name="Swipe",subText="Rank 1",level=16,skillLineId=134,skillLineAbilityId=717,icon="Interface\\Icons\\INV_Misc_MonsterClaw_03"},
+		{id=1066,name="Aquatic Form",subText="Shapeshift",level=16,skillLineId=134,skillLineAbilityId=2075,icon="Interface\\Icons\\Ability_Druid_AquaticForm"},
+		{id=5421,name="Aquatic Form (Passive)",subText="Passive",level=16,skillLineId=134,skillLineAbilityId=4072,icon="Interface\\Icons\\Ability_Druid_AquaticForm"},
+		{id=1430,name="Rejuvenation",subText="Rank 3",level=16,skillLineId=573,skillLineAbilityId=6280,icon="Interface\\Icons\\Spell_Nature_Rejuvenation",requiredIds={1058}},
+		{id=8925,name="Moonfire",subText="Rank 3",level=16,skillLineId=574,skillLineAbilityId=6335,icon="Interface\\Icons\\Spell_Nature_StarFall",requiredIds={8924}}
+	},
+	[18] = {
+		{id=6808,name="Maul",subText="Rank 2",level=18,skillLineId=134,skillLineAbilityId=4074,icon="Interface\\Icons\\Ability_Druid_Maul",requiredIds={6807}},
+		{id=8938,name="Regrowth",subText="Rank 2",level=18,skillLineId=573,skillLineAbilityId=6297,icon="Interface\\Icons\\Spell_Nature_ResistNature",requiredIds={8936}},
+		{id=770,name="Faerie Fire",subText="Rank 1",level=18,skillLineId=574,skillLineAbilityId=6315,icon="Interface\\Icons\\Spell_Nature_FaerieFire"},
+		{id=1062,name="Entangling Roots",subText="Rank 2",level=18,skillLineId=574,skillLineAbilityId=6344,icon="Interface\\Icons\\Spell_Nature_StrangleVines",requiredIds={339}},
+		{id=16810,name="Nature's Grasp",subText="Rank 2",level=18,skillLineId=574,skillLineAbilityId=9876,icon="Interface\\Icons\\Spell_Nature_NaturesWrath",requiredIds={16689}},
+		{id=2637,name="Hibernate",subText="Rank 1",level=18,skillLineId=574,skillLineAbilityId=10499,icon="Interface\\Icons\\Spell_Nature_Sleep"}
+	},
+	[20] = {
+		{id=768,name="Cat Form",subText="Shapeshift",level=20,skillLineId=134,skillLineAbilityId=716,icon="Interface\\Icons\\Ability_Druid_CatForm"},
+		{id=1082,name="Claw",subText="Rank 1",level=20,skillLineId=134,skillLineAbilityId=862,icon="Interface\\Icons\\Ability_Druid_Rake"},
+		{id=1735,name="Demoralizing Roar",subText="Rank 2",level=20,skillLineId=134,skillLineAbilityId=3305,icon="Interface\\Icons\\Ability_Druid_DemoralizingRoar",requiredIds={99}},
+		{id=1079,name="Rip",subText="Rank 1",level=20,skillLineId=134,skillLineAbilityId=5129,icon="Interface\\Icons\\Ability_GhoulFrenzy"},
+		{id=5215,name="Prowl",subText="Rank 1",level=20,skillLineId=134,skillLineAbilityId=6252,icon="Interface\\Icons\\Ability_Ambush"},
+		{id=5188,name="Healing Touch",subText="Rank 4",level=20,skillLineId=573,skillLineAbilityId=6264,icon="Interface\\Icons\\Spell_Nature_HealingTouch",requiredIds={5187}},
+		{id=6756,name="Mark of the Wild",subText="Rank 3",level=20,skillLineId=573,skillLineAbilityId=6273,icon="Interface\\Icons\\Spell_Nature_Regeneration",requiredIds={5232}},
+		{id=2912,name="Starfire",subText="Rank 1",level=20,skillLineId=574,skillLineAbilityId=6327,icon="Interface\\Icons\\Spell_Arcane_StarFire"},
+		{id=20484,name="Rebirth",subText="Rank 1",level=20,skillLineId=573,skillLineAbilityId=11656,icon="Interface\\Icons\\Spell_Nature_Reincarnation"},
+		{id=5570,name="Insect Swarm",subText="Rank 1",level=20,skillLineId=574,skillLineAbilityId=13092,icon="Interface\\Icons\\Spell_Nature_InsectSwarm"}
+	},
+	[22] = {
+		{id=5221,name="Shred",subText="Rank 1",level=22,skillLineId=134,skillLineAbilityId=3311,icon="Interface\\Icons\\Spell_Shadow_VampiricAura"},
+		{id=2090,name="Rejuvenation",subText="Rank 4",level=22,skillLineId=573,skillLineAbilityId=6281,icon="Interface\\Icons\\Spell_Nature_Rejuvenation",requiredIds={1430}},
+		{id=5179,name="Wrath",subText="Rank 4",level=22,skillLineId=574,skillLineAbilityId=6322,icon="Interface\\Icons\\Spell_Nature_AbolishMagic",requiredIds={5178}},
+		{id=8926,name="Moonfire",subText="Rank 4",level=22,skillLineId=574,skillLineAbilityId=6336,icon="Interface\\Icons\\Spell_Nature_StarFall",requiredIds={8925}},
+		{id=2908,name="Soothe Animal",subText="Rank 1",level=22,skillLineId=574,skillLineAbilityId=6353,icon="Interface\\Icons\\Ability_Hunter_BeastSoothe"}
+	},
+	[24] = {
+		{id=780,name="Swipe",subText="Rank 2",level=24,skillLineId=134,skillLineAbilityId=719,icon="Interface\\Icons\\INV_Misc_MonsterClaw_03",requiredIds={779}},
+		{id=5217,name="Tiger's Fury",subText="Rank 1",level=24,skillLineId=134,skillLineAbilityId=3310,icon="Interface\\Icons\\Ability_Mount_JungleTiger"},
+		{id=1822,name="Rake",subText="Rank 1",level=24,skillLineId=134,skillLineAbilityId=3313,icon="Interface\\Icons\\Ability_Druid_Disembowel"},
+		{id=8939,name="Regrowth",subText="Rank 3",level=24,skillLineId=573,skillLineAbilityId=6298,icon="Interface\\Icons\\Spell_Nature_ResistNature",requiredIds={8938}},
+		{id=1075,name="Thorns",subText="Rank 3",level=24,skillLineId=574,skillLineAbilityId=6311,icon="Interface\\Icons\\Spell_Nature_Thorns",requiredIds={782}},
+		{id=2782,name="Remove Curse",subText="",level=24,skillLineId=573,skillLineAbilityId=6352,icon="Interface\\Icons\\Spell_Holy_RemoveCurse"}
+	},
+	[25] = {
+		{id=16857,name="Faerie Fire (Feral)",subText="Rank 1",level=25,skillLineId=134,skillLineAbilityId=10460,icon="Interface\\Icons\\Spell_Nature_FaerieFire"}
+	},
+	[26] = {
+		{id=6809,name="Maul",subText="Rank 3",level=26,skillLineId=134,skillLineAbilityId=4075,icon="Interface\\Icons\\Ability_Druid_Maul",requiredIds={6808}},
+		{id=1850,name="Dash",subText="Rank 1",level=26,skillLineId=134,skillLineAbilityId=4971,icon="Interface\\Icons\\Ability_Druid_Dash"},
+		{id=5189,name="Healing Touch",subText="Rank 5",level=26,skillLineId=573,skillLineAbilityId=6265,icon="Interface\\Icons\\Spell_Nature_HealingTouch",requiredIds={5188}},
+		{id=8949,name="Starfire",subText="Rank 2",level=26,skillLineId=574,skillLineAbilityId=6328,icon="Interface\\Icons\\Spell_Arcane_StarFire",requiredIds={2912}},
+		{id=2893,name="Abolish Poison",subText="",level=26,skillLineId=573,skillLineAbilityId=6349,icon="Interface\\Icons\\Spell_Nature_NullifyPoison_02"}
+	},
+	[28] = {
+		{id=3029,name="Claw",subText="Rank 2",level=28,skillLineId=134,skillLineAbilityId=2077,icon="Interface\\Icons\\Ability_Druid_Rake",requiredIds={1082}},
+		{id=5209,name="Challenging Roar",subText="",level=28,skillLineId=134,skillLineAbilityId=3306,icon="Interface\\Icons\\Ability_Druid_ChallangingRoar"},
+		{id=8998,name="Cower",subText="Rank 1",level=28,skillLineId=134,skillLineAbilityId=4972,icon="Interface\\Icons\\Ability_Druid_Cower"},
+		{id=9492,name="Rip",subText="Rank 2",level=28,skillLineId=134,skillLineAbilityId=5130,icon="Interface\\Icons\\Ability_GhoulFrenzy",requiredIds={1079}},
+		{id=2091,name="Rejuvenation",subText="Rank 5",level=28,skillLineId=573,skillLineAbilityId=6282,icon="Interface\\Icons\\Spell_Nature_Rejuvenation",requiredIds={2090}},
+		{id=8927,name="Moonfire",subText="Rank 5",level=28,skillLineId=574,skillLineAbilityId=6337,icon="Interface\\Icons\\Spell_Nature_StarFall",requiredIds={8926}},
+		{id=5195,name="Entangling Roots",subText="Rank 3",level=28,skillLineId=574,skillLineAbilityId=6345,icon="Interface\\Icons\\Spell_Nature_StrangleVines",requiredIds={1062}},
+		{id=16811,name="Nature's Grasp",subText="Rank 3",level=28,skillLineId=574,skillLineAbilityId=9877,icon="Interface\\Icons\\Spell_Nature_NaturesWrath",requiredIds={16810}}
+	},
+	[30] = {
+		{id=6800,name="Shred",subText="Rank 2",level=30,skillLineId=134,skillLineAbilityId=4071,icon="Interface\\Icons\\Spell_Shadow_VampiricAura",requiredIds={5221}},
+		{id=6798,name="Bash",subText="Rank 2",level=30,skillLineId=134,skillLineAbilityId=4966,icon="Interface\\Icons\\Ability_Druid_Bash",requiredIds={5211}},
+		{id=783,name="Travel Form",subText="Shapeshift",level=30,skillLineId=134,skillLineAbilityId=5150,icon="Interface\\Icons\\Ability_Druid_TravelForm"},
+		{id=5234,name="Mark of the Wild",subText="Rank 4",level=30,skillLineId=573,skillLineAbilityId=6274,icon="Interface\\Icons\\Spell_Nature_Regeneration",requiredIds={6756}},
+		{id=8940,name="Regrowth",subText="Rank 4",level=30,skillLineId=573,skillLineAbilityId=6299,icon="Interface\\Icons\\Spell_Nature_ResistNature",requiredIds={8939}},
+		{id=740,name="Tranquility",subText="Rank 1",level=30,skillLineId=573,skillLineAbilityId=6305,icon="Interface\\Icons\\Spell_Nature_Tranquility"},
+		{id=778,name="Faerie Fire",subText="Rank 2",level=30,skillLineId=574,skillLineAbilityId=6316,icon="Interface\\Icons\\Spell_Nature_FaerieFire",requiredIds={770}},
+		{id=5180,name="Wrath",subText="Rank 5",level=30,skillLineId=574,skillLineAbilityId=6323,icon="Interface\\Icons\\Spell_Nature_AbolishMagic",requiredIds={5179}},
+		{id=17390,name="Faerie Fire (Feral)",subText="Rank 2",level=30,skillLineId=134,skillLineAbilityId=10461,icon="Interface\\Icons\\Spell_Nature_FaerieFire",requiredIds={16857}},
+		{id=20739,name="Rebirth",subText="Rank 2",level=30,skillLineId=573,skillLineAbilityId=11785,icon="Interface\\Icons\\Spell_Nature_Reincarnation",requiredIds={20484}},
+		{id=24974,name="Insect Swarm",subText="Rank 2",level=30,skillLineId=574,skillLineAbilityId=13099,icon="Interface\\Icons\\Spell_Nature_InsectSwarm",requiredIds={5570}}
+	},
+	[32] = {
+		{id=5225,name="Track Humanoids",subText="",level=32,skillLineId=134,skillLineAbilityId=3318,icon="Interface\\Icons\\Ability_Tracking"},
+		{id=6785,name="Ravage",subText="Rank 1",level=32,skillLineId=134,skillLineAbilityId=4063,icon="Interface\\Icons\\Ability_Druid_Ravage"},
+		{id=9490,name="Demoralizing Roar",subText="Rank 3",level=32,skillLineId=134,skillLineAbilityId=5128,icon="Interface\\Icons\\Ability_Druid_DemoralizingRoar",requiredIds={1735}},
+		{id=6778,name="Healing Touch",subText="Rank 6",level=32,skillLineId=573,skillLineAbilityId=6266,icon="Interface\\Icons\\Spell_Nature_HealingTouch",requiredIds={5189}},
+		{id=22568,name="Ferocious Bite",subText="Rank 1",level=32,skillLineId=134,skillLineAbilityId=12256,icon="Interface\\Icons\\Ability_Druid_FerociousBite"}
+	},
+	[34] = {
+		{id=1823,name="Rake",subText="Rank 2",level=34,skillLineId=134,skillLineAbilityId=3314,icon="Interface\\Icons\\Ability_Druid_Disembowel",requiredIds={1822}},
+		{id=8972,name="Maul",subText="Rank 4",level=34,skillLineId=134,skillLineAbilityId=4962,icon="Interface\\Icons\\Ability_Druid_Maul",requiredIds={6809}},
+		{id=769,name="Swipe",subText="Rank 3",level=34,skillLineId=134,skillLineAbilityId=4968,icon="Interface\\Icons\\INV_Misc_MonsterClaw_03",requiredIds={780}},
+		{id=3627,name="Rejuvenation",subText="Rank 6",level=34,skillLineId=573,skillLineAbilityId=6283,icon="Interface\\Icons\\Spell_Nature_Rejuvenation",requiredIds={2091}},
+		{id=8914,name="Thorns",subText="Rank 4",level=34,skillLineId=574,skillLineAbilityId=6312,icon="Interface\\Icons\\Spell_Nature_Thorns",requiredIds={1075}},
+		{id=8950,name="Starfire",subText="Rank 3",level=34,skillLineId=574,skillLineAbilityId=6329,icon="Interface\\Icons\\Spell_Arcane_StarFire",requiredIds={8949}},
+		{id=8928,name="Moonfire",subText="Rank 6",level=34,skillLineId=574,skillLineAbilityId=6338,icon="Interface\\Icons\\Spell_Nature_StarFall",requiredIds={8927}}
+	},
+	[36] = {
+		{id=6793,name="Tiger's Fury",subText="Rank 2",level=36,skillLineId=134,skillLineAbilityId=4067,icon="Interface\\Icons\\Ability_Mount_JungleTiger",requiredIds={5217}},
+		{id=9005,name="Pounce",subText="Rank 1",level=36,skillLineId=134,skillLineAbilityId=4974,icon="Interface\\Icons\\Ability_Druid_SupriseAttack"},
+		{id=9007,name="Pounce Bleed",subText="Rank 1",level=36,skillLineId=134,skillLineAbilityId=4975,icon="Interface\\Icons\\Ability_Druid_SupriseAttack"},
+		{id=9493,name="Rip",subText="Rank 3",level=36,skillLineId=134,skillLineAbilityId=5131,icon="Interface\\Icons\\Ability_GhoulFrenzy",requiredIds={9492}},
+		{id=8941,name="Regrowth",subText="Rank 5",level=36,skillLineId=573,skillLineAbilityId=6300,icon="Interface\\Icons\\Spell_Nature_ResistNature",requiredIds={8940}},
+		{id=22842,name="Frenzied Regeneration",subText="Rank 1",level=36,skillLineId=134,skillLineAbilityId=12345,icon="Interface\\Icons\\Ability_BullRush"}
+	},
+	[38] = {
+		{id=5201,name="Claw",subText="Rank 3",level=38,skillLineId=134,skillLineAbilityId=4060,icon="Interface\\Icons\\Ability_Druid_Rake",requiredIds={3029}},
+		{id=8992,name="Shred",subText="Rank 3",level=38,skillLineId=134,skillLineAbilityId=4970,icon="Interface\\Icons\\Spell_Shadow_VampiricAura",requiredIds={6800}},
+		{id=8903,name="Healing Touch",subText="Rank 7",level=38,skillLineId=573,skillLineAbilityId=6267,icon="Interface\\Icons\\Spell_Nature_HealingTouch",requiredIds={6778}},
+		{id=6780,name="Wrath",subText="Rank 6",level=38,skillLineId=574,skillLineAbilityId=6324,icon="Interface\\Icons\\Spell_Nature_AbolishMagic",requiredIds={5180}},
+		{id=5196,name="Entangling Roots",subText="Rank 4",level=38,skillLineId=574,skillLineAbilityId=6346,icon="Interface\\Icons\\Spell_Nature_StrangleVines",requiredIds={5195}},
+		{id=8955,name="Soothe Animal",subText="Rank 2",level=38,skillLineId=574,skillLineAbilityId=6354,icon="Interface\\Icons\\Ability_Hunter_BeastSoothe",requiredIds={2908}},
+		{id=16812,name="Nature's Grasp",subText="Rank 4",level=38,skillLineId=574,skillLineAbilityId=9878,icon="Interface\\Icons\\Spell_Nature_NaturesWrath",requiredIds={16811}},
+		{id=18657,name="Hibernate",subText="Rank 2",level=38,skillLineId=574,skillLineAbilityId=10500,icon="Interface\\Icons\\Spell_Nature_Sleep",requiredIds={2637}}
+	},
+	[40] = {
+		{id=9000,name="Cower",subText="Rank 2",level=40,skillLineId=134,skillLineAbilityId=4973,icon="Interface\\Icons\\Ability_Druid_Cower",requiredIds={8998}},
+		{id=9634,name="Dire Bear Form",subText="Shapeshift",level=40,skillLineId=134,skillLineAbilityId=6036,icon="Interface\\Icons\\Ability_Racial_BearForm"},
+		{id=9635,name="Dire Bear Form (Passive)",subText="Passive",level=40,skillLineId=134,skillLineAbilityId=6037,icon="Interface\\Icons\\Ability_Racial_BearForm"},
+		{id=6783,name="Prowl",subText="Rank 2",level=40,skillLineId=134,skillLineAbilityId=6253,icon="Interface\\Icons\\Ability_Ambush",requiredIds={5215}},
+		{id=8907,name="Mark of the Wild",subText="Rank 5",level=40,skillLineId=573,skillLineAbilityId=6275,icon="Interface\\Icons\\Spell_Nature_Regeneration",requiredIds={5234}},
+		{id=8910,name="Rejuvenation",subText="Rank 7",level=40,skillLineId=573,skillLineAbilityId=6284,icon="Interface\\Icons\\Spell_Nature_Rejuvenation",requiredIds={3627}},
+		{id=8918,name="Tranquility",subText="Rank 2",level=40,skillLineId=573,skillLineAbilityId=6306,icon="Interface\\Icons\\Spell_Nature_Tranquility",requiredIds={740}},
+		{id=8929,name="Moonfire",subText="Rank 7",level=40,skillLineId=574,skillLineAbilityId=6339,icon="Interface\\Icons\\Spell_Nature_StarFall",requiredIds={8928}},
+		{id=16914,name="Hurricane",subText="Rank 1",level=40,skillLineId=574,skillLineAbilityId=9356,icon="Interface\\Icons\\Spell_Nature_Cyclone"},
+		{id=20719,name="Feline Grace",subText="Passive",level=40,skillLineId=134,skillLineAbilityId=11780,icon="Interface\\Icons\\INV_Feather_01"},
+		{id=20742,name="Rebirth",subText="Rank 3",level=40,skillLineId=573,skillLineAbilityId=11786,icon="Interface\\Icons\\Spell_Nature_Reincarnation",requiredIds={20739}},
+		{id=22827,name="Ferocious Bite",subText="Rank 2",level=40,skillLineId=134,skillLineAbilityId=12327,icon="Interface\\Icons\\Ability_Druid_FerociousBite",requiredIds={22568}},
+		{id=24858,name="Moonkin Form",subText="Shapeshift",level=40,skillLineId=574,skillLineAbilityId=13083,icon="Interface\\Icons\\Spell_Nature_ForceOfNature",requiredTalentId=793},
+		{id=24905,name="Moonkin Form (Passive)",subText="Passive",level=40,skillLineId=574,skillLineAbilityId=13084,icon="Interface\\Icons\\Spell_Nature_ForceOfNature"},
+		{id=24907,name="Moonkin Aura",subText="",level=40,skillLineId=574,skillLineAbilityId=13086,icon="Interface\\Icons\\Spell_Nature_MoonGlow"},
+		{id=24975,name="Insect Swarm",subText="Rank 3",level=40,skillLineId=574,skillLineAbilityId=13100,icon="Interface\\Icons\\Spell_Nature_InsectSwarm",requiredIds={24974}},
+		{id=45705,name="Tree of Life Form",subText="Shapeshift",level=40,skillLineId=573,skillLineAbilityId=15067,icon="Interface\\Icons\\Ability_Druid_TreeofLife",requiredTalentId=844}
+	},
+	[42] = {
+		{id=6787,name="Ravage",subText="Rank 2",level=42,skillLineId=134,skillLineAbilityId=4064,icon="Interface\\Icons\\Ability_Druid_Ravage",requiredIds={6785}},
+		{id=9745,name="Maul",subText="Rank 5",level=42,skillLineId=134,skillLineAbilityId=5206,icon="Interface\\Icons\\Ability_Druid_Maul",requiredIds={8972}},
+		{id=9747,name="Demoralizing Roar",subText="Rank 4",level=42,skillLineId=134,skillLineAbilityId=5207,icon="Interface\\Icons\\Ability_Druid_DemoralizingRoar",requiredIds={9490}},
+		{id=9750,name="Regrowth",subText="Rank 6",level=42,skillLineId=573,skillLineAbilityId=6301,icon="Interface\\Icons\\Spell_Nature_ResistNature",requiredIds={8941}},
+		{id=9749,name="Faerie Fire",subText="Rank 3",level=42,skillLineId=574,skillLineAbilityId=6317,icon="Interface\\Icons\\Spell_Nature_FaerieFire",requiredIds={778}},
+		{id=8951,name="Starfire",subText="Rank 4",level=42,skillLineId=574,skillLineAbilityId=6330,icon="Interface\\Icons\\Spell_Arcane_StarFire",requiredIds={8950}},
+		{id=17391,name="Faerie Fire (Feral)",subText="Rank 3",level=42,skillLineId=134,skillLineAbilityId=10462,icon="Interface\\Icons\\Spell_Nature_FaerieFire",requiredIds={17390}}
+	},
+	[44] = {
+		{id=1824,name="Rake",subText="Rank 3",level=44,skillLineId=134,skillLineAbilityId=3315,icon="Interface\\Icons\\Ability_Druid_Disembowel",requiredIds={1823}},
+		{id=9752,name="Rip",subText="Rank 4",level=44,skillLineId=134,skillLineAbilityId=5210,icon="Interface\\Icons\\Ability_GhoulFrenzy",requiredIds={9493}},
+		{id=9754,name="Swipe",subText="Rank 4",level=44,skillLineId=134,skillLineAbilityId=5211,icon="Interface\\Icons\\INV_Misc_MonsterClaw_03",requiredIds={769}},
+		{id=9758,name="Healing Touch",subText="Rank 8",level=44,skillLineId=573,skillLineAbilityId=6268,icon="Interface\\Icons\\Spell_Nature_HealingTouch",requiredIds={8903}},
+		{id=9756,name="Thorns",subText="Rank 5",level=44,skillLineId=574,skillLineAbilityId=6313,icon="Interface\\Icons\\Spell_Nature_Thorns",requiredIds={8914}},
+		{id=22812,name="Barkskin",subText="",level=44,skillLineId=574,skillLineAbilityId=12324,icon="Interface\\Icons\\Spell_Nature_StoneClawTotem"}
+	},
+	[46] = {
+		{id=8983,name="Bash",subText="Rank 3",level=46,skillLineId=134,skillLineAbilityId=4967,icon="Interface\\Icons\\Ability_Druid_Bash",requiredIds={6798}},
+		{id=9821,name="Dash",subText="Rank 2",level=46,skillLineId=134,skillLineAbilityId=5246,icon="Interface\\Icons\\Ability_Druid_Dash",requiredIds={1850}},
+		{id=9823,name="Pounce",subText="Rank 2",level=46,skillLineId=134,skillLineAbilityId=5247,icon="Interface\\Icons\\Ability_Druid_SupriseAttack",requiredIds={9005}},
+		{id=9824,name="Pounce Bleed",subText="Rank 2",level=46,skillLineId=134,skillLineAbilityId=5249,icon="Interface\\Icons\\Ability_Druid_SupriseAttack",requiredIds={9007}},
+		{id=9829,name="Shred",subText="Rank 4",level=46,skillLineId=134,skillLineAbilityId=5251,icon="Interface\\Icons\\Spell_Shadow_VampiricAura",requiredIds={8992}},
+		{id=9839,name="Rejuvenation",subText="Rank 8",level=46,skillLineId=573,skillLineAbilityId=6285,icon="Interface\\Icons\\Spell_Nature_Rejuvenation",requiredIds={8910}},
+		{id=8905,name="Wrath",subText="Rank 7",level=46,skillLineId=574,skillLineAbilityId=6325,icon="Interface\\Icons\\Spell_Nature_AbolishMagic",requiredIds={6780}},
+		{id=9833,name="Moonfire",subText="Rank 8",level=46,skillLineId=574,skillLineAbilityId=6340,icon="Interface\\Icons\\Spell_Nature_StarFall",requiredIds={8929}},
+		{id=22895,name="Frenzied Regeneration",subText="Rank 2",level=46,skillLineId=134,skillLineAbilityId=12346,icon="Interface\\Icons\\Ability_BullRush",requiredIds={22842}}
+	},
+	[48] = {
+		{id=9845,name="Tiger's Fury",subText="Rank 3",level=48,skillLineId=134,skillLineAbilityId=5259,icon="Interface\\Icons\\Ability_Mount_JungleTiger",requiredIds={6793}},
+		{id=9849,name="Claw",subText="Rank 4",level=48,skillLineId=134,skillLineAbilityId=5261,icon="Interface\\Icons\\Ability_Druid_Rake",requiredIds={5201}},
+		{id=9856,name="Regrowth",subText="Rank 7",level=48,skillLineId=573,skillLineAbilityId=6302,icon="Interface\\Icons\\Spell_Nature_ResistNature",requiredIds={9750}},
+		{id=9852,name="Entangling Roots",subText="Rank 5",level=48,skillLineId=574,skillLineAbilityId=6347,icon="Interface\\Icons\\Spell_Nature_StrangleVines",requiredIds={5196}},
+		{id=16813,name="Nature's Grasp",subText="Rank 5",level=48,skillLineId=574,skillLineAbilityId=9879,icon="Interface\\Icons\\Spell_Nature_NaturesWrath",requiredIds={16812}},
+		{id=22828,name="Ferocious Bite",subText="Rank 3",level=48,skillLineId=134,skillLineAbilityId=12328,icon="Interface\\Icons\\Ability_Druid_FerociousBite",requiredIds={22827}}
+	},
+	[50] = {
+		{id=9866,name="Ravage",subText="Rank 3",level=50,skillLineId=134,skillLineAbilityId=5270,icon="Interface\\Icons\\Ability_Druid_Ravage",requiredIds={6787}},
+		{id=9880,name="Maul",subText="Rank 6",level=50,skillLineId=134,skillLineAbilityId=5276,icon="Interface\\Icons\\Ability_Druid_Maul",requiredIds={9745}},
+		{id=9888,name="Healing Touch",subText="Rank 9",level=50,skillLineId=573,skillLineAbilityId=6269,icon="Interface\\Icons\\Spell_Nature_HealingTouch",requiredIds={9758}},
+		{id=9884,name="Mark of the Wild",subText="Rank 6",level=50,skillLineId=573,skillLineAbilityId=6276,icon="Interface\\Icons\\Spell_Nature_Regeneration",requiredIds={8907}},
+		{id=9862,name="Tranquility",subText="Rank 3",level=50,skillLineId=573,skillLineAbilityId=6307,icon="Interface\\Icons\\Spell_Nature_Tranquility",requiredIds={8918}},
+		{id=9875,name="Starfire",subText="Rank 5",level=50,skillLineId=574,skillLineAbilityId=6331,icon="Interface\\Icons\\Spell_Arcane_StarFire",requiredIds={8951}},
+		{id=17401,name="Hurricane",subText="Rank 2",level=50,skillLineId=574,skillLineAbilityId=9892,icon="Interface\\Icons\\Spell_Nature_Cyclone",requiredIds={16914}},
+		{id=20747,name="Rebirth",subText="Rank 4",level=50,skillLineId=573,skillLineAbilityId=11787,icon="Interface\\Icons\\Spell_Nature_Reincarnation",requiredIds={20742}},
+		{id=21849,name="Gift of the Wild",subText="Rank 1",level=50,skillLineId=573,skillLineAbilityId=12096,icon="Interface\\Icons\\Spell_Nature_Regeneration"},
+		{id=24976,name="Insect Swarm",subText="Rank 4",level=50,skillLineId=574,skillLineAbilityId=13101,icon="Interface\\Icons\\Spell_Nature_InsectSwarm",requiredIds={24975}}
+	},
+	[52] = {
+		{id=9892,name="Cower",subText="Rank 3",level=52,skillLineId=134,skillLineAbilityId=5280,icon="Interface\\Icons\\Ability_Druid_Cower",requiredIds={9000}},
+		{id=9894,name="Rip",subText="Rank 5",level=52,skillLineId=134,skillLineAbilityId=5281,icon="Interface\\Icons\\Ability_GhoulFrenzy",requiredIds={9752}},
+		{id=9898,name="Demoralizing Roar",subText="Rank 5",level=52,skillLineId=134,skillLineAbilityId=5283,icon="Interface\\Icons\\Ability_Druid_DemoralizingRoar",requiredIds={9747}},
+		{id=9840,name="Rejuvenation",subText="Rank 9",level=52,skillLineId=573,skillLineAbilityId=6286,icon="Interface\\Icons\\Spell_Nature_Rejuvenation",requiredIds={9839}},
+		{id=9834,name="Moonfire",subText="Rank 9",level=52,skillLineId=574,skillLineAbilityId=6341,icon="Interface\\Icons\\Spell_Nature_StarFall",requiredIds={9833}}
+	},
+	[54] = {
+		{id=9830,name="Shred",subText="Rank 5",level=54,skillLineId=134,skillLineAbilityId=5252,icon="Interface\\Icons\\Spell_Shadow_VampiricAura",requiredIds={9829}},
+		{id=9904,name="Rake",subText="Rank 4",level=54,skillLineId=134,skillLineAbilityId=5285,icon="Interface\\Icons\\Ability_Druid_Disembowel",requiredIds={1824}},
+		{id=9908,name="Swipe",subText="Rank 5",level=54,skillLineId=134,skillLineAbilityId=5287,icon="Interface\\Icons\\INV_Misc_MonsterClaw_03",requiredIds={9754}},
+		{id=9857,name="Regrowth",subText="Rank 8",level=54,skillLineId=573,skillLineAbilityId=6303,icon="Interface\\Icons\\Spell_Nature_ResistNature",requiredIds={9856}},
+		{id=9910,name="Thorns",subText="Rank 6",level=54,skillLineId=574,skillLineAbilityId=6314,icon="Interface\\Icons\\Spell_Nature_Thorns",requiredIds={9756}},
+		{id=9907,name="Faerie Fire",subText="Rank 4",level=54,skillLineId=574,skillLineAbilityId=6318,icon="Interface\\Icons\\Spell_Nature_FaerieFire",requiredIds={9749}},
+		{id=9912,name="Wrath",subText="Rank 8",level=54,skillLineId=574,skillLineAbilityId=6326,icon="Interface\\Icons\\Spell_Nature_AbolishMagic",requiredIds={8905}},
+		{id=9901,name="Soothe Animal",subText="Rank 3",level=54,skillLineId=574,skillLineAbilityId=6355,icon="Interface\\Icons\\Ability_Hunter_BeastSoothe",requiredIds={8955}},
+		{id=17392,name="Faerie Fire (Feral)",subText="Rank 4",level=54,skillLineId=134,skillLineAbilityId=10463,icon="Interface\\Icons\\Spell_Nature_FaerieFire",requiredIds={17391}},
+		{id=45969,name="Shred",subText="Rank 6",level=54,skillLineId=134,skillLineAbilityId=30389,icon="Interface\\Icons\\Spell_Shadow_VampiricAura",requiredIds={9830}}
+	},
+	[56] = {
+		{id=9827,name="Pounce",subText="Rank 3",level=56,skillLineId=134,skillLineAbilityId=5248,icon="Interface\\Icons\\Ability_Druid_SupriseAttack",requiredIds={9823}},
+		{id=9826,name="Pounce Bleed",subText="Rank 3",level=56,skillLineId=134,skillLineAbilityId=5250,icon="Interface\\Icons\\Ability_Druid_SupriseAttack",requiredIds={9824}},
+		{id=9889,name="Healing Touch",subText="Rank 10",level=56,skillLineId=573,skillLineAbilityId=6270,icon="Interface\\Icons\\Spell_Nature_HealingTouch",requiredIds={5185}},
+		{id=22829,name="Ferocious Bite",subText="Rank 4",level=56,skillLineId=134,skillLineAbilityId=12329,icon="Interface\\Icons\\Ability_Druid_FerociousBite",requiredIds={22828}},
+		{id=22896,name="Frenzied Regeneration",subText="Rank 3",level=56,skillLineId=134,skillLineAbilityId=12347,icon="Interface\\Icons\\Ability_BullRush",requiredIds={22895}}
+	},
+	[58] = {
+		{id=9850,name="Claw",subText="Rank 5",level=58,skillLineId=134,skillLineAbilityId=5262,icon="Interface\\Icons\\Ability_Druid_Rake",requiredIds={9849}},
+		{id=9867,name="Ravage",subText="Rank 4",level=58,skillLineId=134,skillLineAbilityId=5271,icon="Interface\\Icons\\Ability_Druid_Ravage",requiredIds={9866}},
+		{id=9881,name="Maul",subText="Rank 7",level=58,skillLineId=134,skillLineAbilityId=5277,icon="Interface\\Icons\\Ability_Druid_Maul",requiredIds={9880}},
+		{id=9841,name="Rejuvenation",subText="Rank 10",level=58,skillLineId=573,skillLineAbilityId=6287,icon="Interface\\Icons\\Spell_Nature_Rejuvenation",requiredIds={774}},
+		{id=9876,name="Starfire",subText="Rank 6",level=58,skillLineId=574,skillLineAbilityId=6332,icon="Interface\\Icons\\Spell_Arcane_StarFire",requiredIds={9875}},
+		{id=9835,name="Moonfire",subText="Rank 10",level=58,skillLineId=574,skillLineAbilityId=6342,icon="Interface\\Icons\\Spell_Nature_StarFall",requiredIds={8921}},
+		{id=9853,name="Entangling Roots",subText="Rank 6",level=58,skillLineId=574,skillLineAbilityId=6348,icon="Interface\\Icons\\Spell_Nature_StrangleVines",requiredIds={9852}},
+		{id=17329,name="Nature's Grasp",subText="Rank 6",level=58,skillLineId=574,skillLineAbilityId=9891,icon="Interface\\Icons\\Spell_Nature_NaturesWrath",requiredIds={16813}},
+		{id=18658,name="Hibernate",subText="Rank 3",level=58,skillLineId=574,skillLineAbilityId=10501,icon="Interface\\Icons\\Spell_Nature_Sleep",requiredIds={18657}},
+		{id=45736,name="Savage Bite",subText="Rank 1",level=58,skillLineId=134,skillLineAbilityId=15070,icon="Interface\\Icons\\Ability_Racial_Cannibalize"}
+	},
+	[60] = {
+		{id=9846,name="Tiger's Fury",subText="Rank 4",level=60,skillLineId=134,skillLineAbilityId=5260,icon="Interface\\Icons\\Ability_Mount_JungleTiger",requiredIds={9845}},
+		{id=9896,name="Rip",subText="Rank 6",level=60,skillLineId=134,skillLineAbilityId=5282,icon="Interface\\Icons\\Ability_GhoulFrenzy",requiredIds={9894}},
+		{id=9913,name="Prowl",subText="Rank 3",level=60,skillLineId=134,skillLineAbilityId=6254,icon="Interface\\Icons\\Ability_Ambush",requiredIds={6783}},
+		{id=9885,name="Mark of the Wild",subText="Rank 7",level=60,skillLineId=573,skillLineAbilityId=6277,icon="Interface\\Icons\\Spell_Nature_Regeneration",requiredIds={9884}},
+		{id=9858,name="Regrowth",subText="Rank 9",level=60,skillLineId=573,skillLineAbilityId=6304,icon="Interface\\Icons\\Spell_Nature_ResistNature",requiredIds={9857}},
+		{id=9863,name="Tranquility",subText="Rank 4",level=60,skillLineId=573,skillLineAbilityId=6308,icon="Interface\\Icons\\Spell_Nature_Tranquility",requiredIds={9862}},
+		{id=17402,name="Hurricane",subText="Rank 3",level=60,skillLineId=574,skillLineAbilityId=9893,icon="Interface\\Icons\\Spell_Nature_Cyclone",requiredIds={17401}},
+		{id=20748,name="Rebirth",subText="Rank 5",level=60,skillLineId=573,skillLineAbilityId=11788,icon="Interface\\Icons\\Spell_Nature_Reincarnation",requiredIds={20747}},
+		{id=21850,name="Gift of the Wild",subText="Rank 2",level=60,skillLineId=573,skillLineAbilityId=12097,icon="Interface\\Icons\\Spell_Nature_Regeneration",requiredIds={21849}},
+		{id=24977,name="Insect Swarm",subText="Rank 5",level=60,skillLineId=574,skillLineAbilityId=13102,icon="Interface\\Icons\\Spell_Nature_InsectSwarm",requiredIds={24976}},
+		{id=25298,name="Starfire",subText="Rank 7",level=60,skillLineId=574,skillLineAbilityId=13235,icon="Interface\\Icons\\Spell_Arcane_StarFire",requiredIds={9876}},
+		{id=25299,name="Rejuvenation",subText="Rank 11",level=60,skillLineId=573,skillLineAbilityId=13236,icon="Interface\\Icons\\Spell_Nature_Rejuvenation",requiredIds={9841}},
+		{id=25297,name="Healing Touch",subText="Rank 11",level=60,skillLineId=573,skillLineAbilityId=13237,icon="Interface\\Icons\\Spell_Nature_HealingTouch",requiredIds={9889}},
+		{id=31018,name="Ferocious Bite",subText="Rank 5",level=60,skillLineId=134,skillLineAbilityId=14491,icon="Interface\\Icons\\Ability_Druid_FerociousBite",requiredIds={22829}},
+		{id=45967,name="Wrath",subText="Rank 9",level=60,skillLineId=574,skillLineAbilityId=30387,icon="Interface\\Icons\\Spell_Nature_AbolishMagic",requiredIds={9912}}
+	}
 }

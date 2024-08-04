@@ -1,292 +1,235 @@
 if (WT.currentClass ~= "WARLOCK") then return end
-
-WT.TomesByLevel = {
-  [4] = { { id = 16321, cost = 100 } },
-  [8] = { { id = 16302, cost = 100 } },
-  [12] = { { id = 16331, cost = 600 } },
-  [14] = { { id = 16322, cost = 900 }, { id = 16326, cost = 900 } },
-  [16] = { { id = 16351, cost = 1200 } },
-  [18] = { { id = 16316, cost = 1500 }, { id = 16357, cost = 1500 } },
-  [20] = { { id = 16346, cost = 2000 } },
-  [22] = { { id = 16375, cost = 2500 } },
-  [24] = {
-    { id = 16327, cost = 3000 }, { id = 16352, cost = 3000 },
-    { id = 16363, cost = 3000 }
-  },
-  [26] = {
-    { id = 16323, cost = 4000 }, { id = 16358, cost = 4000 },
-    { id = 16379, cost = 4000 }
-  },
-  [28] = { { id = 16317, cost = 5000 }, { id = 16368, cost = 5000 } },
-  [30] = { { id = 16347, cost = 6000 } },
-  [32] = {
-    { id = 16353, cost = 7000 }, { id = 16380, cost = 7000 },
-    { id = 16384, cost = 7000 }
-  },
-  [34] = {
-    { id = 16328, cost = 8000 }, { id = 16359, cost = 8000 },
-    { id = 16376, cost = 8000 }
-  },
-  [36] = {
-    { id = 16364, cost = 9000 }, { id = 16371, cost = 9000 },
-    { id = 16388, cost = 9000 }
-  },
-  [38] = {
-    { id = 16318, cost = 10000 }, { id = 16324, cost = 10000 },
-    { id = 16381, cost = 10000 }
-  },
-  [40] = {
-    { id = 16348, cost = 11000 }, { id = 16354, cost = 11000 },
-    { id = 16385, cost = 11000 }
-  },
-  [42] = { { id = 16360, cost = 11000 }, { id = 16390, cost = 11000 } },
-  [44] = { { id = 16329, cost = 12000 }, { id = 16372, cost = 12000 } },
-  [46] = { { id = 16377, cost = 13000 }, { id = 16382, cost = 13000 } },
-  [48] = {
-    { id = 16319, cost = 14000 }, { id = 16355, cost = 14000 },
-    { id = 16365, cost = 14000 }, { id = 16386, cost = 14000 }
-  },
-  [50] = {
-    { id = 16325, cost = 15000 }, { id = 16349, cost = 15000 },
-    { id = 16361, cost = 15000 }
-  },
-  [52] = { { id = 16373, cost = 18000 }, { id = 16389, cost = 18000 } },
-  [54] = { { id = 16330, cost = 20000 }, { id = 16383, cost = 20000 } },
-  [56] = { { id = 16356, cost = 22000 }, { id = 16387, cost = 22000 } },
-  [58] = {
-    { id = 16320, cost = 24000 }, { id = 16362, cost = 24000 },
-    { id = 16378, cost = 24000 }
-  },
-  [60] = {
-    { id = 16350, cost = 26000 }, { id = 16366, cost = 26000 },
-    { id = 16374, cost = 26000 }
-  }
-}
-WT.TomeIds = {}
-for _, tomesByLevel in pairs(WT.TomesByLevel) do
-  for _, tome in ipairs(tomesByLevel) do WT.TomeIds[tome.id] = true end
-end
 WT.SpellsByLevel = {
-  [1] = { { id = 348, cost = 10 } },
-  [4] = { { id = 172, cost = 100 }, { id = 702, cost = 100 } },
-  [6] = { { id = 1454, cost = 100 }, { id = 695, cost = 100, requiredIds = { 686 } } },
-  [8] = { { id = 980, cost = 200 }, { id = 5782, cost = 200 } },
-  [10] = {
-    { id = 6201, cost = 300, requiredIds = { 1120 } },
-    { id = 696,  cost = 300, requiredIds = { 687 } }, { id = 1120, cost = 300 },
-    { id = 707, cost = 300, requiredIds = { 348 } }
-  },
-  [12] = {
-    { id = 1108, cost = 600, requiredIds = { 702 } }, { id = 755, cost = 600 },
-    { id = 705,  cost = 600, requiredIds = { 695 } }
-  },
-  [14] = {
-    { id = 6222, cost = 900, requiredIds = { 172 } }, { id = 704, cost = 900 },
-    { id = 689,  cost = 900 }
-  },
-  [16] = {
-    { id = 1455, cost = 1200, requiredIds = { 1454 } }, { id = 5697, cost = 1200 }
-  },
-  [18] = {
-    { id = 693,  cost = 1500, requiredIds = { 1120 } },
-    { id = 1014, cost = 1500, requiredIds = { 980 } }, { id = 5676, cost = 1500 }
-  },
-  [20] = {
-    { id = 706,  cost = 2000 }, { id = 3698, cost = 2000, requiredIds = { 755 } },
-    { id = 1094, cost = 2000, requiredIds = { 707 } }, { id = 5740, cost = 2000 },
-    { id = 698, cost = 2000 }, { id = 1088, cost = 2000, requiredIds = { 705 } }
-  },
-  [22] = {
-    { id = 6202, cost = 2500, requiredIds = { 6201 } },
-    { id = 6205, cost = 2500, requiredIds = { 1108 } },
-    { id = 699,  cost = 2500, requiredIds = { 689 } }, { id = 126, cost = 2500 }
-  },
-  [24] = {
-    { id = 6223,  cost = 3000, requiredIds = { 6222 } },
-    { id = 5138,  cost = 3000 },
-    { id = 8288,  cost = 3000, requiredIds = { 1120 } },
-    { id = 5500,  cost = 3000 },
-    { id = 18867, cost = 150,  requiredTalentId = 17877 }
-  },
-  [26] = {
-    { id = 1714,  cost = 4000 }, { id = 132, cost = 4000 },
-    { id = 1456,  cost = 4000, requiredIds = { 1455 } },
-    { id = 17919, cost = 4000, requiredIds = { 5676 } }
-  },
-  [28] = {
-    { id = 710,  cost = 5000 }, { id = 6366, cost = 5000 },
-    { id = 6217, cost = 5000, requiredIds = { 1014 } },
-    { id = 7658, cost = 5000, requiredIds = { 704 } },
-    { id = 3699, cost = 5000, requiredIds = { 3698 } },
-    { id = 1106, cost = 5000, requiredIds = { 1088 } }
-  },
-  [30] = {
-    { id = 20752, cost = 6000, requiredIds = { 693 } },
-    { id = 1086,  cost = 6000, requiredIds = { 706 } },
-    { id = 709,   cost = 6000, requiredIds = { 699 } }, { id = 1098, cost = 6000 },
-    { id = 1949, cost = 6000 }, { id = 2941, cost = 6000, requiredIds = { 1094 } }
-  },
-  [32] = {
-    { id = 7646, cost = 7000, requiredIds = { 6205 } },
-    { id = 1490, cost = 7000 },
-    { id = 6213, cost = 7000, requiredIds = { 5782 } },
-    { id = 6229, cost = 7000 },
-    {
-      id = 18868,
-      cost = 350,
-      requiredIds = { 18867 },
-      requiredTalentId = 17877
-    }
-  },
-  [34] = {
-    { id = 7648,  cost = 8000, requiredIds = { 6223 } },
-    { id = 5699,  cost = 8000, requiredIds = { 6202 } },
-    { id = 6226,  cost = 8000, requiredIds = { 5138 } },
-    { id = 6219,  cost = 8000, requiredIds = { 5740 } },
-    { id = 17920, cost = 8000, requiredIds = { 17919 } }
-  },
-  [36] = {
-    { id = 17951, cost = 9000, requiredIds = { 6366 } },
-    { id = 2362,  cost = 9000, requiredIds = { 1120 } },
-    { id = 3700,  cost = 9000, requiredIds = { 3699 } },
-    { id = 11687, cost = 9000, requiredIds = { 1456 } },
-    { id = 7641,  cost = 9000, requiredIds = { 1106 } }
-  },
-  [38] = {
-    { id = 11711, cost = 10000, requiredIds = { 6217 } },
-    { id = 2970,  cost = 10000, requiredIds = { 132 } },
-    { id = 7651,  cost = 10000, requiredIds = { 709 } },
-    { id = 8289,  cost = 10000, requiredIds = { 8288 } },
-    { id = 18879, cost = 500,   requiredTalentId = 18265 }
-  },
-  [40] = {
-    { id = 20755, cost = 11000, requiredIds = { 20752 } },
-    { id = 11733, cost = 11000, requiredIds = { 1086 } },
-    { id = 5484,  cost = 11000 },
-    { id = 11665, cost = 11000, requiredIds = { 2941 } },
-    {
-      id = 18869,
-      cost = 550,
-      requiredIds = { 18868 },
-      requiredTalentId = 17877
-    }
-  },
-  [42] = {
-    { id = 7659,  cost = 11000, requiredIds = { 7658 } },
-    { id = 11707, cost = 11000, requiredIds = { 7646 } },
-    { id = 6789,  cost = 11000 },
-    { id = 11683, cost = 9900,  requiredIds = { 1949 } },
-    { id = 17921, cost = 11000, requiredIds = { 17920 } },
-    { id = 11739, cost = 11000, requiredIds = { 6229 } }
-  },
-  [44] = {
-    { id = 11671, cost = 12000, requiredIds = { 7648 } },
-    { id = 17862, cost = 12000 },
-    { id = 11703, cost = 12000, requiredIds = { 6226 } },
-    { id = 11725, cost = 12000, requiredIds = { 1098 } },
-    { id = 11693, cost = 12000, requiredIds = { 3700 } },
-    { id = 11659, cost = 12000, requiredIds = { 7641 } }
-  },
-  [46] = {
-    { id = 17952, cost = 13000, requiredIds = { 17951 } },
-    { id = 11729, cost = 13000, requiredIds = { 5699 } },
-    { id = 11721, cost = 13000, requiredIds = { 1490 } },
-    { id = 11699, cost = 13000, requiredIds = { 7651 } },
-    { id = 11688, cost = 13000, requiredIds = { 11687 } },
-    { id = 11677, cost = 13000, requiredIds = { 6219 } }
-  },
-  [48] = {
-    { id = 18647, cost = 13000, requiredIds = { 710 } },
-    { id = 18930, cost = 700,   requiredTalentId = 17962 },
-    { id = 17727, cost = 14000, requiredIds = { 2362 } },
-    { id = 11712, cost = 14000, requiredIds = { 11711 } },
-    {
-      id = 18870,
-      cost = 700,
-      requiredIds = { 18869 },
-      requiredTalentId = 17877
-    },
-    {
-      id = 18880,
-      cost = 700,
-      requiredIds = { 18879 },
-      requiredTalentId = 18265
-    }, { id = 6353, cost = 14000 }
-  },
-  [50] = {
-    { id = 20756, cost = 15000, requiredIds = { 20755 } },
-    { id = 11719, cost = 15000, requiredIds = { 1714 } },
-    { id = 18937, cost = 750,   requiredTalentId = 18220 },
-    { id = 17925, cost = 15000, requiredIds = { 6789 } },
-    { id = 11734, cost = 15000, requiredIds = { 11733 } },
-    { id = 11743, cost = 15000, requiredIds = { 2970 } },
-    { id = 11667, cost = 15000, requiredIds = { 11665 } },
-    { id = 17922, cost = 15000, requiredIds = { 17921 } }
-  },
-  [52] = {
-    { id = 11708, cost = 18000, requiredIds = { 11707 } },
-    { id = 11675, cost = 18000, requiredIds = { 8289 } },
-    { id = 11694, cost = 18000, requiredIds = { 11693 } },
-    { id = 11660, cost = 18000, requiredIds = { 11659 } },
-    { id = 11740, cost = 18000, requiredIds = { 11739 } }
-  },
-  [54] = {
-    {
-      id = 18931,
-      cost = 1000,
-      requiredIds = { 18930 },
-      requiredTalentId = 17962
-    }, { id = 11672, cost = 20000, requiredIds = { 11671 } },
-    { id = 11700, cost = 20000, requiredIds = { 11699 } },
-    { id = 11704, cost = 20000, requiredIds = { 11703 } },
-    { id = 11684, cost = 18000, requiredIds = { 11683 } },
-    { id = 17928, cost = 20000, requiredIds = { 5484 } }
-  },
-  [56] = {
-    { id = 17953, cost = 22000, requiredIds = { 17952 } },
-    { id = 11717, cost = 22000, requiredIds = { 7659 } },
-    { id = 17937, cost = 22000, requiredIds = { 17862 } },
-    { id = 6215,  cost = 22000, requiredIds = { 6213 } },
-    { id = 11689, cost = 22000, requiredIds = { 11688 } },
-    {
-      id = 18871,
-      cost = 22000,
-      requiredIds = { 18870 },
-      requiredTalentId = 17877
-    }, { id = 17924, cost = 22000, requiredIds = { 6353 } }
-  },
-  [58] = {
-    { id = 11730, cost = 24000, requiredIds = { 11730 } },
-    { id = 11713, cost = 24000, requiredIds = { 11712 } },
-    { id = 17926, cost = 24000, requiredIds = { 17925 } },
-    { id = 11726, cost = 24000, requiredIds = { 11725 } },
-    { id = 11678, cost = 24000, requiredIds = { 11677 } },
-    { id = 17923, cost = 24000, requiredIds = { 17922 } },
-    {
-      id = 18881,
-      cost = 1200,
-      requiredIds = { 18880 },
-      requiredTalentId = 18265
-    }
-  },
-  [60] = {
-    {
-      id = 18932,
-      cost = 1300,
-      requiredIds = { 18931 },
-      requiredTalentId = 17962
-    }, { id = 20757, cost = 26000, requiredIds = { 20756 } },
-    { id = 17728, cost = 26000, requiredIds = { 17727 } },
-    { id = 603,   cost = 26000 },
-    { id = 11722, cost = 26000, requiredIds = { 11721 } },
-    {
-      id = 18938,
-      cost = 1300,
-      requiredIds = { 18937 },
-      requiredTalentId = 18220
-    }, { id = 11735, cost = 26000, requiredIds = { 11734 } },
-    { id = 11695, cost = 26000, requiredIds = { 11694 } },
-    { id = 11668, cost = 26000, requiredIds = { 11667 } },
-    { id = 11661, cost = 26000, requiredIds = { 11660 } }
-  }
+	[1] = {
+		{id=687,name="Demon Skin",subText="Rank 1",level=1,skillLineId=354,skillLineAbilityId=4330,icon="Interface\\Icons\\Spell_Shadow_RagingScream"},
+		{id=688,name="Summon Imp",subText="Summon",level=1,skillLineId=354,skillLineAbilityId=6391,icon="Interface\\Icons\\Spell_Shadow_SummonImp"},
+		{id=686,name="Shadow Bolt",subText="Rank 1",level=1,skillLineId=593,skillLineAbilityId=6408,icon="Interface\\Icons\\Spell_Shadow_ShadowBolt"},
+		{id=348,name="Immolate",subText="Rank 1",level=1,skillLineId=593,skillLineAbilityId=6417,icon="Interface\\Icons\\Spell_Fire_Immolation"}
+	},
+	[4] = {
+		{id=702,name="Curse of Weakness",subText="Rank 1",level=4,skillLineId=355,skillLineAbilityId=4340,icon="Interface\\Icons\\Spell_Shadow_CurseOfMannoroth"},
+		{id=172,name="Corruption",subText="Rank 1",level=4,skillLineId=355,skillLineAbilityId=10144,icon="Interface\\Icons\\Spell_Shadow_AbominationExplosion"}
+	},
+	[6] = {
+		{id=695,name="Shadow Bolt",subText="Rank 2",level=6,skillLineId=593,skillLineAbilityId=6409,icon="Interface\\Icons\\Spell_Shadow_ShadowBolt",requiredIds={25307}},
+		{id=1454,name="Life Tap",subText="Rank 1",level=6,skillLineId=355,skillLineAbilityId=6454,icon="Interface\\Icons\\Spell_Shadow_BurningSpirit"}
+	},
+	[8] = {
+		{id=980,name="Curse of Agony",subText="Rank 1",level=8,skillLineId=355,skillLineAbilityId=4334,icon="Interface\\Icons\\Spell_Shadow_CurseOfSargeras"},
+		{id=5782,name="Fear",subText="Rank 1",level=8,skillLineId=355,skillLineAbilityId=6451,icon="Interface\\Icons\\Spell_Shadow_Possession"}
+	},
+	[10] = {
+		{id=696,name="Demon Skin",subText="Rank 2",level=10,skillLineId=354,skillLineAbilityId=4331,icon="Interface\\Icons\\Spell_Shadow_RagingScream",requiredIds={687}},
+		{id=697,name="Summon Voidwalker",subText="Summon",level=10,skillLineId=354,skillLineAbilityId=6394,icon="Interface\\Icons\\Spell_Shadow_SummonVoidWalker"},
+		{id=6201,name="Create Healthstone (Minor)",subText="",level=10,skillLineId=354,skillLineAbilityId=6396,icon="Interface\\Icons\\INV_Stone_04"},
+		{id=707,name="Immolate",subText="Rank 2",level=10,skillLineId=593,skillLineAbilityId=6418,icon="Interface\\Icons\\Spell_Fire_Immolation",requiredIds={348}},
+		{id=1120,name="Drain Soul",subText="Rank 1",level=10,skillLineId=355,skillLineAbilityId=10160,icon="Interface\\Icons\\Spell_Shadow_Haunting"}
+	},
+	[12] = {
+		{id=1108,name="Curse of Weakness",subText="Rank 2",level=12,skillLineId=355,skillLineAbilityId=4341,icon="Interface\\Icons\\Spell_Shadow_CurseOfMannoroth",requiredIds={702}},
+		{id=755,name="Health Funnel",subText="Rank 1",level=12,skillLineId=354,skillLineAbilityId=6401,icon="Interface\\Icons\\Spell_Shadow_LifeDrain"},
+		{id=705,name="Shadow Bolt",subText="Rank 3",level=12,skillLineId=593,skillLineAbilityId=6410,icon="Interface\\Icons\\Spell_Shadow_ShadowBolt",requiredIds={695}}
+	},
+	[14] = {
+		{id=704,name="Curse of Recklessness",subText="Rank 1",level=14,skillLineId=355,skillLineAbilityId=4337,icon="Interface\\Icons\\Spell_Shadow_UnholyStrength"},
+		{id=6222,name="Corruption",subText="Rank 2",level=14,skillLineId=355,skillLineAbilityId=10145,icon="Interface\\Icons\\Spell_Shadow_AbominationExplosion",requiredIds={172}},
+		{id=689,name="Drain Life",subText="Rank 1",level=14,skillLineId=355,skillLineAbilityId=10150,icon="Interface\\Icons\\Spell_Shadow_LifeDrain02"}
+	},
+	[16] = {
+		{id=5697,name="Unending Breath",subText="",level=16,skillLineId=354,skillLineAbilityId=4329,icon="Interface\\Icons\\Spell_Shadow_DemonBreath"},
+		{id=1455,name="Life Tap",subText="Rank 2",level=16,skillLineId=355,skillLineAbilityId=6455,icon="Interface\\Icons\\Spell_Shadow_BurningSpirit",requiredIds={1454}}
+	},
+	[18] = {
+		{id=693,name="Create Soulstone (Minor)",subText="",level=18,skillLineId=354,skillLineAbilityId=6395,icon="Interface\\Icons\\Spell_Shadow_SoulGem"},
+		{id=5676,name="Searing Pain",subText="Rank 1",level=18,skillLineId=593,skillLineAbilityId=10039,icon="Interface\\Icons\\Spell_Fire_SoulBurn"}
+	},
+	[20] = {
+		{id=706,name="Demon Armor",subText="Rank 1",level=20,skillLineId=354,skillLineAbilityId=4327,icon="Interface\\Icons\\Spell_Shadow_RagingScream"},
+		{id=712,name="Summon Succubus",subText="Summon",level=20,skillLineId=354,skillLineAbilityId=6393,icon="Interface\\Icons\\Spell_Shadow_SummonSuccubus"},
+		{id=3698,name="Health Funnel",subText="Rank 2",level=20,skillLineId=354,skillLineAbilityId=6402,icon="Interface\\Icons\\Spell_Shadow_LifeDrain",requiredIds={755}},
+		{id=1088,name="Shadow Bolt",subText="Rank 4",level=20,skillLineId=593,skillLineAbilityId=6411,icon="Interface\\Icons\\Spell_Shadow_ShadowBolt",requiredIds={705}},
+		{id=1094,name="Immolate",subText="Rank 3",level=20,skillLineId=593,skillLineAbilityId=6419,icon="Interface\\Icons\\Spell_Fire_Immolation",requiredIds={707}},
+		{id=5740,name="Rain of Fire",subText="Rank 1",level=20,skillLineId=593,skillLineAbilityId=6430,icon="Interface\\Icons\\Spell_Shadow_RainOfFire"},
+		{id=698,name="Ritual of Summoning",subText="",level=20,skillLineId=354,skillLineAbilityId=6467,icon="Interface\\Icons\\Spell_Shadow_Twilight"},
+		{id=17877,name="Shadowburn",subText="Rank 1",level=20,skillLineId=593,skillLineAbilityId=10091,icon="Interface\\Icons\\Spell_Shadow_ScourgeBuild",requiredTalentId=963},
+		{id=48017,name="Summon Incubus",subText="Summon",level=20,skillLineId=355,skillLineAbilityId=30590,icon="Interface\\Icons\\ability_warlock_incubus"}
+	},
+	[22] = {
+		{id=6205,name="Curse of Weakness",subText="Rank 3",level=22,skillLineId=355,skillLineAbilityId=4342,icon="Interface\\Icons\\Spell_Shadow_CurseOfMannoroth",requiredIds={1108}},
+		{id=6202,name="Create Healthstone (Lesser)",subText="",level=22,skillLineId=354,skillLineAbilityId=6397,icon="Interface\\Icons\\INV_Stone_04"},
+		{id=126,name="Eye of Kilrogg",subText="Summon",level=22,skillLineId=354,skillLineAbilityId=6468,icon="Interface\\Icons\\Spell_Shadow_EvilEye"},
+		{id=699,name="Drain Life",subText="Rank 2",level=22,skillLineId=355,skillLineAbilityId=10151,icon="Interface\\Icons\\Spell_Shadow_LifeDrain02",requiredIds={689}}
+	},
+	[24] = {
+		{id=5500,name="Sense Demons",subText="",level=24,skillLineId=354,skillLineAbilityId=4332,icon="Interface\\Icons\\Spell_Shadow_Metamorphosis"},
+		{id=6223,name="Corruption",subText="Rank 3",level=24,skillLineId=355,skillLineAbilityId=10146,icon="Interface\\Icons\\Spell_Shadow_AbominationExplosion",requiredIds={6222}},
+		{id=5138,name="Drain Mana",subText="Rank 1",level=24,skillLineId=355,skillLineAbilityId=10156,icon="Interface\\Icons\\Spell_Shadow_SiphonMana"},
+		{id=8288,name="Drain Soul",subText="Rank 2",level=24,skillLineId=355,skillLineAbilityId=10161,icon="Interface\\Icons\\Spell_Shadow_Haunting",requiredIds={1120}},
+		{id=18867,name="Shadowburn",subText="Rank 2",level=24,skillLineId=593,skillLineAbilityId=10656,icon="Interface\\Icons\\Spell_Shadow_ScourgeBuild",requiredIds={17877}}
+	},
+	[26] = {
+		{id=1714,name="Curse of Tongues",subText="Rank 1",level=26,skillLineId=355,skillLineAbilityId=4410,icon="Interface\\Icons\\Spell_Shadow_CurseOfTounges"},
+		{id=1456,name="Life Tap",subText="Rank 3",level=26,skillLineId=355,skillLineAbilityId=6456,icon="Interface\\Icons\\Spell_Shadow_BurningSpirit",requiredIds={1455}},
+		{id=132,name="Detect Lesser Invisibility",subText="",level=26,skillLineId=354,skillLineAbilityId=6464,icon="Interface\\Icons\\Spell_Shadow_DetectLesserInvisibility"},
+		{id=17919,name="Searing Pain",subText="Rank 2",level=26,skillLineId=593,skillLineAbilityId=10094,icon="Interface\\Icons\\Spell_Fire_SoulBurn",requiredIds={5676}}
+	},
+	[28] = {
+		{id=6217,name="Curse of Agony",subText="Rank 3",level=28,skillLineId=355,skillLineAbilityId=4336,icon="Interface\\Icons\\Spell_Shadow_CurseOfSargeras",requiredIds={980}},
+		{id=7658,name="Curse of Recklessness",subText="Rank 2",level=28,skillLineId=355,skillLineAbilityId=4338,icon="Interface\\Icons\\Spell_Shadow_UnholyStrength",requiredIds={704}},
+		{id=3699,name="Health Funnel",subText="Rank 3",level=28,skillLineId=354,skillLineAbilityId=6403,icon="Interface\\Icons\\Spell_Shadow_LifeDrain",requiredIds={3698}},
+		{id=1106,name="Shadow Bolt",subText="Rank 5",level=28,skillLineId=593,skillLineAbilityId=6412,icon="Interface\\Icons\\Spell_Shadow_ShadowBolt",requiredIds={1088}},
+		{id=6366,name="Create Firestone (Lesser)",subText="",level=28,skillLineId=354,skillLineAbilityId=10077,icon="Interface\\Icons\\INV_Ammo_FireTar"},
+		{id=710,name="Banish",subText="Rank 1",level=28,skillLineId=354,skillLineAbilityId=10497,icon="Interface\\Icons\\Spell_Shadow_Cripple"}
+	},
+	[30] = {
+		{id=1098,name="Enslave Demon",subText="Rank 1",level=30,skillLineId=354,skillLineAbilityId=4326,icon="Interface\\Icons\\Spell_Shadow_EnslaveDemon"},
+		{id=1086,name="Demon Armor",subText="Rank 2",level=30,skillLineId=354,skillLineAbilityId=4328,icon="Interface\\Icons\\Spell_Shadow_RagingScream",requiredIds={706}},
+		{id=2941,name="Immolate",subText="Rank 4",level=30,skillLineId=593,skillLineAbilityId=6420,icon="Interface\\Icons\\Spell_Fire_Immolation",requiredIds={1094}},
+		{id=1949,name="Hellfire",subText="Rank 1",level=30,skillLineId=593,skillLineAbilityId=6434,icon="Interface\\Icons\\Spell_Fire_Incinerate"},
+		{id=5857,name="Hellfire Effect",subText="Rank 1",level=30,skillLineId=593,skillLineAbilityId=6437,icon="Interface\\Icons\\Spell_Fire_Incinerate"},
+		{id=709,name="Drain Life",subText="Rank 3",level=30,skillLineId=355,skillLineAbilityId=10152,icon="Interface\\Icons\\Spell_Shadow_LifeDrain02",requiredIds={699}},
+		{id=18265,name="Siphon Life",subText="Rank 1",level=30,skillLineId=355,skillLineAbilityId=10276,icon="Interface\\Icons\\Spell_Shadow_Requiem",requiredTalentId=1041},
+		{id=691,name="Summon Felhunter",subText="Summon",level=30,skillLineId=354,skillLineAbilityId=11032,icon="Interface\\Icons\\Spell_Shadow_SummonFelHunter"},
+		{id=20752,name="Create Soulstone (Lesser)",subText="",level=30,skillLineId=354,skillLineAbilityId=11789,icon="Interface\\Icons\\Spell_Shadow_SoulGem"}
+	},
+	[32] = {
+		{id=1490,name="Curse of the Elements",subText="Rank 1",level=32,skillLineId=355,skillLineAbilityId=4333,icon="Interface\\Icons\\Spell_Shadow_ChillTouch"},
+		{id=7646,name="Curse of Weakness",subText="Rank 4",level=32,skillLineId=355,skillLineAbilityId=4343,icon="Interface\\Icons\\Spell_Shadow_CurseOfMannoroth",requiredIds={6205}},
+		{id=6213,name="Fear",subText="Rank 2",level=32,skillLineId=355,skillLineAbilityId=6452,icon="Interface\\Icons\\Spell_Shadow_Possession",requiredIds={5782}},
+		{id=6229,name="Shadow Ward",subText="Rank 1",level=32,skillLineId=354,skillLineAbilityId=6460,icon="Interface\\Icons\\Spell_Shadow_AntiShadow"},
+		{id=18868,name="Shadowburn",subText="Rank 3",level=32,skillLineId=593,skillLineAbilityId=10657,icon="Interface\\Icons\\Spell_Shadow_ScourgeBuild",requiredIds={18867}}
+	},
+	[34] = {
+		{id=5699,name="Create Healthstone",subText="",level=34,skillLineId=354,skillLineAbilityId=6398,icon="Interface\\Icons\\INV_Stone_04"},
+		{id=6219,name="Rain of Fire",subText="Rank 2",level=34,skillLineId=593,skillLineAbilityId=6431,icon="Interface\\Icons\\Spell_Shadow_RainOfFire",requiredIds={5740}},
+		{id=17920,name="Searing Pain",subText="Rank 3",level=34,skillLineId=593,skillLineAbilityId=10095,icon="Interface\\Icons\\Spell_Fire_SoulBurn",requiredIds={17919}},
+		{id=7648,name="Corruption",subText="Rank 4",level=34,skillLineId=355,skillLineAbilityId=10147,icon="Interface\\Icons\\Spell_Shadow_AbominationExplosion",requiredIds={6223}},
+		{id=6226,name="Drain Mana",subText="Rank 2",level=34,skillLineId=355,skillLineAbilityId=10157,icon="Interface\\Icons\\Spell_Shadow_SiphonMana",requiredIds={5138}}
+	},
+	[36] = {
+		{id=3700,name="Health Funnel",subText="Rank 4",level=36,skillLineId=354,skillLineAbilityId=6404,icon="Interface\\Icons\\Spell_Shadow_LifeDrain",requiredIds={3699}},
+		{id=7641,name="Shadow Bolt",subText="Rank 6",level=36,skillLineId=593,skillLineAbilityId=6413,icon="Interface\\Icons\\Spell_Shadow_ShadowBolt",requiredIds={1106}},
+		{id=11687,name="Life Tap",subText="Rank 4",level=36,skillLineId=355,skillLineAbilityId=6457,icon="Interface\\Icons\\Spell_Shadow_BurningSpirit",requiredIds={1456}},
+		{id=2362,name="Create Spellstone",subText="",level=36,skillLineId=354,skillLineAbilityId=9996,icon="Interface\\Icons\\INV_Misc_Gem_Sapphire_01"},
+		{id=17951,name="Create Firestone",subText="",level=36,skillLineId=354,skillLineAbilityId=10107,icon="Interface\\Icons\\INV_Ammo_FireTar"}
+	},
+	[38] = {
+		{id=11711,name="Curse of Agony",subText="Rank 4",level=38,skillLineId=355,skillLineAbilityId=6159,icon="Interface\\Icons\\Spell_Shadow_CurseOfSargeras",requiredIds={6217}},
+		{id=2970,name="Detect Invisibility",subText="",level=38,skillLineId=354,skillLineAbilityId=6465,icon="Interface\\Icons\\Spell_Shadow_DetectInvisibility"},
+		{id=1010,name="Curse of Idiocy",subText="Rank 1",level=38,skillLineId=355,skillLineAbilityId=10116,icon="Interface\\Icons\\Spell_Shadow_MindRot"},
+		{id=7651,name="Drain Life",subText="Rank 4",level=38,skillLineId=355,skillLineAbilityId=10153,icon="Interface\\Icons\\Spell_Shadow_LifeDrain02",requiredIds={709}},
+		{id=8289,name="Drain Soul",subText="Rank 3",level=38,skillLineId=355,skillLineAbilityId=10162,icon="Interface\\Icons\\Spell_Shadow_Haunting",requiredIds={8288}},
+		{id=18879,name="Siphon Life",subText="Rank 2",level=38,skillLineId=355,skillLineAbilityId=10676,icon="Interface\\Icons\\Spell_Shadow_Requiem",requiredIds={18265}}
+	},
+	[40] = {
+		{id=11733,name="Demon Armor",subText="Rank 3",level=40,skillLineId=354,skillLineAbilityId=6165,icon="Interface\\Icons\\Spell_Shadow_RagingScream",requiredIds={1086}},
+		{id=5784,name="Summon Felsteed",subText="Summon",level=40,skillLineId=354,skillLineAbilityId=6392,icon="Interface\\Icons\\Spell_Nature_Swiftness"},
+		{id=11665,name="Immolate",subText="Rank 5",level=40,skillLineId=593,skillLineAbilityId=6421,icon="Interface\\Icons\\Spell_Fire_Immolation",requiredIds={2941}},
+		{id=5484,name="Howl of Terror",subText="Rank 1",level=40,skillLineId=355,skillLineAbilityId=10076,icon="Interface\\Icons\\Spell_Shadow_DeathScream"},
+		{id=17962,name="Conflagrate",subText="Rank 1",level=40,skillLineId=593,skillLineAbilityId=10117,icon="Interface\\Icons\\Spell_Fire_Fireball",requiredTalentId=968},
+		{id=18220,name="Dark Pact",subText="Rank 1",level=40,skillLineId=355,skillLineAbilityId=10238,icon="Interface\\Icons\\Spell_Shadow_DarkRitual",requiredTalentId=1022},
+		{id=18869,name="Shadowburn",subText="Rank 4",level=40,skillLineId=593,skillLineAbilityId=10658,icon="Interface\\Icons\\Spell_Shadow_ScourgeBuild",requiredIds={18868}},
+		{id=20755,name="Create Soulstone",subText="",level=40,skillLineId=354,skillLineAbilityId=11790,icon="Interface\\Icons\\Spell_Shadow_SoulGem"},
+		{id=1941,name="Mana Funnel",subText="Rank 1",level=40,skillLineId=354,skillLineAbilityId=36350,icon="Interface\\Icons\\Spell_Shadow_UnsummonBuilding"},
+		{id=45910,name="Mana Funnel",subText="Rank 1",level=40,skillLineId=354,skillLineAbilityId=36450,icon="Interface\\Icons\\Spell_Shadow_UnsummonBuilding",requiredIds={1941}}
+	},
+	[42] = {
+		{id=7659,name="Curse of Recklessness",subText="Rank 3",level=42,skillLineId=355,skillLineAbilityId=4339,icon="Interface\\Icons\\Spell_Shadow_UnholyStrength",requiredIds={7658}},
+		{id=11707,name="Curse of Weakness",subText="Rank 5",level=42,skillLineId=355,skillLineAbilityId=6156,icon="Interface\\Icons\\Spell_Shadow_CurseOfMannoroth",requiredIds={7646}},
+		{id=11683,name="Hellfire",subText="Rank 2",level=42,skillLineId=593,skillLineAbilityId=6435,icon="Interface\\Icons\\Spell_Fire_Incinerate",requiredIds={1949}},
+		{id=11681,name="Hellfire Effect",subText="Rank 2",level=42,skillLineId=593,skillLineAbilityId=6438,icon="Interface\\Icons\\Spell_Fire_Incinerate",requiredIds={5857}},
+		{id=11739,name="Shadow Ward",subText="Rank 2",level=42,skillLineId=354,skillLineAbilityId=6461,icon="Interface\\Icons\\Spell_Shadow_AntiShadow",requiredIds={6229}},
+		{id=6789,name="Death Coil",subText="Rank 1",level=42,skillLineId=355,skillLineAbilityId=10057,icon="Interface\\Icons\\Spell_Shadow_DeathCoil"},
+		{id=17921,name="Searing Pain",subText="Rank 4",level=42,skillLineId=593,skillLineAbilityId=10096,icon="Interface\\Icons\\Spell_Fire_SoulBurn",requiredIds={17920}}
+	},
+	[44] = {
+		{id=11725,name="Enslave Demon",subText="Rank 2",level=44,skillLineId=354,skillLineAbilityId=6168,icon="Interface\\Icons\\Spell_Shadow_EnslaveDemon",requiredIds={1098}},
+		{id=11693,name="Health Funnel",subText="Rank 5",level=44,skillLineId=354,skillLineAbilityId=6405,icon="Interface\\Icons\\Spell_Shadow_LifeDrain",requiredIds={3700}},
+		{id=11659,name="Shadow Bolt",subText="Rank 7",level=44,skillLineId=593,skillLineAbilityId=6414,icon="Interface\\Icons\\Spell_Shadow_ShadowBolt",requiredIds={7641}},
+		{id=17862,name="Curse of Shadow",subText="Rank 1",level=44,skillLineId=355,skillLineAbilityId=10090,icon="Interface\\Icons\\Spell_Shadow_CurseOfAchimonde"},
+		{id=11671,name="Corruption",subText="Rank 5",level=44,skillLineId=355,skillLineAbilityId=10148,icon="Interface\\Icons\\Spell_Shadow_AbominationExplosion",requiredIds={7648}},
+		{id=11703,name="Drain Mana",subText="Rank 3",level=44,skillLineId=355,skillLineAbilityId=10158,icon="Interface\\Icons\\Spell_Shadow_SiphonMana",requiredIds={6226}}
+	},
+	[46] = {
+		{id=11721,name="Curse of the Elements",subText="Rank 2",level=46,skillLineId=355,skillLineAbilityId=6162,icon="Interface\\Icons\\Spell_Shadow_ChillTouch",requiredIds={1490}},
+		{id=11729,name="Create Healthstone (Greater)",subText="",level=46,skillLineId=354,skillLineAbilityId=6399,icon="Interface\\Icons\\INV_Stone_04"},
+		{id=11677,name="Rain of Fire",subText="Rank 3",level=46,skillLineId=593,skillLineAbilityId=6432,icon="Interface\\Icons\\Spell_Shadow_RainOfFire",requiredIds={6219}},
+		{id=11688,name="Life Tap",subText="Rank 5",level=46,skillLineId=355,skillLineAbilityId=6458,icon="Interface\\Icons\\Spell_Shadow_BurningSpirit",requiredIds={11687}},
+		{id=17952,name="Create Firestone (Greater)",subText="",level=46,skillLineId=354,skillLineAbilityId=10108,icon="Interface\\Icons\\INV_Ammo_FireTar"},
+		{id=11699,name="Drain Life",subText="Rank 5",level=46,skillLineId=355,skillLineAbilityId=10154,icon="Interface\\Icons\\Spell_Shadow_LifeDrain02",requiredIds={7651}}
+	},
+	[48] = {
+		{id=11712,name="Curse of Agony",subText="Rank 5",level=48,skillLineId=355,skillLineAbilityId=6160,icon="Interface\\Icons\\Spell_Shadow_CurseOfSargeras",requiredIds={11711}},
+		{id=17727,name="Create Spellstone (Greater)",subText="",level=48,skillLineId=354,skillLineAbilityId=10018,icon="Interface\\Icons\\INV_Misc_Gem_Sapphire_01"},
+		{id=6353,name="Soul Fire",subText="Rank 1",level=48,skillLineId=593,skillLineAbilityId=10040,icon="Interface\\Icons\\Spell_Fire_Fireball02"},
+		{id=18647,name="Banish",subText="Rank 2",level=48,skillLineId=354,skillLineAbilityId=10498,icon="Interface\\Icons\\Spell_Shadow_Cripple",requiredIds={710}},
+		{id=18870,name="Shadowburn",subText="Rank 5",level=48,skillLineId=593,skillLineAbilityId=10659,icon="Interface\\Icons\\Spell_Shadow_ScourgeBuild",requiredIds={18869}},
+		{id=18880,name="Siphon Life",subText="Rank 3",level=48,skillLineId=355,skillLineAbilityId=10677,icon="Interface\\Icons\\Spell_Shadow_Requiem",requiredIds={18879}},
+		{id=18930,name="Conflagrate",subText="Rank 2",level=48,skillLineId=593,skillLineAbilityId=10680,icon="Interface\\Icons\\Spell_Fire_Fireball",requiredIds={17962}}
+	},
+	[50] = {
+		{id=11719,name="Curse of Tongues",subText="Rank 2",level=50,skillLineId=355,skillLineAbilityId=6164,icon="Interface\\Icons\\Spell_Shadow_CurseOfTounges",requiredIds={1714}},
+		{id=11734,name="Demon Armor",subText="Rank 4",level=50,skillLineId=354,skillLineAbilityId=6166,icon="Interface\\Icons\\Spell_Shadow_RagingScream",requiredIds={11733}},
+		{id=11667,name="Immolate",subText="Rank 6",level=50,skillLineId=593,skillLineAbilityId=6422,icon="Interface\\Icons\\Spell_Fire_Immolation",requiredIds={11665}},
+		{id=11743,name="Detect Greater Invisibility",subText="",level=50,skillLineId=354,skillLineAbilityId=6466,icon="Interface\\Icons\\Spell_Shadow_DetectInvisibility"},
+		{id=17922,name="Searing Pain",subText="Rank 5",level=50,skillLineId=593,skillLineAbilityId=10097,icon="Interface\\Icons\\Spell_Fire_SoulBurn",requiredIds={17921}},
+		{id=17925,name="Death Coil",subText="Rank 2",level=50,skillLineId=355,skillLineAbilityId=10203,icon="Interface\\Icons\\Spell_Shadow_DeathCoil",requiredIds={6789}},
+		{id=1122,name="Inferno",subText="Summon",level=50,skillLineId=354,skillLineAbilityId=10336,icon="Interface\\Icons\\Spell_Shadow_SummonInfernal"},
+		{id=18937,name="Dark Pact",subText="Rank 2",level=50,skillLineId=355,skillLineAbilityId=10683,icon="Interface\\Icons\\Spell_Shadow_DarkRitual",requiredIds={18220}},
+		{id=20756,name="Create Soulstone (Greater)",subText="",level=50,skillLineId=354,skillLineAbilityId=11791,icon="Interface\\Icons\\Spell_Shadow_SoulGem"},
+		{id=45911,name="Mana Funnel",subText="Rank 2",level=50,skillLineId=354,skillLineAbilityId=15072,icon="Interface\\Icons\\Spell_Shadow_UnsummonBuilding",requiredIds={45910}}
+	},
+	[52] = {
+		{id=11708,name="Curse of Weakness",subText="Rank 6",level=52,skillLineId=355,skillLineAbilityId=6157,icon="Interface\\Icons\\Spell_Shadow_CurseOfMannoroth",requiredIds={11707}},
+		{id=11694,name="Health Funnel",subText="Rank 6",level=52,skillLineId=354,skillLineAbilityId=6406,icon="Interface\\Icons\\Spell_Shadow_LifeDrain",requiredIds={11693}},
+		{id=11660,name="Shadow Bolt",subText="Rank 8",level=52,skillLineId=593,skillLineAbilityId=6415,icon="Interface\\Icons\\Spell_Shadow_ShadowBolt",requiredIds={11659}},
+		{id=11740,name="Shadow Ward",subText="Rank 3",level=52,skillLineId=354,skillLineAbilityId=6462,icon="Interface\\Icons\\Spell_Shadow_AntiShadow",requiredIds={11739}},
+		{id=11675,name="Drain Soul",subText="Rank 4",level=52,skillLineId=355,skillLineAbilityId=10163,icon="Interface\\Icons\\Spell_Shadow_Haunting",requiredIds={8289}}
+	},
+	[54] = {
+		{id=11684,name="Hellfire",subText="Rank 3",level=54,skillLineId=593,skillLineAbilityId=6436,icon="Interface\\Icons\\Spell_Fire_Incinerate",requiredIds={11683}},
+		{id=11682,name="Hellfire Effect",subText="Rank 3",level=54,skillLineId=593,skillLineAbilityId=6439,icon="Interface\\Icons\\Spell_Fire_Incinerate",requiredIds={11681}},
+		{id=17928,name="Howl of Terror",subText="Rank 2",level=54,skillLineId=355,skillLineAbilityId=10100,icon="Interface\\Icons\\Spell_Shadow_DeathScream",requiredIds={5484}},
+		{id=11672,name="Corruption",subText="Rank 6",level=54,skillLineId=355,skillLineAbilityId=10149,icon="Interface\\Icons\\Spell_Shadow_AbominationExplosion",requiredIds={11671}},
+		{id=11700,name="Drain Life",subText="Rank 6",level=54,skillLineId=355,skillLineAbilityId=10155,icon="Interface\\Icons\\Spell_Shadow_LifeDrain02",requiredIds={11699}},
+		{id=11704,name="Drain Mana",subText="Rank 4",level=54,skillLineId=355,skillLineAbilityId=10159,icon="Interface\\Icons\\Spell_Shadow_SiphonMana",requiredIds={11703}},
+		{id=18931,name="Conflagrate",subText="Rank 3",level=54,skillLineId=593,skillLineAbilityId=10681,icon="Interface\\Icons\\Spell_Fire_Fireball",requiredIds={18930}}
+	},
+	[56] = {
+		{id=11717,name="Curse of Recklessness",subText="Rank 4",level=56,skillLineId=355,skillLineAbilityId=6158,icon="Interface\\Icons\\Spell_Shadow_UnholyStrength",requiredIds={7659}},
+		{id=6215,name="Fear",subText="Rank 3",level=56,skillLineId=355,skillLineAbilityId=6453,icon="Interface\\Icons\\Spell_Shadow_Possession",requiredIds={6213}},
+		{id=11689,name="Life Tap",subText="Rank 6",level=56,skillLineId=355,skillLineAbilityId=6459,icon="Interface\\Icons\\Spell_Shadow_BurningSpirit",requiredIds={11688}},
+		{id=17924,name="Soul Fire",subText="Rank 2",level=56,skillLineId=593,skillLineAbilityId=10099,icon="Interface\\Icons\\Spell_Fire_Fireball02",requiredIds={6353}},
+		{id=17937,name="Curse of Shadow",subText="Rank 2",level=56,skillLineId=355,skillLineAbilityId=10106,icon="Interface\\Icons\\Spell_Shadow_CurseOfAchimonde",requiredIds={17862}},
+		{id=17953,name="Create Firestone (Major)",subText="",level=56,skillLineId=354,skillLineAbilityId=10109,icon="Interface\\Icons\\INV_Ammo_FireTar"},
+		{id=18871,name="Shadowburn",subText="Rank 6",level=56,skillLineId=593,skillLineAbilityId=10660,icon="Interface\\Icons\\Spell_Shadow_ScourgeBuild",requiredIds={18870}}
+	},
+	[58] = {
+		{id=11713,name="Curse of Agony",subText="Rank 6",level=58,skillLineId=355,skillLineAbilityId=6161,icon="Interface\\Icons\\Spell_Shadow_CurseOfSargeras",requiredIds={11712}},
+		{id=11726,name="Enslave Demon",subText="Rank 3",level=58,skillLineId=354,skillLineAbilityId=6169,icon="Interface\\Icons\\Spell_Shadow_EnslaveDemon",requiredIds={11725}},
+		{id=11730,name="Create Healthstone (Major)",subText="",level=58,skillLineId=354,skillLineAbilityId=6400,icon="Interface\\Icons\\INV_Stone_04"},
+		{id=11678,name="Rain of Fire",subText="Rank 4",level=58,skillLineId=593,skillLineAbilityId=6433,icon="Interface\\Icons\\Spell_Shadow_RainOfFire",requiredIds={11677}},
+		{id=17923,name="Searing Pain",subText="Rank 6",level=58,skillLineId=593,skillLineAbilityId=10098,icon="Interface\\Icons\\Spell_Fire_SoulBurn",requiredIds={17922}},
+		{id=17926,name="Death Coil",subText="Rank 3",level=58,skillLineId=355,skillLineAbilityId=10204,icon="Interface\\Icons\\Spell_Shadow_DeathCoil",requiredIds={17925}},
+		{id=18881,name="Siphon Life",subText="Rank 4",level=58,skillLineId=355,skillLineAbilityId=10678,icon="Interface\\Icons\\Spell_Shadow_Requiem",requiredIds={18880}}
+	},
+	[60] = {
+		{id=11722,name="Curse of the Elements",subText="Rank 3",level=60,skillLineId=355,skillLineAbilityId=6163,icon="Interface\\Icons\\Spell_Shadow_ChillTouch",requiredIds={11721}},
+		{id=11735,name="Demon Armor",subText="Rank 5",level=60,skillLineId=354,skillLineAbilityId=6167,icon="Interface\\Icons\\Spell_Shadow_RagingScream",requiredIds={11734}},
+		{id=11695,name="Health Funnel",subText="Rank 7",level=60,skillLineId=354,skillLineAbilityId=6407,icon="Interface\\Icons\\Spell_Shadow_LifeDrain",requiredIds={11694}},
+		{id=11661,name="Shadow Bolt",subText="Rank 9",level=60,skillLineId=593,skillLineAbilityId=6416,icon="Interface\\Icons\\Spell_Shadow_ShadowBolt",requiredIds={11660}},
+		{id=11668,name="Immolate",subText="Rank 7",level=60,skillLineId=593,skillLineAbilityId=6423,icon="Interface\\Icons\\Spell_Fire_Immolation",requiredIds={11667}},
+		{id=17728,name="Create Spellstone (Major)",subText="",level=60,skillLineId=354,skillLineAbilityId=10019,icon="Interface\\Icons\\INV_Misc_Gem_Sapphire_01"},
+		{id=603,name="Curse of Doom",subText="",level=60,skillLineId=355,skillLineAbilityId=10205,icon="Interface\\Icons\\Spell_Shadow_AuraOfDarkness"},
+		{id=18540,name="Ritual of Doom",subText="",level=60,skillLineId=354,skillLineAbilityId=10477,icon="Interface\\Icons\\Spell_Shadow_AntiMagicShell"},
+		{id=18932,name="Conflagrate",subText="Rank 4",level=60,skillLineId=593,skillLineAbilityId=10682,icon="Interface\\Icons\\Spell_Fire_Fireball",requiredIds={18931}},
+		{id=18938,name="Dark Pact",subText="Rank 3",level=60,skillLineId=355,skillLineAbilityId=10684,icon="Interface\\Icons\\Spell_Shadow_DarkRitual",requiredIds={18937}},
+		{id=20757,name="Create Soulstone (Major)",subText="",level=60,skillLineId=354,skillLineAbilityId=11792,icon="Interface\\Icons\\Spell_Shadow_SoulGem"},
+		{id=23161,name="Summon Dreadsteed",subText="Summon",level=60,skillLineId=354,skillLineAbilityId=12517,icon="Interface\\Icons\\Ability_Mount_Dreadsteed"},
+		{id=25307,name="Shadow Bolt",subText="Rank 10",level=60,skillLineId=593,skillLineAbilityId=13247,icon="Interface\\Icons\\Spell_Shadow_ShadowBolt",requiredIds={686}},
+		{id=25309,name="Immolate",subText="Rank 8",level=60,skillLineId=593,skillLineAbilityId=13248,icon="Interface\\Icons\\Spell_Fire_Immolation",requiredIds={11668}},
+		{id=25311,name="Corruption",subText="Rank 7",level=60,skillLineId=355,skillLineAbilityId=13249,icon="Interface\\Icons\\Spell_Shadow_AbominationExplosion",requiredIds={11672}},
+		{id=28610,name="Shadow Ward",subText="Rank 4",level=60,skillLineId=354,skillLineAbilityId=14005,icon="Interface\\Icons\\Spell_Shadow_AntiShadow",requiredIds={11740}},
+		{id=45908,name="Demon Portal",subText="",level=60,skillLineId=354,skillLineAbilityId=30522,icon="Interface\\Icons\\Spell_Shadow_SummonFelGuard"}
+	}
 }

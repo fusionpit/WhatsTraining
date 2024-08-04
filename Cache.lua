@@ -6,33 +6,37 @@ WT.idToRanks = {}
 
 -- done has param cacheHit
 function WT:CacheSpell(spell, level, done)
+  -- DEFAULT_CHAT_FRAME:AddMessage(spell.id .. " | " .. level .. " | " .. spell.name)
   if (self.spellInfoCache[spell.id] ~= nil) then
     done(true)
     return
   end
-  local name, spellRank, icon, cost, isFunnel, powerType = GetSpellInfoById(spell.id, BOOKTYPE_SPELL)
-  -- DEFAULT_CHAT_FRAME:AddMessage(name .. ' (' .. spellRank .. ')')
 
-  local formattedSubText = (spellRank and spellRank ~= "") and format(PARENS_TEMPLATE, spellRank) or ""
-  local formattedFullName = (spellRank and spellRank ~= "") and format("%s %s", name, formattedSubText) or name
+  local name = spell.name
+  local formattedSubText = (spell.subText and spell.subText ~= "") and format(PARENS_TEMPLATE, spell.subText) or ""
+  local formattedFullName = (spell.subText and spell.subText ~= "") and format("%s %s", spell.name, formattedSubText) or
+      spell.name
 
   self.spellInfoCache[spell.id] = {
     id = spell.id,
-    name = name,
-    subText = spellRank,
+    name = spell.name,
+    subText = spell.subText,
     formattedSubText = formattedSubText,
-    icon = icon,
-    cost = spell.cost,
-    formattedCost = spell.cost, -- TODO
-    level = level,
-    formattedLevel = format(WT.L.LEVEL_FORMAT, level),
+    icon = spell.icon,
+    cost = 0,          -- TODO spell.cost,
+    formattedCost = 0, -- TODO spell.cost,
+    level = spell.level,
+    formattedLevel = format(WT.L.LEVEL_FORMAT, spell.level),
     formattedFullName = formattedFullName,
   }
+
   if self.allRanksCache[name] == nil then
     self.allRanksCache[name] = {}
   end
+
   tinsert(self.allRanksCache[name], spell.id)
   self.idToRanks[spell.id] = self.allRanksCache[name]
+
   if (self:IsPetAbility(spell.id)) then
     if (formattedSubText ~= "") then
       self.petAbilities[name .. " " .. formattedSubText] =
@@ -43,45 +47,6 @@ function WT:CacheSpell(spell, level, done)
     end
   end
   done(false)
-  -- local si = Spell:CreateFromSpellID(spell.id)
-  -- si:ContinueOnSpellLoad(function()
-  --   if (self.spellInfoCache[spell.id] ~= nil) then
-  --     done(true)
-  --     return
-  --   end
-  --   local subText = si:GetSpellSubtext()
-  --   local formattedSubText = (subText and subText ~= "") and
-  --       format(PARENS_TEMPLATE, subText) or ""
-  --   local name = si:GetSpellName()
-  --   local formattedFullName = (subText and subText ~= "") and format("%s %s", name, formattedSubText) or name
-  --   self.spellInfoCache[spell.id] = {
-  --     id = spell.id,
-  --     name = name,
-  --     subText = subText,
-  --     formattedSubText = formattedSubText,
-  --     icon = GetSpellTexture(spell.id),
-  --     cost = spell.cost,
-  --     formattedCost = GetCoinTextureString(spell.cost),
-  --     level = level,
-  --     formattedLevel = format(WT.L.LEVEL_FORMAT, level),
-  --     formattedFullName = formattedFullName,
-  --   }
-  --   if self.allRanksCache[name] == nil then
-  --     self.allRanksCache[name] = {}
-  --   end
-  --   tinsert(self.allRanksCache[name], spell.id)
-  --   self.idToRanks[spell.id] = self.allRanksCache[name]
-  --   if (self:IsPetAbility(spell.id)) then
-  --     if (formattedSubText ~= "") then
-  --       self.petAbilities[name .. " " .. formattedSubText] =
-  --           self.spellInfoCache[spell.id]
-  --     else
-  --       self.petAbilities[name] =
-  --           self.spellInfoCache[spell.id]
-  --     end
-  --   end
-  --   done(false)
-  -- end)
 end
 
 function WT:SpellInfo(spellId) return self.spellInfoCache[spellId] end
@@ -101,26 +66,22 @@ function WT:CacheItem(item, level, done)
     done(true)
     return
   end
-  local ii = Item:CreateFromItemID(item.id)
-  ii:ContinueOnItemLoad(function()
-    if (self.itemInfoCache[item.id] ~= nil) then
-      done(true)
-      return
-    end
-    local rankText = string.match(ii:GetItemName(), parensPattern)
-    self.itemInfoCache[item.id] = {
-      id = item.id,
-      name = string.gsub(ii:GetItemName(), parensPattern, ""),
-      formattedSubText = rankText,
-      icon = ii:GetItemIcon(),
-      cost = item.cost,
-      formattedCost = GetCoinTextureString(item.cost),
-      level = level,
-      formattedLevel = format(WT.L.LEVEL_FORMAT, level),
-      isItem = true
-    }
-    done(false)
-  end)
+
+  local itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType, expansionID, setID, isCraftingReagent =
+      GetItemInfo(item.id)
+  -- local rankText = string.match(itemName, parensPattern)
+  self.itemInfoCache[item.id] = {
+    id = item.id,
+    name = itemName, --string.gsub(itemName, parensPattern, ""),
+    formattedSubText = "",
+    icon = itemTexture,
+    cost = item.cost,
+    formattedCost = item.cost, -- TODO GetCoinTextureString(item.cost),
+    level = level,
+    formattedLevel = format(WT.L.LEVEL_FORMAT, level),
+    isItem = true
+  }
+  done(false)
 end
 
 function WT:ItemInfo(itemId) return self.itemInfoCache[itemId] end

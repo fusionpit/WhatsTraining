@@ -24,12 +24,19 @@ function WT.FactionFilter(spellsByLevel)
   end)
 end
 
-local playerRace = UnitRace("player")
 function WT.RaceFilter(spellsByLevel)
+  local playerRace = UnitRace("player")
+  WT.log(playerRace)
   return filter(spellsByLevel, function(spell)
-    if (spell.race == nil and spell.races == nil) then return true end
-    if (spell.races == nil) then return spell.race == playerRace end
-    return spell.races[1] == playerRace or spell.races[2] == playerRace
+    if (spell.race == nil and spell.races == nil) then
+      return true
+    end
+
+    if (spell.races == nil) then
+      return spell.race == playerRace
+    end
+
+    return HasValue(spell.races, playerRace)
   end)
 end
 
@@ -39,9 +46,9 @@ end
     Most warrior and rogue abilities are like this, as they cost the same amount
     of resources but just last longer or do more damage.
 ]]
-function WT:AddOverriddenSpells(...)
+function WT:AddOverriddenSpells(spells)
   local abilityMap = {}
-  for _, abilityIds in ipairs({ arg }) do
+  for _, abilityIds in ipairs(spells) do
     for _, abilityId in ipairs(abilityIds) do
       abilityMap[abilityId] = abilityIds
     end
@@ -57,4 +64,18 @@ function TableLength(T)
   local count = 0
   for _ in pairs(T) do count = count + 1 end
   return count
+end
+
+function HasValue(tab, val)
+  for _, value in ipairs(tab) do
+    if value == val then
+      return true
+    end
+  end
+
+  return false
+end
+
+function WT.log(msg)
+  DEFAULT_CHAT_FRAME:AddMessage(msg)
 end
