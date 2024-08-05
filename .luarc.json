@@ -77,6 +77,8 @@
     "WhatsTrainingFrame",
     "WT_LearnedPetAbilities",
     "WT_NeedsToOpenBeastTraining",
-    "WT"
+    "WT",
+    "GetItemInfo",
+    "event"
   ]
 }

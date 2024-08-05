@@ -75,12 +75,10 @@ end
 local headers = { {
   name = WT.L.AVAILABLE_HEADER,
   color = GREEN_FONT_COLOR_CODE,
-  hideLevel = true,
   key = AVAILABLE_KEY
 }, {
   name = WT.L.MISSINGREQS_HEADER,
   color = HIGHLIGHT_FONT_COLOR_CODE,
-  hideLevel = true,
   key = MISSINGREQS_KEY
 }, {
   name = WT.L.NEXTLEVEL_HEADER,
@@ -135,7 +133,6 @@ local categories = {
     end
   end,
   ClearSpells = function(self)
-    -- DEFAULT_CHAT_FRAME:AddMessage("Clearing categories")
     for _, cat in ipairs(self) do
       cat.cost = 0
       cat.spells = {}

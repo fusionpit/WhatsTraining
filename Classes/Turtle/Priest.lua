@@ -70,7 +70,6 @@ WT.SpellsByLevel = WT.RaceFilter({
 		{id=19249,name="Touch of Weakness",subText="Rank 2",level=20,skillLineId=78,skillLineAbilityId=10859,icon="Interface\\Icons\\Spell_Shadow_DeadofNight",race="Undead",requiredIds={19261}},
 		{id=13896,name="Feedback",subText="Rank 1",level=20,skillLineId=613,skillLineAbilityId=10866,icon="Interface\\Icons\\Spell_Shadow_RitualOfSacrifice",race="Human"},
 		{id=19281,name="Hex of Weakness",subText="Rank 2",level=20,skillLineId=78,skillLineAbilityId=10881,icon="Interface\\Icons\\Spell_Shadow_FingerOfDeath",race="Troll",requiredIds={9035}},
-		{id=23455,name="Holy Nova",subText="Rank 1",level=20,skillLineId=56,skillLineAbilityId=12601,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredIds={15237}},
 		{id=28377,name="Shadowguard",subText="Rank 1",level=20,skillLineId=78,skillLineAbilityId=14059,icon="Interface\\Icons\\Spell_Nature_LightningShield",race="Troll",requiredIds={18137}},
 		{id=46043,name="Sun's Embrace",subText="Rank 1",level=20,skillLineId=56,skillLineAbilityId=30019,icon="Interface\\Icons\\Spell_Holy_HolyProtection"}
 	},
@@ -98,11 +97,10 @@ WT.SpellsByLevel = WT.RaceFilter({
 		{id=6063,name="Heal",subText="Rank 3",level=28,skillLineId=56,skillLineAbilityId=3778,icon="Interface\\Icons\\Spell_Holy_Heal02",requiredIds={2055}},
 		{id=8104,name="Mind Blast",subText="Rank 4",level=28,skillLineId=78,skillLineAbilityId=4525,icon="Interface\\Icons\\Spell_Shadow_UnholyFrenzy",requiredIds={8103}},
 		{id=8124,name="Psychic Scream",subText="Rank 2",level=28,skillLineId=78,skillLineAbilityId=4529,icon="Interface\\Icons\\Spell_Shadow_PsychicScream",requiredIds={8122}},
-		{id=15430,name="Holy Nova",subText="Rank 2",level=28,skillLineId=56,skillLineAbilityId=8356,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredIds={23455}},
+		{id=15430,name="Holy Nova",subText="Rank 2",level=28,skillLineId=56,skillLineAbilityId=8356,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredIds={15237}},
 		{id=17311,name="Mind Flay",subText="Rank 2",level=28,skillLineId=78,skillLineAbilityId=9836,icon="Interface\\Icons\\Spell_Shadow_SiphonMana",requiredIds={15407}},
 		{id=19276,name="Devouring Plague",subText="Rank 2",level=28,skillLineId=78,skillLineAbilityId=10876,icon="Interface\\Icons\\Spell_Shadow_BlackPlague",race="Undead",requiredIds={2944}},
 		{id=19308,name="Shadowguard",subText="Rank 2",level=28,skillLineId=78,skillLineAbilityId=10907,icon="Interface\\Icons\\Spell_Nature_LightningShield",race="Troll",requiredIds={28377}},
-		{id=23458,name="Holy Nova",subText="Rank 2",level=28,skillLineId=56,skillLineAbilityId=12602,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredIds={15430}},
 		{id=28378,name="Shadowguard",subText="Rank 2",level=28,skillLineId=78,skillLineAbilityId=14060,icon="Interface\\Icons\\Spell_Nature_LightningShield",race="Troll",requiredIds={19308}}
 	},
 	[30] = {
@@ -145,11 +143,10 @@ WT.SpellsByLevel = WT.RaceFilter({
 		{id=2791,name="Power Word: Fortitude",subText="Rank 4",level=36,skillLineId=613,skillLineAbilityId=7941,icon="Interface\\Icons\\Spell_Holy_WordFortitude",requiredIds={1245}},
 		{id=988,name="Dispel Magic",subText="Rank 2",level=36,skillLineId=613,skillLineAbilityId=7951,icon="Interface\\Icons\\Spell_Holy_DispelMagic",requiredIds={527}},
 		{id=15264,name="Holy Fire",subText="Rank 4",level=36,skillLineId=56,skillLineAbilityId=8279,icon="Interface\\Icons\\Spell_Holy_SearingLight",requiredIds={15263}},
-		{id=15431,name="Holy Nova",subText="Rank 3",level=36,skillLineId=56,skillLineAbilityId=8357,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredIds={23458}},
+		{id=15431,name="Holy Nova",subText="Rank 3",level=36,skillLineId=56,skillLineAbilityId=8357,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredIds={15430}},
 		{id=17312,name="Mind Flay",subText="Rank 3",level=36,skillLineId=78,skillLineAbilityId=9837,icon="Interface\\Icons\\Spell_Shadow_SiphonMana",requiredIds={17311}},
 		{id=19277,name="Devouring Plague",subText="Rank 3",level=36,skillLineId=78,skillLineAbilityId=10877,icon="Interface\\Icons\\Spell_Shadow_BlackPlague",race="Undead",requiredIds={19276}},
 		{id=19309,name="Shadowguard",subText="Rank 3",level=36,skillLineId=78,skillLineAbilityId=10908,icon="Interface\\Icons\\Spell_Nature_LightningShield",race="Troll",requiredIds={28378}},
-		{id=23459,name="Holy Nova",subText="Rank 3",level=36,skillLineId=56,skillLineAbilityId=12603,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredIds={15431}},
 		{id=28379,name="Shadowguard",subText="Rank 3",level=36,skillLineId=78,skillLineAbilityId=14061,icon="Interface\\Icons\\Spell_Nature_LightningShield",race="Troll",requiredIds={19309}}
 	},
 	[38] = {
@@ -195,8 +192,7 @@ WT.SpellsByLevel = WT.RaceFilter({
 		{id=17313,name="Mind Flay",subText="Rank 4",level=44,skillLineId=78,skillLineAbilityId=9838,icon="Interface\\Icons\\Spell_Shadow_SiphonMana",requiredIds={17312}},
 		{id=19278,name="Devouring Plague",subText="Rank 4",level=44,skillLineId=78,skillLineAbilityId=10878,icon="Interface\\Icons\\Spell_Shadow_BlackPlague",race="Undead",requiredIds={19277}},
 		{id=19310,name="Shadowguard",subText="Rank 4",level=44,skillLineId=78,skillLineAbilityId=10909,icon="Interface\\Icons\\Spell_Nature_LightningShield",race="Troll",requiredIds={28379}},
-		{id=27799,name="Holy Nova",subText="Rank 4",level=44,skillLineId=56,skillLineAbilityId=13825,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredIds={23459}},
-		{id=27803,name="Holy Nova",subText="Rank 4",level=44,skillLineId=56,skillLineAbilityId=13826,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredIds={27799}},
+		{id=27799,name="Holy Nova",subText="Rank 4",level=44,skillLineId=56,skillLineAbilityId=13825,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredIds={15431}},
 		{id=28380,name="Shadowguard",subText="Rank 4",level=44,skillLineId=78,skillLineAbilityId=14062,icon="Interface\\Icons\\Spell_Nature_LightningShield",race="Troll",requiredIds={19310}},
 		{id=45564,name="Champion's Bond",subText="Rank 1",level=44,skillLineId=56,skillLineAbilityId=15050,icon="Interface\\Icons\\Spell_Holy_ChampionsBond"}
 	},
@@ -239,8 +235,7 @@ WT.SpellsByLevel = WT.RaceFilter({
 		{id=17314,name="Mind Flay",subText="Rank 5",level=52,skillLineId=78,skillLineAbilityId=9839,icon="Interface\\Icons\\Spell_Shadow_SiphonMana",requiredIds={17313}},
 		{id=19279,name="Devouring Plague",subText="Rank 5",level=52,skillLineId=78,skillLineAbilityId=10879,icon="Interface\\Icons\\Spell_Shadow_BlackPlague",race="Undead",requiredIds={19278}},
 		{id=19311,name="Shadowguard",subText="Rank 5",level=52,skillLineId=78,skillLineAbilityId=10910,icon="Interface\\Icons\\Spell_Nature_LightningShield",race="Troll",requiredIds={28380}},
-		{id=27800,name="Holy Nova",subText="Rank 5",level=52,skillLineId=56,skillLineAbilityId=13827,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredIds={27803}},
-		{id=27804,name="Holy Nova",subText="Rank 5",level=52,skillLineId=56,skillLineAbilityId=13828,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredIds={27800}},
+		{id=27800,name="Holy Nova",subText="Rank 5",level=52,skillLineId=56,skillLineAbilityId=13827,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredIds={27799}},
 		{id=28381,name="Shadowguard",subText="Rank 5",level=52,skillLineId=78,skillLineAbilityId=14063,icon="Interface\\Icons\\Spell_Nature_LightningShield",race="Troll",requiredIds={19311}}
 	},
 	[54] = {
@@ -289,8 +284,7 @@ WT.SpellsByLevel = WT.RaceFilter({
 		{id=25315,name="Renew",subText="Rank 10",level=60,skillLineId=56,skillLineAbilityId=13215,icon="Interface\\Icons\\Spell_Holy_Renew",requiredIds={139}},
 		{id=25316,name="Prayer of Healing",subText="Rank 5",level=60,skillLineId=56,skillLineAbilityId=13216,icon="Interface\\Icons\\Spell_Holy_PrayerOfHealing02",requiredIds={10961}},
 		{id=27681,name="Prayer of Spirit",subText="Rank 1",level=60,skillLineId=613,skillLineAbilityId=13809,icon="Interface\\Icons\\Spell_Holy_PrayerofSpirit"},
-		{id=27801,name="Holy Nova",subText="Rank 6",level=60,skillLineId=56,skillLineAbilityId=13829,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredIds={27804}},
-		{id=27805,name="Holy Nova",subText="Rank 6",level=60,skillLineId=56,skillLineAbilityId=13830,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredIds={27801}},
+		{id=27801,name="Holy Nova",subText="Rank 6",level=60,skillLineId=56,skillLineAbilityId=13829,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredIds={27800}},
 		{id=27841,name="Divine Spirit",subText="Rank 4",level=60,skillLineId=613,skillLineAbilityId=13848,icon="Interface\\Icons\\Spell_Holy_DivineSpirit",requiredIds={14819}},
 		{id=27871,name="Lightwell",subText="Rank 3",level=60,skillLineId=56,skillLineAbilityId=13851,icon="Interface\\Icons\\Spell_Holy_SummonLightwell",requiredIds={27870}},
 		{id=28382,name="Shadowguard",subText="Rank 6",level=60,skillLineId=78,skillLineAbilityId=14064,icon="Interface\\Icons\\Spell_Nature_LightningShield",race="Troll",requiredIds={19312}},

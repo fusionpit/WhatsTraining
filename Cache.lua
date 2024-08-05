@@ -6,7 +6,6 @@ WT.idToRanks = {}
 
 -- done has param cacheHit
 function WT:CacheSpell(spell, level, done)
-  -- DEFAULT_CHAT_FRAME:AddMessage(spell.id .. " | " .. level .. " | " .. spell.name)
   if (self.spellInfoCache[spell.id] ~= nil) then
     done(true)
     return
@@ -26,7 +25,7 @@ function WT:CacheSpell(spell, level, done)
     cost = 0,          -- TODO spell.cost,
     formattedCost = 0, -- TODO spell.cost,
     level = spell.level,
-    formattedLevel = format(WT.L.LEVEL_FORMAT, spell.level),
+    formattedLevel = format("%s - " .. WT.L.LEVEL_FORMAT, spell.id, spell.level),
     formattedFullName = formattedFullName,
   }
 
