@@ -89,7 +89,7 @@ local function setRowSpell(row, spell)
             if (button == "RightButton") then
                 wt.ClickHook(spell, function()
                     wt:RebuildData()
-                end)
+                end, row)
             end
         end)
     else
@@ -279,14 +279,94 @@ function wt.CreateFrame()
 end
 
 
-wt.ClickHook = function(spell, afterClick)
+wt.ClickHook = function(spell, afterClick, row)
     local tomeId = spell.id
     if (not wt.TomeIds or not wt.TomeIds[tomeId]) then
         PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
         local isIgnored = ignoreStore:IsIgnored(spell.id)
         local menuTitle = spell.formattedFullName
+        if (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC) then
+            local menu = {
+                {text = menuTitle, isTitle = true, classicChecks = true},
+                {
+                    text = wt.L.IGNORED_TT,
+                    checked = isIgnored,
+                    func = function()
+                        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+                        ignoreStore:Flip(spell.id)
+                        afterClick()
+                    end,
+                    isNotRadio = true
+                    -- classicChecks = true
+                }
+            }
+    
+            local allRanks = wt:AllRanks(spell.id)
+    
+            if allRanks and #allRanks > 1 then
+                local allIgnored = true
+                for _, id in ipairs(allRanks) do
+                    allIgnored = allIgnored and ignoreStore:IsIgnored(id)
+                end
+                tinsert(menu, {
+                    text = wt.L.IGNORE_ALL_TT,
+                    checked = allIgnored,
+                    func = function()
+                        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+                        ignoreStore:UpdateMany(allRanks, not allIgnored)
+                        afterClick()
+                    end,
+                    isNotRadio = true,
+                })
+            end
+    
+            EasyMenu(menu, menuFrame, "cursor", 10, 35, "MENU")
+        else
+            MenuUtil.CreateContextMenu(row, function(owner, rootDescription) 
+                rootDescription:CreateTitle(menuTitle)
+                rootDescription:CreateCheckbox(wt.L.IGNORED_TT, function() return isIgnored end, function() 
+                    PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+                    ignoreStore:Flip(spell.id)
+                    afterClick()
+                    return MenuResponse.Close
+                end)
+    
+                local allRanks = wt:AllRanks(spell.id)
+                if allRanks and #allRanks > 1 then
+                    local allIgnored = true
+                    for _, id in ipairs(allRanks) do
+                        allIgnored = allIgnored and ignoreStore:IsIgnored(id)
+                    end
+                    rootDescription:CreateCheckbox(wt.L.IGNORE_ALL_TT, function() return allIgnored end, function ()
+                        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+                        ignoreStore:UpdateMany(allRanks, not allIgnored)
+                        afterClick()
+                        return MenuResponse.Close
+                    end)
+                end
+            end)
+        end
+        
+        return
+    end
+
+    local checked = wt.learnedPetAbilityMap[tomeId]
+    PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+    local isIgnored = ignoreStore:IsIgnored(spell.id)
+    if (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC) then
         local menu = {
-            {text = menuTitle, isTitle = true, classicChecks = true},
+            {text = wt.L.TOME_HEADER, isTitle = true, classicChecks = true},
+            {
+                text = wt.L.TOME_LEARNED,
+                checked = checked,
+                func = function()
+                    PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+                    wt.learnedPetAbilityMap[tomeId] = not checked
+                    afterClick()
+                end,
+                isNotRadio = true
+            },
+            {text = spell.name, isTitle = true, classicChecks = true},
             {
                 text = wt.L.IGNORED_TT,
                 checked = isIgnored,
@@ -299,57 +379,23 @@ wt.ClickHook = function(spell, afterClick)
                 -- classicChecks = true
             }
         }
-
-        local allRanks = wt:AllRanks(spell.id)
-
-        if allRanks and #allRanks > 1 then
-            local allIgnored = true
-            for _, id in ipairs(allRanks) do
-                allIgnored = allIgnored and ignoreStore:IsIgnored(id)
-            end
-            tinsert(menu, {
-                text = wt.L.IGNORE_ALL_TT,
-                checked = allIgnored,
-                func = function()
-                    PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-                    ignoreStore:UpdateMany(allRanks, not allIgnored)
-                    afterClick()
-                end,
-                isNotRadio = true,
-            })
-        end
-
         EasyMenu(menu, menuFrame, "cursor", 10, 35, "MENU")
-        return
-    end
-
-    local checked = wt.learnedPetAbilityMap[tomeId]
-    PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-    local isIgnored = ignoreStore:IsIgnored(spell.id)
-    local menu = {
-        {text = wt.L.TOME_HEADER, isTitle = true, classicChecks = true},
-        {
-            text = wt.L.TOME_LEARNED,
-            checked = checked,
-            func = function()
+    else
+        MenuUtil.CreateContextMenu(row, function(owner, rootDescription)
+            rootDescription:CreateTitle(wt.L.TOME_HEADER)
+            rootDescription:CreateCheckbox(wt.L.TOME_LEARNED, function() return checked end, function() 
                 PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
                 wt.learnedPetAbilityMap[tomeId] = not checked
                 afterClick()
-            end,
-            isNotRadio = true
-        },
-        {text = spell.name, isTitle = true, classicChecks = true},
-        {
-            text = wt.L.IGNORED_TT,
-            checked = isIgnored,
-            func = function()
+                return MenuResponse.Close
+            end)
+            rootDescription:CreateTitle(spell.name)
+            rootDescription:CreateCheckbox(wt.L.IGNORED_TT, function() return isIgnored end, function() 
                 PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
                 ignoreStore:Flip(spell.id)
                 afterClick()
-            end,
-            isNotRadio = true
-            -- classicChecks = true
-        }
-    }
-    EasyMenu(menu, menuFrame, "cursor", 10, 35, "MENU")
+                return MenuResponse.Close
+            end)
+        end)
+    end
 end
