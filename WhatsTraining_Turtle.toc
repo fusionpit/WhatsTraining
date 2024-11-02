@@ -1,5 +1,5 @@
 ## Interface: 11200
-## Title: What's Training?
+## Title: What's Training? Turtle
 ## Version: @project-version@
 ## Author: Sveng, Turtle Port: Spawnedc
 ## Notes: Shows you what spells are available at your class trainer
@@ -8,13 +8,27 @@
 ## OptionalDeps: ClassTrainerPlus
 ## X-Curse-Project-ID: 324944
 ## X-WoWI-ID: 25031
-## Dependencies: GetSpellInfoVanilla
 
-libs\LibStub.lua
-libs\FusionIgnoreStore\IgnoreStore.lua
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\AceCore-3.0\AceCore-3.0.xml
+Libs\AceAddon-3.0\AceAddon-3.0.xml
+Libs\AceDB-3.0\AceDB-3.0.xml
+Libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
+Libs\AceGUI-3.0\AceGUI-3.0.xml
+Libs\AceConfig-3.0\AceConfig-3.0.xml
+Libs\AceConsole-3.0\AceConsole-3.0.xml
+Libs\AceEvent-3.0\AceEvent-3.0.xml
+Libs\AceTimer-3.0\AceTimer-3.0.xml
+Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
+Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
+Libs\FusionIgnoreStore\IgnoreStore.lua
 
+Environment.lua
+Constants.lua
 Utils.lua
-Cache.lua
+SpellsByLevel.lua
+PlayerData.lua
 
 Classes\Turtle\Druid.lua
 Classes\Turtle\Hunter.lua
@@ -26,6 +40,6 @@ Classes\Turtle\Shaman.lua
 Classes\Turtle\Warlock.lua
 Classes\Turtle\Warrior.lua
 
-Localization.lua
 WhatsTrainingUI.lua
+MiniMapButton.lua
 WhatsTraining.lua
