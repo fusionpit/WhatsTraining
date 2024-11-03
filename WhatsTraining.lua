@@ -1,10 +1,10 @@
 setfenv(1, WhatsTraining)
 
----@class Addon : AceAddon, AceAddon-3.0, AceEvent-3.0, AceTimer-3.0
----@field db WhatsTrainingTurtleConfig|AceDBObject-3.0
+---@class Addon : AceAddonDef
+---@field db WhatsTrainingTurtleConfig
 Addon = LibStub("AceAddon-3.0"):NewAddon("WhatsTraining_Turtle", "AceEvent-3.0", "AceTimer-3.0")
 
----@class WhatsTrainingTurtleConfig
+---@class WhatsTrainingTurtleConfig : table
 local defaults = {
   profile = {
     MinimapButton = {
@@ -24,7 +24,10 @@ function Addon:OnInitialize()
 end
 
 function Addon:Initialise()
-  PlayerData:SetName(UnitName("player"))
+  local name = UnitName("player")
+  if name then
+    PlayerData:SetName(name)
+  end
   PlayerData:SetClass(UnitClass("player"))
   PlayerData:SetRace(UnitRace("player"))
   PlayerData:SetLevel(UnitLevel("player"))
