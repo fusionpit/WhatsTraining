@@ -4,7 +4,8 @@
   "workspace.library": [
     "defs/wow-api-type-definitions",
     "defs/Vanilla-WoW-Lua-Definitions/src",
-    "defs/Ace3v"
+    "defs/Ace3v",
+    "Lib/Ace3"
   ],
   "diagnostics.libraryFiles": "Disable"
 }

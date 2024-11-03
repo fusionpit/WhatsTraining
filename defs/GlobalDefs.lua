@@ -7,6 +7,11 @@ BOOKTYPE_SPELL = 'spell'
 ---@type BOOKTYPE_PET
 BOOKTYPE_PET = 'pet'
 
+---Returns the number of talents in the given talent tab index
+---@param talentTabIndex integer
+---@return integer
+function GetNumTalents(talentTabIndex) end
+
 ---Returns the name and rank of a given spellbook spell
 ---@param spellIndex integer
 ---@param bookType BOOKTYPE_SPELL | BOOKTYPE_PET
