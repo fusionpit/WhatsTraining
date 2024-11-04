@@ -12,12 +12,6 @@ BOOKTYPE_PET = 'pet'
 ---@return integer
 function GetNumTalents(talentTabIndex) end
 
----Returns the name and rank of a given spellbook spell
----@param spellIndex integer
----@param bookType BOOKTYPE_SPELL | BOOKTYPE_PET
----@return string, string
-function GetSpellName(spellIndex, bookType) end
-
 ---Returns information about a specified talent in a specified tab.
 ---nameTalent, iconPath, tier, column, currentRank, maxRank, isExceptional, meetsPrereq = GetTalentInfo(tabIndex, talentIndex);
 ---

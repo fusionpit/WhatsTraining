@@ -3,6 +3,13 @@ WhatsTrainingUI = {}
 
 local AceGUI = LibStub("AceGUI-3.0")
 
+local HIGHLIGHT_TEXTURE_FILEID = "Interface\\AddOns\\WhatsTraining_Turtle\\textures\\highlight"
+local LEFT_BG_TEXTURE_FILEID = "Interface\\AddOns\\WhatsTraining_Turtle\\textures\\left"
+local RIGHT_BG_TEXTURE_FILEID = "Interface\\AddOns\\WhatsTraining_Turtle\\textures\\right"
+local TAB_TEXTURE_FILEID = "Interface\\Icons\\INV_Misc_QuestionMark"
+
+local ROW_HEIGHT = 14
+
 function WhatsTrainingUI:Initialize()
   self:InitDisplay()
   -- self:InitMinimapButton()
@@ -10,19 +17,36 @@ function WhatsTrainingUI:Initialize()
   -- self:RefreshConfig()
 end
 
-function WhatsTrainingUI:InitDisplay()
-  self.frame = AceGUI:Create("Frame")
-  self.frame:SetTitle("What can I train?")
-  self.frame:SetWidth(300)
-  self.frame:SetHeight(300)
-  self.frame:EnableResize(false)
+function WhatsTrainingUI:Update()
+  FauxScrollFrame_Update(self.scrollBar, 50, 5, ROW_HEIGHT);
+end
 
-  self.scrollFrame = AceGUI:Create("ScrollFrame")
-  self.scrollFrame:SetFullWidth(true)
-  self.scrollFrame:SetFullHeight(true)
-  self.scrollFrame:SetAutoAdjustHeight(true) -- probably?
-  self.scrollFrame:SetLayout("List")
-  self.frame:AddChild(self.scrollFrame)
+function WhatsTrainingUI:InitDisplay()
+  self.frame = CreateFrame("Frame", "WhatsTrainingFrame", SpellBookFrame)
+  self.frame:SetPoint("TOPLEFT", SpellBookFrame, "TOPLEFT", 0, 0)
+  self.frame:SetPoint("BOTTOMRIGHT", SpellBookFrame, "BOTTOMRIGHT", 0, 0)
+  self.frame:SetFrameStrata("HIGH")
+
+  local left = self.frame:CreateTexture(nil, "ARTWORK")
+  left:SetTexture(LEFT_BG_TEXTURE_FILEID)
+  left:SetWidth(256)
+  left:SetHeight(512)
+  left:SetPoint("TOPLEFT", self.frame)
+
+  local right = self.frame:CreateTexture(nil, "ARTWORK")
+  right:SetTexture(RIGHT_BG_TEXTURE_FILEID)
+  right:SetWidth(128)
+  right:SetHeight(512)
+  right:SetPoint("TOPRIGHT", self.frame)
+
+  self.scrollBar = CreateFrame("ScrollFrame", "$parentScrollBar", self.frame, "FauxScrollFrameTemplate")
+  self.scrollBar:SetPoint("TOPLEFT", 0, -75)
+  self.scrollBar:SetPoint("BOTTOMRIGHT", -65, 81)
+
+  self.scrollBar:SetScript("OnVerticalScroll", function(self, offset)
+    FauxScrollFrame_OnVerticalScroll(self, offset, ROW_HEIGHT,
+      function() wt.Update(mainFrame) end)
+  end)
 
   self.frame:Hide()
 end
@@ -30,39 +54,92 @@ end
 ---Sets the given spells as rows
 ---@param spells table<SpellCategories, Spell[]>
 function WhatsTrainingUI:SetItems(spells)
-  for index, spellCategory in ipairs(SpellCategoryHeaders) do
+  local rows = {}
+  local i = 1
+  for categoryIndex, spellCategory in ipairs(SpellCategoryHeaders) do
+    local headerName = "$headerRow-" .. spellCategory.name
+    local header = CreateFrame("Button", headerName, self.frame)
+    header:SetHeight(ROW_HEIGHT)
+
+    local headerLabel = header:CreateFontString(headerName .. "-header", "OVERLAY", "GameFontWhite")
+    headerLabel:SetAllPoints()
+    headerLabel:SetJustifyV("Middle")
+    headerLabel:SetJustifyH("Center")
+    headerLabel:SetText(spellCategory.color .. spellCategory.name .. FONT_COLOR_CODE_CLOSE)
+
+    header:SetPoint("RIGHT", self.scrollBar)
+
+    if (rows[i - 1] == nil) then
+      header:SetPoint("TOPLEFT", self.frame, 26, -78)
+    else
+      header:SetPoint("TOPLEFT", rows[i - 1], "BOTTOMLEFT", 0, -2)
+    end
+
+    rawset(rows, i, header)
+
+    i = i + 1
+
     local categorySpells = spells[spellCategory.key]
 
     if categorySpells ~= nil then
-      local categoryHeader = AceGUI:Create("Label")
-      categoryHeader:SetText(spellCategory.name)
-      categoryHeader:SetFullWidth(true)
-      categoryHeader.label:SetJustifyH("CENTER")
-      self.scrollFrame:AddChild(categoryHeader)
+      for spellIndex, categorySpell in ipairs(categorySpells) do
+        local rowFrameName = "$parentRow-" .. categoryIndex .. "-" .. spellIndex
+        local row = CreateFrame("Button", rowFrameName, self.frame)
+        row:SetHeight(ROW_HEIGHT)
+        row:EnableMouse(true)
+        row:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+        -- row:SetScript("OnEnter", function(self)
+        --   tooltip:SetOwner(self, "ANCHOR_RIGHT")
+        --   setTooltip(self.currentSpell)
+        -- end)
+        -- row:SetScript("OnLeave", function() tooltip:Hide() end)
 
-      for _, spell in ipairs(categorySpells) do
-        local row = AceGUI:Create("SimpleGroup")
-        row:SetFullWidth(true)
-        row:SetLayout("Flow")
-        row:SetCallback("OnClick", function(button)
-          Utils.log(button.text)
-        end)
+        local highlight = row:CreateTexture("$parentHighlight", "HIGHLIGHT")
+        highlight:SetAllPoints()
+        highlight:SetTexture(HIGHLIGHT_TEXTURE_FILEID)
 
-        local label = AceGUI:Create("InteractiveLabel")
-        local name = spell.name
-        if spell.subText ~= "" then
-          name = name .. " (" .. spell.subText .. ")"
-        end
-        label:SetImage(spell.icon)
-        label:SetText(name)
-        -- label:SetFullWidth(true)
-        row:AddChild(label)
+        local spell = CreateFrame("Frame", "$parentSpell", row)
+        spell:SetPoint("LEFT", row, "Left")
+        spell:SetPoint("TOP", row, "TOP")
+        spell:SetPoint("BOTTOM", row, "BOTTOM")
 
-        local level = AceGUI:Create("Label")
-        level:SetText("Level " .. spell.level)
-        row:AddChild(level)
+        local spellIcon = spell:CreateTexture(nil, "OVERLAY")
+        spellIcon:SetPoint("TOPLEFT", spell)
+        spellIcon:SetPoint("BOTTOMLEFT", spell)
+        spellIcon:SetTexture(categorySpell.icon)
 
-        self.scrollFrame:AddChild(row)
+        local iconWidth = ROW_HEIGHT
+        spellIcon:SetWidth(iconWidth)
+
+        local spellLabel = spell:CreateFontString("$parentLabel", "OVERLAY", "GameFontNormal")
+        spellLabel:SetPoint("TOPLEFT", spell, "TOPLEFT", iconWidth + 4, 0)
+        spellLabel:SetPoint("BOTTOM", spell)
+        spellLabel:SetJustifyV("Middle")
+        spellLabel:SetJustifyH("Left")
+        spellLabel:SetText(categorySpell.name)
+
+        local spellSublabel = spell:CreateFontString("$parentSubLabel", "OVERLAY", "GameTooltipText")
+        spellSublabel:SetJustifyH("Left")
+        spellSublabel:SetPoint("TOPLEFT", spellLabel, "TOPRIGHT", 2, 0)
+        spellSublabel:SetPoint("BOTTOM", spellLabel)
+        spellSublabel:SetText(categorySpell.subText)
+
+        local spellLevelLabel = spell:CreateFontString("$parentLevelLabel", "OVERLAY", "GameFontWhite")
+        spellLevelLabel:SetPoint("TOPRIGHT", spell, -4, 0)
+        spellLevelLabel:SetPoint("BOTTOM", spell)
+        spellLevelLabel:SetJustifyH("Right")
+        spellLevelLabel:SetJustifyV("Middle")
+        spellLevelLabel:SetText("Level " .. categorySpell.level)
+
+        spellSublabel:SetPoint("RIGHT", spellLevelLabel, "Left")
+        spellSublabel:SetJustifyV("Middle")
+
+        row:SetPoint("RIGHT", self.scrollBar)
+        row:SetPoint("TOPLEFT", rows[i - 1], "BOTTOMLEFT", 0, -2)
+
+        rawset(rows, i, row)
+
+        i = i + 1
       end
     end
   end
