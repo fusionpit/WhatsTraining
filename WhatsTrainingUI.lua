@@ -1,24 +1,54 @@
 setfenv(1, WhatsTraining)
 WhatsTrainingUI = {}
 
-local AceGUI = LibStub("AceGUI-3.0")
-
 local HIGHLIGHT_TEXTURE_FILEID = "Interface\\AddOns\\WhatsTraining_Turtle\\textures\\highlight"
 local LEFT_BG_TEXTURE_FILEID = "Interface\\AddOns\\WhatsTraining_Turtle\\textures\\left"
 local RIGHT_BG_TEXTURE_FILEID = "Interface\\AddOns\\WhatsTraining_Turtle\\textures\\right"
 local TAB_TEXTURE_FILEID = "Interface\\Icons\\INV_Misc_QuestionMark"
+local TAB_BACKDROP_FILEID = "Interface\\Spellbook\\SpellBook-SkillLineTab"
+local TAB_HIGHLIGHT_TEXTURE_FILEID = "Interface\\Buttons\\ButtonHilight-Square"
+local TAB_CHECKED_TEXTURE_FILEID = "Interface\\Buttons\\CheckButtonHilight"
 
 local ROW_HEIGHT = 14
 
 function WhatsTrainingUI:Initialize()
   self:InitDisplay()
-  -- self:InitMinimapButton()
-
-  -- self:RefreshConfig()
 end
 
 function WhatsTrainingUI:Update()
   FauxScrollFrame_Update(self.scrollBar, 50, 5, ROW_HEIGHT);
+end
+
+-- Sets up the tab
+---@return CheckButton
+function WhatsTrainingUI:SetupTab()
+  local tab = CreateFrame("CheckButton", "WhatsTrainingTab", SpellBookFrame)
+  tab:SetFrameStrata("HIGH")
+  tab:SetPoint('BOTTOMRIGHT', SpellBookFrame, -7, 86)
+  tab:SetWidth(24)
+  tab:SetHeight(24)
+
+  tab:SetHighlightTexture(TAB_HIGHLIGHT_TEXTURE_FILEID)
+  tab:SetCheckedTexture(TAB_CHECKED_TEXTURE_FILEID)
+
+  local TAB_BACKDROP_TEXTURE = tab:CreateTexture(nil, "BACKGROUND")
+  TAB_BACKDROP_TEXTURE:SetTexture(TAB_BACKDROP_FILEID)
+  TAB_BACKDROP_TEXTURE:SetWidth(54)
+  TAB_BACKDROP_TEXTURE:SetHeight(54)
+  TAB_BACKDROP_TEXTURE:SetPoint("TOPLEFT", -4, 11)
+  tab:SetBackdrop(TAB_BACKDROP_TEXTURE)
+
+  tab:SetNormalTexture(TAB_TEXTURE_FILEID)
+
+  return tab
+end
+
+function WhatsTrainingUI:handleTabToggle()
+  if self.tab:GetChecked() then
+    self.frame:Show()
+  else
+    self.frame:Hide()
+  end
 end
 
 function WhatsTrainingUI:InitDisplay()
@@ -26,6 +56,9 @@ function WhatsTrainingUI:InitDisplay()
   self.frame:SetPoint("TOPLEFT", SpellBookFrame, "TOPLEFT", 0, 0)
   self.frame:SetPoint("BOTTOMRIGHT", SpellBookFrame, "BOTTOMRIGHT", 0, 0)
   self.frame:SetFrameStrata("HIGH")
+
+  self.tab = WhatsTrainingUI:SetupTab()
+  self.tab:SetScript("OnClick", function() WhatsTrainingUI:handleTabToggle() end)
 
   local left = self.frame:CreateTexture(nil, "ARTWORK")
   left:SetTexture(LEFT_BG_TEXTURE_FILEID)
@@ -44,8 +77,7 @@ function WhatsTrainingUI:InitDisplay()
   self.scrollBar:SetPoint("BOTTOMRIGHT", -65, 81)
 
   self.scrollBar:SetScript("OnVerticalScroll", function(self, offset)
-    FauxScrollFrame_OnVerticalScroll(self, offset, ROW_HEIGHT,
-      function() wt.Update(mainFrame) end)
+    FauxScrollFrame_OnVerticalScroll(self, offset, ROW_HEIGHT, WhatsTrainingUI:Update())
   end)
 
   self.frame:Hide()

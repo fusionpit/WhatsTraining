@@ -9,22 +9,9 @@
 ## X-Curse-Project-ID: 324944
 ## X-WoWI-ID: 25031
 
-Lib\Ace3\LibStub\LibStub.lua
-Lib\Ace3\CallbackHandler-1.0\CallbackHandler-1.0.xml
-Lib\Ace3\AceCore-3.0\AceCore-3.0.xml
-Lib\Ace3\AceAddon-3.0\AceAddon-3.0.xml
-Lib\Ace3\AceDB-3.0\AceDB-3.0.xml
-Lib\Ace3\AceDBOptions-3.0\AceDBOptions-3.0.xml
-Lib\Ace3\AceGUI-3.0\AceGUI-3.0.xml
-Lib\Ace3\AceConfig-3.0\AceConfig-3.0.xml
-Lib\Ace3\AceConsole-3.0\AceConsole-3.0.xml
-Lib\Ace3\AceEvent-3.0\AceEvent-3.0.xml
-Lib\Ace3\AceHook-3.0\AceHook-3.0.xml
-Lib\Ace3\AceTimer-3.0\AceTimer-3.0.xml
+Lib\LibStub\LibStub.lua
+Lib\CallbackHandler-1.0\CallbackHandler-1.0.lua
 Lib\LibDataBroker-1.1\LibDataBroker-1.1.lua
-Lib\LibDBIcon-1.0\LibDBIcon-1.0.lua
-
-Lib\Ace3\Ace3.lua
 
 Environment.lua
 Constants.lua
@@ -43,5 +30,4 @@ Classes\Turtle\Warlock.lua
 Classes\Turtle\Warrior.lua
 
 WhatsTrainingUI.lua
-MiniMapButton.lua
 WhatsTraining.lua
