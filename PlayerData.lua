@@ -118,7 +118,6 @@ end
 function PlayerData:GetAvailableSpells()
   self.spellsByCategory = {}
 
-  local learnableSpellsByLevel = Utils.FilterByLevel(self.spellsByLevel, self.level)
   ---@type Spell[]
   local availableSpells = {}
   ---@type Spell[]
@@ -134,7 +133,7 @@ function PlayerData:GetAvailableSpells()
 
   for level, spells in pairs(self.spellsByLevel) do
     for _, spell in ipairs(spells) do
-      if not (Utils.TableHasValue(self.knownSpellIds, spell.id)) then
+      if not (Utils.TableHasValue(self.knownSpellIds, spell.id)) then -- spell is not learned yet
         if (spell.level > self.level) then
           if (spell.level - self.level <= 2) then
             tinsert(comingSoon, spell)
@@ -154,7 +153,7 @@ function PlayerData:GetAvailableSpells()
             tinsert(availableSpells, spell)
           end
         end
-      else
+      else -- spell is known
         tinsert(knownSpells, spell)
       end
     end

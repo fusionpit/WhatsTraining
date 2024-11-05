@@ -120,31 +120,32 @@ end
 function WhatsTrainingUI:SetItems(spells)
   local i = 1
   for categoryIndex, spellCategory in ipairs(SpellCategoryHeaders) do
-    local headerName = "$headerRow-" .. spellCategory.name
-    local header = CreateFrame("Button", headerName, self.frame)
-    header:SetHeight(ROW_HEIGHT)
-
-    local headerLabel = header:CreateFontString(headerName .. "-header", "OVERLAY", "GameFontWhite")
-    headerLabel:SetAllPoints()
-    headerLabel:SetJustifyV("Middle")
-    headerLabel:SetJustifyH("Center")
-    headerLabel:SetText(spellCategory.color .. spellCategory.name .. FONT_COLOR_CODE_CLOSE)
-
-    header:SetPoint("RIGHT", self.scrollBar)
-
-    if (self.rows[i - 1] == nil) then
-      header:SetPoint("TOPLEFT", self.frame, 26, -78)
-    else
-      header:SetPoint("TOPLEFT", self.rows[i - 1], "BOTTOMLEFT", 0, -2)
-    end
-
-    rawset(self.rows, i, header)
-
-    i = i + 1
-
     local categorySpells = spells[spellCategory.key]
+    local categoryHasSpells = categorySpells ~= nil and Utils.tableLength(categorySpells) > 0
 
-    if categorySpells ~= nil then
+    if categoryHasSpells then
+      local headerName = "$headerRow-" .. spellCategory.name
+      local header = CreateFrame("Button", headerName, self.frame)
+      header:SetHeight(ROW_HEIGHT)
+
+      local headerLabel = header:CreateFontString(headerName .. "-header", "OVERLAY", "GameFontWhite")
+      headerLabel:SetAllPoints()
+      headerLabel:SetJustifyV("Middle")
+      headerLabel:SetJustifyH("Center")
+      headerLabel:SetText(spellCategory.color .. spellCategory.name .. FONT_COLOR_CODE_CLOSE)
+
+      header:SetPoint("RIGHT", self.scrollBar)
+
+      if (self.rows[i - 1] == nil) then
+        header:SetPoint("TOPLEFT", self.frame, 26, -78)
+      else
+        header:SetPoint("TOPLEFT", self.rows[i - 1], "BOTTOMLEFT", 0, -2)
+      end
+
+      -- add header to the list
+      rawset(self.rows, i, header)
+      i = i + 1
+
       for spellIndex, categorySpell in ipairs(categorySpells) do
         local rowFrameName = "$parentRow-" .. categoryIndex .. "-" .. spellIndex
         local row = CreateFrame("Button", rowFrameName, self.frame)
@@ -181,11 +182,14 @@ function WhatsTrainingUI:SetItems(spells)
         spellLabel:SetJustifyH("Left")
         spellLabel:SetText(categorySpell.name)
 
-        local spellSublabel = spell:CreateFontString("$parentSubLabel", "OVERLAY", "GameTooltipText")
+        local spellSublabel = spell:CreateFontString("$parentSubLabel", "OVERLAY", "InvoiceTextFontSmall")
         spellSublabel:SetJustifyH("Left")
         spellSublabel:SetPoint("TOPLEFT", spellLabel, "TOPRIGHT", 2, 0)
         spellSublabel:SetPoint("BOTTOM", spellLabel)
-        spellSublabel:SetText(categorySpell.subText)
+        if categorySpell.subText ~= "" then
+          spellSublabel:SetText("(" .. categorySpell.subText .. ")")
+          spellSublabel:SetTextColor(0.82, 0.7, 0.54, 1)
+        end
 
         local spellLevelLabel = spell:CreateFontString("$parentLevelLabel", "OVERLAY", "GameFontWhite")
         spellLevelLabel:SetPoint("TOPRIGHT", spell, -4, 0)
@@ -193,6 +197,11 @@ function WhatsTrainingUI:SetItems(spells)
         spellLevelLabel:SetJustifyH("Right")
         spellLevelLabel:SetJustifyV("Middle")
         spellLevelLabel:SetText("Level " .. categorySpell.level)
+        local levelColour = GetDifficultyColor(categorySpell.level)
+        spellLevelLabel:SetTextColor(levelColour.r, levelColour.g, levelColour.b)
+        if spellCategory.hideLevel then
+          spellLevelLabel:Hide()
+        end
 
         spellSublabel:SetPoint("RIGHT", spellLevelLabel, "Left")
         spellSublabel:SetJustifyV("Middle")

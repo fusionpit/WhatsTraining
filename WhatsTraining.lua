@@ -1,6 +1,7 @@
 setfenv(1, WhatsTraining)
+WhatsTraining = {}
 
-function Initialise()
+function WhatsTraining:Initialise()
   local name = UnitName("player")
   if name then
     PlayerData:SetName(name)
@@ -18,8 +19,12 @@ function Initialise()
   WhatsTrainingUI:Initialize()
 
   WhatsTrainingUI:SetItems(PlayerData.spellsByCategory)
-
-  -- WhatsTrainingUI.frame:Show()
 end
 
-Initialise()
+local function OnEvent()
+  WhatsTraining:Initialise()
+end
+
+local f = CreateFrame("Frame")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:SetScript("OnEvent", OnEvent)

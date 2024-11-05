@@ -30,6 +30,7 @@ SpellCategories = {
 SpellCategoryHeaders = { {
   name = "Available now",
   color = GREEN_FONT_COLOR_CODE,
+  hideLevel = true,
   key = SpellCategories.AVAILABLE
 }, {
   name = "Available but missing requirements",
