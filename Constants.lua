@@ -2,7 +2,9 @@ setfenv(1, WhatsTraining)
 
 local COMINGSOON_FONT_COLOR_CODE = "|cff82c5ff"
 local MISSINGTALENT_FONT_COLOR_CODE = "|cffffffff"
+local ORANGE_FONT_COLOR_CODE = "|cffff8040"
 local PET_FONT_COLOR_CODE = "|cffffffff"
+
 
 ---@enum SpellCategories
 SpellCategories = {
@@ -30,8 +32,8 @@ SpellCategoryHeaders = { {
   color = GREEN_FONT_COLOR_CODE,
   key = SpellCategories.AVAILABLE
 }, {
-  name = "Missing requirements",
-  color = HIGHLIGHT_FONT_COLOR_CODE,
+  name = "Available but missing requirements",
+  color = ORANGE_FONT_COLOR_CODE,
   key = SpellCategories.MISSING_REQS
 }, {
   name = "Coming soon",
@@ -53,7 +55,7 @@ SpellCategoryHeaders = { {
   nameSort = true
 }, {
   name = "Ignored",
-  color = "|c1eff00", --LIGHTYELLOW_FONT_COLOR_CODE,
+  color = LIGHTYELLOW_FONT_COLOR_CODE,
   -- costFormat = WT.L.TOTALSAVINGS_FORMAT,
   key = SpellCategories.IGNORED,
   nameSort = true

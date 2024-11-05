@@ -129,6 +129,8 @@ function PlayerData:GetAvailableSpells()
   local comingSoon = {}
   ---@type Spell[]
   local notAvailable = {}
+  ---@type Spell[]
+  local knownSpells = {}
 
   for level, spells in pairs(self.spellsByLevel) do
     for _, spell in ipairs(spells) do
@@ -152,6 +154,8 @@ function PlayerData:GetAvailableSpells()
             tinsert(availableSpells, spell)
           end
         end
+      else
+        tinsert(knownSpells, spell)
       end
     end
   end
@@ -161,6 +165,7 @@ function PlayerData:GetAvailableSpells()
   self.spellsByCategory[SpellCategories.AVAILABLE] = availableSpells
   self.spellsByCategory[SpellCategories.NEXT_LEVEL] = comingSoon
   self.spellsByCategory[SpellCategories.NOT_LEVEL] = notAvailable
+  self.spellsByCategory[SpellCategories.KNOWN] = knownSpells
 end
 
 function PlayerData:IsTalentKnown(spellname, talentTabIndex)
