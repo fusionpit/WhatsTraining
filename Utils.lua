@@ -73,7 +73,7 @@ end
 
 --- Returns the rank number of a given rankText
 ---@param rankText? string
----@returns integer
+---@return integer?
 function Utils.GetRankNumber(rankText)
   if rankText == nil or rankText == "" then
     return 0 -- Lua arrays start from 1.
@@ -91,6 +91,7 @@ end
 ---Returns the spell key for a given name and rank
 ---@param name string
 ---@param rank string
+---@return string
 function Utils.getSpellWithRankKey(name, rank)
   local spellNameKey = name
   if (rank ~= "") then
@@ -98,4 +99,13 @@ function Utils.getSpellWithRankKey(name, rank)
   end
 
   return spellNameKey
+end
+
+---Returns the length of a table
+---@param t table
+---@return integer
+function Utils.tableLength(t)
+  local count = 0
+  for _ in pairs(t) do count = count + 1 end
+  return count
 end
