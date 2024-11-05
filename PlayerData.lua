@@ -125,20 +125,32 @@ function PlayerData:GetAvailableSpells()
   local missingTalentRequirement = {}
   ---@type Spell[]
   local missingRequirements = {}
+  ---@type Spell[]
+  local comingSoon = {}
+  ---@type Spell[]
+  local notAvailable = {}
 
-  for level, spells in pairs(learnableSpellsByLevel) do
+  for level, spells in pairs(self.spellsByLevel) do
     for _, spell in ipairs(spells) do
       if not (Utils.TableHasValue(self.knownSpellIds, spell.id)) then
-        -- Check for talents
-        if spell.requiredTalent ~= nil and not PlayerData:IsTalentKnown(spell.name, spell.requiredTalent.tabIndex) then
-          Utils.log("Missing talent: " .. spell.name .. " (" .. spell.subText .. ") - [" .. spell.id .. "]")
-          tinsert(missingTalentRequirement, spell)
-        elseif spell.requiredIds ~= nil and not PlayerData:IsSpellRequirementsMet(spell.requiredIds) then
-          Utils.log("Missing requirement: " .. spell.name .. " (" .. spell.subText .. ") - [" .. spell.id .. "]")
-          tinsert(missingRequirements, spell)
+        if (spell.level > self.level) then
+          if (spell.level - self.level <= 2) then
+            tinsert(comingSoon, spell)
+          else
+            tinsert(notAvailable, spell)
+          end
         else
-          Utils.log("CAN LEARN: " .. spell.name .. " (" .. spell.subText .. ") - [" .. spell.id .. "]")
-          tinsert(availableSpells, spell)
+          -- Check for talents
+          if spell.requiredTalent ~= nil and not PlayerData:IsTalentKnown(spell.name, spell.requiredTalent.tabIndex) then
+            Utils.log("Missing talent: " .. spell.name .. " (" .. spell.subText .. ") - [" .. spell.id .. "]")
+            tinsert(missingTalentRequirement, spell)
+          elseif spell.requiredIds ~= nil and not PlayerData:IsSpellRequirementsMet(spell.requiredIds) then
+            Utils.log("Missing requirement: " .. spell.name .. " (" .. spell.subText .. ") - [" .. spell.id .. "]")
+            tinsert(missingRequirements, spell)
+          else
+            Utils.log("CAN LEARN: " .. spell.name .. " (" .. spell.subText .. ") - [" .. spell.id .. "]")
+            tinsert(availableSpells, spell)
+          end
         end
       end
     end
@@ -147,6 +159,8 @@ function PlayerData:GetAvailableSpells()
   self.spellsByCategory[SpellCategories.MISSING_TALENT] = missingTalentRequirement
   self.spellsByCategory[SpellCategories.MISSING_REQS] = missingRequirements
   self.spellsByCategory[SpellCategories.AVAILABLE] = availableSpells
+  self.spellsByCategory[SpellCategories.NEXT_LEVEL] = comingSoon
+  self.spellsByCategory[SpellCategories.NOT_LEVEL] = notAvailable
 end
 
 function PlayerData:IsTalentKnown(spellname, talentTabIndex)
