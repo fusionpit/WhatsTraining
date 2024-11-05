@@ -10,13 +10,31 @@ local TAB_HIGHLIGHT_TEXTURE_FILEID = "Interface\\Buttons\\ButtonHilight-Square"
 local TAB_CHECKED_TEXTURE_FILEID = "Interface\\Buttons\\CheckButtonHilight"
 
 local ROW_HEIGHT = 14
+local MAX_VISIBLE_ROWS = 22
 
 function WhatsTrainingUI:Initialize()
   self:InitDisplay()
+  self.rows = {}
 end
 
 function WhatsTrainingUI:Update()
-  FauxScrollFrame_Update(self.scrollBar, 50, 5, ROW_HEIGHT);
+  local totalItems = Utils.tableLength(self.rows)
+  FauxScrollFrame_Update(self.scrollBar, totalItems, MAX_VISIBLE_ROWS, ROW_HEIGHT);
+
+  local offset = FauxScrollFrame_GetOffset(self.scrollBar)
+  for i, row in ipairs(self.rows) do
+    if i >= offset and i < offset + MAX_VISIBLE_ROWS then
+      local previousRow = self.rows[i - 1]
+      if previousRow and previousRow:IsVisible() then
+        row:SetPoint("TOPLEFT", previousRow, "BOTTOMLEFT", 0, -2)
+      else
+        row:SetPoint("TOPLEFT", self.frame, 26, -78)
+      end
+      row:Show()
+    else
+      row:Hide()
+    end
+  end
 end
 
 function WhatsTrainingUI:showTabTooltip()
@@ -84,12 +102,14 @@ function WhatsTrainingUI:InitDisplay()
   right:SetHeight(512)
   right:SetPoint("TOPRIGHT", self.frame)
 
-  self.scrollBar = CreateFrame("ScrollFrame", "$parentScrollBar", self.frame, "FauxScrollFrameTemplate")
+  self.scrollBar = CreateFrame("ScrollFrame", "FrameScrollBar", self.frame, "FauxScrollFrameTemplate")
   self.scrollBar:SetPoint("TOPLEFT", 0, -75)
   self.scrollBar:SetPoint("BOTTOMRIGHT", -65, 81)
 
-  self.scrollBar:SetScript("OnVerticalScroll", function(self, offset)
-    FauxScrollFrame_OnVerticalScroll(self, offset, ROW_HEIGHT, WhatsTrainingUI:Update())
+  self.scrollBar:SetScript("OnShow", function() WhatsTrainingUI:Update() end)
+
+  self.scrollBar:SetScript("OnVerticalScroll", function()
+    FauxScrollFrame_OnVerticalScroll(ROW_HEIGHT, function() WhatsTrainingUI:Update() end)
   end)
 
   self.frame:Hide()
@@ -98,7 +118,6 @@ end
 ---Sets the given spells as rows
 ---@param spells table<SpellCategories, Spell[]>
 function WhatsTrainingUI:SetItems(spells)
-  local rows = {}
   local i = 1
   for categoryIndex, spellCategory in ipairs(SpellCategoryHeaders) do
     local headerName = "$headerRow-" .. spellCategory.name
@@ -113,13 +132,13 @@ function WhatsTrainingUI:SetItems(spells)
 
     header:SetPoint("RIGHT", self.scrollBar)
 
-    if (rows[i - 1] == nil) then
+    if (self.rows[i - 1] == nil) then
       header:SetPoint("TOPLEFT", self.frame, 26, -78)
     else
-      header:SetPoint("TOPLEFT", rows[i - 1], "BOTTOMLEFT", 0, -2)
+      header:SetPoint("TOPLEFT", self.rows[i - 1], "BOTTOMLEFT", 0, -2)
     end
 
-    rawset(rows, i, header)
+    rawset(self.rows, i, header)
 
     i = i + 1
 
@@ -179,9 +198,9 @@ function WhatsTrainingUI:SetItems(spells)
         spellSublabel:SetJustifyV("Middle")
 
         row:SetPoint("RIGHT", self.scrollBar)
-        row:SetPoint("TOPLEFT", rows[i - 1], "BOTTOMLEFT", 0, -2)
+        row:SetPoint("TOPLEFT", self.rows[i - 1], "BOTTOMLEFT", 0, -2)
 
-        rawset(rows, i, row)
+        rawset(self.rows, i, row)
 
         i = i + 1
       end
