@@ -1,13 +1,8 @@
 ## Interface: 11200
 ## Title: What's Training? Turtle
 ## Version: @project-version@
-## Author: Sveng, Turtle Port: Spawnedc
+## Author: Sveng, Turtle Port: spawnedc
 ## Notes: Shows you what spells are available at your class trainer
-## SavedVariables: WT_ShowIgnoreNotice, WT_ShowLearnedNotice
-## SavedVariablesPerCharacter: WT_LearnedPetAbilities, WT_NeedsToOpenBeastTraining, WT_IgnoredSpells
-## OptionalDeps: ClassTrainerPlus
-## X-Curse-Project-ID: 324944
-## X-WoWI-ID: 25031
 
 Lib\LibStub\LibStub.lua
 Lib\CallbackHandler-1.0\CallbackHandler-1.0.lua
