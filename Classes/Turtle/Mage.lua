@@ -7,8 +7,7 @@ ClassSpellsByLevel["Mage"] = {
 	},
 	[4] = {
 		{id=116,name="Frostbolt",subText="Rank 1",level=4,icon="Interface\\Icons\\Spell_Frost_FrostBolt02"},
-		{id=5504,name="Conjure Water",subText="Rank 1",level=4,icon="Interface\\Icons\\INV_Drink_06"},
-		{id=11958,name="Ice Block",subText="",level=4,icon="Interface\\Icons\\Spell_Frost_Frost",requiredTalent={id=72,tabIndex=3}}
+		{id=5504,name="Conjure Water",subText="Rank 1",level=4,icon="Interface\\Icons\\INV_Drink_06"}
 	},
 	[6] = {
 		{id=143,name="Fireball",subText="Rank 2",level=6,icon="Interface\\Icons\\Spell_Fire_FlameBolt",requiredIds={25306}},
@@ -22,7 +21,8 @@ ClassSpellsByLevel["Mage"] = {
 	[10] = {
 		{id=122,name="Frost Nova",subText="Rank 1",level=10,icon="Interface\\Icons\\Spell_Frost_FrostNova"},
 		{id=7300,name="Frost Armor",subText="Rank 2",level=10,icon="Interface\\Icons\\Spell_Frost_FrostArmor02",requiredIds={168}},
-		{id=5505,name="Conjure Water",subText="Rank 2",level=10,icon="Interface\\Icons\\INV_Drink_07",requiredIds={5504}}
+		{id=5505,name="Conjure Water",subText="Rank 2",level=10,icon="Interface\\Icons\\INV_Drink_07",requiredIds={5504}},
+		{id=12536,name="Clearcasting",subText="",level=10,icon="Interface\\Icons\\Spell_Shadow_ManaBurn"}
 	},
 	[12] = {
 		{id=145,name="Fireball",subText="Rank 3",level=12,icon="Interface\\Icons\\Spell_Fire_FlameBolt",requiredIds={143}},
@@ -57,6 +57,8 @@ ClassSpellsByLevel["Mage"] = {
 		{id=1463,name="Mana Shield",subText="Rank 1",level=20,icon="Interface\\Icons\\Spell_Shadow_DetectLesserInvisibility"},
 		{id=11366,name="Pyroblast",subText="Rank 1",level=20,icon="Interface\\Icons\\Spell_Fire_Fireball02",requiredTalent={id=29,tabIndex=2}},
 		{id=5506,name="Conjure Water",subText="Rank 3",level=20,icon="Interface\\Icons\\INV_Drink_Milk_02",requiredIds={5505}},
+		{id=12051,name="Evocation",subText="",level=20,icon="Interface\\Icons\\Spell_Nature_Purge"},
+		{id=12472,name="Cold Snap",subText="",level=20,icon="Interface\\Icons\\Spell_Frost_WizardMark",requiredTalent={id=69,tabIndex=3}},
 		{id=12824,name="Polymorph",subText="Rank 2",level=20,icon="Interface\\Icons\\Spell_Nature_Polymorph",requiredIds={118}},
 		{id=1953,name="Blink",subText="",level=20,icon="Interface\\Icons\\Spell_Arcane_Blink"},
 		{id=49358,name="Teleport: Stonard",subText="",level=20,icon="Interface\\Icons\\Spell_Arcane_TeleportStonard",races={"Orc","Undead","Tauren","Troll","Goblin"}}
@@ -98,6 +100,8 @@ ClassSpellsByLevel["Mage"] = {
 		{id=8457,name="Fire Ward",subText="Rank 2",level=30,icon="Interface\\Icons\\Spell_Fire_FireArmor",requiredIds={543}},
 		{id=11113,name="Blast Wave",subText="Rank 1",level=30,icon="Interface\\Icons\\Spell_Holy_Excorcism_02",requiredTalent={id=32,tabIndex=2}},
 		{id=6127,name="Conjure Water",subText="Rank 4",level=30,icon="Interface\\Icons\\INV_Drink_10",requiredIds={5506}},
+		{id=11958,name="Ice Block",subText="",level=30,icon="Interface\\Icons\\Spell_Frost_Frost",requiredTalent={id=72,tabIndex=3}},
+		{id=12043,name="Presence of Mind",subText="",level=30,icon="Interface\\Icons\\Spell_Nature_EnchantArmor",requiredTalent={id=86,tabIndex=1}},
 		{id=12522,name="Pyroblast",subText="Rank 3",level=30,icon="Interface\\Icons\\Spell_Fire_Fireball02",requiredIds={12505}},
 		{id=49361,name="Teleport: Theramore",subText="",level=30,icon="Interface\\Icons\\Spell_Arcane_TeleportTheramore",races={"Human","Dwarf","Night Elf","Gnome","High Elf"}}
 	},
@@ -134,7 +138,9 @@ ClassSpellsByLevel["Mage"] = {
 		{id=8458,name="Fire Ward",subText="Rank 3",level=40,icon="Interface\\Icons\\Spell_Fire_FireArmor",requiredIds={8457}},
 		{id=11426,name="Ice Barrier",subText="Rank 1",level=40,icon="Interface\\Icons\\Spell_Ice_Lament",requiredTalent={id=71,tabIndex=3}},
 		{id=10138,name="Conjure Water",subText="Rank 5",level=40,icon="Interface\\Icons\\INV_Drink_09",requiredIds={6127}},
-		{id=12825,name="Polymorph",subText="Rank 3",level=40,icon="Interface\\Icons\\Spell_Nature_Polymorph",requiredIds={12824}}
+		{id=12042,name="Arcane Power",subText="",level=40,icon="Interface\\Icons\\Spell_Nature_Lightning",requiredTalent={id=87,tabIndex=1}},
+		{id=12825,name="Polymorph",subText="Rank 3",level=40,icon="Interface\\Icons\\Spell_Nature_Polymorph",requiredIds={12824}},
+		{id=45408,name="Brilliance Aura",subText="",level=40,icon="Interface\\Icons\\Spell_Nature_Brilliance",requiredTalent={id=90,tabIndex=1}}
 	},
 	[42] = {
 		{id=10148,name="Fireball",subText="Rank 8",level=42,icon="Interface\\Icons\\Spell_Fire_FlameBolt",requiredIds={8402}},
@@ -213,6 +219,7 @@ ClassSpellsByLevel["Mage"] = {
 		{id=13021,name="Blast Wave",subText="Rank 5",level=60,icon="Interface\\Icons\\Spell_Holy_Excorcism_02",requiredIds={13020}},
 		{id=18809,name="Pyroblast",subText="Rank 8",level=60,icon="Interface\\Icons\\Spell_Fire_Fireball02",requiredIds={12526}},
 		{id=10140,name="Conjure Water",subText="Rank 7",level=60,icon="Interface\\Icons\\INV_Drink_18",requiredIds={10139}},
+		{id=24530,name="Felfire",subText="",level=60,icon="Interface\\Icons\\Spell_Fire_Fireball"},
 		{id=25304,name="Frostbolt",subText="Rank 11",level=60,icon="Interface\\Icons\\Spell_Frost_FrostBolt02",requiredIds={10181}},
 		{id=25306,name="Fireball",subText="Rank 12",level=60,icon="Interface\\Icons\\Spell_Fire_FlameBolt",requiredIds={10151}},
 		{id=28270,name="Polymorph: Cow",subText="",level=60,icon="Interface\\Icons\\Spell_Nature_Polymorph_Cow"},

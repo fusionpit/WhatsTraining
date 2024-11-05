@@ -11,6 +11,7 @@ ClassSpellsByLevel["Hunter"] = {
 	[4] = {
 		{id=13163,name="Aspect of the Monkey",subText="",level=4,icon="Interface\\Icons\\Ability_Hunter_AspectOfTheMonkey"},
 		{id=1978,name="Serpent Sting",subText="Rank 1",level=4,icon="Interface\\Icons\\Ability_Hunter_Quickshot"},
+		{id=3035,name="Trueshot",subText="Rank 1",level=4,icon="Interface\\Icons\\Ability_Hunter_SteadyShot"},
 		{id=45650,name="Aspect of the Wolf",subText="",level=4,icon="Interface\\Icons\\Ability_Mount_WhiteDireWolf"},
 		{id=45652,name="Aspect of the Snake",subText="",level=4,icon="Interface\\Icons\\ability_hunter_aspectoftheviper"},
 		{id=45651,name="Aspect of the Fox",subText="",level=4,icon="Interface\\Icons\\ability_hunter_aspectofthefox"}
@@ -44,7 +45,8 @@ ClassSpellsByLevel["Hunter"] = {
 	[14] = {
 		{id=1513,name="Scare Beast",subText="Rank 1",level=14,icon="Interface\\Icons\\Ability_Druid_Cower"},
 		{id=6197,name="Eagle Eye",subText="",level=14,icon="Interface\\Icons\\Ability_Hunter_EagleEye"},
-		{id=1002,name="Eyes of the Beast",subText="",level=14,icon="Interface\\Icons\\Ability_EyeOfTheOwl"}
+		{id=1002,name="Eyes of the Beast",subText="",level=14,icon="Interface\\Icons\\Ability_EyeOfTheOwl"},
+		{id=3036,name="Trueshot",subText="Rank 2",level=14,icon="Interface\\Icons\\Ability_Hunter_SteadyShot",requiredIds={3035}}
 	},
 	[16] = {
 		{id=1495,name="Mongoose Bite",subText="Rank 1",level=16,icon="Interface\\Icons\\Ability_Hunter_SwiftStrike"},
@@ -65,11 +67,14 @@ ClassSpellsByLevel["Hunter"] = {
 		{id=1499,name="Freezing Trap",subText="Rank 1",level=20,icon="Interface\\Icons\\Spell_Frost_ChainsOfIce"},
 		{id=14274,name="Distracting Shot",subText="Rank 2",level=20,icon="Interface\\Icons\\Spell_Arcane_Blink",requiredIds={20736}},
 		{id=14282,name="Arcane Shot",subText="Rank 3",level=20,icon="Interface\\Icons\\Ability_ImpalingBolt",requiredIds={14281}},
+		{id=19263,name="Deterrence",subText="",level=20,icon="Interface\\Icons\\Ability_Whirlwind",requiredTalent={id=1308,tabIndex=3}},
+		{id=19434,name="Aimed Shot",subText="Rank 1",level=20,icon="Interface\\Icons\\INV_Spear_07",requiredTalent={id=1345,tabIndex=2}},
 		{id=45649,name="Aspect of the Turtle",subText="",level=20,icon="Interface\\Icons\\Ability_Hunter_Pet_Turtle"}
 	},
 	[22] = {
 		{id=3043,name="Scorpid Sting",subText="Rank 1",level=22,icon="Interface\\Icons\\Ability_Hunter_CriticalShot"},
-		{id=14323,name="Hunter's Mark",subText="Rank 2",level=22,icon="Interface\\Icons\\Ability_Hunter_SniperShot",requiredIds={1130}}
+		{id=14323,name="Hunter's Mark",subText="Rank 2",level=22,icon="Interface\\Icons\\Ability_Hunter_SniperShot",requiredIds={1130}},
+		{id=3037,name="Trueshot",subText="Rank 3",level=22,icon="Interface\\Icons\\Ability_Hunter_SteadyShot",requiredIds={3036}}
 	},
 	[24] = {
 		{id=1462,name="Beast Lore",subText="",level=24,icon="Interface\\Icons\\Ability_Physical_Taunt"},
@@ -87,7 +92,8 @@ ClassSpellsByLevel["Hunter"] = {
 		{id=3661,name="Mend Pet",subText="Rank 3",level=28,icon="Interface\\Icons\\Ability_Hunter_MendPet",requiredIds={3111}},
 		{id=13809,name="Frost Trap",subText="",level=28,icon="Interface\\Icons\\Spell_Frost_FreezingBreath"},
 		{id=14319,name="Aspect of the Hawk",subText="Rank 3",level=28,icon="Interface\\Icons\\Spell_Nature_RavenForm",requiredIds={14318}},
-		{id=14283,name="Arcane Shot",subText="Rank 4",level=28,icon="Interface\\Icons\\Ability_ImpalingBolt",requiredIds={14282}}
+		{id=14283,name="Arcane Shot",subText="Rank 4",level=28,icon="Interface\\Icons\\Ability_ImpalingBolt",requiredIds={14282}},
+		{id=20900,name="Aimed Shot",subText="Rank 2",level=28,icon="Interface\\Icons\\INV_Spear_07",requiredIds={19434}}
 	},
 	[30] = {
 		{id=13161,name="Aspect of the Beast",subText="",level=30,icon="Interface\\Icons\\Ability_Mount_PinkTiger"},
@@ -95,7 +101,10 @@ ClassSpellsByLevel["Hunter"] = {
 		{id=14269,name="Mongoose Bite",subText="Rank 2",level=30,icon="Interface\\Icons\\Ability_Hunter_SwiftStrike",requiredIds={1495}},
 		{id=14288,name="Multi-Shot",subText="Rank 2",level=30,icon="Interface\\Icons\\Ability_UpgradeMoonGlaive",requiredIds={2643}},
 		{id=15629,name="Distracting Shot",subText="Rank 3",level=30,icon="Interface\\Icons\\Spell_Arcane_Blink",requiredIds={14274}},
-		{id=19306,name="Counterattack",subText="Rank 1",level=30,icon="Interface\\Icons\\Ability_Warrior_Challange",requiredTalent={id=1312,tabIndex=3}}
+		{id=19503,name="Scatter Shot",subText="",level=30,icon="Interface\\Icons\\Ability_GolemStormBolt",requiredTalent={id=1353,tabIndex=2}},
+		{id=19577,name="Intimidation",subText="",level=30,icon="Interface\\Icons\\Ability_Devour",requiredTalent={id=1387,tabIndex=1}},
+		{id=19306,name="Counterattack",subText="Rank 1",level=30,icon="Interface\\Icons\\Ability_Warrior_Challange",requiredTalent={id=1312,tabIndex=3}},
+		{id=3038,name="Trueshot",subText="Rank 4",level=30,icon="Interface\\Icons\\Ability_Hunter_SteadyShot",requiredIds={3037}}
 	},
 	[32] = {
 		{id=1543,name="Flare",subText="",level=32,icon="Interface\\Icons\\Spell_Fire_Flare"},
@@ -114,12 +123,16 @@ ClassSpellsByLevel["Hunter"] = {
 		{id=3034,name="Viper Sting",subText="Rank 1",level=36,icon="Interface\\Icons\\Ability_Hunter_AimedShot"},
 		{id=14303,name="Immolation Trap",subText="Rank 3",level=36,icon="Interface\\Icons\\Spell_Fire_FlameShock",requiredIds={14302}},
 		{id=14284,name="Arcane Shot",subText="Rank 5",level=36,icon="Interface\\Icons\\Ability_ImpalingBolt",requiredIds={14283}},
+		{id=20901,name="Aimed Shot",subText="Rank 3",level=36,icon="Interface\\Icons\\INV_Spear_07",requiredIds={20900}},
 		{id=14299,name="Immolation Trap Effect",subText="Rank 3",level=36,icon="Interface\\Icons\\Spell_Fire_FlameShock",requiredIds={14298}}
 	},
 	[38] = {
 		{id=14320,name="Aspect of the Hawk",subText="Rank 4",level=38,icon="Interface\\Icons\\Spell_Nature_RavenForm",requiredIds={14319}},
 		{id=14267,name="Wing Clip",subText="Rank 2",level=38,icon="Interface\\Icons\\Ability_Rogue_Trip",requiredIds={2974}},
-		{id=45970,name="Trueshot",subText="Rank 6",level=38,icon="Interface\\Icons\\Ability_Hunter_SteadyShot"},
+		{id=45970,name="Trueshot",subText="Rank 6",level=38,icon="Interface\\Icons\\Ability_Hunter_SteadyShot",requiredIds={3668}},
+		{id=45972,name="Trueshot",subText="Rank 7",level=38,icon="Interface\\Icons\\Ability_Hunter_SteadyShot",requiredIds={45970}},
+		{id=3668,name="Trueshot",subText="Rank 5",level=38,icon="Interface\\Icons\\Ability_Hunter_SteadyShot",requiredIds={3038}},
+		{id=45970,name="Trueshot",subText="Rank 6",level=38,icon="Interface\\Icons\\Ability_Hunter_SteadyShot",requiredIds={3668}},
 		{id=45972,name="Trueshot",subText="Rank 7",level=38,icon="Interface\\Icons\\Ability_Hunter_SteadyShot",requiredIds={45970}}
 	},
 	[40] = {
@@ -130,6 +143,8 @@ ClassSpellsByLevel["Hunter"] = {
 		{id=14324,name="Hunter's Mark",subText="Rank 3",level=40,icon="Interface\\Icons\\Ability_Hunter_SniperShot",requiredIds={14323}},
 		{id=15630,name="Distracting Shot",subText="Rank 4",level=40,icon="Interface\\Icons\\Spell_Arcane_Blink",requiredIds={15629}},
 		{id=19386,name="Wyvern Sting",subText="Rank 1",level=40,icon="Interface\\Icons\\INV_Spear_02",requiredTalent={id=1325,tabIndex=3}},
+		{id=19506,name="Trueshot Aura",subText="Rank 1",level=40,icon="Interface\\Icons\\Ability_TrueShot",requiredTalent={id=1361,tabIndex=2}},
+		{id=19574,name="Bestial Wrath",subText="",level=40,icon="Interface\\Icons\\Ability_Druid_FerociousBite",requiredTalent={id=1386,tabIndex=1}},
 		{id=19882,name="Track Giants",subText="",level=40,icon="Interface\\Icons\\Ability_Racial_Avatar"},
 		{id=24131,name="Wyvern Sting",subText="Rank 1",level=40,icon="Interface\\Icons\\INV_Spear_02",requiredIds={19386}}
 	},
@@ -144,6 +159,7 @@ ClassSpellsByLevel["Hunter"] = {
 		{id=14270,name="Mongoose Bite",subText="Rank 3",level=44,icon="Interface\\Icons\\Ability_Hunter_SwiftStrike",requiredIds={14269}},
 		{id=14316,name="Explosive Trap",subText="Rank 2",level=44,icon="Interface\\Icons\\Spell_Fire_SelfDestruct",requiredIds={13813}},
 		{id=14285,name="Arcane Shot",subText="Rank 6",level=44,icon="Interface\\Icons\\Ability_ImpalingBolt",requiredIds={14284}},
+		{id=20902,name="Aimed Shot",subText="Rank 4",level=44,icon="Interface\\Icons\\INV_Spear_07",requiredIds={20901}},
 		{id=14314,name="Explosive Trap Effect",subText="Rank 2",level=44,icon="Interface\\Icons\\Spell_Fire_SelfDestruct",requiredIds={13812}}
 	},
 	[46] = {
@@ -164,13 +180,15 @@ ClassSpellsByLevel["Hunter"] = {
 		{id=14294,name="Volley",subText="Rank 2",level=50,icon="Interface\\Icons\\Ability_Marksmanship",requiredIds={1510}},
 		{id=15631,name="Distracting Shot",subText="Rank 5",level=50,icon="Interface\\Icons\\Spell_Arcane_Blink",requiredIds={15630}},
 		{id=19879,name="Track Dragonkin",subText="",level=50,icon="Interface\\Icons\\INV_Misc_Head_Dragon_01"},
+		{id=20905,name="Trueshot Aura",subText="Rank 2",level=50,icon="Interface\\Icons\\Ability_TrueShot",requiredIds={19506}},
 		{id=24132,name="Wyvern Sting",subText="Rank 2",level=50,icon="Interface\\Icons\\INV_Spear_02",requiredIds={24131}},
 		{id=24134,name="Wyvern Sting",subText="Rank 2",level=50,icon="Interface\\Icons\\INV_Spear_02",requiredIds={24132}}
 	},
 	[52] = {
 		{id=13543,name="Mend Pet",subText="Rank 6",level=52,icon="Interface\\Icons\\Ability_Hunter_MendPet",requiredIds={13542}},
 		{id=14277,name="Scorpid Sting",subText="Rank 4",level=52,icon="Interface\\Icons\\Ability_Hunter_CriticalShot",requiredIds={14276}},
-		{id=14286,name="Arcane Shot",subText="Rank 7",level=52,icon="Interface\\Icons\\Ability_ImpalingBolt",requiredIds={14285}}
+		{id=14286,name="Arcane Shot",subText="Rank 7",level=52,icon="Interface\\Icons\\Ability_ImpalingBolt",requiredIds={14285}},
+		{id=20903,name="Aimed Shot",subText="Rank 5",level=52,icon="Interface\\Icons\\INV_Spear_07",requiredIds={20902}}
 	},
 	[54] = {
 		{id=14317,name="Explosive Trap",subText="Rank 3",level=54,icon="Interface\\Icons\\Spell_Fire_SelfDestruct",requiredIds={14316}},
@@ -201,11 +219,15 @@ ClassSpellsByLevel["Hunter"] = {
 		{id=14296,name="Black Arrow",subText="Rank 2",level=60,icon="Interface\\Icons\\Ability_TheBlackArrow",requiredIds={3674}},
 		{id=15632,name="Distracting Shot",subText="Rank 6",level=60,icon="Interface\\Icons\\Spell_Arcane_Blink",requiredIds={15631}},
 		{id=19801,name="Tranquilizing Shot",subText="",level=60,icon="Interface\\Icons\\Spell_Nature_Drowsy"},
+		{id=20904,name="Aimed Shot",subText="Rank 6",level=60,icon="Interface\\Icons\\INV_Spear_07",requiredIds={20903}},
+		{id=20906,name="Trueshot Aura",subText="Rank 3",level=60,icon="Interface\\Icons\\Ability_TrueShot",requiredIds={20905}},
 		{id=24133,name="Wyvern Sting",subText="Rank 3",level=60,icon="Interface\\Icons\\INV_Spear_02",requiredIds={24134}},
 		{id=24135,name="Wyvern Sting",subText="Rank 3",level=60,icon="Interface\\Icons\\INV_Spear_02",requiredIds={24133}},
+		{id=24406,name="Improved Mend Pet",subText="Rank 1",level=60,icon="Interface\\Icons\\Ability_Hunter_MendPet"},
 		{id=25296,name="Aspect of the Hawk",subText="Rank 7",level=60,icon="Interface\\Icons\\Spell_Nature_RavenForm",requiredIds={14322}},
 		{id=25294,name="Multi-Shot",subText="Rank 5",level=60,icon="Interface\\Icons\\Ability_UpgradeMoonGlaive",requiredIds={14290}},
 		{id=25295,name="Serpent Sting",subText="Rank 9",level=60,icon="Interface\\Icons\\Ability_Hunter_Quickshot",requiredIds={13555}},
+		{id=45974,name="Trueshot",subText="Rank 8",level=60,icon="Interface\\Icons\\Ability_Hunter_SteadyShot",requiredIds={45972}},
 		{id=45974,name="Trueshot",subText="Rank 8",level=60,icon="Interface\\Icons\\Ability_Hunter_SteadyShot",requiredIds={45972}}
 	}
 }

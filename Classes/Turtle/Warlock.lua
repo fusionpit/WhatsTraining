@@ -41,7 +41,8 @@ ClassSpellsByLevel["Warlock"] = {
 	},
 	[18] = {
 		{id=693,name="Create Soulstone (Minor)",subText="",level=18,icon="Interface\\Icons\\Spell_Shadow_SoulGem"},
-		{id=5676,name="Searing Pain",subText="Rank 1",level=18,icon="Interface\\Icons\\Spell_Fire_SoulBurn"}
+		{id=5676,name="Searing Pain",subText="Rank 1",level=18,icon="Interface\\Icons\\Spell_Fire_SoulBurn"},
+		{id=1014,name="Curse of Agony",subText="Rank 2",level=18,icon="Interface\\Icons\\Spell_Shadow_CurseOfSargeras",requiredIds={980}}
 	},
 	[20] = {
 		{id=706,name="Demon Armor",subText="Rank 1",level=20,icon="Interface\\Icons\\Spell_Shadow_RagingScream"},
@@ -52,6 +53,8 @@ ClassSpellsByLevel["Warlock"] = {
 		{id=5740,name="Rain of Fire",subText="Rank 1",level=20,icon="Interface\\Icons\\Spell_Shadow_RainOfFire"},
 		{id=698,name="Ritual of Summoning",subText="",level=20,icon="Interface\\Icons\\Spell_Shadow_Twilight"},
 		{id=17877,name="Shadowburn",subText="Rank 1",level=20,icon="Interface\\Icons\\Spell_Shadow_ScourgeBuild",requiredTalent={id=963,tabIndex=3}},
+		{id=18288,name="Amplify Curse",subText="",level=20,icon="Interface\\Icons\\Spell_Shadow_Contagion",requiredTalent={id=1061,tabIndex=1}},
+		{id=18708,name="Fel Domination",subText="",level=20,icon="Interface\\Icons\\Spell_Nature_RemoveCurse",requiredTalent={id=1226,tabIndex=2}},
 		{id=48017,name="Summon Incubus",subText="Summon",level=20,icon="Interface\\Icons\\ability_warlock_incubus"}
 	},
 	[22] = {
@@ -74,7 +77,7 @@ ClassSpellsByLevel["Warlock"] = {
 		{id=17919,name="Searing Pain",subText="Rank 2",level=26,icon="Interface\\Icons\\Spell_Fire_SoulBurn",requiredIds={5676}}
 	},
 	[28] = {
-		{id=6217,name="Curse of Agony",subText="Rank 3",level=28,icon="Interface\\Icons\\Spell_Shadow_CurseOfSargeras",requiredIds={980}},
+		{id=6217,name="Curse of Agony",subText="Rank 3",level=28,icon="Interface\\Icons\\Spell_Shadow_CurseOfSargeras",requiredIds={1014}},
 		{id=7658,name="Curse of Recklessness",subText="Rank 2",level=28,icon="Interface\\Icons\\Spell_Shadow_UnholyStrength",requiredIds={704}},
 		{id=3699,name="Health Funnel",subText="Rank 3",level=28,icon="Interface\\Icons\\Spell_Shadow_LifeDrain",requiredIds={3698}},
 		{id=1106,name="Shadow Bolt",subText="Rank 5",level=28,icon="Interface\\Icons\\Spell_Shadow_ShadowBolt",requiredIds={1088}},
@@ -89,6 +92,8 @@ ClassSpellsByLevel["Warlock"] = {
 		{id=5857,name="Hellfire Effect",subText="Rank 1",level=30,icon="Interface\\Icons\\Spell_Fire_Incinerate"},
 		{id=709,name="Drain Life",subText="Rank 3",level=30,icon="Interface\\Icons\\Spell_Shadow_LifeDrain02",requiredIds={699}},
 		{id=18265,name="Siphon Life",subText="Rank 1",level=30,icon="Interface\\Icons\\Spell_Shadow_Requiem",requiredTalent={id=1041,tabIndex=1}},
+		{id=18223,name="Curse of Exhaustion",subText="",level=30,icon="Interface\\Icons\\Spell_Shadow_GrimWard",requiredTalent={id=1081,tabIndex=1}},
+		{id=18788,name="Demonic Sacrifice",subText="",level=30,icon="Interface\\Icons\\Spell_Shadow_PsychicScream",requiredTalent={id=1281,tabIndex=2}},
 		{id=691,name="Summon Felhunter",subText="Summon",level=30,icon="Interface\\Icons\\Spell_Shadow_SummonFelHunter"},
 		{id=20752,name="Create Soulstone (Lesser)",subText="",level=30,icon="Interface\\Icons\\Spell_Shadow_SoulGem"}
 	},
@@ -105,6 +110,9 @@ ClassSpellsByLevel["Warlock"] = {
 		{id=17920,name="Searing Pain",subText="Rank 3",level=34,icon="Interface\\Icons\\Spell_Fire_SoulBurn",requiredIds={17919}},
 		{id=7648,name="Corruption",subText="Rank 4",level=34,icon="Interface\\Icons\\Spell_Shadow_AbominationExplosion",requiredIds={6223}},
 		{id=6226,name="Drain Mana",subText="Rank 2",level=34,icon="Interface\\Icons\\Spell_Shadow_SiphonMana",requiredIds={5138}}
+	},
+	[35] = {
+		{id=18093,name="Pyroclasm",subText="",level=35,icon="Interface\\Icons\\Spell_Fire_Volcano"}
 	},
 	[36] = {
 		{id=3700,name="Health Funnel",subText="Rank 4",level=36,icon="Interface\\Icons\\Spell_Shadow_LifeDrain",requiredIds={3699}},
@@ -129,6 +137,7 @@ ClassSpellsByLevel["Warlock"] = {
 		{id=17962,name="Conflagrate",subText="Rank 1",level=40,icon="Interface\\Icons\\Spell_Fire_Fireball",requiredTalent={id=968,tabIndex=3}},
 		{id=18220,name="Dark Pact",subText="Rank 1",level=40,icon="Interface\\Icons\\Spell_Shadow_DarkRitual",requiredTalent={id=1022,tabIndex=1}},
 		{id=18869,name="Shadowburn",subText="Rank 4",level=40,icon="Interface\\Icons\\Spell_Shadow_ScourgeBuild",requiredIds={18868}},
+		{id=19028,name="Soul Link",subText="",level=40,icon="Interface\\Icons\\Spell_Shadow_GatherShadows",requiredTalent={id=1282,tabIndex=2}},
 		{id=20755,name="Create Soulstone",subText="",level=40,icon="Interface\\Icons\\Spell_Shadow_SoulGem"},
 		{id=1941,name="Mana Funnel",subText="Rank 1",level=40,icon="Interface\\Icons\\Spell_Shadow_UnsummonBuilding"},
 		{id=45910,name="Mana Funnel",subText="Rank 1",level=40,icon="Interface\\Icons\\Spell_Shadow_UnsummonBuilding",requiredIds={1941}}
@@ -220,6 +229,7 @@ ClassSpellsByLevel["Warlock"] = {
 		{id=11661,name="Shadow Bolt",subText="Rank 9",level=60,icon="Interface\\Icons\\Spell_Shadow_ShadowBolt",requiredIds={11660}},
 		{id=11668,name="Immolate",subText="Rank 7",level=60,icon="Interface\\Icons\\Spell_Fire_Immolation",requiredIds={11667}},
 		{id=17728,name="Create Spellstone (Major)",subText="",level=60,icon="Interface\\Icons\\INV_Misc_Gem_Sapphire_01"},
+		{id=11668,name="Immolate",subText="Rank 7",level=60,icon="Interface\\Icons\\Spell_Fire_Immolation",requiredIds={11667}},
 		{id=603,name="Curse of Doom",subText="",level=60,icon="Interface\\Icons\\Spell_Shadow_AuraOfDarkness"},
 		{id=18540,name="Ritual of Doom",subText="",level=60,icon="Interface\\Icons\\Spell_Shadow_AntiMagicShell"},
 		{id=18932,name="Conflagrate",subText="Rank 4",level=60,icon="Interface\\Icons\\Spell_Fire_Fireball",requiredIds={18931}},

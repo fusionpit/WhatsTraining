@@ -85,6 +85,9 @@ ClassSpellsByLevel["Druid"] = {
 		{id=5188,name="Healing Touch",subText="Rank 4",level=20,icon="Interface\\Icons\\Spell_Nature_HealingTouch",requiredIds={5187}},
 		{id=6756,name="Mark of the Wild",subText="Rank 3",level=20,icon="Interface\\Icons\\Spell_Nature_Regeneration",requiredIds={5232}},
 		{id=2912,name="Starfire",subText="Rank 1",level=20,icon="Interface\\Icons\\Spell_Arcane_StarFire"},
+		{id=16864,name="Omen of Clarity",subText="",level=20,icon="Interface\\Icons\\Spell_Nature_CrystalBall",requiredTalent={id=788,tabIndex=1}},
+		{id=16979,name="Feral Charge",subText="",level=20,icon="Interface\\Icons\\Ability_Hunter_Pet_Bear",requiredTalent={id=804,tabIndex=2}},
+		{id=18562,name="Swiftmend",subText="",level=20,icon="Interface\\Icons\\INV_Relics_IdolofRejuvenation",requiredTalent={id=827,tabIndex=3}},
 		{id=20484,name="Rebirth",subText="Rank 1",level=20,icon="Interface\\Icons\\Spell_Nature_Reincarnation"},
 		{id=5570,name="Insect Swarm",subText="Rank 1",level=20,icon="Interface\\Icons\\Spell_Nature_InsectSwarm"}
 	},
@@ -132,9 +135,11 @@ ClassSpellsByLevel["Druid"] = {
 		{id=740,name="Tranquility",subText="Rank 1",level=30,icon="Interface\\Icons\\Spell_Nature_Tranquility"},
 		{id=778,name="Faerie Fire",subText="Rank 2",level=30,icon="Interface\\Icons\\Spell_Nature_FaerieFire",requiredIds={770}},
 		{id=5180,name="Wrath",subText="Rank 5",level=30,icon="Interface\\Icons\\Spell_Nature_AbolishMagic",requiredIds={5179}},
+		{id=17116,name="Nature's Swiftness",subText="",level=30,icon="Interface\\Icons\\Spell_Nature_RavenForm",requiredTalent={id=831,tabIndex=3}},
 		{id=17390,name="Faerie Fire (Feral)",subText="Rank 2",level=30,icon="Interface\\Icons\\Spell_Nature_FaerieFire",requiredIds={16857}},
 		{id=20739,name="Rebirth",subText="Rank 2",level=30,icon="Interface\\Icons\\Spell_Nature_Reincarnation",requiredIds={20484}},
-		{id=24974,name="Insect Swarm",subText="Rank 2",level=30,icon="Interface\\Icons\\Spell_Nature_InsectSwarm",requiredIds={5570}}
+		{id=24974,name="Insect Swarm",subText="Rank 2",level=30,icon="Interface\\Icons\\Spell_Nature_InsectSwarm",requiredIds={5570}},
+		{id=45708,name="Berserk",subText="",level=30,icon="Interface\\Icons\\Ability_Druid_Berserk",requiredTalent={id=1162,tabIndex=2}}
 	},
 	[32] = {
 		{id=5225,name="Track Humanoids",subText="",level=32,icon="Interface\\Icons\\Ability_Tracking"},
@@ -290,6 +295,7 @@ ClassSpellsByLevel["Druid"] = {
 		{id=25299,name="Rejuvenation",subText="Rank 11",level=60,icon="Interface\\Icons\\Spell_Nature_Rejuvenation",requiredIds={9841}},
 		{id=25297,name="Healing Touch",subText="Rank 11",level=60,icon="Interface\\Icons\\Spell_Nature_HealingTouch",requiredIds={9889}},
 		{id=31018,name="Ferocious Bite",subText="Rank 5",level=60,icon="Interface\\Icons\\Ability_Druid_FerociousBite",requiredIds={22829}},
-		{id=45967,name="Wrath",subText="Rank 9",level=60,icon="Interface\\Icons\\Spell_Nature_AbolishMagic",requiredIds={9912}}
+		{id=45967,name="Wrath",subText="Rank 9",level=60,icon="Interface\\Icons\\Spell_Nature_AbolishMagic",requiredIds={9912}},
+		{id=45742,name="Cyclone",subText="",level=60,icon="Interface\\Icons\\Spell_Nature_EarthBind"}
 	}
 }

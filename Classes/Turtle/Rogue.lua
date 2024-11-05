@@ -63,7 +63,9 @@ ClassSpellsByLevel["Rogue"] = {
 		{id=2842,name="Poisons",subText="",level=20,icon="Interface\\Icons\\Trade_BrewPoison"},
 		{id=1943,name="Rupture",subText="Rank 1",level=20,icon="Interface\\Icons\\Ability_Rogue_Rupture"},
 		{id=1785,name="Stealth",subText="Rank 2",level=20,icon="Interface\\Icons\\Ability_Stealth",requiredIds={1784}},
-		{id=2590,name="Backstab",subText="Rank 3",level=20,icon="Interface\\Icons\\Ability_BackStab",requiredIds={2589}}
+		{id=2590,name="Backstab",subText="Rank 3",level=20,icon="Interface\\Icons\\Ability_BackStab",requiredIds={2589}},
+		{id=14251,name="Riposte",subText="",level=20,icon="Interface\\Icons\\Ability_Warrior_Challange",requiredTalent={id=301,tabIndex=2}},
+		{id=14278,name="Ghostly Strike",subText="",level=20,icon="Interface\\Icons\\Spell_Shadow_Curse",requiredTalent={id=303,tabIndex=3}}
 	},
 	[22] = {
 		{id=1725,name="Distract",subText="",level=22,icon="Interface\\Icons\\Ability_Rogue_Distract"},
@@ -94,6 +96,9 @@ ClassSpellsByLevel["Rogue"] = {
 		{id=1760,name="Sinister Strike",subText="Rank 5",level=30,icon="Interface\\Icons\\Spell_Shadow_RitualOfSacrifice",requiredIds={1759}},
 		{id=8632,name="Garrote",subText="Rank 3",level=30,icon="Interface\\Icons\\Ability_Rogue_Garrote",requiredIds={8631}},
 		{id=408,name="Kidney Shot",subText="Rank 1",level=30,icon="Interface\\Icons\\Ability_Rogue_KidneyShot"},
+		{id=13877,name="Blade Flurry",subText="",level=30,icon="Interface\\Icons\\Ability_Warrior_PunishingBlow",requiredTalent={id=223,tabIndex=2}},
+		{id=14177,name="Cold Blood",subText="",level=30,icon="Interface\\Icons\\Spell_Ice_Lament",requiredTalent={id=280,tabIndex=1}},
+		{id=14185,name="Preparation",subText="",level=30,icon="Interface\\Icons\\Spell_Shadow_AntiShadow",requiredTalent={id=284,tabIndex=3}},
 		{id=1842,name="Disarm Trap",subText="",level=30,icon="Interface\\Icons\\Spell_Shadow_GrimWard"},
 		{id=16511,name="Hemorrhage",subText="Rank 1",level=30,icon="Interface\\Icons\\Spell_Shadow_LifeDrain",requiredTalent={id=681,tabIndex=3}}
 	},
@@ -120,6 +125,8 @@ ClassSpellsByLevel["Rogue"] = {
 		{id=8624,name="Eviscerate",subText="Rank 6",level=40,icon="Interface\\Icons\\Ability_Rogue_Eviscerate",requiredIds={8623}},
 		{id=1786,name="Stealth",subText="Rank 3",level=40,icon="Interface\\Icons\\Ability_Stealth",requiredIds={1785}},
 		{id=8637,name="Feint",subText="Rank 3",level=40,icon="Interface\\Icons\\Ability_Rogue_Feint",requiredIds={6768}},
+		{id=13750,name="Adrenaline Rush",subText="",level=40,icon="Interface\\Icons\\Spell_Shadow_ShadowWordDominate",requiredTalent={id=205,tabIndex=2}},
+		{id=14183,name="Premeditation",subText="",level=40,icon="Interface\\Icons\\Spell_Shadow_Possession",requiredTalent={id=381,tabIndex=3}},
 		{id=1860,name="Safe Fall",subText="Passive",level=40,icon="Interface\\Icons\\INV_Feather_01"}
 	},
 	[42] = {

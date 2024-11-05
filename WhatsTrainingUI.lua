@@ -46,6 +46,16 @@ function WhatsTrainingUI:hideTabTooltip()
   GameTooltip:Hide();
 end
 
+function WhatsTrainingUI:HideFrame()
+  self.tab:SetChecked(false)
+  self.frame:Hide()
+end
+
+function WhatsTrainingUI:ShowFrame()
+  self.tab:SetChecked(true)
+  self.frame:Show()
+end
+
 function WhatsTrainingUI:handleTabToggle()
   if self.tab:GetChecked() then
     self.frame:Show()

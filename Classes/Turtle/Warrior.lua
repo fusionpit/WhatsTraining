@@ -43,7 +43,8 @@ ClassSpellsByLevel["Warrior"] = {
 		{id=2687,name="Bloodrage",subText="",level=10,icon="Interface\\Icons\\Ability_Racial_BloodRage"},
 		{id=71,name="Defensive Stance",subText="",level=10,icon="Interface\\Icons\\Ability_Warrior_DefensiveStance"},
 		{id=7386,name="Sunder Armor",subText="Rank 1",level=10,icon="Interface\\Icons\\Ability_Warrior_Sunder"},
-		{id=355,name="Taunt",subText="",level=10,icon="Interface\\Icons\\Spell_Nature_Reincarnation"}
+		{id=355,name="Taunt",subText="",level=10,icon="Interface\\Icons\\Spell_Nature_Reincarnation"},
+		{id=12798,name="Revenge Stun",subText="Rank 1",level=10,icon="Interface\\Icons\\Ability_Warrior_Revenge"}
 	},
 	[12] = {
 		{id=72,name="Shield Bash",subText="Rank 1",level=12,icon="Interface\\Icons\\Ability_Warrior_ShieldBash"},
@@ -66,6 +67,8 @@ ClassSpellsByLevel["Warrior"] = {
 	[20] = {
 		{id=6547,name="Rend",subText="Rank 3",level=20,icon="Interface\\Icons\\Ability_Gouge",requiredIds={6546}},
 		{id=845,name="Cleave",subText="Rank 1",level=20,icon="Interface\\Icons\\Ability_Warrior_Cleave"},
+		{id=12323,name="Piercing Howl",subText="",level=20,icon="Interface\\Icons\\Spell_Shadow_DeathScream",requiredTalent={id=160,tabIndex=2}},
+		{id=12975,name="Last Stand",subText="",level=20,icon="Interface\\Icons\\Spell_Holy_AshesToAshes",requiredTalent={id=153,tabIndex=3}},
 		{id=20230,name="Retaliation",subText="",level=20,icon="Interface\\Icons\\Ability_Warrior_Challange"}
 	},
 	[22] = {
@@ -93,6 +96,9 @@ ClassSpellsByLevel["Warrior"] = {
 		{id=1464,name="Slam",subText="Rank 1",level=30,icon="Interface\\Icons\\Ability_Warrior_DecisiveStrike"},
 		{id=2458,name="Berserker Stance",subText="",level=30,icon="Interface\\Icons\\Ability_Racial_Avatar"},
 		{id=7369,name="Cleave",subText="Rank 2",level=30,icon="Interface\\Icons\\Ability_Warrior_Cleave",requiredIds={845}},
+		{id=12292,name="Sweeping Strikes",subText="",level=30,icon="Interface\\Icons\\Ability_Rogue_SliceDice",requiredTalent={id=133,tabIndex=1}},
+		{id=12809,name="Concussion Blow",subText="",level=30,icon="Interface\\Icons\\Ability_ThunderBolt",requiredTalent={id=152,tabIndex=3}},
+		{id=12328,name="Death Wish",subText="",level=30,icon="Interface\\Icons\\Spell_Shadow_DeathPact",requiredTalent={id=165,tabIndex=2}},
 		{id=20252,name="Intercept",subText="Rank 1",level=30,icon="Interface\\Icons\\Ability_Rogue_Sprint"}
 	},
 	[32] = {

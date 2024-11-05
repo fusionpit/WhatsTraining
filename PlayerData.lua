@@ -143,13 +143,10 @@ function PlayerData:GetAvailableSpells()
         else
           -- Check for talents
           if spell.requiredTalent ~= nil and not PlayerData:IsTalentKnown(spell.name, spell.requiredTalent.tabIndex) then
-            Utils.log("Missing talent: " .. spell.name .. " (" .. spell.subText .. ") - [" .. spell.id .. "]")
             tinsert(missingTalentRequirement, spell)
           elseif spell.requiredIds ~= nil and not PlayerData:IsSpellRequirementsMet(spell.requiredIds) then
-            Utils.log("Missing requirement: " .. spell.name .. " (" .. spell.subText .. ") - [" .. spell.id .. "]")
             tinsert(missingRequirements, spell)
           else
-            Utils.log("CAN LEARN: " .. spell.name .. " (" .. spell.subText .. ") - [" .. spell.id .. "]")
             tinsert(availableSpells, spell)
           end
         end
@@ -158,6 +155,13 @@ function PlayerData:GetAvailableSpells()
       end
     end
   end
+
+  table.sort(missingTalentRequirement, function(a, b) return a.level < b.level end)
+  table.sort(missingRequirements, function(a, b) return a.level < b.level end)
+  table.sort(availableSpells, function(a, b) return a.level < b.level end)
+  table.sort(comingSoon, function(a, b) return a.level < b.level end)
+  table.sort(notAvailable, function(a, b) return a.level < b.level end)
+  table.sort(knownSpells, function(a, b) return a.level < b.level end)
 
   self.spellsByCategory[SpellCategories.MISSING_TALENT] = missingTalentRequirement
   self.spellsByCategory[SpellCategories.MISSING_REQS] = missingRequirements

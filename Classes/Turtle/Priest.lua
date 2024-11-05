@@ -3,8 +3,7 @@ ClassSpellsByLevel["Priest"] = {
 	[1] = {
 		{id=2050,name="Lesser Heal",subText="Rank 1",level=1,icon="Interface\\Icons\\Spell_Holy_LesserHeal"},
 		{id=585,name="Smite",subText="Rank 1",level=1,icon="Interface\\Icons\\Spell_Holy_HolySmite"},
-		{id=1243,name="Power Word: Fortitude",subText="Rank 1",level=1,icon="Interface\\Icons\\Spell_Holy_WordFortitude"},
-		{id=15286,name="Vampiric Embrace",subText="",level=1,icon="Interface\\Icons\\Spell_Shadow_UnsummonBuilding",requiredTalent={id=484,tabIndex=3}}
+		{id=1243,name="Power Word: Fortitude",subText="Rank 1",level=1,icon="Interface\\Icons\\Spell_Holy_WordFortitude"}
 	},
 	[4] = {
 		{id=2052,name="Lesser Heal",subText="Rank 2",level=4,icon="Interface\\Icons\\Spell_Holy_LesserHeal",requiredIds={2050}},
@@ -59,6 +58,7 @@ ClassSpellsByLevel["Priest"] = {
 		{id=9578,name="Fade",subText="Rank 2",level=20,icon="Interface\\Icons\\Spell_Magic_LesserInvisibilty",requiredIds={586}},
 		{id=9484,name="Shackle Undead",subText="Rank 1",level=20,icon="Interface\\Icons\\Spell_Nature_Slow"},
 		{id=7128,name="Inner Fire",subText="Rank 2",level=20,icon="Interface\\Icons\\Spell_Holy_InnerFire",requiredIds={588}},
+		{id=14751,name="Inner Focus",subText="",level=20,icon="Interface\\Icons\\Spell_Frost_WindWalkOn",requiredTalent={id=348,tabIndex=1}},
 		{id=15237,name="Holy Nova",subText="Rank 1",level=20,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredTalent={id=442,tabIndex=2}},
 		{id=14914,name="Holy Fire",subText="Rank 1",level=20,icon="Interface\\Icons\\Spell_Holy_SearingLight"},
 		{id=15407,name="Mind Flay",subText="Rank 1",level=20,icon="Interface\\Icons\\Spell_Shadow_SiphonMana",requiredTalent={id=501,tabIndex=3}},
@@ -113,6 +113,8 @@ ClassSpellsByLevel["Priest"] = {
 		{id=6065,name="Power Word: Shield",subText="Rank 5",level=30,icon="Interface\\Icons\\Spell_Holy_PowerWordShield",requiredIds={3747}},
 		{id=14752,name="Divine Spirit",subText="Rank 1",level=30,icon="Interface\\Icons\\Spell_Holy_DivineSpirit"},
 		{id=15263,name="Holy Fire",subText="Rank 3",level=30,icon="Interface\\Icons\\Spell_Holy_SearingLight",requiredIds={15262}},
+		{id=15286,name="Vampiric Embrace",subText="",level=30,icon="Interface\\Icons\\Spell_Shadow_UnsummonBuilding",requiredTalent={id=484,tabIndex=3}},
+		{id=15487,name="Silence",subText="",level=30,icon="Interface\\Icons\\Spell_Shadow_ImpPhaseShift",requiredTalent={id=541,tabIndex=3}},
 		{id=19262,name="Touch of Weakness",subText="Rank 3",level=30,icon="Interface\\Icons\\Spell_Shadow_DeadofNight",races={"Undead"},requiredIds={19249}},
 		{id=19251,name="Touch of Weakness",subText="Rank 3",level=30,icon="Interface\\Icons\\Spell_Shadow_DeadofNight",races={"Undead"},requiredIds={19262}},
 		{id=19271,name="Feedback",subText="Rank 2",level=30,icon="Interface\\Icons\\Spell_Shadow_RitualOfSacrifice",races={"Human"},requiredIds={13896}},
@@ -163,6 +165,7 @@ ClassSpellsByLevel["Priest"] = {
 		{id=1006,name="Inner Fire",subText="Rank 4",level=40,icon="Interface\\Icons\\Spell_Holy_InnerFire",requiredIds={602}},
 		{id=10874,name="Mana Burn",subText="Rank 3",level=40,icon="Interface\\Icons\\Spell_Shadow_ManaBurn",requiredIds={8131}},
 		{id=14818,name="Divine Spirit",subText="Rank 2",level=40,icon="Interface\\Icons\\Spell_Holy_DivineSpirit",requiredIds={14752}},
+		{id=15473,name="Shadowform",subText="",level=40,icon="Interface\\Icons\\Spell_Shadow_Shadowform",requiredTalent={id=521,tabIndex=3}},
 		{id=19264,name="Touch of Weakness",subText="Rank 4",level=40,icon="Interface\\Icons\\Spell_Shadow_DeadofNight",races={"Undead"},requiredIds={19251}},
 		{id=19252,name="Touch of Weakness",subText="Rank 4",level=40,icon="Interface\\Icons\\Spell_Shadow_DeadofNight",races={"Undead"},requiredIds={19264}},
 		{id=19273,name="Feedback",subText="Rank 3",level=40,icon="Interface\\Icons\\Spell_Shadow_RitualOfSacrifice",races={"Human"},requiredIds={19271}},
@@ -225,6 +228,7 @@ ClassSpellsByLevel["Priest"] = {
 		{id=19292,name="Elune's Grace",subText="Rank 4",level=50,icon="Interface\\Icons\\Spell_Holy_ElunesGrace",races={"Night Elf"},requiredIds={19291}},
 		{id=19304,name="Starshards",subText="Rank 6",level=50,icon="Interface\\Icons\\Spell_Arcane_StarFire",races={"Night Elf"},requiredIds={19303}},
 		{id=27870,name="Lightwell",subText="Rank 2",level=50,icon="Interface\\Icons\\Spell_Holy_SummonLightwell",requiredIds={724}},
+		{id=27873,name="Lightwell Renew",subText="Rank 2",level=50,icon="Interface\\Icons\\Spell_Holy_SummonLightwell",requiredIds={7001}},
 		{id=45565,name="Empower Champion",subText="Rank 1",level=50,icon="Interface\\Icons\\Spell_Holy_EmpowerChampion"},
 		{id=46045,name="Sun's Embrace",subText="Rank 3",level=50,icon="Interface\\Icons\\Spell_Holy_HolyProtection",requiredIds={46044}}
 	},
@@ -287,6 +291,7 @@ ClassSpellsByLevel["Priest"] = {
 		{id=27801,name="Holy Nova",subText="Rank 6",level=60,icon="Interface\\Icons\\Spell_Holy_HolyNova",requiredIds={27800}},
 		{id=27841,name="Divine Spirit",subText="Rank 4",level=60,icon="Interface\\Icons\\Spell_Holy_DivineSpirit",requiredIds={14819}},
 		{id=27871,name="Lightwell",subText="Rank 3",level=60,icon="Interface\\Icons\\Spell_Holy_SummonLightwell",requiredIds={27870}},
+		{id=27874,name="Lightwell Renew",subText="Rank 3",level=60,icon="Interface\\Icons\\Spell_Holy_SummonLightwell",requiredIds={27873}},
 		{id=28382,name="Shadowguard",subText="Rank 6",level=60,icon="Interface\\Icons\\Spell_Nature_LightningShield",races={"Troll"},requiredIds={19312}},
 		{id=45555,name="Pain Spike",subText="Rank 1",level=60,icon="Interface\\Icons\\Spell_Shadow_PainSpike"},
 		{id=46046,name="Sun's Embrace",subText="Rank 4",level=60,icon="Interface\\Icons\\Spell_Holy_HolyProtection",requiredIds={46045}},
