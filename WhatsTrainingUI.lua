@@ -19,6 +19,23 @@ function WhatsTrainingUI:Update()
   FauxScrollFrame_Update(self.scrollBar, 50, 5, ROW_HEIGHT);
 end
 
+function WhatsTrainingUI:showTabTooltip()
+  GameTooltip:SetOwner(self.tab, "ANCHOR_RIGHT");
+  GameTooltip:SetText("What can I train?");
+end
+
+function WhatsTrainingUI:hideTabTooltip()
+  GameTooltip:Hide();
+end
+
+function WhatsTrainingUI:handleTabToggle()
+  if self.tab:GetChecked() then
+    self.frame:Show()
+  else
+    self.frame:Hide()
+  end
+end
+
 -- Sets up the tab
 ---@return CheckButton
 function WhatsTrainingUI:SetupTab()
@@ -40,15 +57,11 @@ function WhatsTrainingUI:SetupTab()
 
   tab:SetNormalTexture(TAB_TEXTURE_FILEID)
 
-  return tab
-end
+  tab:SetScript("OnClick", function() WhatsTrainingUI:handleTabToggle() end)
+  tab:SetScript("OnEnter", function() WhatsTrainingUI:showTabTooltip() end)
+  tab:SetScript("OnLeave", function() WhatsTrainingUI:hideTabTooltip() end)
 
-function WhatsTrainingUI:handleTabToggle()
-  if self.tab:GetChecked() then
-    self.frame:Show()
-  else
-    self.frame:Hide()
-  end
+  return tab
 end
 
 function WhatsTrainingUI:InitDisplay()
@@ -58,7 +71,6 @@ function WhatsTrainingUI:InitDisplay()
   self.frame:SetFrameStrata("HIGH")
 
   self.tab = WhatsTrainingUI:SetupTab()
-  self.tab:SetScript("OnClick", function() WhatsTrainingUI:handleTabToggle() end)
 
   local left = self.frame:CreateTexture(nil, "ARTWORK")
   left:SetTexture(LEFT_BG_TEXTURE_FILEID)
