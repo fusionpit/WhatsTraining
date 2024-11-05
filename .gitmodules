@@ -1,6 +1,3 @@
-[submodule "defs/Ace3v"]
-	path = defs/Ace3v
-	url = https://github.com/refaim/Ace3v-Lua-Definitions.git
 [submodule "defs/Vanilla-WoW-Lua-Definitions"]
 	path = defs/Vanilla-WoW-Lua-Definitions
 	url = https://github.com/refaim/Vanilla-WoW-Lua-Definitions.git
