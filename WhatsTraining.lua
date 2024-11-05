@@ -11,8 +11,6 @@ function WhatsTraining:Initialise()
   PlayerData:SetLevel(UnitLevel("player"))
   PlayerData:SetSpellsByLevel(ClassSpellsByLevel[PlayerData.class])
 
-  PlayerData:SayHello()
-
   PlayerData:GetKnownSpells()
   PlayerData:GetAvailableSpells()
 
@@ -22,9 +20,14 @@ function WhatsTraining:Initialise()
 end
 
 local function OnEvent()
-  WhatsTraining:Initialise()
+  if event == "PLAYER_ENTERING_WORLD" then
+    WhatsTraining:Initialise()
+  elseif event == "SPELLS_CHANGED" then
+    WhatsTrainingUI:HideFrame()
+  end
 end
 
 local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:RegisterEvent("SPELLS_CHANGED")
 f:SetScript("OnEvent", OnEvent)
