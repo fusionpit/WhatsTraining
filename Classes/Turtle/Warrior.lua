@@ -5,10 +5,8 @@ OverridenSpells["Warrior"] = {
 	{100,6178,26177,11578,26178,26179,26201},
 	{694,7400,7402,20559,20560},
 	{772,6546,6547,6548,11572,11573,11574},
-	{1464,8820,11604,11605,45961},
 	{1715,7372,7373},
 	{6190,11554,11555,11556},
-	{6552,6554},
 	{6572,6574,7379,11600,11601,25288},
 	{6673,5242,6192,11549,11550,11551,25289},
 	{7369,11608,11609,20569},
@@ -17,8 +15,10 @@ OverridenSpells["Warrior"] = {
 	{8198,8204,8205,11580,11581},
 	{12294,21551,21552,21553},
 	{20616,20617},
+	{20658,20660,20661,20662},
 	{23892,23893,23894},
-	{23922,23923,23924,23925}
+	{23922,23923,23924,23925,52315},
+	{51627,51628,51629,51630}
 }
 ClassSpellsByLevel["Warrior"] = {
 	[1] = {
@@ -43,8 +43,7 @@ ClassSpellsByLevel["Warrior"] = {
 		{id=2687,name="Bloodrage",subText="",level=10,icon="Interface\\Icons\\Ability_Racial_BloodRage"},
 		{id=71,name="Defensive Stance",subText="",level=10,icon="Interface\\Icons\\Ability_Warrior_DefensiveStance"},
 		{id=7386,name="Sunder Armor",subText="Rank 1",level=10,icon="Interface\\Icons\\Ability_Warrior_Sunder"},
-		{id=355,name="Taunt",subText="",level=10,icon="Interface\\Icons\\Spell_Nature_Reincarnation"},
-		{id=12798,name="Revenge Stun",subText="Rank 1",level=10,icon="Interface\\Icons\\Ability_Warrior_Revenge"}
+		{id=355,name="Taunt",subText="",level=10,icon="Interface\\Icons\\Spell_Nature_Reincarnation"}
 	},
 	[12] = {
 		{id=72,name="Shield Bash",subText="Rank 1",level=12,icon="Interface\\Icons\\Ability_Warrior_ShieldBash"},
@@ -67,9 +66,8 @@ ClassSpellsByLevel["Warrior"] = {
 	[20] = {
 		{id=6547,name="Rend",subText="Rank 3",level=20,icon="Interface\\Icons\\Ability_Gouge",requiredIds={6546}},
 		{id=845,name="Cleave",subText="Rank 1",level=20,icon="Interface\\Icons\\Ability_Warrior_Cleave"},
-		{id=12323,name="Piercing Howl",subText="",level=20,icon="Interface\\Icons\\Spell_Shadow_DeathScream",requiredTalent={id=160,tabIndex=2}},
-		{id=12975,name="Last Stand",subText="",level=20,icon="Interface\\Icons\\Spell_Holy_AshesToAshes",requiredTalent={id=153,tabIndex=3}},
-		{id=20230,name="Retaliation",subText="",level=20,icon="Interface\\Icons\\Ability_Warrior_Challange"}
+		{id=20230,name="Retaliation",subText="",level=20,icon="Interface\\Icons\\Ability_Warrior_Challange"},
+		{id=51626,name="Counterattack",subText="Rank 1",level=20,icon="Interface\\Icons\\Ability_Warrior_Riposte",requiredTalent={id=63,tabIndex=1}}
 	},
 	[22] = {
 		{id=6192,name="Battle Shout",subText="Rank 3",level=22,icon="Interface\\Icons\\Ability_Warrior_BattleShout",requiredIds={5242}},
@@ -79,7 +77,8 @@ ClassSpellsByLevel["Warrior"] = {
 	[24] = {
 		{id=1608,name="Heroic Strike",subText="Rank 4",level=24,icon="Interface\\Icons\\Ability_Rogue_Ambush",requiredIds={285}},
 		{id=6190,name="Demoralizing Shout",subText="Rank 2",level=24,icon="Interface\\Icons\\Ability_Warrior_WarCry",requiredIds={1160}},
-		{id=6574,name="Revenge",subText="Rank 2",level=24,icon="Interface\\Icons\\Ability_Warrior_Revenge",requiredIds={6572}}
+		{id=6574,name="Revenge",subText="Rank 2",level=24,icon="Interface\\Icons\\Ability_Warrior_Revenge",requiredIds={6572}},
+		{id=5308,name="Execute",subText="Rank 1",level=24,icon="Interface\\Icons\\INV_Sword_48"}
 	},
 	[26] = {
 		{id=7400,name="Mocking Blow",subText="Rank 2",level=26,icon="Interface\\Icons\\Ability_Warrior_PunishingBlow",requiredIds={694}},
@@ -93,20 +92,20 @@ ClassSpellsByLevel["Warrior"] = {
 	},
 	[30] = {
 		{id=6548,name="Rend",subText="Rank 4",level=30,icon="Interface\\Icons\\Ability_Gouge",requiredIds={6547}},
-		{id=1464,name="Slam",subText="Rank 1",level=30,icon="Interface\\Icons\\Ability_Warrior_DecisiveStrike"},
+		{id=1464,name="Slam",subText="",level=30,icon="Interface\\Icons\\Ability_Warrior_DecisiveStrike"},
 		{id=2458,name="Berserker Stance",subText="",level=30,icon="Interface\\Icons\\Ability_Racial_Avatar"},
 		{id=7369,name="Cleave",subText="Rank 2",level=30,icon="Interface\\Icons\\Ability_Warrior_Cleave",requiredIds={845}},
-		{id=12292,name="Sweeping Strikes",subText="",level=30,icon="Interface\\Icons\\Ability_Rogue_SliceDice",requiredTalent={id=133,tabIndex=1}},
-		{id=12809,name="Concussion Blow",subText="",level=30,icon="Interface\\Icons\\Ability_ThunderBolt",requiredTalent={id=152,tabIndex=3}},
-		{id=12328,name="Death Wish",subText="",level=30,icon="Interface\\Icons\\Spell_Shadow_DeathPact",requiredTalent={id=165,tabIndex=2}},
-		{id=20252,name="Intercept",subText="Rank 1",level=30,icon="Interface\\Icons\\Ability_Rogue_Sprint"}
+		{id=20252,name="Intercept",subText="Rank 1",level=30,icon="Interface\\Icons\\Ability_Rogue_Sprint"},
+		{id=23922,name="Shield Slam",subText="Rank 1",level=30,icon="Interface\\Icons\\INV_Shield_05",requiredTalent={id=87,tabIndex=3}},
+		{id=51627,name="Counterattack",subText="Rank 2",level=30,icon="Interface\\Icons\\Ability_Warrior_Riposte",requiredIds={51626}}
 	},
 	[32] = {
 		{id=1671,name="Shield Bash",subText="Rank 2",level=32,icon="Interface\\Icons\\Ability_Warrior_ShieldBash",requiredIds={72}},
 		{id=7372,name="Hamstring",subText="Rank 2",level=32,icon="Interface\\Icons\\Ability_ShockWave",requiredIds={1715}},
 		{id=11564,name="Heroic Strike",subText="Rank 5",level=32,icon="Interface\\Icons\\Ability_Rogue_Ambush",requiredIds={1608}},
 		{id=11549,name="Battle Shout",subText="Rank 4",level=32,icon="Interface\\Icons\\Ability_Warrior_BattleShout",requiredIds={6192}},
-		{id=18499,name="Berserker Rage",subText="",level=32,icon="Interface\\Icons\\Spell_Nature_AncestralGuardian"}
+		{id=18499,name="Berserker Rage",subText="",level=32,icon="Interface\\Icons\\Spell_Nature_AncestralGuardian"},
+		{id=20658,name="Execute",subText="Rank 2",level=32,icon="Interface\\Icons\\INV_Sword_48",requiredIds={5308}}
 	},
 	[34] = {
 		{id=11554,name="Demoralizing Shout",subText="Rank 3",level=34,icon="Interface\\Icons\\Ability_Warrior_WarCry",requiredIds={6190}},
@@ -118,19 +117,20 @@ ClassSpellsByLevel["Warrior"] = {
 		{id=1680,name="Whirlwind",subText="",level=36,icon="Interface\\Icons\\Ability_Whirlwind"}
 	},
 	[38] = {
-		{id=8820,name="Slam",subText="Rank 2",level=38,icon="Interface\\Icons\\Ability_Warrior_DecisiveStrike",requiredIds={1464}},
 		{id=8205,name="Thunder Clap",subText="Rank 4",level=38,icon="Interface\\Icons\\Spell_Nature_ThunderClap",requiredIds={8204}},
-		{id=6552,name="Pummel",subText="Rank 1",level=38,icon="Interface\\Icons\\INV_Gauntlets_04"}
+		{id=6552,name="Pummel",subText="",level=38,icon="Interface\\Icons\\INV_Gauntlets_04"},
+		{id=23923,name="Shield Slam",subText="Rank 2",level=38,icon="Interface\\Icons\\INV_Shield_05",requiredIds={23922}}
 	},
 	[40] = {
 		{id=11572,name="Rend",subText="Rank 5",level=40,icon="Interface\\Icons\\Ability_Gouge",requiredIds={6548}},
 		{id=11565,name="Heroic Strike",subText="Rank 6",level=40,icon="Interface\\Icons\\Ability_Rogue_Ambush",requiredIds={11564}},
 		{id=11608,name="Cleave",subText="Rank 3",level=40,icon="Interface\\Icons\\Ability_Warrior_Cleave",requiredIds={7369}},
-		{id=12294,name="Mortal Strike",subText="Rank 1",level=40,icon="Interface\\Icons\\Ability_Warrior_SavageBlow",requiredTalent={id=135,tabIndex=1}},
-		{id=23881,name="Bloodthirst",subText="Rank 1",level=40,icon="Interface\\Icons\\Spell_Nature_BloodLust",requiredTalent={id=167,tabIndex=2}},
+		{id=12294,name="Mortal Strike",subText="Rank 1",level=40,icon="Interface\\Icons\\Ability_Warrior_SavageBlow",requiredTalent={id=73,tabIndex=1}},
+		{id=20660,name="Execute",subText="Rank 3",level=40,icon="Interface\\Icons\\INV_Sword_48",requiredIds={20658}},
+		{id=23881,name="Bloodthirst",subText="Rank 1",level=40,icon="Interface\\Icons\\Spell_Nature_BloodLust",requiredTalent={id=108,tabIndex=2}},
 		{id=23885,name="Bloodthirst",subText="",level=40,icon="Interface\\Icons\\Spell_Nature_BloodLust"},
 		{id=23880,name="Bloodthirst",subText="",level=40,icon="Interface\\Icons\\Spell_Nature_BloodLust"},
-		{id=23922,name="Shield Slam",subText="Rank 1",level=40,icon="Interface\\Icons\\INV_Shield_05",requiredTalent={id=148,tabIndex=3}}
+		{id=51628,name="Counterattack",subText="Rank 3",level=40,icon="Interface\\Icons\\Ability_Warrior_Riposte",requiredIds={51627}}
 	},
 	[42] = {
 		{id=11550,name="Battle Shout",subText="Rank 5",level=42,icon="Interface\\Icons\\Ability_Warrior_BattleShout",requiredIds={11549}},
@@ -143,23 +143,24 @@ ClassSpellsByLevel["Warrior"] = {
 	},
 	[46] = {
 		{id=11578,name="Charge",subText="Rank 3",level=46,icon="Interface\\Icons\\Ability_Warrior_Charge",requiredIds={6178}},
-		{id=11604,name="Slam",subText="Rank 3",level=46,icon="Interface\\Icons\\Ability_Warrior_DecisiveStrike",requiredIds={8820}},
 		{id=11596,name="Sunder Armor",subText="Rank 4",level=46,icon="Interface\\Icons\\Ability_Warrior_Sunder",requiredIds={8380}},
-		{id=20559,name="Mocking Blow",subText="Rank 4",level=46,icon="Interface\\Icons\\Ability_Warrior_PunishingBlow",requiredIds={7402}}
+		{id=20559,name="Mocking Blow",subText="Rank 4",level=46,icon="Interface\\Icons\\Ability_Warrior_PunishingBlow",requiredIds={7402}},
+		{id=23924,name="Shield Slam",subText="Rank 3",level=46,icon="Interface\\Icons\\INV_Shield_05",requiredIds={23923}}
 	},
 	[48] = {
 		{id=11566,name="Heroic Strike",subText="Rank 7",level=48,icon="Interface\\Icons\\Ability_Rogue_Ambush",requiredIds={11565}},
 		{id=11580,name="Thunder Clap",subText="Rank 5",level=48,icon="Interface\\Icons\\Spell_Nature_ThunderClap",requiredIds={8205}},
+		{id=20661,name="Execute",subText="Rank 4",level=48,icon="Interface\\Icons\\INV_Sword_48",requiredIds={20660}},
 		{id=21551,name="Mortal Strike",subText="Rank 2",level=48,icon="Interface\\Icons\\Ability_Warrior_SavageBlow",requiredIds={12294}},
 		{id=23892,name="Bloodthirst",subText="Rank 2",level=48,icon="Interface\\Icons\\Spell_Nature_BloodLust",requiredIds={23881}},
 		{id=23886,name="Bloodthirst",subText="",level=48,icon="Interface\\Icons\\Spell_Nature_BloodLust"},
-		{id=23889,name="Bloodthirst",subText="",level=48,icon="Interface\\Icons\\Spell_Nature_BloodLust"},
-		{id=23923,name="Shield Slam",subText="Rank 2",level=48,icon="Interface\\Icons\\INV_Shield_05",requiredIds={23922}}
+		{id=23889,name="Bloodthirst",subText="",level=48,icon="Interface\\Icons\\Spell_Nature_BloodLust"}
 	},
 	[50] = {
 		{id=11573,name="Rend",subText="Rank 6",level=50,icon="Interface\\Icons\\Ability_Gouge",requiredIds={11572}},
 		{id=11609,name="Cleave",subText="Rank 4",level=50,icon="Interface\\Icons\\Ability_Warrior_Cleave",requiredIds={11608}},
-		{id=1719,name="Recklessness",subText="",level=50,icon="Interface\\Icons\\Ability_CriticalStrike"}
+		{id=1719,name="Recklessness",subText="",level=50,icon="Interface\\Icons\\Ability_CriticalStrike"},
+		{id=51629,name="Counterattack",subText="Rank 4",level=50,icon="Interface\\Icons\\Ability_Warrior_Riposte",requiredIds={51628}}
 	},
 	[52] = {
 		{id=1672,name="Shield Bash",subText="Rank 3",level=52,icon="Interface\\Icons\\Ability_Warrior_ShieldBash",requiredIds={1671}},
@@ -168,26 +169,23 @@ ClassSpellsByLevel["Warrior"] = {
 	},
 	[54] = {
 		{id=7373,name="Hamstring",subText="Rank 3",level=54,icon="Interface\\Icons\\Ability_ShockWave",requiredIds={7372}},
-		{id=11605,name="Slam",subText="Rank 4",level=54,icon="Interface\\Icons\\Ability_Warrior_DecisiveStrike",requiredIds={11604}},
 		{id=11556,name="Demoralizing Shout",subText="Rank 5",level=54,icon="Interface\\Icons\\Ability_Warrior_WarCry",requiredIds={11555}},
 		{id=11601,name="Revenge",subText="Rank 5",level=54,icon="Interface\\Icons\\Ability_Warrior_Revenge",requiredIds={11600}},
 		{id=21552,name="Mortal Strike",subText="Rank 3",level=54,icon="Interface\\Icons\\Ability_Warrior_SavageBlow",requiredIds={21551}},
 		{id=23893,name="Bloodthirst",subText="Rank 3",level=54,icon="Interface\\Icons\\Spell_Nature_BloodLust",requiredIds={23892}},
 		{id=23887,name="Bloodthirst",subText="",level=54,icon="Interface\\Icons\\Spell_Nature_BloodLust"},
-		{id=23924,name="Shield Slam",subText="Rank 3",level=54,icon="Interface\\Icons\\INV_Shield_05",requiredIds={23923}},
-		{id=45599,name="Decisive Strike",subText="Rank 1",level=54,icon="Interface\\Icons\\Ability_Warrior_DecisiveStrike"},
-		{id=45960,name="Decisive Strike",subText="Rank 2",level=54,icon="Interface\\Icons\\Ability_Warrior_DecisiveStrike",requiredIds={45599}},
-		{id=45960,name="Decisive Strike",subText="Rank 2",level=54,icon="Interface\\Icons\\Ability_Warrior_DecisiveStrike",requiredIds={45599}},
-		{id=45961,name="Slam",subText="Rank 5",level=54,icon="Interface\\Icons\\Ability_Warrior_DecisiveStrike",requiredIds={11605}}
+		{id=23925,name="Shield Slam",subText="Rank 4",level=54,icon="Interface\\Icons\\INV_Shield_05",requiredIds={23924}},
+		{id=45599,name="Decisive Strike",subText="",level=54,icon="Interface\\Icons\\Ability_Warrior_DecisiveStrike_New"}
 	},
 	[56] = {
 		{id=11567,name="Heroic Strike",subText="Rank 8",level=56,icon="Interface\\Icons\\Ability_Rogue_Ambush",requiredIds={11566}},
-		{id=20560,name="Mocking Blow",subText="Rank 5",level=56,icon="Interface\\Icons\\Ability_Warrior_PunishingBlow",requiredIds={20559}}
+		{id=20560,name="Mocking Blow",subText="Rank 5",level=56,icon="Interface\\Icons\\Ability_Warrior_PunishingBlow",requiredIds={20559}},
+		{id=20662,name="Execute",subText="Rank 5",level=56,icon="Interface\\Icons\\INV_Sword_48",requiredIds={20661}}
 	},
 	[58] = {
 		{id=11581,name="Thunder Clap",subText="Rank 6",level=58,icon="Interface\\Icons\\Spell_Nature_ThunderClap",requiredIds={11580}},
 		{id=11597,name="Sunder Armor",subText="Rank 5",level=58,icon="Interface\\Icons\\Ability_Warrior_Sunder",requiredIds={11596}},
-		{id=6554,name="Pummel",subText="Rank 2",level=58,icon="Interface\\Icons\\INV_Gauntlets_04",requiredIds={6552}}
+		{id=6554,name="zzOLD Pummel",subText="Rank 2",level=58,icon="Interface\\Icons\\INV_Gauntlets_04"}
 	},
 	[60] = {
 		{id=11585,name="Overpower",subText="Rank 4",level=60,icon="Interface\\Icons\\Ability_MeleeDamage",requiredIds={11584}},
@@ -198,10 +196,11 @@ ClassSpellsByLevel["Warrior"] = {
 		{id=23894,name="Bloodthirst",subText="Rank 4",level=60,icon="Interface\\Icons\\Spell_Nature_BloodLust",requiredIds={23893}},
 		{id=23888,name="Bloodthirst",subText="",level=60,icon="Interface\\Icons\\Spell_Nature_BloodLust"},
 		{id=23891,name="Bloodthirst",subText="",level=60,icon="Interface\\Icons\\Spell_Nature_BloodLust"},
-		{id=23925,name="Shield Slam",subText="Rank 4",level=60,icon="Interface\\Icons\\INV_Shield_05",requiredIds={23924}},
 		{id=25286,name="Heroic Strike",subText="Rank 9",level=60,icon="Interface\\Icons\\Ability_Rogue_Ambush",requiredIds={11567}},
 		{id=25288,name="Revenge",subText="Rank 6",level=60,icon="Interface\\Icons\\Ability_Warrior_Revenge",requiredIds={11601}},
 		{id=25289,name="Battle Shout",subText="Rank 7",level=60,icon="Interface\\Icons\\Ability_Warrior_BattleShout",requiredIds={11551}},
-		{id=45595,name="Intervene",subText="Rank 1",level=60,icon="Interface\\Icons\\Ability_Warrior_Intervene"}
+		{id=45595,name="Intervene",subText="Rank 1",level=60,icon="Interface\\Icons\\Ability_Warrior_Intervene"},
+		{id=51630,name="Counterattack",subText="Rank 5",level=60,icon="Interface\\Icons\\Ability_Warrior_Riposte",requiredIds={51629}},
+		{id=52315,name="Shield Slam",subText="Rank 5",level=60,icon="Interface\\Icons\\INV_Shield_05",requiredIds={23925}}
 	}
 }

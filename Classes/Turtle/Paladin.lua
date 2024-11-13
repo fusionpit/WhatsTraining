@@ -5,7 +5,8 @@ OverridenSpells["Paladin"] = {
 	{7294,10298,10299,10300,10301,19998},
 	{19876,19895,19896},
 	{19888,19897,19898},
-	{19891,19899,19900}
+	{19891,19899,19900},
+	{20066,51557,51558}
 }
 ClassSpellsByLevel["Paladin"] = {
 	[1] = {
@@ -18,12 +19,12 @@ ClassSpellsByLevel["Paladin"] = {
 		{id=20154,name="Seal of Righteousness",subText="Rank 1",level=1,icon="Interface\\Icons\\Ability_ThunderBolt"},
 		{id=20187,name="Judgement of Righteousness",subText="Rank 1",level=1,icon="Interface\\Icons\\Ability_ThunderBolt"},
 		{id=21084,name="Seal of Righteousness",subText="Rank 1",level=1,icon="Interface\\Icons\\Ability_ThunderBolt",requiredIds={20154}},
-		{id=25997,name="Eye for an Eye",subText="Rank 1",level=1,icon="Interface\\Icons\\Spell_Holy_EyeforanEye"},
-		{id=679,name="Holy Strike",subText="Rank 1",level=1,icon="Interface\\Icons\\INV_Sword_01"}
+		{id=25997,name="Eye for an Eye",subText="Rank 1",level=1,icon="Interface\\Icons\\Spell_Holy_EyeforanEye"}
 	},
 	[4] = {
 		{id=19740,name="Blessing of Might",subText="Rank 1",level=4,icon="Interface\\Icons\\Spell_Holy_FistOfJustice"},
-		{id=20271,name="Judgement",subText="",level=4,icon="Interface\\Icons\\Spell_Holy_RighteousFury"}
+		{id=20271,name="Judgement",subText="",level=4,icon="Interface\\Icons\\Spell_Holy_RighteousFury"},
+		{id=679,name="Holy Strike",subText="Rank 1",level=4,icon="Interface\\Icons\\INV_Sword_01"}
 	},
 	[6] = {
 		{id=639,name="Holy Light",subText="Rank 2",level=6,icon="Interface\\Icons\\Spell_Holy_HolyBolt",requiredIds={635}},
@@ -32,22 +33,23 @@ ClassSpellsByLevel["Paladin"] = {
 	},
 	[8] = {
 		{id=1152,name="Purify",subText="",level=8,icon="Interface\\Icons\\Spell_Holy_Purify"},
-		{id=853,name="Hammer of Justice",subText="Rank 1",level=8,icon="Interface\\Icons\\Spell_Holy_SealOfMight"},
-		{id=678,name="Holy Strike",subText="Rank 2",level=8,icon="Interface\\Icons\\INV_Sword_01",requiredIds={679}}
+		{id=853,name="Hammer of Justice",subText="Rank 1",level=8,icon="Interface\\Icons\\Spell_Holy_SealOfMight"}
 	},
 	[10] = {
 		{id=10290,name="Devotion Aura",subText="Rank 2",level=10,icon="Interface\\Icons\\Spell_Holy_DevotionAura",requiredIds={465}},
 		{id=633,name="Lay on Hands",subText="Rank 1",level=10,icon="Interface\\Icons\\Spell_Holy_LayOnHands"},
-		{id=1022,name="Blessing of Protection",subText="Rank 1",level=10,icon="Interface\\Icons\\Spell_Holy_SealOfProtection"},
+		{id=1022,name="Hand of Protection",subText="Rank 1",level=10,icon="Interface\\Icons\\Spell_Holy_SealOfProtection"},
 		{id=20287,name="Seal of Righteousness",subText="Rank 2",level=10,icon="Interface\\Icons\\Ability_ThunderBolt",requiredIds={21084}},
 		{id=20280,name="Judgement of Righteousness",subText="Rank 2",level=10,icon="Interface\\Icons\\Ability_ThunderBolt",requiredIds={20187}},
-		{id=2537,name="Crusader Strike",subText="Rank 1",level=10,icon="Interface\\Icons\\Spell_Holy_CrusaderStrike"}
+		{id=2537,name="Crusader Strike",subText="Rank 1",level=10,icon="Interface\\Icons\\Spell_Holy_CrusaderStrike"},
+		{id=51302,name="Hand of Reckoning",subText="",level=10,icon="Interface\\Icons\\Spell_Holy_Redemption"}
 	},
 	[12] = {
 		{id=7328,name="Redemption",subText="Rank 1",level=12,icon="Interface\\Icons\\Spell_Holy_Resurrection"},
 		{id=19834,name="Blessing of Might",subText="Rank 2",level=12,icon="Interface\\Icons\\Spell_Holy_FistOfJustice",requiredIds={19740}},
 		{id=20162,name="Seal of the Crusader",subText="Rank 2",level=12,icon="Interface\\Icons\\Spell_Holy_HolySmite",requiredIds={21082}},
-		{id=20188,name="Judgement of the Crusader",subText="Rank 2",level=12,icon="Interface\\Icons\\Spell_Holy_HolySmite"}
+		{id=20188,name="Judgement of the Crusader",subText="Rank 2",level=12,icon="Interface\\Icons\\Spell_Holy_HolySmite"},
+		{id=678,name="Holy Strike",subText="Rank 2",level=12,icon="Interface\\Icons\\INV_Sword_01",requiredIds={679}}
 	},
 	[14] = {
 		{id=647,name="Holy Light",subText="Rank 3",level=14,icon="Interface\\Icons\\Spell_Holy_HolyBolt",requiredIds={639}},
@@ -55,12 +57,13 @@ ClassSpellsByLevel["Paladin"] = {
 	},
 	[16] = {
 		{id=7294,name="Retribution Aura",subText="Rank 1",level=16,icon="Interface\\Icons\\Spell_Holy_AuraOfLight"},
-		{id=25780,name="Righteous Fury",subText="",level=16,icon="Interface\\Icons\\Spell_Holy_SealOfFury"},
-		{id=1866,name="Holy Strike",subText="Rank 3",level=16,icon="Interface\\Icons\\INV_Sword_01",requiredIds={678}}
+		{id=25780,name="Righteous Fury",subText="",level=16,icon="Interface\\Icons\\Spell_Holy_SealOfFury"}
 	},
 	[18] = {
 		{id=5573,name="Divine Protection",subText="Rank 2",level=18,icon="Interface\\Icons\\Spell_Holy_Restoration",requiredIds={498}},
-		{id=1044,name="Blessing of Freedom",subText="",level=18,icon="Interface\\Icons\\Spell_Holy_SealOfValor"},
+		{id=1044,name="Hand of Freedom",subText="",level=18,icon="Interface\\Icons\\Spell_Holy_SealOfValor"},
+		{id=20166,name="Seal of Wisdom",subText="Rank 1",level=18,icon="Interface\\Icons\\Spell_Holy_RighteousnessAura"},
+		{id=20186,name="Judgement of Wisdom",subText="Rank 1",level=18,icon="Interface\\Icons\\Spell_Holy_RighteousnessAura"},
 		{id=20288,name="Seal of Righteousness",subText="Rank 3",level=18,icon="Interface\\Icons\\Ability_ThunderBolt",requiredIds={20287}},
 		{id=20281,name="Judgement of Righteousness",subText="Rank 3",level=18,icon="Interface\\Icons\\Ability_ThunderBolt",requiredIds={20280}}
 	},
@@ -70,13 +73,11 @@ ClassSpellsByLevel["Paladin"] = {
 		{id=5502,name="Sense Undead",subText="",level=20,icon="Interface\\Icons\\Spell_Holy_SenseUndead"},
 		{id=19750,name="Flash of Light",subText="Rank 1",level=20,icon="Interface\\Icons\\Spell_Holy_FlashHeal"},
 		{id=19993,name="Flash of Light",subText="",level=20,icon="Interface\\Icons\\Spell_Holy_FlashHeal"},
-		{id=20911,name="Blessing of Sanctuary",subText="Rank 1",level=20,icon="Interface\\Icons\\Spell_Nature_LightningShield",requiredTalent={id=1442,tabIndex=2}},
-		{id=20425,name="Judgement of Command",subText="Rank 1",level=20,icon="Interface\\Icons\\Ability_Warrior_InnerRage"},
-		{id=20218,name="Sanctity Aura",subText="",level=20,icon="Interface\\Icons\\Spell_Holy_MindVision",requiredTalent={id=1435,tabIndex=1}},
-		{id=20218,name="Sanctity Aura",subText="",level=20,icon="Interface\\Icons\\Spell_Holy_MindVision",requiredTalent={id=1435,tabIndex=1}},
+		{id=20218,name="Sanctity Aura",subText="",level=20,icon="Interface\\Icons\\Spell_Holy_MindVision",requiredTalent={id=446,tabIndex=1}},
+		{id=20218,name="Sanctity Aura",subText="",level=20,icon="Interface\\Icons\\Spell_Holy_MindVision",requiredTalent={id=446,tabIndex=1}},
 		{id=26573,name="Consecration",subText="Rank 1",level=20,icon="Interface\\Icons\\Spell_Holy_InnerFire"},
-		{id=20217,name="Blessing of Kings",subText="",level=20,icon="Interface\\Icons\\Spell_Magic_MageArmor",requiredTalent={id=1481,tabIndex=3}},
-		{id=20467,name="Judgement of Command",subText="Rank 1",level=20,icon="Interface\\Icons\\Ability_Warrior_InnerRage",requiredIds={20425}}
+		{id=20217,name="Blessing of Kings",subText="",level=20,icon="Interface\\Icons\\Spell_Magic_MageArmor",requiredTalent={id=431,tabIndex=3}},
+		{id=1866,name="Holy Strike",subText="Rank 3",level=20,icon="Interface\\Icons\\INV_Sword_01",requiredIds={678}}
 	},
 	[22] = {
 		{id=1026,name="Holy Light",subText="Rank 4",level=22,icon="Interface\\Icons\\Spell_Holy_HolyBolt",requiredIds={647}},
@@ -90,11 +91,10 @@ ClassSpellsByLevel["Paladin"] = {
 	},
 	[24] = {
 		{id=2878,name="Turn Undead",subText="Rank 1",level=24,icon="Interface\\Icons\\Spell_Holy_TurnUndead"},
-		{id=5599,name="Blessing of Protection",subText="Rank 2",level=24,icon="Interface\\Icons\\Spell_Holy_SealOfProtection",requiredIds={1022}},
+		{id=5599,name="Hand of Protection",subText="Rank 2",level=24,icon="Interface\\Icons\\Spell_Holy_SealOfProtection",requiredIds={1022}},
 		{id=19850,name="Blessing of Wisdom",subText="Rank 2",level=24,icon="Interface\\Icons\\Spell_Holy_SealOfWisdom",requiredIds={19742}},
 		{id=10322,name="Redemption",subText="Rank 2",level=24,icon="Interface\\Icons\\Spell_Holy_Resurrection",requiredIds={7328}},
-		{id=5588,name="Hammer of Justice",subText="Rank 2",level=24,icon="Interface\\Icons\\Spell_Holy_SealOfMight",requiredIds={853}},
-		{id=680,name="Holy Strike",subText="Rank 4",level=24,icon="Interface\\Icons\\INV_Sword_01",requiredIds={1866}}
+		{id=5588,name="Hammer of Justice",subText="Rank 2",level=24,icon="Interface\\Icons\\Spell_Holy_SealOfMight",requiredIds={853}}
 	},
 	[26] = {
 		{id=10298,name="Retribution Aura",subText="Rank 2",level=26,icon="Interface\\Icons\\Spell_Holy_AuraOfLight",requiredIds={7294}},
@@ -105,30 +105,25 @@ ClassSpellsByLevel["Paladin"] = {
 	},
 	[28] = {
 		{id=5614,name="Exorcism",subText="Rank 2",level=28,icon="Interface\\Icons\\Spell_Holy_Excorcism_02",requiredIds={879}},
-		{id=19876,name="Shadow Resistance Aura",subText="Rank 1",level=28,icon="Interface\\Icons\\Spell_Shadow_SealOfKings"}
+		{id=19876,name="Shadow Resistance Aura",subText="Rank 1",level=28,icon="Interface\\Icons\\Spell_Shadow_SealOfKings"},
+		{id=20356,name="Seal of Wisdom",subText="Rank 2",level=28,icon="Interface\\Icons\\Spell_Holy_RighteousnessAura",requiredIds={20166}},
+		{id=20354,name="Judgement of Wisdom",subText="Rank 2",level=28,icon="Interface\\Icons\\Spell_Holy_RighteousnessAura",requiredIds={20186}},
+		{id=680,name="Holy Strike",subText="Rank 4",level=28,icon="Interface\\Icons\\INV_Sword_01",requiredIds={1866}}
 	},
 	[30] = {
 		{id=10291,name="Devotion Aura",subText="Rank 4",level=30,icon="Interface\\Icons\\Spell_Holy_DevotionAura",requiredIds={643}},
 		{id=2800,name="Lay on Hands",subText="Rank 2",level=30,icon="Interface\\Icons\\Spell_Holy_LayOnHands",requiredIds={633}},
-		{id=20216,name="Divine Favor",subText="",level=30,icon="Interface\\Icons\\Spell_Holy_Heal",requiredTalent={id=1433,tabIndex=1}},
-		{id=1042,name="Holy Light",subText="Rank 5",level=30,icon="Interface\\Icons\\Spell_Holy_HolyBolt",requiredIds={1026}},
 		{id=20165,name="Seal of Light",subText="Rank 1",level=30,icon="Interface\\Icons\\Spell_Holy_HealingAura"},
 		{id=20185,name="Judgement of Light",subText="Rank 1",level=30,icon="Interface\\Icons\\Spell_Holy_HealingAura"},
-		{id=20375,name="Seal of Command",subText="Rank 1",level=30,icon="Interface\\Icons\\Ability_Warrior_InnerRage",requiredTalent={id=1409,tabIndex=3}},
-		{id=20915,name="Seal of Command",subText="Rank 2",level=30,icon="Interface\\Icons\\Ability_Warrior_InnerRage",requiredIds={20375}},
-		{id=20925,name="Holy Shield",subText="Rank 1",level=30,icon="Interface\\Icons\\Spell_Holy_BlessingOfProtection",requiredTalent={id=1431,tabIndex=2}},
-		{id=20962,name="Judgement of Command",subText="Rank 2",level=30,icon="Interface\\Icons\\Ability_Warrior_InnerRage",requiredIds={20467}},
 		{id=19752,name="Divine Intervention",subText="",level=30,icon="Interface\\Icons\\Spell_Nature_TimeStop"},
 		{id=20116,name="Consecration",subText="Rank 2",level=30,icon="Interface\\Icons\\Spell_Holy_InnerFire",requiredIds={26573}},
-		{id=20116,name="Consecration",subText="Rank 2",level=30,icon="Interface\\Icons\\Spell_Holy_InnerFire",requiredIds={26573}},
-		{id=20963,name="Judgement of Command",subText="Rank 2",level=30,icon="Interface\\Icons\\Ability_Warrior_InnerRage",requiredIds={20962}}
+		{id=20116,name="Consecration",subText="Rank 2",level=30,icon="Interface\\Icons\\Spell_Holy_InnerFire",requiredIds={26573}}
 	},
 	[32] = {
 		{id=19836,name="Blessing of Might",subText="Rank 4",level=32,icon="Interface\\Icons\\Spell_Holy_FistOfJustice",requiredIds={19835}},
 		{id=19888,name="Frost Resistance Aura",subText="Rank 1",level=32,icon="Interface\\Icons\\Spell_Frost_WizardMark"},
 		{id=20306,name="Seal of the Crusader",subText="Rank 4",level=32,icon="Interface\\Icons\\Spell_Holy_HolySmite",requiredIds={20305}},
-		{id=20301,name="Judgement of the Crusader",subText="Rank 4",level=32,icon="Interface\\Icons\\Spell_Holy_HolySmite",requiredIds={20300}},
-		{id=2495,name="Holy Strike",subText="Rank 5",level=32,icon="Interface\\Icons\\INV_Sword_01",requiredIds={680}}
+		{id=20301,name="Judgement of the Crusader",subText="Rank 4",level=32,icon="Interface\\Icons\\Spell_Holy_HolySmite",requiredIds={20300}}
 	},
 	[34] = {
 		{id=642,name="Divine Shield",subText="Rank 1",level=34,icon="Interface\\Icons\\Spell_Holy_DivineIntervention"},
@@ -142,14 +137,16 @@ ClassSpellsByLevel["Paladin"] = {
 		{id=10299,name="Retribution Aura",subText="Rank 3",level=36,icon="Interface\\Icons\\Spell_Holy_AuraOfLight",requiredIds={10298}},
 		{id=5615,name="Exorcism",subText="Rank 3",level=36,icon="Interface\\Icons\\Spell_Holy_Excorcism_02",requiredIds={5614}},
 		{id=19891,name="Fire Resistance Aura",subText="Rank 1",level=36,icon="Interface\\Icons\\Spell_Fire_SealOfFire"},
-		{id=10324,name="Redemption",subText="Rank 3",level=36,icon="Interface\\Icons\\Spell_Holy_Resurrection",requiredIds={10322}}
+		{id=10324,name="Redemption",subText="Rank 3",level=36,icon="Interface\\Icons\\Spell_Holy_Resurrection",requiredIds={10322}},
+		{id=2495,name="Holy Strike",subText="Rank 5",level=36,icon="Interface\\Icons\\INV_Sword_01",requiredIds={680}}
 	},
 	[38] = {
-		{id=3472,name="Holy Light",subText="Rank 6",level=38,icon="Interface\\Icons\\Spell_Holy_HolyBolt",requiredIds={1042}},
+		{id=3472,name="Holy Light",subText="Rank 6",level=38,icon="Interface\\Icons\\Spell_Holy_HolyBolt",requiredIds={1026}},
 		{id=5627,name="Turn Undead",subText="Rank 2",level=38,icon="Interface\\Icons\\Spell_Holy_TurnUndead",requiredIds={2878}},
-		{id=10278,name="Blessing of Protection",subText="Rank 3",level=38,icon="Interface\\Icons\\Spell_Holy_SealOfProtection",requiredIds={5599}},
-		{id=20166,name="Seal of Wisdom",subText="Rank 1",level=38,icon="Interface\\Icons\\Spell_Holy_RighteousnessAura"},
-		{id=20186,name="Judgement of Wisdom",subText="Rank 1",level=38,icon="Interface\\Icons\\Spell_Holy_RighteousnessAura"}
+		{id=10278,name="Hand of Protection",subText="Rank 3",level=38,icon="Interface\\Icons\\Spell_Holy_SealOfProtection",requiredIds={5599}},
+		{id=20357,name="Seal of Wisdom",subText="Rank 3",level=38,icon="Interface\\Icons\\Spell_Holy_RighteousnessAura",requiredIds={20356}},
+		{id=20355,name="Judgement of Wisdom",subText="Rank 3",level=38,icon="Interface\\Icons\\Spell_Holy_RighteousnessAura",requiredIds={20354}},
+		{id=25914,name="Holy Shock",subText="Rank 1",level=38,icon="Interface\\Icons\\Spell_Holy_SearingLight",requiredIds={25912}}
 	},
 	[40] = {
 		{id=1032,name="Devotion Aura",subText="Rank 5",level=40,icon="Interface\\Icons\\Spell_Holy_DevotionAura",requiredIds={10291}},
@@ -158,18 +155,12 @@ ClassSpellsByLevel["Paladin"] = {
 		{id=19977,name="Blessing of Light",subText="Rank 1",level=40,icon="Interface\\Icons\\Spell_Holy_PrayerOfHealing02"},
 		{id=20347,name="Seal of Light",subText="Rank 2",level=40,icon="Interface\\Icons\\Spell_Holy_HealingAura",requiredIds={20165}},
 		{id=20344,name="Judgement of Light",subText="Rank 2",level=40,icon="Interface\\Icons\\Spell_Holy_HealingAura",requiredIds={20185}},
-		{id=20473,name="Holy Shock",subText="Rank 1",level=40,icon="Interface\\Icons\\Spell_Holy_SearingLight",requiredTalent={id=1502,tabIndex=1}},
-		{id=20912,name="Blessing of Sanctuary",subText="Rank 2",level=40,icon="Interface\\Icons\\Spell_Nature_LightningShield",requiredIds={20911}},
-		{id=20918,name="Seal of Command",subText="Rank 3",level=40,icon="Interface\\Icons\\Ability_Warrior_InnerRage",requiredIds={20915}},
-		{id=20961,name="Judgement of Command",subText="Rank 3",level=40,icon="Interface\\Icons\\Ability_Warrior_InnerRage",requiredIds={20963}},
 		{id=20922,name="Consecration",subText="Rank 3",level=40,icon="Interface\\Icons\\Spell_Holy_InnerFire",requiredIds={20116}},
 		{id=20922,name="Consecration",subText="Rank 3",level=40,icon="Interface\\Icons\\Spell_Holy_InnerFire",requiredIds={20116}},
 		{id=5589,name="Hammer of Justice",subText="Rank 3",level=40,icon="Interface\\Icons\\Spell_Holy_SealOfMight",requiredIds={5588}},
-		{id=20066,name="Repentance",subText="",level=40,icon="Interface\\Icons\\Spell_Holy_PrayerOfHealing",requiredTalent={id=1441,tabIndex=3}},
-		{id=25912,name="Holy Shock",subText="Rank 1",level=40,icon="Interface\\Icons\\Spell_Holy_SearingLight",requiredIds={20473}},
-		{id=25914,name="Holy Shock",subText="Rank 1",level=40,icon="Interface\\Icons\\Spell_Holy_SearingLight",requiredIds={25912}},
-		{id=20964,name="Judgement of Command",subText="Rank 3",level=40,icon="Interface\\Icons\\Ability_Warrior_InnerRage",requiredIds={20961}},
-		{id=5569,name="Holy Strike",subText="Rank 6",level=40,icon="Interface\\Icons\\INV_Sword_01",requiredIds={2495}},
+		{id=20066,name="Repentance",subText="Rank 1",level=40,icon="Interface\\Icons\\Spell_Holy_PrayerOfHealing",requiredTalent={id=439,tabIndex=3}},
+		{id=25912,name="Holy Shock",subText="Rank 1",level=40,icon="Interface\\Icons\\Spell_Holy_SearingLight"},
+		{id=25913,name="Holy Shock",subText="Rank 2",level=40,icon="Interface\\Icons\\Spell_Holy_SearingLight",requiredIds={25911}},
 		{id=45017,name="Summon Thalassian Warhorse",subText="Summon",level=40,icon="Interface\\Icons\\Spell_Nature_Swiftness"},
 		{id=45028,name="Summon Scarlet Warhorse",subText="Summon",level=40,icon="Interface\\Icons\\Spell_Nature_Swiftness"},
 		{id=45619,name="Conviction",subText="Rank 1",level=40,icon="Interface\\Icons\\Spell_Holy_RetributionAura"}
@@ -187,23 +178,21 @@ ClassSpellsByLevel["Paladin"] = {
 		{id=10312,name="Exorcism",subText="Rank 4",level=44,icon="Interface\\Icons\\Spell_Holy_Excorcism_02",requiredIds={5615}},
 		{id=19853,name="Blessing of Wisdom",subText="Rank 4",level=44,icon="Interface\\Icons\\Spell_Holy_SealOfWisdom",requiredIds={19852}},
 		{id=19897,name="Frost Resistance Aura",subText="Rank 2",level=44,icon="Interface\\Icons\\Spell_Frost_WizardMark",requiredIds={19888}},
-		{id=24275,name="Hammer of Wrath",subText="Rank 1",level=44,icon="Interface\\Icons\\Ability_ThunderClap"}
+		{id=24275,name="Hammer of Wrath",subText="Rank 1",level=44,icon="Interface\\Icons\\Ability_ThunderClap"},
+		{id=5569,name="Holy Strike",subText="Rank 6",level=44,icon="Interface\\Icons\\INV_Sword_01",requiredIds={2495}}
 	},
 	[46] = {
 		{id=10300,name="Retribution Aura",subText="Rank 4",level=46,icon="Interface\\Icons\\Spell_Holy_AuraOfLight",requiredIds={10299}},
 		{id=10328,name="Holy Light",subText="Rank 7",level=46,icon="Interface\\Icons\\Spell_Holy_HolyBolt",requiredIds={3472}},
-		{id=6940,name="Blessing of Sacrifice",subText="Rank 1",level=46,icon="Interface\\Icons\\Spell_Holy_SealOfSacrifice"},
+		{id=6940,name="Hand of Sacrifice",subText="Rank 1",level=46,icon="Interface\\Icons\\Spell_Holy_SealOfSacrifice"},
 		{id=10336,name="Crusader Strike",subText="Rank 4",level=46,icon="Interface\\Icons\\Spell_Holy_CrusaderStrike",requiredIds={8824}}
 	},
 	[48] = {
 		{id=19899,name="Fire Resistance Aura",subText="Rank 2",level=48,icon="Interface\\Icons\\Spell_Fire_SealOfFire",requiredIds={19891}},
-		{id=20356,name="Seal of Wisdom",subText="Rank 2",level=48,icon="Interface\\Icons\\Spell_Holy_RighteousnessAura",requiredIds={20166}},
-		{id=20354,name="Judgement of Wisdom",subText="Rank 2",level=48,icon="Interface\\Icons\\Spell_Holy_RighteousnessAura",requiredIds={20186}},
 		{id=20772,name="Redemption",subText="Rank 4",level=48,icon="Interface\\Icons\\Spell_Holy_Resurrection",requiredIds={10324}},
-		{id=20929,name="Holy Shock",subText="Rank 2",level=48,icon="Interface\\Icons\\Spell_Holy_SearingLight",requiredIds={25914}},
-		{id=25911,name="Holy Shock",subText="Rank 2",level=48,icon="Interface\\Icons\\Spell_Holy_SearingLight",requiredIds={20929}},
-		{id=25913,name="Holy Shock",subText="Rank 2",level=48,icon="Interface\\Icons\\Spell_Holy_SearingLight",requiredIds={25911}},
-		{id=10332,name="Holy Strike",subText="Rank 7",level=48,icon="Interface\\Icons\\INV_Sword_01",requiredIds={5569}}
+		{id=25911,name="Holy Shock",subText="Rank 2",level=48,icon="Interface\\Icons\\Spell_Holy_SearingLight",requiredIds={25914}},
+		{id=25903,name="Holy Shock",subText="Rank 3",level=48,icon="Interface\\Icons\\Spell_Holy_SearingLight",requiredIds={25902}},
+		{id=51745,name="Seal of Wisdom",subText="Rank 4",level=48,icon="Interface\\Icons\\Spell_Holy_RighteousnessAura",requiredIds={20357}}
 	},
 	[50] = {
 		{id=10292,name="Devotion Aura",subText="Rank 6",level=50,icon="Interface\\Icons\\Spell_Holy_DevotionAura",requiredIds={1032}},
@@ -216,13 +205,9 @@ ClassSpellsByLevel["Paladin"] = {
 		{id=20285,name="Judgement of Righteousness",subText="Rank 7",level=50,icon="Interface\\Icons\\Ability_ThunderBolt",requiredIds={20284}},
 		{id=20348,name="Seal of Light",subText="Rank 3",level=50,icon="Interface\\Icons\\Spell_Holy_HealingAura",requiredIds={20347}},
 		{id=20345,name="Judgement of Light",subText="Rank 3",level=50,icon="Interface\\Icons\\Spell_Holy_HealingAura",requiredIds={20344}},
-		{id=20913,name="Blessing of Sanctuary",subText="Rank 3",level=50,icon="Interface\\Icons\\Spell_Nature_LightningShield",requiredIds={20912}},
-		{id=20919,name="Seal of Command",subText="Rank 4",level=50,icon="Interface\\Icons\\Ability_Warrior_InnerRage",requiredIds={20918}},
-		{id=20927,name="Holy Shield",subText="Rank 2",level=50,icon="Interface\\Icons\\Spell_Holy_BlessingOfProtection",requiredIds={20925}},
-		{id=20967,name="Judgement of Command",subText="Rank 4",level=50,icon="Interface\\Icons\\Ability_Warrior_InnerRage",requiredIds={20964}},
 		{id=20923,name="Consecration",subText="Rank 4",level=50,icon="Interface\\Icons\\Spell_Holy_InnerFire",requiredIds={20922}},
 		{id=20923,name="Consecration",subText="Rank 4",level=50,icon="Interface\\Icons\\Spell_Holy_InnerFire",requiredIds={20922}},
-		{id=20965,name="Judgement of Command",subText="Rank 4",level=50,icon="Interface\\Icons\\Ability_Warrior_InnerRage",requiredIds={20967}}
+		{id=51557,name="Repentance",subText="Rank 2",level=50,icon="Interface\\Icons\\Spell_Holy_PrayerOfHealing",requiredIds={20066}}
 	},
 	[52] = {
 		{id=10313,name="Exorcism",subText="Rank 5",level=52,icon="Interface\\Icons\\Spell_Holy_Excorcism_02",requiredIds={10312}},
@@ -232,30 +217,27 @@ ClassSpellsByLevel["Paladin"] = {
 		{id=20308,name="Seal of the Crusader",subText="Rank 6",level=52,icon="Interface\\Icons\\Spell_Holy_HolySmite",requiredIds={20307}},
 		{id=20303,name="Judgement of the Crusader",subText="Rank 6",level=52,icon="Interface\\Icons\\Spell_Holy_HolySmite",requiredIds={20302}},
 		{id=24274,name="Hammer of Wrath",subText="Rank 2",level=52,icon="Interface\\Icons\\Ability_ThunderClap",requiredIds={24275}},
-		{id=25782,name="Greater Blessing of Might",subText="Rank 1",level=52,icon="Interface\\Icons\\Spell_Holy_GreaterBlessingofKings"}
+		{id=25782,name="Greater Blessing of Might",subText="Rank 1",level=52,icon="Interface\\Icons\\Spell_Holy_GreaterBlessingofKings"},
+		{id=10332,name="Holy Strike",subText="Rank 7",level=52,icon="Interface\\Icons\\INV_Sword_01",requiredIds={5569}}
 	},
 	[54] = {
 		{id=10329,name="Holy Light",subText="Rank 8",level=54,icon="Interface\\Icons\\Spell_Holy_HolyBolt",requiredIds={10328}},
 		{id=19854,name="Blessing of Wisdom",subText="Rank 5",level=54,icon="Interface\\Icons\\Spell_Holy_SealOfWisdom",requiredIds={19853}},
-		{id=20729,name="Blessing of Sacrifice",subText="Rank 2",level=54,icon="Interface\\Icons\\Spell_Holy_SealOfSacrifice",requiredIds={6940}},
+		{id=20729,name="Hand of Sacrifice",subText="Rank 2",level=54,icon="Interface\\Icons\\Spell_Holy_SealOfSacrifice",requiredIds={6940}},
 		{id=25894,name="Greater Blessing of Wisdom",subText="Rank 1",level=54,icon="Interface\\Icons\\Spell_Holy_GreaterBlessingofWisdom"},
 		{id=10308,name="Hammer of Justice",subText="Rank 4",level=54,icon="Interface\\Icons\\Spell_Holy_SealOfMight",requiredIds={5589}}
 	},
 	[56] = {
 		{id=10301,name="Retribution Aura",subText="Rank 5",level=56,icon="Interface\\Icons\\Spell_Holy_AuraOfLight",requiredIds={10300}},
 		{id=19898,name="Frost Resistance Aura",subText="Rank 3",level=56,icon="Interface\\Icons\\Spell_Frost_WizardMark",requiredIds={19897}},
-		{id=20930,name="Holy Shock",subText="Rank 3",level=56,icon="Interface\\Icons\\Spell_Holy_SearingLight",requiredIds={25913}},
-		{id=25902,name="Holy Shock",subText="Rank 3",level=56,icon="Interface\\Icons\\Spell_Holy_SearingLight",requiredIds={20930}},
-		{id=25903,name="Holy Shock",subText="Rank 3",level=56,icon="Interface\\Icons\\Spell_Holy_SearingLight",requiredIds={25902}},
-		{id=10333,name="Holy Strike",subText="Rank 8",level=56,icon="Interface\\Icons\\INV_Sword_01",requiredIds={10332}}
+		{id=25902,name="Holy Shock",subText="Rank 3",level=56,icon="Interface\\Icons\\Spell_Holy_SearingLight",requiredIds={25913}}
 	},
 	[58] = {
 		{id=19943,name="Flash of Light",subText="Rank 6",level=58,icon="Interface\\Icons\\Spell_Holy_FlashHeal",requiredIds={19942}},
 		{id=20293,name="Seal of Righteousness",subText="Rank 8",level=58,icon="Interface\\Icons\\Ability_ThunderBolt",requiredIds={20292}},
 		{id=20286,name="Judgement of Righteousness",subText="Rank 8",level=58,icon="Interface\\Icons\\Ability_ThunderBolt",requiredIds={20285}},
-		{id=20357,name="Seal of Wisdom",subText="Rank 3",level=58,icon="Interface\\Icons\\Spell_Holy_RighteousnessAura",requiredIds={20356}},
-		{id=20355,name="Judgement of Wisdom",subText="Rank 3",level=58,icon="Interface\\Icons\\Spell_Holy_RighteousnessAura",requiredIds={20354}},
-		{id=10337,name="Crusader Strike",subText="Rank 5",level=58,icon="Interface\\Icons\\Spell_Holy_CrusaderStrike",requiredIds={10336}}
+		{id=10337,name="Crusader Strike",subText="Rank 5",level=58,icon="Interface\\Icons\\Spell_Holy_CrusaderStrike",requiredIds={10336}},
+		{id=51746,name="Seal of Wisdom",subText="Rank 5",level=58,icon="Interface\\Icons\\Spell_Holy_RighteousnessAura",requiredIds={51745}}
 	},
 	[60] = {
 		{id=10293,name="Devotion Aura",subText="Rank 7",level=60,icon="Interface\\Icons\\Spell_Holy_DevotionAura",requiredIds={10292}},
@@ -266,10 +248,6 @@ ClassSpellsByLevel["Paladin"] = {
 		{id=20349,name="Seal of Light",subText="Rank 4",level=60,icon="Interface\\Icons\\Spell_Holy_HealingAura",requiredIds={20348}},
 		{id=20346,name="Judgement of Light",subText="Rank 4",level=60,icon="Interface\\Icons\\Spell_Holy_HealingAura",requiredIds={20345}},
 		{id=20773,name="Redemption",subText="Rank 5",level=60,icon="Interface\\Icons\\Spell_Holy_Resurrection",requiredIds={20772}},
-		{id=20914,name="Blessing of Sanctuary",subText="Rank 4",level=60,icon="Interface\\Icons\\Spell_Nature_LightningShield",requiredIds={20913}},
-		{id=20920,name="Seal of Command",subText="Rank 5",level=60,icon="Interface\\Icons\\Ability_Warrior_InnerRage",requiredIds={20919}},
-		{id=20928,name="Holy Shield",subText="Rank 3",level=60,icon="Interface\\Icons\\Spell_Holy_BlessingOfProtection",requiredIds={20927}},
-		{id=20968,name="Judgement of Command",subText="Rank 5",level=60,icon="Interface\\Icons\\Ability_Warrior_InnerRage",requiredIds={20965}},
 		{id=23214,name="Summon Charger",subText="Summon",level=60,icon="Interface\\Icons\\Ability_Mount_Charger"},
 		{id=24239,name="Hammer of Wrath",subText="Rank 3",level=60,icon="Interface\\Icons\\Ability_ThunderClap",requiredIds={24274}},
 		{id=25292,name="Holy Light",subText="Rank 9",level=60,icon="Interface\\Icons\\Spell_Holy_HolyBolt",requiredIds={10329}},
@@ -283,12 +261,14 @@ ClassSpellsByLevel["Paladin"] = {
 		{id=20924,name="Consecration",subText="Rank 5",level=60,icon="Interface\\Icons\\Spell_Holy_InnerFire",requiredIds={20923}},
 		{id=20924,name="Consecration",subText="Rank 5",level=60,icon="Interface\\Icons\\Spell_Holy_InnerFire",requiredIds={20923}},
 		{id=25898,name="Greater Blessing of Kings",subText="",level=60,icon="Interface\\Icons\\Spell_Magic_GreaterBlessingofKings"},
-		{id=20966,name="Judgement of Command",subText="Rank 5",level=60,icon="Interface\\Icons\\Ability_Warrior_InnerRage",requiredIds={20968}},
+		{id=10333,name="Holy Strike",subText="Rank 8",level=60,icon="Interface\\Icons\\INV_Sword_01",requiredIds={10332}},
 		{id=45802,name="Seal of the Martyr",subText="Rank 1",level=60,icon="Interface\\Icons\\Spell_Holy_SealofBLood"},
 		{id=45801,name="Greater Blessing of Sacrifice",subText="",level=60,icon="Interface\\Icons\\Spell_Holy_SealOfSacrifice"},
 		{id=45019,name="Summon Thalassian Charger",subText="Summon",level=60,icon="Interface\\Icons\\Ability_Mount_Charger"},
 		{id=45020,name="Summon Argent Charger",subText="Summon",level=60,icon="Interface\\Icons\\Ability_Mount_Charger"},
 		{id=45029,name="Summon Scarlet Charger",subText="Summon",level=60,icon="Interface\\Icons\\Ability_Mount_Charger"},
-		{id=45620,name="Conviction",subText="Rank 2",level=60,icon="Interface\\Icons\\Spell_Holy_RetributionAura",requiredIds={45619}}
+		{id=45620,name="Conviction",subText="Rank 2",level=60,icon="Interface\\Icons\\Spell_Holy_RetributionAura",requiredIds={45619}},
+		{id=51558,name="Repentance",subText="Rank 3",level=60,icon="Interface\\Icons\\Spell_Holy_PrayerOfHealing",requiredIds={51557}},
+		{id=51743,name="Flash of Light",subText="Rank 7",level=60,icon="Interface\\Icons\\Spell_Holy_FlashHeal",requiredIds={19943}}
 	}
 }
