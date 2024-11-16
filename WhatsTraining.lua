@@ -57,8 +57,7 @@ local headers = {
         name = wt.L.NEXTLEVEL_HEADER,
         color = COMINGSOON_FONT_COLOR_CODE,
         key = NEXTLEVEL_KEY
-    },
-    {
+    }, {
         name = wt.L.NOTLEVEL_HEADER,
         color = RED_FONT_COLOR_CODE,
         key = NOTLEVEL_KEY
@@ -92,36 +91,76 @@ local headers = {
         nameSort = true
     }
 }
-
-local categories = {
-    _spellsByCategoryKey = {},
-    Insert = function(self, key, spellInfo)
-        tinsert(self._spellsByCategoryKey[key], spellInfo)
-    end,
-    Initialize = function(self)
-        for _, cat in ipairs(headers) do
-            cat.spells = {}
-            self._spellsByCategoryKey[cat.key] = cat.spells
-            cat.formattedName = cat.color .. cat.name .. FONT_COLOR_CODE_CLOSE
-            cat.isHeader = true
-            tinsert(self, cat)
+local function makeCategories(headers) 
+    return {
+        _spellsByCategoryKey = {},
+        Insert = function(self, key, spellInfo)
+            if self._spellsByCategoryKey[key] ~= nil then tinsert(self._spellsByCategoryKey[key], spellInfo) end
+        end,
+        Initialize = function(self)
+            for _, cat in ipairs(headers) do
+                cat.spells = {}
+                self._spellsByCategoryKey[cat.key] = cat.spells
+                cat.formattedName = cat.color and cat.color .. cat.name .. FONT_COLOR_CODE_CLOSE or cat.name
+                cat.isHeader = true
+                tinsert(self, cat)
+            end
+        end,
+        ClearSpells = function(self)
+            for _, cat in ipairs(self) do
+                cat.cost = 0
+                wipe(cat.spells)
+            end
         end
-    end,
-    ClearSpells = function(self)
-        for _, cat in ipairs(self) do
-            cat.cost = 0
-            wipe(cat.spells)
-        end
-    end
-}
+    }
+end
+local categories = makeCategories(headers)
 categories:Initialize()
 
+-- spells within this many levels
+local brokerLevelOffset = 4
+local brokerHeaders = {
+    {
+        name = wt.L.AVAILABLE_HEADER,
+        color = GREEN_FONT_COLOR_CODE,
+        hideLevel = true,
+        key = AVAILABLE_KEY,
+        maxDisplayEntries = 10,
+    }, {
+        name = wt.L.MISSINGREQS_HEADER,
+        color = ORANGE_FONT_COLOR_CODE,
+        hideLevel = true,
+        key = MISSINGREQS_KEY,
+        maxDisplayEntries = 5,
+    }, {
+        name = wt.L.NEXTLEVEL_HEADER,
+        color = COMINGSOON_FONT_COLOR_CODE,
+        key = NEXTLEVEL_KEY,
+        maxDisplayEntries = 10,
+    }, {
+        name = wt.L.NOTLEVEL_HEADER,
+        color = RED_FONT_COLOR_CODE,
+        key = NOTLEVEL_KEY,
+        maxDisplayEntries = 5,
+    }, {
+        name = wt.L.PET_HEADER,
+        color = PET_FONT_COLOR_CODE,
+        key = PET_KEY,
+        maxDisplayEntries = 5,
+    }
+}
+local brokerCategories = makeCategories(brokerHeaders)
+brokerCategories:Initialize()
+
 wt.data = {}
+wt.brokerData = {}
 local function rebuildData(playerLevel, isLevelUpEvent)
     categories:ClearSpells()
+    brokerCategories:ClearSpells()
     wipe(wt.data)
+    wipe(wt.brokerData)
     if (wt.TomesByLevel) then
-        for _, tomesAtLevel in pairs(wt.TomesByLevel) do
+        for level, tomesAtLevel in pairs(wt.TomesByLevel) do
             for _, tome in ipairs(tomesAtLevel) do
                 local itemInfo = wt:ItemInfo(tome.id)
                 if (itemInfo ~= nil) then
@@ -131,6 +170,7 @@ local function rebuildData(playerLevel, isLevelUpEvent)
                         key = IGNORED_KEY
                     end
                     categories:Insert(key, itemInfo)
+                    brokerCategories:Insert(key, itemInfo)
                 end
             end
         end
@@ -163,9 +203,8 @@ local function rebuildData(playerLevel, isLevelUpEvent)
                     end
                     categoryKey = hasReqs and AVAILABLE_KEY or MISSINGREQS_KEY
                 end
-                if (categoryKey ~= nil) then
-                    categories:Insert(categoryKey, spellInfo)
-                end
+                categories:Insert(categoryKey, spellInfo)
+                brokerCategories:Insert(categoryKey, spellInfo)
             end
         end
     end
@@ -190,12 +229,23 @@ local function rebuildData(playerLevel, isLevelUpEvent)
             end
         })
     end
+    local function getSpellLevelColor(spell)
+        local effectiveLevel = spell.level
+        -- when a player levels up and this is triggered from that event, GetQuestDifficultyColor won't
+        -- have the correct player level, it will be off by 1 for whatever reason (just like UnitLevel)
+        if (isLevelUpEvent) then
+            effectiveLevel = effectiveLevel - 1
+        end
+        return GetQuestDifficultyColor(effectiveLevel)
+    end
+    local function categorySort(category)
+        local sortFunc = category.nameSort and byNameThenLevel or byLevelThenName
+        sort(category.spells, sortFunc)
+    end
     for _, category in ipairs(categories) do
         if (#category.spells > 0) then
             tinsert(wt.data, category)
-            local sortFunc = category.nameSort and byNameThenLevel or
-                                 byLevelThenName
-            sort(category.spells, sortFunc)
+            categorySort(category)
             local totalCost = 0
             if (category.key == PET_KEY and WT_NeedsToOpenBeastTraining == true) then
                 tinsert(wt.data, {
@@ -220,13 +270,7 @@ local function rebuildData(playerLevel, isLevelUpEvent)
                 })
             end
             for _, s in ipairs(category.spells) do
-                local effectiveLevel = s.level
-                -- when a player levels up and this is triggered from that event, GetQuestDifficultyColor won't
-                -- have the correct player level, it will be off by 1 for whatever reason (just like UnitLevel)
-                if (isLevelUpEvent) then
-                    effectiveLevel = effectiveLevel - 1
-                end
-                s.levelColor = GetQuestDifficultyColor(effectiveLevel)
+                s.levelColor = getSpellLevelColor(s)
                 s.hideLevel = category.hideLevel
                 totalCost = totalCost + s.cost
                 tinsert(wt.data, s)
@@ -234,7 +278,41 @@ local function rebuildData(playerLevel, isLevelUpEvent)
             category.cost = totalCost
         end
     end
-    if (wt.MainFrame == nil) then return end
+    local brokerAvailable = 0
+    local brokerComing = 0
+    for _, category in ipairs(brokerCategories) do
+        if #category.spells > 0 then
+            category.costFormat = "%s"
+            tinsert(wt.brokerData, category)
+            categorySort(category)
+            local displayedCost = 0
+            local hiddenCost = 0
+            local totalCost = 0
+            category.displayedSpells = {}
+            for _, s in ipairs(category.spells) do
+                s.levelColor = getSpellLevelColor(s)
+                s.hideLevel = category.hideLevel
+                s.costFormat = "%s"
+                if #category.displayedSpells < category.maxDisplayEntries then
+                    tinsert(category.displayedSpells, s)
+                    displayedCost = displayedCost + s.cost
+                else
+                    hiddenCost = hiddenCost + s.cost
+                end
+                totalCost = totalCost + s.cost
+            end
+            category.cost = totalCost
+            category.displayed = {cost = displayedCost, costFormat = "%s"}
+            category.hidden = {cost = hiddenCost, costFormat = "%s"}
+            if category.key == AVAILABLE_KEY then
+                brokerAvailable = #category.spells
+            end
+            if category.key == NEXTLEVEL_KEY then
+                brokerComing = #category.spells
+            end
+        end
+    end
+    if wt.updateBroker ~= nil then wt.updateBroker(brokerAvailable, brokerComing) end
 end
 local function rebuildIfNotCached(fromCache)
     if (fromCache or wt.MainFrame == nil) then return end

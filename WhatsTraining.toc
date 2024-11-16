@@ -1,4 +1,4 @@
-## Interface: 40400
+## Interface: 40401
 ## Title: What's Training?
 ## Version: @project-version@
 ## Author: Sveng
@@ -11,6 +11,8 @@
 ## X-Thanks: Venomisto on curse for updating everything to Cataclysm!
 
 libs\LibStub.lua
+libs\CallbackHandler-1.0.lua
+libs\LibDataBroker-1.1.lua
 libs\FusionIgnoreStore\IgnoreStore.lua
 
 Utils.lua
@@ -30,3 +32,5 @@ Classes\Cata\Warrior.lua
 Localization.lua
 WhatsTrainingUI.lua
 WhatsTraining.lua
+
+Broker.lua

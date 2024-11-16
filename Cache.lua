@@ -18,38 +18,43 @@ function wt:CacheSpell(spell, level, done)
             done(true)
             return
         end
-        local subText = si:GetSpellSubtext()
-        local formattedSubText = (subText and subText ~= "") and
-                                     format(PARENS_TEMPLATE, subText) or ""
-        local name = si:GetSpellName()
-        local formattedFullName = (subText and subText ~= "") and format("%s %s", name, formattedSubText) or name 
-        self.spellInfoCache[spell.id] = {
-            id = spell.id,
-            name = name,
-            subText = subText,
-            formattedSubText = formattedSubText,
-            icon = select(3, GetSpellInfo(spell.id)),
-            cost = spell.cost,
-            formattedCost = GetCoinTextureString(spell.cost),
-            level = level,
-            formattedLevel = format(wt.L.LEVEL_FORMAT, level),
-            formattedFullName = formattedFullName,
-        }
-        if self.allRanksCache[name] == nil then
-            self.allRanksCache[name] = {}
-        end
-        tinsert(self.allRanksCache[name], spell.id)
-        self.idToRanks[spell.id] = self.allRanksCache[name]
-        if (self:IsPetAbility(spell.id)) then
-            if (formattedSubText ~= "") then
-                self.petAbilities[name .. " " .. formattedSubText] =
-                    self.spellInfoCache[spell.id]
-            else
-                self.petAbilities[name] =
-                    self.spellInfoCache[spell.id]
+        -- some stuff, like subtext, might be nil even though we're in the load continuation
+        -- delaying it seems to fix it, and subtext always appears
+        RunNextFrame(function()
+            local subText = si:GetSpellSubtext() -- C_Spell.GetSpellSubtext(spell.id)
+            local formattedSubText = (subText and subText ~= "") and
+                                         format(PARENS_TEMPLATE, subText) or ""
+            local name = si:GetSpellName()
+            local formattedFullName = (subText and subText ~= "") and format("%s %s", name, formattedSubText) or name 
+            self.spellInfoCache[spell.id] = {
+                id = spell.id,
+                name = name,
+                subText = subText,
+                formattedSubText = formattedSubText,
+                icon = select(3, GetSpellInfo(spell.id)),
+                cost = spell.cost,
+                formattedCost = GetCoinTextureString(spell.cost),
+                level = level,
+                formattedLevel = format(wt.L.LEVEL_FORMAT, level),
+                formattedFullName = formattedFullName,
+            }
+        
+            if self.allRanksCache[name] == nil then
+                self.allRanksCache[name] = {}
             end
-        end
-        done(false)
+            tinsert(self.allRanksCache[name], spell.id)
+            self.idToRanks[spell.id] = self.allRanksCache[name]
+            if (self:IsPetAbility(spell.id)) then
+                if (formattedSubText ~= "") then
+                    self.petAbilities[name .. " " .. formattedSubText] =
+                        self.spellInfoCache[spell.id]
+                else
+                    self.petAbilities[name] =
+                        self.spellInfoCache[spell.id]
+                end
+            end
+            done(false)
+        end)
     end)
 end
 

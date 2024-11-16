@@ -31,19 +31,7 @@ local function setTooltip(spellInfo)
         tooltip:ClearLines()
     end
     if (spellInfo.cost > 0) then
-        local coloredCoinString = spellInfo.formattedCost or
-                                      GetCoinTextureString(spellInfo.cost)
-        if (GetMoney() < spellInfo.cost) then
-            coloredCoinString = RED_FONT_COLOR_CODE .. coloredCoinString ..
-                                    FONT_COLOR_CODE_CLOSE
-        end
-        local formatString = spellInfo.isHeader and
-                                 (spellInfo.costFormat or wt.L.TOTALCOST_FORMAT) or
-                                 wt.L.COST_FORMAT
-
-        tooltip:AddLine(HIGHLIGHT_FONT_COLOR_CODE ..
-                            format(formatString, coloredCoinString) ..
-                            FONT_COLOR_CODE_CLOSE)
+        tooltip:AddLine(wt.formatSpellCost(spellInfo))
     end
     if (spellInfo.tooltip) then tooltip:AddLine(spellInfo.tooltip) end
     tooltip:Show()
@@ -158,6 +146,14 @@ function wt.CreateFrame()
             end
         end
     end)
+    function wt.Open()
+        SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB
+        if SpellBookFrame:IsVisible() then
+            SpellBookFrame_Update()
+        else
+            ToggleSpellBook("spell")
+        end
+    end
 
     local skillLineTab = _G["SpellBookSkillLineTab" .. SKILL_LINE_TAB]
     hooksecurefunc("SpellBookFrame_UpdateSkillLineTabs", function()

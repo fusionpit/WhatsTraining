@@ -51,3 +51,16 @@ end
 function wt:IsPetAbility(spellId)
     return self.PetAbilityIds ~= nil and self.PetAbilityIds[spellId]
 end
+
+function wt.formatSpellCost(spellInfo, fontHeight)
+    local coloredCoinString = spellInfo.formattedCost or
+                                    GetCoinTextureString(spellInfo.cost, fontHeight)
+    if (GetMoney() < spellInfo.cost) then
+        coloredCoinString = RED_FONT_COLOR_CODE .. coloredCoinString .. FONT_COLOR_CODE_CLOSE
+    end
+    local formatString = spellInfo.isHeader and
+        (spellInfo.costFormat or wt.L.TOTALCOST_FORMAT) or
+        (spellInfo.costFormat or wt.L.COST_FORMAT)
+
+    return HIGHLIGHT_FONT_COLOR_CODE .. format(formatString, coloredCoinString) .. FONT_COLOR_CODE_CLOSE
+end

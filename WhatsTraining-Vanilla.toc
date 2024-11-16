@@ -11,6 +11,8 @@
 ## X-Thanks: capitano666 on curse for Shaman SoD info
 
 libs\LibStub.lua
+libs\CallbackHandler-1.0.lua
+libs\LibDataBroker-1.1.lua
 libs\FusionIgnoreStore\IgnoreStore.lua
 
 Utils.lua
@@ -29,3 +31,5 @@ Classes\Classic\Warrior.lua
 Localization.lua
 WhatsTrainingUI.lua
 WhatsTraining.lua
+
+Broker.lua
