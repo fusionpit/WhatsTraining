@@ -1,3 +1,8 @@
+* 7.0.0
+    - Add libdatabroker plugin to show spells in TitanPanel/ChocolateBar/etc.
+    - Fix issue where spell ranks would not load correctly when logging in
+    - Update Cata ToC version
+
 * 6.1.0
     - Fix broken right-click when ClassTrainerPlus is active in 1.15.4
 
