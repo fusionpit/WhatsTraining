@@ -1,3 +1,6 @@
+* 7.0.1
+    - Update Classic Era ToC version
+
 * 7.0.0
     - Add libdatabroker plugin to show spells in TitanPanel/ChocolateBar/etc.
     - Fix issue where spell ranks would not load correctly when logging in
