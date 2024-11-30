@@ -1,3 +1,10 @@
+* 7.1.0
+    - Add search box to Classic Era
+    - Add notification to broker tooltip informining hunters to open beast training when necessary
+    - Fix attempting to open spellbook or beast training ui when in combat
+    - Fix page buttons in Cata
+    - Fix right-click ignore in Cata
+
 * 7.0.1
     - Update Classic Era ToC version
 
