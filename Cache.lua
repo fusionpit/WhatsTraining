@@ -25,7 +25,7 @@ function wt:CacheSpell(spell, level, done)
             local formattedSubText = (subText and subText ~= "") and
                                          format(PARENS_TEMPLATE, subText) or ""
             local name = si:GetSpellName()
-            local formattedFullName = (subText and subText ~= "") and format("%s %s", name, formattedSubText) or name 
+            local formattedFullName = (subText and subText ~= "") and format("%s %s", name, formattedSubText) or name
             self.spellInfoCache[spell.id] = {
                 id = spell.id,
                 name = name,
@@ -37,6 +37,7 @@ function wt:CacheSpell(spell, level, done)
                 level = level,
                 formattedLevel = format(wt.L.LEVEL_FORMAT, level),
                 formattedFullName = formattedFullName,
+                searchText = strlower(formattedFullName),
             }
         
             if self.allRanksCache[name] == nil then
@@ -91,7 +92,8 @@ function wt:CacheItem(item, level, done)
             formattedCost = GetCoinTextureString(item.cost),
             level = level,
             formattedLevel = format(wt.L.LEVEL_FORMAT, level),
-            isItem = true
+            isItem = true,
+            searchText = strlower(ii:GetItemName())
         }
         done(false)
     end)

@@ -118,6 +118,18 @@ function wt.CreateFrame()
     right:SetWidth(128)
     right:SetHeight(512)
     right:SetPoint("TOPRIGHT", mainFrame)
+    if not hasNewSpellbook then
+        local search = CreateFrame("EditBox", "$parentSearchBox", mainFrame, "SearchBoxTemplate")
+        search:SetWidth(124)
+        search:SetHeight(32)
+        search:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 81, -34)
+        search:SetScript("OnTextChanged", function (self)
+            SearchBoxTemplate_OnTextChanged(self)
+            local oldFilter = wt.filter
+            wt.filter = strlower(self:GetText())
+            if wt.filter ~= oldFilter then wt:RebuildData() end
+        end)
+    end
     mainFrame:Hide()
     
     if (hasNewSpellbook) then

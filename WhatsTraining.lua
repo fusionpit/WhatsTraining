@@ -154,6 +154,11 @@ brokerCategories:Initialize()
 
 wt.data = {}
 wt.brokerData = {}
+wt.filter = ''
+local function matchesFilter(spellOrItem) 
+    if wt.filter == '' then return true end
+    return strfind(spellOrItem, wt.filter, 1, true)
+end
 local function rebuildData(playerLevel, isLevelUpEvent)
     categories:ClearSpells()
     brokerCategories:ClearSpells()
@@ -203,7 +208,9 @@ local function rebuildData(playerLevel, isLevelUpEvent)
                     end
                     categoryKey = hasReqs and AVAILABLE_KEY or MISSINGREQS_KEY
                 end
-                categories:Insert(categoryKey, spellInfo)
+                if matchesFilter(spellInfo.searchText) then 
+                    categories:Insert(categoryKey, spellInfo)
+                end
                 brokerCategories:Insert(categoryKey, spellInfo)
             end
         end
@@ -283,6 +290,13 @@ local function rebuildData(playerLevel, isLevelUpEvent)
             end
             category.cost = totalCost
         end
+    end
+    if #wt.data == 0 and wt.filter ~= '' then
+        tinsert(wt.data, {
+            formattedName = wt.L.SEARCH_NO_RESULTS,
+            isHeader = true,
+            cost = 0
+        })
     end
     local brokerAvailable = 0
     local brokerComing = 0
