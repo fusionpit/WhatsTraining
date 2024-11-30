@@ -9,7 +9,18 @@ local plugin = ldb:NewDataObject(addonName, {
     type = "data source",
     text = addonTitle,
     icon = "Interface\\Icons\\INV_Misc_QuestionMark",
-    OnClick = function(_,button) wt.Open() end
+    OnClick = function(_,button)
+        local openBeastTraining = wt.needsBeastTraining() and IsShiftKeyDown()
+        if InCombatLockdown() then
+            print(openBeastTraining and wt.L.OPEN_BEAST_IN_COMBAT or wt.L.BROKER_OPEN_IN_COMBAT)
+            return
+        end
+        if openBeastTraining then
+            wt.openBeastTraining()
+        else
+            wt.Open()
+        end
+    end
 })
 local function formatGreen(text)
     return '|cff19ff19'..text..'|r'
@@ -19,7 +30,8 @@ local function formatBlue(text)
 end
 
 local ttShown = false
-local OPEN_HINT = formatGreen(wt.L.BROKEN_CLICK_OPEN)
+local OPEN_HINT = formatGreen(wt.L.BROKER_CLICK_OPEN)
+local OPEN_BEAST_TRAINING_HINT = formatGreen(wt.L.BROKER_CLICK_BEAST_TRAIN)
 function plugin.OnTooltipShow(tt)
     if ttShown == false then 
         wt:RebuildData() 
@@ -29,9 +41,17 @@ function plugin.OnTooltipShow(tt)
     tt:AddLine(wt.L.TAB_TEXT)
     tt:AddLine(" ")
 
+    if wt.needsBeastTraining() then
+        tt:AddLine(wt.L.OPEN_BEAST_TRAINING)
+        tt:AddLine(" ")
+    end
+
     if #wt.brokerData == 0 then
         tt:AddLine(wt.L.BROKER_NOTHING)
         tt:AddLine(" ")
+        if wt.needsBeastTraining() then
+            tt:AddLine(OPEN_BEAST_TRAINING_HINT)
+        end
         tt:AddLine(OPEN_HINT)
         return
     end
@@ -57,6 +77,9 @@ function plugin.OnTooltipShow(tt)
         if i ~= #wt.brokerData then tt:AddLine(" ") end
     end
     tt:AddLine(" ")
+    if wt.needsBeastTraining() then
+        tt:AddLine(OPEN_BEAST_TRAINING_HINT)
+    end
     tt:AddLine(OPEN_HINT)
 end
 

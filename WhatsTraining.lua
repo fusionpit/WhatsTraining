@@ -247,14 +247,20 @@ local function rebuildData(playerLevel, isLevelUpEvent)
             tinsert(wt.data, category)
             categorySort(category)
             local totalCost = 0
-            if (category.key == PET_KEY and WT_NeedsToOpenBeastTraining == true) then
+            if (category.key == PET_KEY and wt.needsBeastTraining()) then
                 tinsert(wt.data, {
                     formattedName = ORANGE_FONT_COLOR_CODE ..
                         wt.L.OPEN_BEAST_TRAINING .. FONT_COLOR_CODE_CLOSE,
                     isHeader = true,
                     cost = 0,
                     tooltip = wt.L.CLICK_TO_OPEN,
-                    click = function() CastSpellByID(5149) end
+                    click = function() 
+                        if InCombatLockdown() then
+                            print(wt.L.OPEN_BEAST_IN_COMBAT)
+                        else
+                            wt.openBeastTraining()
+                        end
+                    end
                 })
             end
             if (WT_ShowLearnedNotice == true and category.key == PET_KEY and wt.currentClass == "WARLOCK") then

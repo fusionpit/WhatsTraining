@@ -64,3 +64,14 @@ function wt.formatSpellCost(spellInfo, fontHeight)
 
     return HIGHLIGHT_FONT_COLOR_CODE .. format(formatString, coloredCoinString) .. FONT_COLOR_CODE_CLOSE
 end
+
+local BEAST_TRAINING_SPELL = 5149
+function wt.needsBeastTraining()
+    return WT_NeedsToOpenBeastTraining == true and wt.hasBeastTraining()
+end
+function wt.hasBeastTraining()
+    return IsPlayerSpell(BEAST_TRAINING_SPELL)
+end
+function wt.openBeastTraining()
+    CastSpellByID(BEAST_TRAINING_SPELL)
+end
