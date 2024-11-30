@@ -1,10 +1,7 @@
 local _, wt = ...
 local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
 
-local isCata;
-if (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC) then
-   isCata = true;
-end
+local hasNewSpellbook = WOW_PROJECT_ID >= WOW_PROJECT_CATACLYSM_CLASSIC
 
 local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 
@@ -123,7 +120,7 @@ function wt.CreateFrame()
     right:SetPoint("TOPRIGHT", mainFrame)
     mainFrame:Hide()
     
-    if (isCata) then
+    if (hasNewSpellbook) then
     	left:SetWidth(350)
     	left:SetHeight(536)
     	left:SetPoint("TOPLEFT", mainFrame, 72, 8)
@@ -163,9 +160,20 @@ function wt.CreateFrame()
         if (SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB) then
             skillLineTab:SetChecked(true)
             mainFrame:Show()
+            if hasNewSpellbook then
+                SpellBookPrevPageButton:Disable()
+                SpellBookNextPageButton:Disable()
+                SpellBookPageText:SetText('')
+            else
+                ShowAllSpellRanksCheckbox:Hide()
+            end
         else
             skillLineTab:SetChecked(false)
             mainFrame:Hide()
+            local _, class = UnitClass("player")
+            if not hasNewSpellbook and class ~= "ROGUE" and class ~= "WARRIOR" then
+                ShowAllSpellRanksCheckbox:Show()
+            end
         end
     end)
     hooksecurefunc("SpellBookFrame_Update", function()
@@ -258,7 +266,7 @@ function wt.CreateFrame()
         row.spell = spell
 
         if (rows[i - 1] == nil) then
-        	if (isCata) then
+        	if (hasNewSpellbook) then
         		row:SetPoint("TOPLEFT", mainFrame, 110, -78)
         	else
             	row:SetPoint("TOPLEFT", mainFrame, 26, -78)
