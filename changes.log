@@ -1,3 +1,6 @@
+* 7.1.1
+    - Fix warlock tomes not being filtered by search
+
 * 7.1.0
     - Add search box to Classic Era
     - Add notification to broker tooltip informining hunters to open beast training when necessary

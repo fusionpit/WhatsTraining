@@ -174,7 +174,9 @@ local function rebuildData(playerLevel, isLevelUpEvent)
                     if ignoreStore:IsIgnored(tome.id) then
                         key = IGNORED_KEY
                     end
-                    categories:Insert(key, itemInfo)
+                    if matchesFilter(itemInfo.searchText) then
+                        categories:Insert(key, itemInfo)
+                    end
                     brokerCategories:Insert(key, itemInfo)
                 end
             end
