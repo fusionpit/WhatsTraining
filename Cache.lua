@@ -83,9 +83,10 @@ function wt:CacheItem(item, level, done)
             return
         end
         local rankText = string.match(ii:GetItemName(), parensPattern)
+        local ranklessName = string.gsub(ii:GetItemName(), parensPattern, "")
         self.itemInfoCache[item.id] = {
             id = item.id,
-            name = string.gsub(ii:GetItemName(), parensPattern, ""),
+            name = ranklessName,
             formattedSubText = rankText,
             icon = ii:GetItemIcon(),
             cost = item.cost,
@@ -93,8 +94,14 @@ function wt:CacheItem(item, level, done)
             level = level,
             formattedLevel = format(wt.L.LEVEL_FORMAT, level),
             isItem = true,
-            searchText = strlower(ii:GetItemName())
+            searchText = strlower(ii:GetItemName()),
+            formattedFullName = ii:GetItemName()
         }
+        if self.allRanksCache[ranklessName] == nil then
+            self.allRanksCache[ranklessName] = {}
+        end
+        tinsert(self.allRanksCache[ranklessName], item.id)
+        self.idToRanks[item.id] = self.allRanksCache[ranklessName]
         done(false)
     end)
 end

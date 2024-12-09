@@ -294,34 +294,42 @@ function wt.CreateFrame()
     wt.MainFrame = mainFrame
 end
 
+function addIgnoreLines(rootDescription, config)
+    rootDescription:CreateTitle(config.title)
+    rootDescription:CreateCheckbox(wt.L.IGNORED_TT, function() return config.isIgnored end, function() 
+        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+        ignoreStore:Flip(config.id)
+        config.afterClick()
+        return MenuResponse.Close
+    end)
+
+    local allRanks = wt:AllRanks(config.id)
+    if allRanks and #allRanks > 1 then
+        local allIgnored = true
+        for _, id in ipairs(allRanks) do
+            allIgnored = allIgnored and ignoreStore:IsIgnored(id)
+        end
+        rootDescription:CreateCheckbox(wt.L.IGNORE_ALL_TT, function() return allIgnored end, function ()
+            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+            ignoreStore:UpdateMany(allRanks, not allIgnored)
+            config.afterClick()
+            return MenuResponse.Close
+        end)
+    end
+end
+
 wt.ClickHook = function(spell, afterClick, row)
     local tomeId = spell.id
     if (not wt.TomeIds or not wt.TomeIds[tomeId]) then
         PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
         local isIgnored = ignoreStore:IsIgnored(spell.id)
-        local menuTitle = spell.formattedFullName
-        MenuUtil.CreateContextMenu(row, function(owner, rootDescription) 
-            rootDescription:CreateTitle(menuTitle)
-            rootDescription:CreateCheckbox(wt.L.IGNORED_TT, function() return isIgnored end, function() 
-                PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-                ignoreStore:Flip(spell.id)
-                afterClick()
-                return MenuResponse.Close
-            end)
-
-            local allRanks = wt:AllRanks(spell.id)
-            if allRanks and #allRanks > 1 then
-                local allIgnored = true
-                for _, id in ipairs(allRanks) do
-                    allIgnored = allIgnored and ignoreStore:IsIgnored(id)
-                end
-                rootDescription:CreateCheckbox(wt.L.IGNORE_ALL_TT, function() return allIgnored end, function ()
-                    PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-                    ignoreStore:UpdateMany(allRanks, not allIgnored)
-                    afterClick()
-                    return MenuResponse.Close
-                end)
-            end
+        MenuUtil.CreateContextMenu(row, function(owner, rootDescription)
+            addIgnoreLines(rootDescription, {
+                title = spell.formattedFullName,
+                isIgnored = isIgnored,
+                id = spell.id,
+                afterClick = afterClick
+            })
         end)
         
         return
@@ -338,12 +346,11 @@ wt.ClickHook = function(spell, afterClick, row)
             afterClick()
             return MenuResponse.Close
         end)
-        rootDescription:CreateTitle(spell.name)
-        rootDescription:CreateCheckbox(wt.L.IGNORED_TT, function() return isIgnored end, function() 
-            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-            ignoreStore:Flip(spell.id)
-            afterClick()
-            return MenuResponse.Close
-        end)
+        addIgnoreLines(rootDescription, {
+            title = spell.formattedFullName,
+            isIgnored = isIgnored,
+            id = spell.id,
+            afterClick = afterClick
+        })
     end)
 end
