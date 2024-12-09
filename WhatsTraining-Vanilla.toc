@@ -13,6 +13,7 @@
 libs\LibStub.lua
 libs\CallbackHandler-1.0.lua
 libs\LibDataBroker-1.1.lua
+libs\LibBabble-CreatureType-3.0\lib.xml
 libs\FusionIgnoreStore\IgnoreStore.lua
 
 Utils.lua
