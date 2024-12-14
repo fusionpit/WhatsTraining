@@ -76,7 +76,7 @@ function wt:CacheItem(item, level, done)
         done(true)
         return
     end
-    local ii = Item:CreateFromItemID(item.id)
+    local ii = Item:CreateFromItemID(item.itemId)
     ii:ContinueOnItemLoad(function()
         if (self.itemInfoCache[item.id] ~= nil) then
             done(true)
@@ -84,8 +84,13 @@ function wt:CacheItem(item, level, done)
         end
         local rankText = string.match(ii:GetItemName(), parensPattern)
         local ranklessName = string.gsub(ii:GetItemName(), parensPattern, "")
+        local rankCacheKey = ranklessName
+        if wt.SayaadTomes[item.itemId] then
+           rankCacheKey = item.family..ranklessName 
+        end
         self.itemInfoCache[item.id] = {
             id = item.id,
+            itemId = item.itemId,
             name = ranklessName,
             formattedSubText = rankText,
             icon = ii:GetItemIcon(),

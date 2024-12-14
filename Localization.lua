@@ -32,7 +32,9 @@ local localeText = {
         CLICK_TO_DISMISS = "Click header to dismiss",
         IGNORED_TT = "Ignored",
         IGNORE_ALL_TT = "Ignore all ranks",
-        SEARCH_NO_RESULTS = "No results found"
+        SEARCH_NO_RESULTS = "No results found",
+        INCUBUS = "Incubus",
+        NOT_KNOWN = "Not known"
     },
     frFR = {
         AVAILABLE_HEADER = "Disponible",
@@ -128,7 +130,7 @@ local localeText = {
 
 wt.L = localeText["enUS"]
 local locale = GetLocale()
-if (locale == "enUS" or locale == "enGB" or localeText[locale] == nil) then
+if locale == "enUS" or locale == "enGB" or localeText[locale] == nil then
     return
 end
 for k, v in pairs(localeText[locale]) do
