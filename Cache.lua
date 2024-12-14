@@ -95,13 +95,16 @@ function wt:CacheItem(item, level, done)
             formattedLevel = format(wt.L.LEVEL_FORMAT, level),
             isItem = true,
             searchText = strlower(ii:GetItemName()),
-            formattedFullName = ii:GetItemName()
+            formattedFullName = ii:GetItemName(),
+            localFamily = item.localFamily,
+            family = item.family,
+            altIcon = item.altIcon
         }
-        if self.allRanksCache[ranklessName] == nil then
-            self.allRanksCache[ranklessName] = {}
+        if self.allRanksCache[rankCacheKey] == nil then
+            self.allRanksCache[rankCacheKey] = {}
         end
-        tinsert(self.allRanksCache[ranklessName], item.id)
-        self.idToRanks[item.id] = self.allRanksCache[ranklessName]
+        tinsert(self.allRanksCache[rankCacheKey], item.id)
+        self.idToRanks[item.id] = self.allRanksCache[rankCacheKey]
         done(false)
     end)
 end
