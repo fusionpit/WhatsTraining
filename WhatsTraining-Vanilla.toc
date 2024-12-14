@@ -21,6 +21,7 @@ Cache.lua
 
 Classes\Classic\Druid.lua
 Classes\Classic\Hunter.lua
+Classes\Classic\HunterPets.lua
 Classes\Classic\Mage.lua
 Classes\Classic\Paladin.lua
 Classes\Classic\Priest.lua
