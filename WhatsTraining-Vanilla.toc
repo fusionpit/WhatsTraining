@@ -16,6 +16,7 @@ libs\LibDataBroker-1.1.lua
 libs\LibBabble-CreatureType-3.0\lib.xml
 libs\FusionIgnoreStore\IgnoreStore.lua
 
+Localization.lua
 Utils.lua
 Cache.lua
 
@@ -30,7 +31,6 @@ Classes\Classic\Shaman.lua
 Classes\Classic\Warlock.lua
 Classes\Classic\Warrior.lua
 
-Localization.lua
 WhatsTrainingUI.lua
 WhatsTraining.lua
 

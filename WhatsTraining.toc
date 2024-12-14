@@ -14,6 +14,7 @@ libs\CallbackHandler-1.0.lua
 libs\LibDataBroker-1.1.lua
 libs\FusionIgnoreStore\IgnoreStore.lua
 
+Localization.lua
 Utils.lua
 Cache.lua
 
@@ -28,7 +29,6 @@ Classes\Cata\Shaman.lua
 Classes\Cata\Warlock.lua
 Classes\Cata\Warrior.lua
 
-Localization.lua
 WhatsTrainingUI.lua
 WhatsTraining.lua
 
