@@ -1,3 +1,6 @@
+* 8.0.1
+    - Fix sayaad icons appearing on non-tome vendor windows
+
 * 8.0.0
     - Warlock pets tomes are split by type
     - Can now ignore all ranks of a specific tome

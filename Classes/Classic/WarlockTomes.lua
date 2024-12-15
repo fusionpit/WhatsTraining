@@ -289,6 +289,9 @@ local tomeMerchantIds = {
     [6328] = true
 }
 local function updateMerchantFrame()
+    for _, f in ipairs(iconFrames) do
+        f:Hide()
+    end
     if IsAddOnLoaded('GrimoireKeeper') then return end
     local guid = UnitGUID("npc")
     if guid == nil then return end
@@ -301,7 +304,6 @@ local function updateMerchantFrame()
     local engPet = currentEnglishPet()
     for i = 1, MERCHANT_ITEMS_PER_PAGE do
         local iconFrame = iconFrames[i]
-        iconFrame:Hide()
         local index = ((MerchantFrame.page - 1) * MERCHANT_ITEMS_PER_PAGE) + i
         local itemButton = _G["MerchantItem" .. i .. "ItemButton"]
         local merchantButton = _G["MerchantItem" .. i]
