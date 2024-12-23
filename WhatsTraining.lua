@@ -393,12 +393,15 @@ end
 if wt.TomesByLevel then
     for level, tomesByLevel in pairs(wt.TomesByLevel) do
         for _, tome in ipairs(tomesByLevel) do
-            wt:CacheItem(tome, level, rebuildIfNotCached)
+            local taughtSpellId = wt.TomeTaughtSpells[tome.itemId]
+            if not taughtSpellId then print("NO SPELL ID?", tome.itemId) end
+            wt:CacheSpell({
+                id = taughtSpellId,
+                cost = tome.cost,
+            }, level, function(_, spellInfo)
+                wt:CacheItem(tome, level, rebuildIfNotCached, spellInfo)
+            end)
         end
-    end
-    for _, spellId in pairs(wt.TomeTaughtSpells) do 
-        -- don't care about the results as these are only used in tooltips; just want these loaded client-side
-        Spell:CreateFromSpellID(spellId) 
     end
 end
 for level, spellsByLevel in pairs(wt.SpellsByLevel) do

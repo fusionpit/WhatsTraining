@@ -6,16 +6,16 @@ wt.spellInfoCache = {}
 wt.allRanksCache = {}
 wt.idToRanks = {}
 
--- done has param cacheHit
+-- done has params cacheHit: bool, spellInfo
 function wt:CacheSpell(spell, level, done)
     if (self.spellInfoCache[spell.id] ~= nil) then
-        done(true)
+        done(true, self.spellInfoCache[spell.id])
         return
     end
     local si = Spell:CreateFromSpellID(spell.id)
     si:ContinueOnSpellLoad(function()
         if (self.spellInfoCache[spell.id] ~= nil) then
-            done(true)
+            done(true, self.spellInfoCache[spell.id])
             return
         end
         -- some stuff, like subtext, might be nil even though we're in the load continuation
@@ -38,6 +38,7 @@ function wt:CacheSpell(spell, level, done)
                 formattedLevel = format(wt.L.LEVEL_FORMAT, level),
                 formattedFullName = formattedFullName,
                 searchText = strlower(formattedFullName),
+                link = string.format("|cff71d5ff|Hspell:%d:0|h[%s]|h|r", spell.id, name),
             }
         
             if self.allRanksCache[name] == nil then
@@ -54,7 +55,7 @@ function wt:CacheSpell(spell, level, done)
                         self.spellInfoCache[spell.id]
                 end
             end
-            done(false)
+            done(false, self.spellInfoCache[spell.id])
         end)
     end)
 end
@@ -71,7 +72,7 @@ wt.itemInfoCache = {}
 -- however, this will cause overlap with the level text and there's no good way to fix it with setting points
 -- instead, strip the rank text out of the name and put it as the subText
 local parensPattern = " (%(.+%))"
-function wt:CacheItem(item, level, done)
+function wt:CacheItem(item, level, done, taughtSpell)
     if (self.itemInfoCache[item.id] ~= nil) then
         done(true)
         return
@@ -103,7 +104,9 @@ function wt:CacheItem(item, level, done)
             formattedFullName = ii:GetItemName(),
             localFamily = item.localFamily,
             family = item.family,
-            altIcon = item.altIcon
+            altIcon = item.altIcon,
+            link = ii:GetItemLink(),
+            taughtSpell = taughtSpell
         }
         if self.allRanksCache[rankCacheKey] == nil then
             self.allRanksCache[rankCacheKey] = {}

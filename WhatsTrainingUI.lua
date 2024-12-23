@@ -77,6 +77,18 @@ local function setRowSpell(row, spell)
         row:SetScript("OnClick", spell.click)
     elseif not spell.isHeader then
         row:SetScript("OnClick", function(_, button)
+            if button == "LeftButton" and IsShiftKeyDown() then
+                local link = spell.link
+                if spell.taughtSpell then
+                    link = link..' '..spell.taughtSpell.link
+                end
+                local window = ChatEdit_GetActiveWindow()
+                if window then
+                    window:Insert(link)
+                else
+                    ChatFrame_OpenChat(link)
+                end
+            end
             if not wt.ClickHook then return end
             if button == "RightButton" then
                 wt.ClickHook(spell, function()
