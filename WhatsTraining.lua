@@ -75,6 +75,7 @@ local headers = {
         name = wt.L.IGNORED_HEADER,
         color = LIGHTYELLOW_FONT_COLOR_CODE,
         costFormat = wt.L.TOTALSAVINGS_FORMAT,
+        costColor = GREEN_FONT_COLOR_CODE,
         key = IGNORED_KEY,
         nameSort = true
     }, {

@@ -55,7 +55,9 @@ end
 function wt.formatSpellCost(spellInfo, fontHeight)
     local coloredCoinString = spellInfo.formattedCost or
                                     GetCoinTextureString(spellInfo.cost, fontHeight)
-    if (GetMoney() < spellInfo.cost) then
+    if spellInfo.costColor then
+        coloredCoinString = spellInfo.costColor .. coloredCoinString .. FONT_COLOR_CODE_CLOSE
+    elseif (GetMoney() < spellInfo.cost) then
         coloredCoinString = RED_FONT_COLOR_CODE .. coloredCoinString .. FONT_COLOR_CODE_CLOSE
     end
     local formatString = spellInfo.isHeader and
