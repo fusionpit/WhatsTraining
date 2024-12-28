@@ -7,6 +7,7 @@ local NEXTLEVEL_KEY = "nextLevel"
 local NOTLEVEL_KEY = "notLevel"
 local MISSINGTALENT_KEY = "missingTalent"
 local IGNORED_KEY = "ignored"
+local IGNORED_PET_KEY = "ignoredPet"
 local KNOWN_KEY = "known"
 local KNOWN_PET_KEY = "knownPet"
 local PET_KEY = "pet"
@@ -79,6 +80,13 @@ local headers = {
         key = IGNORED_KEY,
         nameSort = true
     }, {
+        name = wt.L.IGNORED_PET_HEADER,
+        color = LIGHTYELLOW_FONT_COLOR_CODE,
+        costFormat = wt.L.TOTALSAVINGS_FORMAT,
+        costColor = GREEN_FONT_COLOR_CODE,
+        key = IGNORED_PET_KEY,
+        nameSort = true
+    },{
         name = wt.L.KNOWN_HEADER,
         color = GRAY_FONT_COLOR_CODE,
         hideLevel = true,
@@ -173,7 +181,7 @@ local function rebuildData(playerLevel, isLevelUpEvent)
                     if wt.learnedPetAbilityMap[tome.id] then
                        key = KNOWN_PET_KEY 
                     elseif ignoreStore:IsIgnored(tome.id) then
-                        key = IGNORED_KEY
+                        key = IGNORED_PET_KEY
                     end
                     if matchesFilter(itemInfo.searchText) then
                         categories:Insert(key, itemInfo)
@@ -193,7 +201,8 @@ local function rebuildData(playerLevel, isLevelUpEvent)
                     categoryKey = wt:IsPetAbility(spellInfo.id) and
                                       KNOWN_PET_KEY or KNOWN_KEY
                 elseif (ignoreStore:IsIgnored(spellInfo.id)) then
-                    categoryKey = IGNORED_KEY
+                    categoryKey = wt:IsPetAbility(spellInfo.id) and 
+                                      IGNORED_PET_KEY or IGNORED_KEY
                 elseif (wt:IsPetAbility(spellInfo.id)) then
                     categoryKey = PET_KEY
                 elseif (spell.requiredTalentId ~= nil and

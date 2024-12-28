@@ -8,6 +8,7 @@ local localeText = {
         NOTLEVEL_HEADER = "Not Yet Available",
         MISSINGTALENT_HEADER = "Missing Required Talents",
         IGNORED_HEADER = "Ignored",
+        IGNORED_PET_HEADER = "Ignored (Pet)",
         KNOWN_HEADER = "Already Known",
         KNOWN_PET_HEADER = "Already Known (Pet)",
         PET_HEADER = "Pet Abilities",
