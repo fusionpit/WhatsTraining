@@ -4,9 +4,15 @@ if wt.currentClass ~= "WARLOCK" then return end
 local LCT = LibStub("LibBabble-CreatureType-3.0"):GetLookupTable()
 local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
 
-local SUCCUBUS_ICON = 136220
+local altIcons = {
+    ["Succubus"] = 136220,
+    ["Incubus"] = 4352492,
+    ["Imp"] = 136218,
+    ["Voidwalker"] = 136221,
+    ["Felhunter"] = 136217
+}
+
 local SUCCUBUS_KEY_FORMAT = "SUC:%d"
-local INCUBUS_ICON = 4352492
 local INCUBUS_KEY_FORMAT = "INC:%d"
 
 wt.TomesByLevel = {
@@ -115,11 +121,8 @@ for _, tomesByLevel in pairs(wt.TomesByLevel) do
         end
         wt.TomeIds[tome.itemId] = true 
         tomes[tome.id] = tome
-        if tome.family == 'Succubus' then
-            tome.altIcon = SUCCUBUS_ICON
-        end
+        tome.altIcon = altIcons[tome.family]
         if tome.family == 'Incubus' then
-            tome.altIcon = INCUBUS_ICON
             tome.localFamily = wt.L.INCUBUS
         else
             local localFamily = LCT[tome.family]
@@ -297,8 +300,8 @@ for i = 1, MERCHANT_ITEMS_PER_PAGE do
     parent:SetScript("OnLeave", function()
         tomeSpellTooltip:Hide()
     end)
-    local succubusIcon = createIcon("Succubus", SUCCUBUS_ICON, parent, "LEFT")
-    local incubusIcon = createIcon("Incubus", INCUBUS_ICON, parent, "RIGHT")
+    local succubusIcon = createIcon("Succubus", altIcons.Succubus, parent, "LEFT")
+    local incubusIcon = createIcon("Incubus", altIcons.Incubus, parent, "RIGHT")
     iconFrames[i] = {
         Hide = function()
             parent:Hide()
