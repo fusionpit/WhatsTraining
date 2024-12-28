@@ -102,6 +102,7 @@ wt.TomeTaughtSpells = {
 local tomes = {}
 -- everything but Incubus, which does not have an entry in LibCreatureType
 local families = {}
+local tomesByFamily = {}
 wt.TomeIds = {}
 -- Succubus and Incubus share tomes, but you need to buy them twice to train both
 wt.SayaadTomes = {}
@@ -125,6 +126,11 @@ for _, tomesByLevel in pairs(wt.TomesByLevel) do
             tome.localFamily = localFamily
             families[localFamily] = tome.family
         end
+        tome.taughtSpell = wt.TomeTaughtSpells[tome.itemId]
+        if not tomesByFamily[tome.family] then
+            tomesByFamily[tome.family] = {}
+        end
+        tinsert(tomesByFamily[tome.family], tome)
     end
 end
 
@@ -159,6 +165,54 @@ local function currentEnglishPet()
     -- LCT does not have Incubus, so assume any nil for family is incubus
     return family or "Incubus"
 end
+local function sayaadKeys(itemId)
+    local succubusKey = string.format(SUCCUBUS_KEY_FORMAT, itemId)
+    local incubusKey = string.format(INCUBUS_KEY_FORMAT, itemId)
+    return succubusKey, incubusKey
+end
+local function checkCurrentPetSpells()
+    local pet = currentEnglishPet()
+    if not pet then return end
+    local familyTomes = tomesByFamily[pet]
+    if not familyTomes then return end
+    for _, tome in ipairs(familyTomes) do
+        if IsSpellKnown(tome.taughtSpell, true) then
+            if wt.SayaadTomes[tome.itemId] then
+                local succubusKey, incubusKey = sayaadKeys(tome.itemId)
+                if pet == "Succubus" then
+                    wt.learnedPetAbilityMap[succubusKey] = true
+                elseif pet == "Incubus" then
+                    wt.learnedPetAbilityMap[incubusKey] = true
+                end
+            else
+                wt.learnedPetAbilityMap[tome.itemId] = true
+            end
+        end
+    end
+end
+local petSummonIds = {
+    [688] = true, -- Summon Imp
+    [697] = true, -- Summon Voidwalker
+    [712] = true, -- Summon Succubus
+    [713] = true, -- Summon Incubus
+    [691] = true, -- Summon Felhunter
+}
+local events = CreateFrame("Frame")
+events:RegisterEvent("PET_DISMISS_START")
+events:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
+events:RegisterEvent("PLAYER_ENTERING_WORLD")
+events:SetScript("OnEvent", function(self, event, arg1, ...)
+    if event == "PET_DISMISS_START" then
+        checkCurrentPetSpells()
+    elseif event == "UNIT_SPELLCAST_SUCCEEDED" and arg1 == "player" then
+        local spellId = select(2, ...)
+        if petSummonIds[spellId] then
+            C_Timer.After(0.5, checkCurrentPetSpells)
+        end
+    elseif event == "PLAYER_ENTERING_WORLD" then
+        RunNextFrame(checkCurrentPetSpells)
+    end
+end)
 
 local function matchesCurrentPet(itemId, engPet)
     local tomeKey = nil
@@ -193,11 +247,7 @@ local function coloredStatusTip(key)
     end
     return WHITE_FONT_COLOR:WrapTextInColorCode(spaced(tome.localFamily, wt.L.NOT_KNOWN))
 end
-local function sayaadKeys(itemId)
-    local succubusKey = string.format(SUCCUBUS_KEY_FORMAT, itemId)
-    local incubusKey = string.format(INCUBUS_KEY_FORMAT, itemId)
-    return succubusKey, incubusKey
-end
+
 local function colorItem(merchantButton, slotR, slotG, slotB, itemButton, texR, texG, texB)
     SetItemButtonNameFrameVertexColor(merchantButton, slotR, slotG, slotB)
     SetItemButtonSlotVertexColor(merchantButton, slotR, slotG, slotB)
@@ -288,6 +338,8 @@ local tomeMerchantIds = {
     [5815] = true,
     [6328] = true
 }
+-- scanning for learned pet spells by spell id only returns true for the last trained rank
+-- the only way to get all learned tomes automatically is to scan the tooltip for 'Already Known' when a pet is out
 local function updateMerchantFrame()
     for _, f in ipairs(iconFrames) do
         f:Hide()
