@@ -1,3 +1,9 @@
+* 8.2.0
+    - Warlock pets are now scanned for learned spells when active, not only at a tome vendor
+    - Ignored pet spells are now in their own category
+    - Known and ignored warlock tomes now display the summon icon for the pet instead of the tome icon
+    - Known spell header money spent always colored red
+
 * 8.1.0
     - <Shift>Click spells or tomes to link them in chat
     - Ignored header total no longer reflects player money; now always green
