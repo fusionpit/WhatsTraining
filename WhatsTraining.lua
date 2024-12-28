@@ -91,12 +91,14 @@ local headers = {
         color = GRAY_FONT_COLOR_CODE,
         hideLevel = true,
         key = KNOWN_KEY,
+        costColor = RED_FONT_COLOR_CODE,
         nameSort = true
     }, {
         name = wt.L.KNOWN_PET_HEADER,
         color = GRAY_FONT_COLOR_CODE,
         hideLevel = true,
         key = KNOWN_PET_KEY,
+        costColor = RED_FONT_COLOR_CODE,
         nameSort = true
     }
 }
