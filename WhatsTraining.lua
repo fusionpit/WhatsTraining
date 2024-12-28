@@ -91,6 +91,7 @@ local headers = {
         color = GRAY_FONT_COLOR_CODE,
         hideLevel = true,
         key = KNOWN_KEY,
+        costFormat = wt.L.TOTALSPENT_FORMAT,
         costColor = RED_FONT_COLOR_CODE,
         nameSort = true
     }, {
@@ -98,6 +99,7 @@ local headers = {
         color = GRAY_FONT_COLOR_CODE,
         hideLevel = true,
         key = KNOWN_PET_KEY,
+        costFormat = wt.L.TOTALSPENT_FORMAT,
         costColor = RED_FONT_COLOR_CODE,
         nameSort = true
     }

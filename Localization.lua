@@ -15,6 +15,7 @@ local localeText = {
         COST_FORMAT = "Cost: %s",
         TOTALCOST_FORMAT = "Total Cost: %s",
         TOTALSAVINGS_FORMAT = "Total Savings: %s",
+        TOTALSPENT_FORMAT = "Total Spent: %s",
         BROKER_HEADER_HIDDEN_FORMAT = "%s shown (%s total)",
         BROKER_HIDDEN_FORMAT = "And another %d that cost %s",
         BROKER_NOTHING = "Nothing left to learn!",
