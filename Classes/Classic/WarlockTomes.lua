@@ -178,19 +178,23 @@ local function checkCurrentPetSpells()
     if not pet then return end
     local familyTomes = tomesByFamily[pet]
     if not familyTomes then return end
+    local hasUpdate = false
     for _, tome in ipairs(familyTomes) do
         if IsSpellKnown(tome.taughtSpell, true) then
             if wt.SayaadTomes[tome.itemId] then
                 local succubusKey, incubusKey = sayaadKeys(tome.itemId)
                 if pet == "Succubus" then
-                    wt.learnedPetAbilityMap[succubusKey] = true
+                    hasUpdate = hasUpdate or wt:SetPetAbilityStatus(succubusKey, true)
                 elseif pet == "Incubus" then
-                    wt.learnedPetAbilityMap[incubusKey] = true
+                    hasUpdate = hasUpdate or wt:SetPetAbilityStatus(incubusKey, true)
                 end
             else
-                wt.learnedPetAbilityMap[tome.itemId] = true
+                hasUpdate = hasUpdate or wt:SetPetAbilityStatus(tome.itemId, true)
             end
         end
+    end
+    if hasUpdate then
+        wt:RebuildData()
     end
 end
 local petSummonIds = {
@@ -230,7 +234,7 @@ local function matchesCurrentPet(itemId, engPet)
     return tome and engPet == tome.family
 end
 local function status(key)
-    if wt.learnedPetAbilityMap[key] then
+    if wt:IsPetAbilityLearned(key) then
         return ITEM_SPELL_KNOWN
     elseif ignoreStore:IsIgnored(key) then
         return wt.L.IGNORED_HEADER
@@ -243,7 +247,7 @@ end
 local function coloredStatusTip(key)
     local tome = tomes[key]
     if not tome then return nil end
-    if wt.learnedPetAbilityMap[key] then
+    if wt:IsPetAbilityLearned(key) then
         return RED_FONT_COLOR:WrapTextInColorCode(spaced(tome.localFamily, ITEM_SPELL_KNOWN))
     elseif ignoreStore:IsIgnored(key) then
         return LIGHTYELLOW_FONT_COLOR:WrapTextInColorCode(spaced(tome.localFamily, wt.L.IGNORED_HEADER))
@@ -362,19 +366,20 @@ local function updateMerchantFrame()
         local index = ((MerchantFrame.page - 1) * MERCHANT_ITEMS_PER_PAGE) + i
         local itemButton = _G["MerchantItem" .. i .. "ItemButton"]
         local merchantButton = _G["MerchantItem" .. i]
+        local hasUpdate = false
         if index <= numMerchantItems then
             local merchantItemID = GetMerchantItemID(index)
             if wt.SayaadTomes[merchantItemID] then
                 local petMatches = matchesCurrentPet(merchantItemID, engPet)
                 local succubusKey, incubusKey = sayaadKeys(merchantItemID)
-                if wt.learnedPetAbilityMap[succubusKey] ~= true and petMatches and engPet == "Succubus" and isKnown(index) then
-                    wt.learnedPetAbilityMap[succubusKey] = true
-                elseif wt.learnedPetAbilityMap[incubusKey] ~= true and petMatches and engPet == "Incubus" and isKnown(index) then
-                    wt.learnedPetAbilityMap[incubusKey] = true
+                if not wt:IsPetAbilityLearned(succubusKey) and petMatches and engPet == "Succubus" and isKnown(index) then
+                    hasUpdate = hasUpdate or wt:SetPetAbilityStatus(succubusKey, true)
+                elseif not wt:IsPetAbilityLearned(incubusKey) and petMatches and engPet == "Incubus" and isKnown(index) then
+                    hasUpdate = hasUpdate or wt:SetPetAbilityStatus(incubusKey, true)
                 end
-                local succubusKnown = wt.learnedPetAbilityMap[succubusKey]
+                local succubusKnown = wt:IsPetAbilityLearned(succubusKey)
                 local succubusIgnored = ignoreStore:IsIgnored(succubusKey)
-                local incubusKnown = wt.learnedPetAbilityMap[incubusKey]
+                local incubusKnown = wt:IsPetAbilityLearned(incubusKey)
                 local incubusIgnored = ignoreStore:IsIgnored(incubusKey)
                 local eitherKnown = succubusKnown or incubusKnown
                 local eitherIgnored = succubusIgnored or incubusIgnored
@@ -405,18 +410,21 @@ local function updateMerchantFrame()
                 local incubusTip = coloredStatusTip(incubusKey)
                 iconFrame:Show(succubusState, succubusTip, incubusState, incubusTip)
             elseif wt.TomeIds[merchantItemID] then
-                if wt.learnedPetAbilityMap[merchantItemID] ~= true then
+                if not wt:IsPetAbilityLearned(merchantItemID) then
                     local petMatches = matchesCurrentPet(merchantItemID, engPet)
                     if petMatches and isKnown(index) then
-                        wt.learnedPetAbilityMap[merchantItemID] = true
+                        hasUpdate = hasUpdate or wt:SetPetAbilityStatus(merchantItemID, true)
                     end
                 end
-                if wt.learnedPetAbilityMap[merchantItemID] then
+                if wt:IsPetAbilityLearned(merchantItemID) then
                     colorKnown(merchantButton, itemButton)
                 elseif ignoreStore:IsIgnored(merchantItemID) then
                     colorIgnored(merchantButton, itemButton)
                 end
             end
+        end
+        if hasUpdate then
+            wt:RebuildData()
         end
     end
 end
@@ -440,7 +448,7 @@ hooksecurefunc(GameTooltip, "SetMerchantItem", function(tt, index)
         local incubusTip = coloredStatusTip(incubusKey)
         tt:AddDoubleLine(succubusTip, incubusTip)
     else
-        if wt.learnedPetAbilityMap[merchantItemID] then 
+        if wt:IsPetAbilityLearned(merchantItemID) then 
             tt:AddLine(RED_FONT_COLOR:WrapTextInColorCode(spaced(tomes[merchantItemID].localFamily, status(merchantItemID))))
         elseif ignoreStore:IsIgnored(merchantItemID) then
             tt:AddLine(LIGHTYELLOW_FONT_COLOR:WrapTextInColorCode(spaced(tomes[merchantItemID].localFamily, status(merchantItemID))))

@@ -353,7 +353,7 @@ wt.ClickHook = function(spell, afterClick, row)
         return
     end
 
-    local checked = wt.learnedPetAbilityMap[spell.id]
+    local checked = wt:IsPetAbilityLearned(spell.id)
     PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
     local isIgnored = ignoreStore:IsIgnored(spell.id)
     MenuUtil.CreateContextMenu(row, function(owner, rootDescription)
@@ -364,7 +364,7 @@ wt.ClickHook = function(spell, afterClick, row)
         end
         rootDescription:CreateCheckbox(wt.L.TOME_LEARNED, function() return checked end, function() 
             PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-            wt.learnedPetAbilityMap[spell.id] = not checked
+            wt:SetPetAbilityStatus(spell.id, not checked)
             afterClick()
             return MenuResponse.Close
         end)

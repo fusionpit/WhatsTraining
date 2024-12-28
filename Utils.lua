@@ -51,6 +51,15 @@ end
 function wt:IsPetAbility(spellId)
     return self.PetAbilityIds ~= nil and self.PetAbilityIds[spellId]
 end
+function wt:IsPetAbilityLearned(key)
+    return self.learnedPetAbilityMap[key] == true
+end
+-- returns a bool indicating if the value changed
+function wt:SetPetAbilityStatus(key, learned)
+    local prior = self.learnedPetAbilityMap[key]
+    self.learnedPetAbilityMap[key] = learned
+    return prior ~= learned
+end
 
 function wt.formatSpellCost(spellInfo, fontHeight)
     local coloredCoinString = spellInfo.formattedCost or

@@ -180,7 +180,7 @@ local function rebuildData(playerLevel, isLevelUpEvent)
                 local itemInfo = wt:ItemInfo(tome.id)
                 if itemInfo ~= nil then
                     local key = PET_KEY
-                    if wt.learnedPetAbilityMap[tome.id] then
+                    if wt:IsPetAbilityLearned(tome.id) then
                        key = KNOWN_PET_KEY 
                     elseif ignoreStore:IsIgnored(tome.id) then
                         key = IGNORED_PET_KEY
