@@ -1,3 +1,6 @@
+* 8.2.1
+    - Update Classic Era ToC version
+
 * 8.2.0
     - Warlock pets are now scanned for learned spells when active, not only at a tome vendor
     - Ignored pet spells are now in their own category
