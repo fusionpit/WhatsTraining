@@ -199,6 +199,11 @@ wt.SpellsByLevel = {
 			["name"] = "Soul Fire",
 			["cost"] = 3420,
 		}, -- [4]
+		{
+			["id"] = 713,
+			["name"] = "Summon Incubus",
+			["cost"] = 3420,
+		}, -- [3]
 	},
 	[78] = {
 		{
