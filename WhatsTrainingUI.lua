@@ -170,21 +170,21 @@ function wt.CreateFrame()
         then
             SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB
             if SpellBookFrame:IsVisible() then
-                SpellBookFrame_Update()
+                SpellBookFrame:Update()
             end
         end
     end)
     function wt.Open()
         SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB
         if SpellBookFrame:IsVisible() then
-            SpellBookFrame_Update()
+            SpellBookFrame:Update()
         else
             ToggleSpellBook("spell")
         end
     end
 
     local skillLineTab = _G["SpellBookSkillLineTab" .. SKILL_LINE_TAB]
-    hooksecurefunc("SpellBookFrame_UpdateSkillLineTabs", function()
+    hooksecurefunc(SpellBookFrame, "UpdateSkillLineTabs", function()
         skillLineTab:SetNormalTexture(TAB_TEXTURE_FILEID)
         skillLineTab.tooltip = wt.L.TAB_TEXT
         skillLineTab:Show()
@@ -207,7 +207,7 @@ function wt.CreateFrame()
             end
         end
     end)
-    hooksecurefunc("SpellBookFrame_Update", function()
+    hooksecurefunc(SpellBookFrame, "Update", function()
         if SpellBookFrame.bookType ~= BOOKTYPE_SPELL then
             mainFrame:Hide()
         elseif SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB then
