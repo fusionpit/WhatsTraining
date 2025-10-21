@@ -1,3 +1,8 @@
+* 8.3.0
+    - Fix spell frame api change in 1.15.8
+    - Remove Cata data
+    - Update ToC version
+
 * 8.2.3
     - Add Summon Incubus to Cata data
 

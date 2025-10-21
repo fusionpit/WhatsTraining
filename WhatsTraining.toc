@@ -1,3 +1,4 @@
+## Interface: 11508
 ## Title: What's Training?
 ## Version: @project-version@
 ## Author: Sveng
