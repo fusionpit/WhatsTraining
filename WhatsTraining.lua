@@ -170,7 +170,7 @@ local function matchesFilter(spellOrItem)
     if wt.filter == '' then return true end
     return strfind(spellOrItem, wt.filter, 1, true)
 end
-local warlockPetOrder = {'Imp', 'Voidwalker', 'Succubus', 'Incubus', 'Felhunter'}
+
 local function rebuildData(playerLevel, isLevelUpEvent)
     categories:ClearSpells()
     brokerCategories:ClearSpells()
@@ -302,7 +302,7 @@ local function rebuildData(playerLevel, isLevelUpEvent)
                     familyTable.cost = familyTable.cost + s.cost
                     totalCost = totalCost + s.cost
                 end
-                for _, englishFamily in ipairs(warlockPetOrder) do
+                for _, englishFamily in ipairs(wt.WarlockPetOrder) do
                     local family = byEnglishFamily[englishFamily]
                     if family and #family > 0 then
                         tinsert(wt.data, {

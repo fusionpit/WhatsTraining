@@ -15,6 +15,8 @@ local altIcons = {
 local SUCCUBUS_KEY_FORMAT = "SUC:%d"
 local INCUBUS_KEY_FORMAT = "INC:%d"
 
+wt.WarlockPetOrder = {'Imp', 'Voidwalker', 'Succubus', 'Incubus', 'Felhunter'}
+
 wt.TomesByLevel = {
     [4] = {{itemId = 16321, cost = 100, family = "Imp"}},
     [8] = {{itemId = 16302, cost = 100, family = "Imp"}},
