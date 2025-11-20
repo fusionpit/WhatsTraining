@@ -1,0 +1,3 @@
+local _, wt = ...
+
+wt.LearnedSpellEvent = "LEARNED_SPELL_IN_SKILL_LINE"

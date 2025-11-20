@@ -32,6 +32,8 @@ Classes\TBC\Warlock.lua
 Classes\TBC\WarlockTomes.lua
 Classes\TBC\Warrior.lua
 
+TBCConstants.lua
+
 WhatsTrainingUI.lua
 WhatsTraining.lua
 

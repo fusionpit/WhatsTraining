@@ -32,6 +32,8 @@ Classes\Classic\Warlock.lua
 Classes\Classic\WarlockTomes.lua
 Classes\Classic\Warrior.lua
 
+ClassicConstants.lua
+
 WhatsTrainingUI.lua
 WhatsTraining.lua
 
