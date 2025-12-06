@@ -15,6 +15,8 @@ local COMINGSOON_FONT_COLOR_CODE = "|cff82c5ff"
 local MISSINGTALENT_FONT_COLOR_CODE = "|cffffffff"
 local PET_FONT_COLOR_CODE = "|cffffffff"
 
+local learnedSpellEvent = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC and "LEARNED_SPELL_IN_SKILL_LINE" or "LEARNED_SPELL_IN_TAB"
+
 local function isPreviouslyLearnedAbility(spellId)
     if wt.overriddenSpellsMap == nil or not wt.overriddenSpellsMap[spellId] then
         return false
@@ -456,7 +458,7 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
             rebuildData(UnitLevel("player"))
             wt.CreateFrame()
         end
-    elseif event == wt.LearnedSpellEvent or event == "PLAYER_LEVEL_UP" then
+    elseif event == learnedSpellEvent or event == "PLAYER_LEVEL_UP" then
         local isLevelUp = event == "PLAYER_LEVEL_UP"
         rebuildData(isLevelUp and ... or UnitLevel("player"), isLevelUp)
         if (wt.MainFrame and wt.MainFrame:IsVisible()) then
@@ -466,6 +468,5 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
 end)
 eventFrame:RegisterEvent("ADDON_LOADED")
 eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
--- TODO: implement better switching of event when constants are fixed
-eventFrame:RegisterEvent(wt.LearnedSpellEvent)
+eventFrame:RegisterEvent(learnedSpellEvent)
 eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
