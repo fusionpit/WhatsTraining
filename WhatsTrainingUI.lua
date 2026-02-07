@@ -21,16 +21,11 @@ local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent,
                             "GameTooltipTemplate")
 
 local function setTooltip(spellInfo)
-    if spellInfo.isItem then
-        local taughtSpellId = wt.TomeTaughtSpells[spellInfo.itemId]
-        if taughtSpellId then 
-            tooltip:SetSpellByID(taughtSpellId)
-        else
-            print('no taught spell found for tome', spellInfo.itemId)
-        end
+    if spellInfo.tooltipType == "item" then
+        tooltip:SetSpellByID(spellInfo.tooltipId)
         tooltip:AddLine(spellInfo.formattedFullName, 1, 1, 1)
-    elseif spellInfo.id then
-        tooltip:SetSpellByID(spellInfo.id)
+    elseif spellInfo.tooltipType == "spell" then
+        tooltip:SetSpellByID(spellInfo.tooltipId)
     else
         tooltip:ClearLines()
     end
@@ -146,7 +141,7 @@ function wt.CreateFrame()
             SearchBoxTemplate_OnTextChanged(self)
             local oldFilter = wt.filter
             wt.filter = strlower(self:GetText())
-            if wt.filter ~= oldFilter then wt:RebuildData() end
+            if wt.filter ~= oldFilter then wt:ApplyFilter() end
         end)
     end
     mainFrame:Hide()

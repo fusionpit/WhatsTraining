@@ -168,16 +168,46 @@ brokerCategories:Initialize()
 wt.data = {}
 wt.brokerData = {}
 wt.filter = ''
+
+wt.categoryData = {}
+
 local function matchesFilter(spellOrItem) 
     if wt.filter == '' then return true end
     return strfind(spellOrItem, wt.filter, 1, true)
 end
 
-local function rebuildData(playerLevel, isLevelUpEvent)
+local function byLevelThenName(a, b)
+    if a.level == b.level then return a.name < b.name end
+    return a.level < b.level
+end
+local function byNameThenLevel(a, b)
+    if a.name == b.name then return a.level < b.level end
+    return a.name < b.name
+end
+
+local function categorySort(category)
+    local sortFunc = category.nameSort and byNameThenLevel or byLevelThenName
+    sort(category.spells, sortFunc)
+end
+
+-- result is stored in wt.categoryData and wt.brokerData
+local function buildCategorizedData(playerLevel, isLevelUpEvent)
     categories:ClearSpells()
     brokerCategories:ClearSpells()
-    wipe(wt.data)
+    wipe(wt.categoryData)
     wipe(wt.brokerData)
+    
+    local function getSpellLevelColor(spell)
+        local effectiveLevel = spell.level
+        -- when a player levels up and this is triggered from that event, GetQuestDifficultyColor won't
+        -- have the correct player level, it will be off by 1 for whatever reason (just like UnitLevel)
+        if isLevelUpEvent then
+            effectiveLevel = effectiveLevel - 1
+        end
+        return GetQuestDifficultyColor(effectiveLevel)
+    end
+
+    -- Categorize tomes
     if wt.TomesByLevel then
         for level, tomesAtLevel in pairs(wt.TomesByLevel) do
             for _, tome in ipairs(tomesAtLevel) do
@@ -189,14 +219,13 @@ local function rebuildData(playerLevel, isLevelUpEvent)
                     elseif ignoreStore:IsIgnored(tome.id) then
                         key = IGNORED_PET_KEY
                     end
-                    if matchesFilter(itemInfo.searchText) then
-                        categories:Insert(key, itemInfo)
-                    end
+                    categories:Insert(key, itemInfo)
                     brokerCategories:Insert(key, itemInfo)
                 end
             end
         end
     end
+    
     for level, spellsAtLevel in pairs(wt.SpellsByLevel) do
         for _, spell in ipairs(spellsAtLevel) do
             local spellInfo = wt:SpellInfo(spell.id)
@@ -226,41 +255,137 @@ local function rebuildData(playerLevel, isLevelUpEvent)
                     end
                     categoryKey = hasReqs and AVAILABLE_KEY or MISSINGREQS_KEY
                 end
-                if matchesFilter(spellInfo.searchText) then 
-                    categories:Insert(categoryKey, spellInfo)
-                end
+                categories:Insert(categoryKey, spellInfo)
                 brokerCategories:Insert(categoryKey, spellInfo)
             end
         end
     end
 
-    local function byLevelThenName(a, b)
-        if a.level == b.level then return a.name < b.name end
-        return a.level < b.level
-    end
-    local function byNameThenLevel(a, b)
-        if a.name == b.name then return a.level < b.level end
-        return a.name < b.name
-    end
-    
-    local function getSpellLevelColor(spell)
-        local effectiveLevel = spell.level
-        -- when a player levels up and this is triggered from that event, GetQuestDifficultyColor won't
-        -- have the correct player level, it will be off by 1 for whatever reason (just like UnitLevel)
-        if isLevelUpEvent then
-            effectiveLevel = effectiveLevel - 1
-        end
-        return GetQuestDifficultyColor(effectiveLevel)
-    end
-    local function categorySort(category)
-        local sortFunc = category.nameSort and byNameThenLevel or byLevelThenName
-        sort(category.spells, sortFunc)
-    end
     for _, category in ipairs(categories) do
         if #category.spells > 0 then
-            tinsert(wt.data, category)
             categorySort(category)
+            local categoryEntry = {
+                category = category,
+                spells = {},
+                totalCost = 0
+            }
+            
+            if category.key == PET_KEY and wt.currentClass == "WARLOCK" then
+                -- split by family, then weave sub-headers in
+                local byEnglishFamily = {}
+                for _, s in ipairs(category.spells) do
+                    s.levelColor = getSpellLevelColor(s)
+                    s.useAltIcon = false
+                    if not byEnglishFamily[s.family] then 
+                        byEnglishFamily[s.family] = {localFamily = s.localFamily, cost = 0, spells = {}} 
+                    end
+                    local familyTable = byEnglishFamily[s.family]
+                    tinsert(familyTable.spells, s)
+                    familyTable.cost = familyTable.cost + s.cost
+                    categoryEntry.totalCost = categoryEntry.totalCost + s.cost
+                end
+                categoryEntry.byEnglishFamily = byEnglishFamily
+            else
+                for _, s in ipairs(category.spells) do
+                    s.levelColor = getSpellLevelColor(s)
+                    s.hideLevel = category.hideLevel
+                    s.useAltIcon = wt.currentClass == "WARLOCK"
+                    categoryEntry.totalCost = categoryEntry.totalCost + s.cost
+                    tinsert(categoryEntry.spells, s)
+                end
+            end
+            
+            category.cost = categoryEntry.totalCost
+            tinsert(wt.categoryData, categoryEntry)
+        end
+    end
+
+    local brokerAvailable = 0
+    local brokerComing = 0
+    for _, category in ipairs(brokerCategories) do
+        if #category.spells > 0 then
+            category.costFormat = "%s"
+            categorySort(category)
+            local displayedCost = 0
+            local hiddenCost = 0
             local totalCost = 0
+            category.displayedSpells = {}
+            for _, s in ipairs(category.spells) do
+                s.levelColor = getSpellLevelColor(s)
+                s.hideLevel = category.hideLevel
+                s.costFormat = "%s"
+                if #category.displayedSpells < category.maxDisplayEntries then
+                    tinsert(category.displayedSpells, s)
+                    displayedCost = displayedCost + s.cost
+                else
+                    hiddenCost = hiddenCost + s.cost
+                end
+                totalCost = totalCost + s.cost
+            end
+            category.cost = totalCost
+            category.displayed = {cost = displayedCost, costFormat = "%s"}
+            category.hidden = {cost = hiddenCost, costFormat = "%s"}
+            if category.key == AVAILABLE_KEY then
+                brokerAvailable = #category.spells
+            end
+            if category.key == NEXTLEVEL_KEY then
+                brokerComing = #category.spells
+            end
+            tinsert(wt.brokerData, category)
+        end
+    end
+    if wt.updateBroker ~= nil then wt.updateBroker(brokerAvailable, brokerComing) end
+end
+
+local function applyFilter()
+    wipe(wt.data)
+    
+    for _, categoryEntry in ipairs(wt.categoryData) do
+        local category = categoryEntry.category
+        local hasMatchingSpells = false
+        local filteredSpells = {}
+        local filteredCost = 0
+        
+        if categoryEntry.byEnglishFamily then
+            -- Warlock pet abilities - check by family
+            local filteredFamilies = {}
+            for englishFamily, familyData in pairs(categoryEntry.byEnglishFamily) do
+                local familySpells = {}
+                local familyCost = 0
+                for _, s in ipairs(familyData.spells) do
+                    if matchesFilter(s.searchText) then
+                        tinsert(familySpells, s)
+                        familyCost = familyCost + s.cost
+                        hasMatchingSpells = true
+                    end
+                end
+                if #familySpells > 0 then
+                    filteredFamilies[englishFamily] = {
+                        localFamily = familyData.localFamily,
+                        cost = familyCost,
+                        spells = familySpells
+                    }
+                    filteredCost = filteredCost + familyCost
+                end
+            end
+            if hasMatchingSpells then
+                filteredSpells = filteredFamilies
+            end
+        else
+            -- Normal spells
+            for _, s in ipairs(categoryEntry.spells) do
+                if matchesFilter(s.searchText) then
+                    tinsert(filteredSpells, s)
+                    filteredCost = filteredCost + s.cost
+                    hasMatchingSpells = true
+                end
+            end
+        end
+        
+        if hasMatchingSpells then
+            tinsert(wt.data, category)
+            
+            -- Add special headers for pet category
             if (category.key == PET_KEY and wt.needsBeastTraining()) then
                 tinsert(wt.data, {
                     formattedName = ORANGE_FONT_COLOR_CODE ..
@@ -289,48 +414,40 @@ local function rebuildData(playerLevel, isLevelUpEvent)
                     end
                 })
             end
-            if category.key == PET_KEY and wt.currentClass == "WARLOCK" then
-                -- split by family, then weave sub-headers in
-                local byEnglishFamily = {}
-                for _, s in ipairs(category.spells) do
-                    s.levelColor = getSpellLevelColor(s)
-                    -- don't use the alt icon for things in the Pet category
-                    s.useAltIcon = false
-                    if not byEnglishFamily[s.family] then 
-                        byEnglishFamily[s.family] = {localFamily = s.localFamily, cost = 0} 
-                    end
-                    local familyTable = byEnglishFamily[s.family]
-                    tinsert(familyTable, s)
-                    familyTable.cost = familyTable.cost + s.cost
-                    totalCost = totalCost + s.cost
-                end
+            
+            if categoryEntry.byEnglishFamily then
+                -- Warlock pet abilities with family sub-headers
                 for _, englishFamily in ipairs(wt.WarlockPetOrder) do
-                    local family = byEnglishFamily[englishFamily]
-                    if family and #family > 0 then
+                    local family = filteredSpells[englishFamily]
+                    if family and #family.spells > 0 then
                         tinsert(wt.data, {
                             formattedName = family.localFamily,
                             isHeader = true,
                             cost = family.cost
                         })
-                        for _, s in ipairs(family) do
+                        for _, s in ipairs(family.spells) do
+                            if s.isItem then
+                                local taughtSpellId = wt.TomeTaughtSpells[s.itemId]
+                                if taughtSpellId then 
+                                    s.tooltipId = taughtSpellId
+                                else
+                                    print('no taught spell found for tome', s.itemId)
+                                end
+                            end
                             tinsert(wt.data, s)
                         end
                     end
                 end
             else
-                for _, s in ipairs(category.spells) do
-                    s.levelColor = getSpellLevelColor(s)
-                    s.hideLevel = category.hideLevel
-                    -- warlock succubus/incubus tomes should show the appropriate icon when in the ignored or known categories
-                    s.useAltIcon = wt.currentClass == "WARLOCK"
-                    totalCost = totalCost + s.cost
+                for _, s in ipairs(filteredSpells) do
                     tinsert(wt.data, s)
                 end
             end
             
-            category.cost = totalCost
+            category.cost = filteredCost
         end
     end
+    
     if #wt.data == 0 and wt.filter ~= '' then
         tinsert(wt.data, {
             formattedName = wt.L.SEARCH_NO_RESULTS,
@@ -338,49 +455,24 @@ local function rebuildData(playerLevel, isLevelUpEvent)
             cost = 0
         })
     end
-    local brokerAvailable = 0
-    local brokerComing = 0
-    for _, category in ipairs(brokerCategories) do
-        if #category.spells > 0 then
-            category.costFormat = "%s"
-            tinsert(wt.brokerData, category)
-            categorySort(category)
-            local displayedCost = 0
-            local hiddenCost = 0
-            local totalCost = 0
-            category.displayedSpells = {}
-            for _, s in ipairs(category.spells) do
-                s.levelColor = getSpellLevelColor(s)
-                s.hideLevel = category.hideLevel
-                s.costFormat = "%s"
-                if #category.displayedSpells < category.maxDisplayEntries then
-                    tinsert(category.displayedSpells, s)
-                    displayedCost = displayedCost + s.cost
-                else
-                    hiddenCost = hiddenCost + s.cost
-                end
-                totalCost = totalCost + s.cost
-            end
-            category.cost = totalCost
-            category.displayed = {cost = displayedCost, costFormat = "%s"}
-            category.hidden = {cost = hiddenCost, costFormat = "%s"}
-            if category.key == AVAILABLE_KEY then
-                brokerAvailable = #category.spells
-            end
-            if category.key == NEXTLEVEL_KEY then
-                brokerComing = #category.spells
-            end
-        end
-    end
-    if wt.updateBroker ~= nil then wt.updateBroker(brokerAvailable, brokerComing) end
 end
+
 local function rebuildIfNotCached(fromCache)
     if fromCache or wt.MainFrame == nil then return end
-    rebuildData(UnitLevel("player"))
+    buildCategorizedData(UnitLevel("player"))
+    applyFilter()
 end
 
 function wt:RebuildData()
-    rebuildData(UnitLevel("player"))
+    buildCategorizedData(UnitLevel("player"))
+    applyFilter()
+    if (self.MainFrame and self.MainFrame:IsVisible()) then
+        self.Update(self.MainFrame, true)
+    end
+end
+
+function wt:ApplyFilter()
+    applyFilter()
     if (self.MainFrame and self.MainFrame:IsVisible()) then
         self.Update(self.MainFrame, true)
     end
@@ -455,12 +547,14 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
     elseif event == "PLAYER_ENTERING_WORLD" then
         local isLogin, isReload = ...
         if isLogin or isReload then
-            rebuildData(UnitLevel("player"))
+            buildCategorizedData(UnitLevel("player"))
+            applyFilter()
             wt.CreateFrame()
         end
     elseif event == learnedSpellEvent or event == "PLAYER_LEVEL_UP" then
         local isLevelUp = event == "PLAYER_LEVEL_UP"
-        rebuildData(isLevelUp and ... or UnitLevel("player"), isLevelUp)
+        buildCategorizedData(isLevelUp and ... or UnitLevel("player"), isLevelUp)
+        applyFilter()
         if (wt.MainFrame and wt.MainFrame:IsVisible()) then
             wt.Update(wt.MainFrame, true)
         end
