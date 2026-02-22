@@ -191,7 +191,7 @@ wt.SpellsByLevel = {
         }, {id = 17924, cost = 22000, requiredIds = {6353}}
     },
     [58] = {
-        {id = 11730, cost = 24000, requiredIds = {11730}},
+        {id = 11730, cost = 24000, requiredIds = {11729}},
         {id = 11713, cost = 24000, requiredIds = {11712}},
         {id = 17926, cost = 24000, requiredIds = {17925}},
         {id = 11726, cost = 24000, requiredIds = {11725}},
