@@ -30,6 +30,7 @@ Classes\TBC\Rogue.lua
 Classes\TBC\Shaman.lua
 Classes\TBC\Warlock.lua
 Classes\TBC\WarlockTomes.lua
+Classes\WarlockTomes.lua
 Classes\TBC\Warrior.lua
 
 WhatsTrainingUI.lua
