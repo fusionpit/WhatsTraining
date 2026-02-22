@@ -8,7 +8,7 @@ local _, addonTitle = C_AddOns.GetAddOnInfo(addonName)
 local plugin = ldb:NewDataObject(addonName, {
     type = "data source",
     text = addonTitle,
-    icon = "Interface\\Icons\\INV_Misc_QuestionMark",
+    icon = WT_Settings and WT_Settings.IconType or "Interface\\Icons\\INV_Misc_QuestionMark",
     OnClick = function(_,button)
         local openBeastTraining = wt.needsBeastTraining() and IsShiftKeyDown()
         if InCombatLockdown() then
@@ -22,6 +22,11 @@ local plugin = ldb:NewDataObject(addonName, {
         end
     end
 })
+function wt.UpdateBrokerIcon(icon)
+    if plugin then
+        plugin.icon = icon or (WT_Settings and WT_Settings.IconType) or "Interface\\Icons\\INV_Misc_QuestionMark"
+    end
+end
 local function formatGreen(text)
     return '|cff19ff19'..text..'|r'
 end

@@ -11,6 +11,11 @@ local IGNORED_PET_KEY = "ignoredPet"
 local KNOWN_KEY = "known"
 local KNOWN_PET_KEY = "knownPet"
 local PET_KEY = "pet"
+local WEAPON_AVAILABLE_KEY = "weaponAvailable"
+local WEAPON_NEXTLEVEL_KEY = "weaponNextLevel"
+local WEAPON_NOTLEVEL_KEY = "weaponNotLevel"
+local WEAPON_KNOWN_KEY = "weaponKnown"
+local WEAPON_IGNORED_KEY = "weaponIgnored"
 local COMINGSOON_FONT_COLOR_CODE = "|cff82c5ff"
 local MISSINGTALENT_FONT_COLOR_CODE = "|cffffffff"
 local PET_FONT_COLOR_CODE = "|cffffffff"
@@ -50,24 +55,45 @@ local headers = {
         name = wt.L.AVAILABLE_HEADER,
         color = GREEN_FONT_COLOR_CODE,
         hideLevel = true,
-        key = AVAILABLE_KEY
+        key = AVAILABLE_KEY,
+        brokerMaxDisplayEntries = 10
     }, {
         name = wt.L.MISSINGREQS_HEADER,
         color = ORANGE_FONT_COLOR_CODE,
         hideLevel = true,
-        key = MISSINGREQS_KEY
+        key = MISSINGREQS_KEY,
+        brokerMaxDisplayEntries = 5
+    }, {
+        name = wt.L.WEAPON_AVAILABLE_HEADER,
+        color = GREEN_FONT_COLOR_CODE,
+        hideLevel = true,
+        key = WEAPON_AVAILABLE_KEY,
+        brokerMaxDisplayEntries = 10
     }, {
         name = wt.L.NEXTLEVEL_HEADER,
         color = COMINGSOON_FONT_COLOR_CODE,
-        key = NEXTLEVEL_KEY
+        key = NEXTLEVEL_KEY,
+        brokerMaxDisplayEntries = 10
+    }, {
+        name = wt.L.WEAPON_NEXTLEVEL_HEADER,
+        color = COMINGSOON_FONT_COLOR_CODE,
+        key = WEAPON_NEXTLEVEL_KEY,
+        brokerMaxDisplayEntries = 10
     }, {
         name = wt.L.NOTLEVEL_HEADER,
         color = RED_FONT_COLOR_CODE,
-        key = NOTLEVEL_KEY
+        key = NOTLEVEL_KEY,
+        brokerMaxDisplayEntries = 5
+    }, {
+        name = wt.L.WEAPON_NOTLEVEL_HEADER,
+        color = RED_FONT_COLOR_CODE,
+        key = WEAPON_NOTLEVEL_KEY,
+        brokerMaxDisplayEntries = 5
     }, {
         name = wt.L.PET_HEADER,
         color = PET_FONT_COLOR_CODE,
-        key = PET_KEY
+        key = PET_KEY,
+        brokerMaxDisplayEntries = 5
         -- nameSort = true
     }, {
         name = wt.L.MISSINGTALENT_HEADER,
@@ -82,13 +108,20 @@ local headers = {
         key = IGNORED_KEY,
         nameSort = true
     }, {
+        name = wt.L.WEAPON_IGNORED_HEADER,
+        color = LIGHTYELLOW_FONT_COLOR_CODE,
+        costFormat = wt.L.TOTALSAVINGS_FORMAT,
+        costColor = GREEN_FONT_COLOR_CODE,
+        key = WEAPON_IGNORED_KEY,
+        nameSort = true
+    }, {
         name = wt.L.IGNORED_PET_HEADER,
         color = LIGHTYELLOW_FONT_COLOR_CODE,
         costFormat = wt.L.TOTALSAVINGS_FORMAT,
         costColor = GREEN_FONT_COLOR_CODE,
         key = IGNORED_PET_KEY,
         nameSort = true
-    },{
+    }, {
         name = wt.L.KNOWN_HEADER,
         color = GRAY_FONT_COLOR_CODE,
         hideLevel = true,
@@ -97,6 +130,14 @@ local headers = {
         costColor = RED_FONT_COLOR_CODE,
         nameSort = true
     }, {
+        name = wt.L.WEAPON_KNOWN_HEADER,
+        color = GRAY_FONT_COLOR_CODE,
+        hideLevel = true,
+        key = WEAPON_KNOWN_KEY,
+        costFormat = wt.L.TOTALSPENT_FORMAT,
+        costColor = RED_FONT_COLOR_CODE,
+        nameSort = true
+    },{
         name = wt.L.KNOWN_PET_HEADER,
         color = GRAY_FONT_COLOR_CODE,
         hideLevel = true,
@@ -104,21 +145,28 @@ local headers = {
         costFormat = wt.L.TOTALSPENT_FORMAT,
         costColor = RED_FONT_COLOR_CODE,
         nameSort = true
-    }
+    }, 
 }
-local function makeCategories(headers) 
+local function makeCategories(headersDef, isBroker) 
     return {
         _spellsByCategoryKey = {},
         Insert = function(self, key, spellInfo)
             if self._spellsByCategoryKey[key] ~= nil then tinsert(self._spellsByCategoryKey[key], spellInfo) end
         end,
         Initialize = function(self)
-            for _, cat in ipairs(headers) do
-                cat.spells = {}
-                self._spellsByCategoryKey[cat.key] = cat.spells
-                cat.formattedName = cat.color and cat.color .. cat.name .. FONT_COLOR_CODE_CLOSE or cat.name
-                cat.isHeader = true
-                tinsert(self, cat)
+            for _, def in ipairs(headersDef) do
+                if not isBroker or def.brokerMaxDisplayEntries then
+                    local cat = {}
+                    for k, v in pairs(def) do cat[k] = v end
+                    if isBroker then
+                        cat.maxDisplayEntries = def.brokerMaxDisplayEntries
+                    end
+                    cat.spells = {}
+                    self._spellsByCategoryKey[cat.key] = cat.spells
+                    cat.formattedName = cat.color and cat.color .. cat.name .. FONT_COLOR_CODE_CLOSE or cat.name
+                    cat.isHeader = true
+                    tinsert(self, cat)
+                end
             end
         end,
         ClearSpells = function(self)
@@ -129,40 +177,10 @@ local function makeCategories(headers)
         end
     }
 end
-local categories = makeCategories(headers)
+local categories = makeCategories(headers, false)
 categories:Initialize()
 
-local brokerHeaders = {
-    {
-        name = wt.L.AVAILABLE_HEADER,
-        color = GREEN_FONT_COLOR_CODE,
-        hideLevel = true,
-        key = AVAILABLE_KEY,
-        maxDisplayEntries = 10,
-    }, {
-        name = wt.L.MISSINGREQS_HEADER,
-        color = ORANGE_FONT_COLOR_CODE,
-        hideLevel = true,
-        key = MISSINGREQS_KEY,
-        maxDisplayEntries = 5,
-    }, {
-        name = wt.L.NEXTLEVEL_HEADER,
-        color = COMINGSOON_FONT_COLOR_CODE,
-        key = NEXTLEVEL_KEY,
-        maxDisplayEntries = 10,
-    }, {
-        name = wt.L.NOTLEVEL_HEADER,
-        color = RED_FONT_COLOR_CODE,
-        key = NOTLEVEL_KEY,
-        maxDisplayEntries = 5,
-    }, {
-        name = wt.L.PET_HEADER,
-        color = PET_FONT_COLOR_CODE,
-        key = PET_KEY,
-        maxDisplayEntries = 5,
-    }
-}
-local brokerCategories = makeCategories(brokerHeaders)
+local brokerCategories = makeCategories(headers, true)
 brokerCategories:Initialize()
 
 wt.data = {}
@@ -226,26 +244,26 @@ local function buildCategorizedData(playerLevel, isLevelUpEvent)
         end
     end
     
-    for level, spellsAtLevel in pairs(wt.SpellsByLevel) do
-        for _, spell in ipairs(spellsAtLevel) do
+    local function categorizeGroup(spellGroup, levelGroup)
+        for _, spell in ipairs(spellGroup) do
             local spellInfo = wt:SpellInfo(spell.id)
             if spellInfo ~= nil then
                 local categoryKey
 
                 if (isAbilityKnown(spellInfo.id)) then
-                    categoryKey = wt:IsPetAbility(spellInfo.id) and
-                                      KNOWN_PET_KEY or KNOWN_KEY
+                    if WT_Settings.ShowKnown then
+                        categoryKey = wt:IsPetAbility(spellInfo.id) and KNOWN_PET_KEY or KNOWN_KEY
+                    end
                 elseif (ignoreStore:IsIgnored(spellInfo.id)) then
-                    categoryKey = wt:IsPetAbility(spellInfo.id) and 
-                                      IGNORED_PET_KEY or IGNORED_KEY
+                    if WT_Settings.ShowIgnored then
+                        categoryKey = wt:IsPetAbility(spellInfo.id) and IGNORED_PET_KEY or IGNORED_KEY
+                    end
                 elseif (wt:IsPetAbility(spellInfo.id)) then
                     categoryKey = PET_KEY
-                elseif (spell.requiredTalentId ~= nil and
-                    not isAbilityKnown(spell.requiredTalentId)) then
+                elseif (spell.requiredTalentId ~= nil and not isAbilityKnown(spell.requiredTalentId)) then
                     categoryKey = MISSINGTALENT_KEY
-                elseif level > playerLevel then
-                    categoryKey = level <= playerLevel + 2 and NEXTLEVEL_KEY or
-                                      NOTLEVEL_KEY
+                elseif levelGroup > playerLevel then
+                    categoryKey = levelGroup <= playerLevel + 2 and NEXTLEVEL_KEY or NOTLEVEL_KEY
                 else
                     local hasReqs = true
                     if spell.requiredIds ~= nil then
@@ -255,8 +273,59 @@ local function buildCategorizedData(playerLevel, isLevelUpEvent)
                     end
                     categoryKey = hasReqs and AVAILABLE_KEY or MISSINGREQS_KEY
                 end
-                categories:Insert(categoryKey, spellInfo)
-                brokerCategories:Insert(categoryKey, spellInfo)
+                
+                if categoryKey ~= nil then
+                    categories:Insert(categoryKey, spellInfo)
+                    brokerCategories:Insert(categoryKey, spellInfo)
+                end
+            end
+        end
+    end
+
+    for level, spellsAtLevel in pairs(wt.SpellsByLevel) do
+        categorizeGroup(spellsAtLevel, level)
+    end
+    
+    if WT_Settings.EnableWeaponTraining and wt.WeaponSkills then
+        for weaponSpellId, weaponData in pairs(wt.WeaponSkills) do
+            local isClassEligible = false
+            if weaponData.classes then
+                for _, class in ipairs(weaponData.classes) do
+                    if class == wt.currentClass then
+                        isClassEligible = true
+                        break
+                    end
+                end
+            else
+                isClassEligible = true
+            end
+            
+            if isClassEligible then
+                local spellInfo = wt:SpellInfo(weaponSpellId)
+                if spellInfo ~= nil then
+                    local categoryKey
+                    local reqLevel = weaponData.level or 1
+                    
+                    if (isAbilityKnown(spellInfo.id)) then
+                        if WT_Settings.ShowKnown then
+                            categoryKey = WEAPON_KNOWN_KEY
+                        end
+                    elseif (ignoreStore:IsIgnored(spellInfo.id)) then
+                        if WT_Settings.ShowIgnored then
+                            categoryKey = WEAPON_IGNORED_KEY
+                        end
+                    elseif reqLevel > playerLevel then
+                        categoryKey = reqLevel <= playerLevel + 2 and WEAPON_NEXTLEVEL_KEY or WEAPON_NOTLEVEL_KEY
+                    else
+                        categoryKey = WEAPON_AVAILABLE_KEY
+                    end
+                    
+                    if categoryKey ~= nil then
+                        spellInfo.level = reqLevel
+                        categories:Insert(categoryKey, spellInfo)
+                        brokerCategories:Insert(categoryKey, spellInfo)
+                    end
+                end
             end
         end
     end
@@ -517,6 +586,12 @@ for level, spellsByLevel in pairs(wt.SpellsByLevel) do
     end
 end
 
+for weaponSpellId, weaponData in pairs(wt.WeaponSkills) do
+    local reqLevel = weaponData.level or 1
+    local spellInfo = {id = weaponSpellId, cost = weaponData.cost or 1000}
+    wt:CacheSpell(spellInfo, reqLevel, rebuildIfNotCached)
+end
+
 ignoreStore:AddSubscription(function()
     wt:RebuildData()
 end)
@@ -532,6 +607,14 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         end
         if WT_IgnoredSpells == nil then
             WT_IgnoredSpells = {}
+        end
+        if WT_Settings == nil then
+            WT_Settings = {
+                EnableWeaponTraining = true,
+                ShowKnown = true,
+                ShowIgnored = true,
+                IconType = "Interface\\Icons\\INV_Misc_QuestionMark"
+            }
         end
         ignoreStore:MigrateOrUse(WT_IgnoredSpells)
         if WT_LearnedPetAbilities == nil then

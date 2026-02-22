@@ -36,7 +36,8 @@ local localeText = {
         IGNORE_ALL_TT = "Ignore all ranks",
         SEARCH_NO_RESULTS = "No results found",
         INCUBUS = "Incubus",
-        NOT_KNOWN = "Not known"
+        NOT_KNOWN = "Not known",
+        SETTINGS = "Settings",
     },
     frFR = {
         AVAILABLE_HEADER = "Disponible",
