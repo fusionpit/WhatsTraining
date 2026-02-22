@@ -276,7 +276,7 @@ local function colorIgnored(merchantButton, itemButton)
     )
 end
 
-local tomeSpellTooltip = CreateFrame("GameTooltip", "WhatsTrainingSayaadTomeTooltip", UIParent, "GameTooltipTemplate")
+local sayaadTomeSpellTooltip = CreateFrame("GameTooltip", "WhatsTrainingSayaadTomeTooltip", UIParent, "GameTooltipTemplate")
 
 local ICON_SIZE = 16
 local function createIcon(sayaad, textureId, parent, point)
@@ -297,14 +297,14 @@ for i = 1, MERCHANT_ITEMS_PER_PAGE do
     parent:SetPoint("BOTTOMRIGHT", itemFrame, "BOTTOMRIGHT", -6, 0)
     parent:SetScript("OnEnter", function(self)
         if not self.tooltip then return end
-        tomeSpellTooltip:SetOwner(self, "ANCHOR_NONE")
-        tomeSpellTooltip:SetPoint("BOTTOMLEFT", self, "TOPRIGHT")
-        tomeSpellTooltip:ClearLines()
-        tomeSpellTooltip:SetText(self.tooltip)
-        tomeSpellTooltip:Show()
+        sayaadTomeSpellTooltip:SetOwner(self, "ANCHOR_NONE")
+        sayaadTomeSpellTooltip:SetPoint("BOTTOMLEFT", self, "TOPRIGHT")
+        sayaadTomeSpellTooltip:ClearLines()
+        sayaadTomeSpellTooltip:SetText(self.tooltip)
+        sayaadTomeSpellTooltip:Show()
     end)
     parent:SetScript("OnLeave", function()
-        tomeSpellTooltip:Hide()
+        sayaadTomeSpellTooltip:Hide()
     end)
     local succubusIcon = createIcon("Succubus", altIcons.Succubus, parent, "LEFT")
     local incubusIcon = createIcon("Incubus", altIcons.Incubus, parent, "RIGHT")
