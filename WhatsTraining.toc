@@ -1,4 +1,4 @@
-## Interface: 11508
+## Interface: 20505, 11508
 ## Title: What's Training?
 ## Version: @project-version@
 ## Author: Sveng
@@ -20,18 +20,18 @@ Localization.lua
 Utils.lua
 Cache.lua
 
-Classes\Classic\Druid.lua
-Classes\Classic\Hunter.lua
-Classes\Classic\HunterPets.lua
-Classes\Classic\Mage.lua
-Classes\Classic\Paladin.lua
-Classes\Classic\Priest.lua
-Classes\Classic\Rogue.lua
-Classes\Classic\Shaman.lua
-Classes\Classic\Warlock.lua
-Classes\Classic\WarlockTomes.lua
+Classes\[Game]\Druid.lua
+Classes\[Game]\Hunter.lua
+Classes\[Game]\HunterPets.lua
+Classes\[Game]\Mage.lua
+Classes\[Game]\Paladin.lua
+Classes\[Game]\Priest.lua
+Classes\[Game]\Rogue.lua
+Classes\[Game]\Shaman.lua
+Classes\[Game]\Warlock.lua
+Classes\[Game]\WarlockTomes.lua
 Classes\WarlockTomes.lua
-Classes\Classic\Warrior.lua
+Classes\[Game]\Warrior.lua
 
 WhatsTrainingUI.lua
 WhatsTraining.lua
