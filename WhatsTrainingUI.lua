@@ -308,7 +308,7 @@ function wt.CreateFrame()
     wt.MainFrame = mainFrame
 end
 
-function addIgnoreLines(rootDescription, config)
+local function addIgnoreLines(rootDescription, config)
     rootDescription:CreateTitle(config.title)
     rootDescription:CreateCheckbox(wt.L.IGNORED_TT, function() return config.isIgnored end, function() 
         PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
