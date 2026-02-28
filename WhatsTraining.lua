@@ -452,7 +452,9 @@ local function applyFilter()
         end
         
         if hasMatchingSpells then
-            tinsert(wt.data, category)
+            if not (category.key == PET_KEY and wt.currentClass == "WARLOCK") then
+                tinsert(wt.data, category)
+            end
             
             -- Add special headers for pet category
             if (category.key == PET_KEY and wt.needsBeastTraining()) then
