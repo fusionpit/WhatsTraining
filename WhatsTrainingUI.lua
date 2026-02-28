@@ -180,23 +180,6 @@ function wt.CreateFrame()
                     wt:RebuildData()
                 end
             )
-            
-            local iconMenu = rootDescription:CreateButton("Addon Icon")
-            local function setIcon(value)
-                WT_Settings.IconType = value
-                local tab = _G["SpellBookSkillLineTab" .. SKILL_LINE_TAB]
-                if tab then tab:SetNormalTexture(value) end
-                if wt.UpdateBrokerIcon then wt.UpdateBrokerIcon(value) end
-            end
-            
-            iconMenu:CreateRadio("Question Mark", 
-                function() return WT_Settings.IconType == "Interface\\Icons\\INV_Misc_QuestionMark" end,
-                function() setIcon("Interface\\Icons\\INV_Misc_QuestionMark") end
-            )
-            iconMenu:CreateRadio("Spellbook", 
-                function() return WT_Settings.IconType == "Interface\\Icons\\INV_Misc_Book_09" end,
-                function() setIcon("Interface\\Icons\\INV_Misc_Book_09") end
-            )
         end)
     end)
 
