@@ -33,6 +33,17 @@ local function setTooltip(spellInfo)
         tooltip:AddLine(wt.formatSpellCost(spellInfo))
     end
     if spellInfo.tooltip then tooltip:AddLine(spellInfo.tooltip) end
+    if spellInfo.trainerZones and #spellInfo.trainerZones > 0 then
+        local names = {}
+        for _, zoneData in ipairs(spellInfo.trainerZones) do
+            local name = C_Map.GetAreaInfo(zoneData.id)
+            if name then tinsert(names, name) end
+        end
+        if #names > 0 then
+            tooltip:AddLine(string.format(wt.L.TRAINED_IN, table.concat(names, wt.L.OR)),
+                            0.8, 0.8, 0.8)
+        end
+    end
     tooltip:Show()
 end
 
@@ -102,7 +113,9 @@ local function setRowSpell(row, spell)
         local relativePoint = "TOPRIGHT"
         local xOffset = -4
 
-        for j, zoneData in ipairs(spell.trainerZones) do
+        local n = #spell.trainerZones
+        for j = 1, n do
+            local zoneData = spell.trainerZones[n - j + 1]  -- reverse: leftmost icon = first in array
             local f = row.zoneIcons[j]
             if f then
                 f:ClearAllPoints()
@@ -373,28 +386,21 @@ function wt.CreateFrame()
         spell.icon = spellIcon
         spell.level = spellLevelLabel
 
+        row.highlight = highlight
+        row.header = headerLabel
+        row.spell = spell
+
         row.zoneIcons = {}
         for j = 1, 3 do
             local zoneFrame = CreateFrame("Frame", nil, row)
             zoneFrame:SetSize(ROW_HEIGHT, ROW_HEIGHT)
             zoneFrame.icon = zoneFrame:CreateTexture(nil, "OVERLAY")
             zoneFrame.icon:SetAllPoints()
-            zoneFrame:SetScript("OnEnter", function(self)
-                if self.zoneId then
-                    tooltip:SetOwner(self, "ANCHOR_RIGHT")
-                    tooltip:SetText(C_Map.GetAreaInfo(self.zoneId))
-                    tooltip:Show()
-                end
-            end)
-            zoneFrame:SetScript("OnLeave", function() tooltip:Hide() end)
+            zoneFrame:EnableMouse(false)
             zoneFrame:Hide()
             tinsert(row.zoneIcons, zoneFrame)
         end
-
-        row.highlight = highlight
-        row.header = headerLabel
-        row.spell = spell
-
+        
         if rows[i - 1] == nil then
         	if hasNewSpellbook then
         		row:SetPoint("TOPLEFT", mainFrame, 110, -78)

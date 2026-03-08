@@ -112,6 +112,7 @@ local headers = {
         color = LIGHTYELLOW_FONT_COLOR_CODE,
         costFormat = wt.L.TOTALSAVINGS_FORMAT,
         costColor = GREEN_FONT_COLOR_CODE,
+        hideLevel = true,
         key = WEAPON_IGNORED_KEY,
         nameSort = true
     }, {
@@ -346,6 +347,9 @@ local function buildCategorizedData(playerLevel, isLevelUpEvent)
                                 end
                             end
                             spellInfo.trainerZones = trainerZones
+                            table.sort(spellInfo.trainerZones, function(a, b)
+                                return (C_Map.GetAreaInfo(a.id) or "") < (C_Map.GetAreaInfo(b.id) or "")
+                            end)
                         end
 
                         categories:Insert(categoryKey, spellInfo)
