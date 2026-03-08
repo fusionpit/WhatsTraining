@@ -332,6 +332,22 @@ local function buildCategorizedData(playerLevel, isLevelUpEvent)
                     
                     if categoryKey ~= nil then
                         spellInfo.level = reqLevel
+                        local englishFaction = UnitFactionGroup("player")
+                        if weaponData.trainers and weaponData.trainers[englishFaction] then
+                            local trainerZones = {}
+                            local seenZones = {}
+                            for _, trainer in ipairs(weaponData.trainers[englishFaction]) do
+                                if not seenZones[trainer.zone] then
+                                    tinsert(trainerZones, {
+                                        id = trainer.zone,
+                                        icon = wt.cityIconIds[trainer.zone] or trainer.zoneIcon
+                                    })
+                                    seenZones[trainer.zone] = true
+                                end
+                            end
+                            spellInfo.trainerZones = trainerZones
+                        end
+
                         categories:Insert(categoryKey, spellInfo)
                         brokerCategories:Insert(categoryKey, spellInfo)
                         tinsert(wt.weaponSkills, spellInfo)

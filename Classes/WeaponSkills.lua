@@ -7,7 +7,7 @@ local ORGRIMMAR = 1637
 local THUNDER_BLUFF = 1638
 local UNDERCITY = 1497
 
-local cityIconIds = {
+wt.cityIconIds = {
     [IRONFORGE] = 135757, -- Ironforge
     [STORMWIND] = 135763, -- Stormwind
     [DARNASSUS] = 135755, -- Darnassus
@@ -16,7 +16,7 @@ local cityIconIds = {
     [UNDERCITY] = 135766, -- Undercity
 }
 local function npcLocation(id, zone, x, y) 
-    return { npc = id, zone = zone, zoneIcon = cityIconIds[zone], x = x, y = y }
+    return { npc = id, zone = zone, zoneIcon = wt.cityIconIds[zone], x = x, y = y }
 end
 
 wt.WeaponSkills = {

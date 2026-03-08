@@ -64,6 +64,7 @@ local function setRowSpell(row, spell)
             rowSpell.level:SetTextColor(color.r, color.g, color.b)
         else
             rowSpell.level:Hide()
+            rowSpell.level:SetText("")
         end
         row:SetID(spell.itemId or spell.id)
         rowSpell.icon:SetTexture(spell.useAltIcon and spell.altIcon or spell.icon)
@@ -94,6 +95,46 @@ local function setRowSpell(row, spell)
     else
         row:SetScript("OnClick", nil)
     end
+
+    if not spell.isHeader and spell.trainerZones and #spell.trainerZones > 0 then
+        local lastFrame = row
+        local point = "TOPRIGHT"
+        local relativePoint = "TOPRIGHT"
+        local xOffset = -4
+
+        for j, zoneData in ipairs(spell.trainerZones) do
+            local f = row.zoneIcons[j]
+            if f then
+                f:ClearAllPoints()
+                f:SetPoint(point, lastFrame, relativePoint, xOffset, 0)
+                f.icon:SetTexture(zoneData.icon)
+                f.zoneId = zoneData.id
+                f:Show()
+                lastFrame = f
+                point = "RIGHT"
+                relativePoint = "LEFT"
+                xOffset = -2
+            end
+        end
+        for j = #spell.trainerZones + 1, 3 do
+            row.zoneIcons[j]:Hide()
+        end
+
+        row.spell.level:ClearAllPoints()
+        row.spell.level:SetPoint("RIGHT", lastFrame, "LEFT", -2, 0)
+        row.spell.level:SetPoint("TOP", row)
+        row.spell.level:SetPoint("BOTTOM", row)
+    else
+        if row.zoneIcons then
+            for _, f in ipairs(row.zoneIcons) do f:Hide() end
+        end
+        if not spell.isHeader then
+            row.spell.level:ClearAllPoints()
+            row.spell.level:SetPoint("TOPRIGHT", row.spell, -4, 0)
+            row.spell.level:SetPoint("BOTTOM", row.spell)
+        end
+    end
+
     row.currentSpell = spell
     if (tooltip:IsOwned(row)) then setTooltip(spell) end
     row:Show()
@@ -292,6 +333,7 @@ function wt.CreateFrame()
         spell:SetPoint("LEFT", row, "LEFT")
         spell:SetPoint("TOP", row, "TOP")
         spell:SetPoint("BOTTOM", row, "BOTTOM")
+        spell:SetPoint("RIGHT", row, "RIGHT")
 
         local spellIcon = spell:CreateTexture(nil, "OVERLAY")
         spellIcon:SetPoint("TOPLEFT", spell)
@@ -330,6 +372,25 @@ function wt.CreateFrame()
         spell.subLabel = spellSublabel
         spell.icon = spellIcon
         spell.level = spellLevelLabel
+
+        row.zoneIcons = {}
+        for j = 1, 3 do
+            local zoneFrame = CreateFrame("Frame", nil, row)
+            zoneFrame:SetSize(ROW_HEIGHT, ROW_HEIGHT)
+            zoneFrame.icon = zoneFrame:CreateTexture(nil, "OVERLAY")
+            zoneFrame.icon:SetAllPoints()
+            zoneFrame:SetScript("OnEnter", function(self)
+                if self.zoneId then
+                    tooltip:SetOwner(self, "ANCHOR_RIGHT")
+                    tooltip:SetText(C_Map.GetAreaInfo(self.zoneId))
+                    tooltip:Show()
+                end
+            end)
+            zoneFrame:SetScript("OnLeave", function() tooltip:Hide() end)
+            zoneFrame:Hide()
+            tinsert(row.zoneIcons, zoneFrame)
+        end
+
         row.highlight = highlight
         row.header = headerLabel
         row.spell = spell
