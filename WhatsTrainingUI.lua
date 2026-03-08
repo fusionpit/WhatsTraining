@@ -167,8 +167,14 @@ function wt.CreateFrame()
         local toggleBtn = CreateFrame("Button", "$parentWeaponSkillToggle", mainFrame, "SquareIconButtonTemplate")
         toggleBtn:SetSize(32, 32)
         toggleBtn:SetPoint("LEFT", search, "RIGHT", 5, 0)
-        toggleBtn:SetScript("OnClick", function()
+        toggleBtn:SetScript("OnClick", function(self)
             wt:ToggleWeaponSkills()
+            if GameTooltip:IsOwned(self) then
+                local onEnter = self:GetScript("OnEnter")
+                if onEnter ~= nil then
+                    onEnter(self)
+                end
+            end
         end)
         toggleBtn:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
