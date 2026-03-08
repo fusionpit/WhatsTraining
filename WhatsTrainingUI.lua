@@ -115,10 +115,30 @@ function wt.Update(frame, forceUpdate)
                            ROW_HEIGHT, nil, nil, nil, nil, nil, nil, true)
     lastOffset = offset
 end
+function wt.UpdateToggleIcon()
+    if not wt.MainFrame or not wt.MainFrame.weaponSkillToggleButton then return end
+    local icon
+    if wt.showingWeaponSkills then
+        icon = "Interface\\Icons\\INV_Misc_Book_09"
+    else
+        local _, class = UnitClass("player")
+        if class == "HUNTER" then
+            icon = GetInventoryItemTexture("player", 18) -- Ranged
+        end
+        if not icon then
+            icon = GetInventoryItemTexture("player", 16) -- Main Hand
+        end
+        if not icon then
+            icon = "Interface\\Icons\\INV_Weapon_ShortBlade_04" -- Dagger fallback
+        end
+    end
+    wt.MainFrame.weaponSkillToggleButton:SetIcon(icon)
+end
 
 local hasFrameShown = false
 function wt.CreateFrame()
     local mainFrame = CreateFrame("Frame", "WhatsTrainingFrame", SpellBookFrame)
+    wt.MainFrame = mainFrame
     mainFrame:SetPoint("TOPLEFT", SpellBookFrame, "TOPLEFT", 0, 0)
     mainFrame:SetPoint("BOTTOMRIGHT", SpellBookFrame, "BOTTOMRIGHT", 0, 0)
     mainFrame:SetFrameStrata("HIGH")
@@ -143,7 +163,22 @@ function wt.CreateFrame()
             wt.filter = strlower(self:GetText())
             if wt.filter ~= oldFilter then wt:ApplyFilter() end
         end)
+
+        local toggleBtn = CreateFrame("Button", "$parentWeaponSkillToggle", mainFrame, "SquareIconButtonTemplate")
+        toggleBtn:SetSize(32, 32)
+        toggleBtn:SetPoint("LEFT", search, "RIGHT", 5, 0)
+        toggleBtn:SetScript("OnClick", function()
+            wt:ToggleWeaponSkills()
+        end)
+        toggleBtn:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(wt.showingWeaponSkills and wt.L.SHOW_SPELLS or wt.L.SHOW_WEAPONS)
+            GameTooltip:Show()
+        end)
+        toggleBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
+        mainFrame.weaponSkillToggleButton = toggleBtn
     end
+
     local SETTINGS_ICON_FILEID = GetFileIDFromPath("Interface\\Worldmap\\Gear_64Grey")
     local settingsBtn = CreateFrame("Button", "$parentSettingsButton", mainFrame, "SquareIconButtonTemplate")
     settingsBtn:SetWidth(30)
@@ -265,6 +300,7 @@ function wt.CreateFrame()
             wt:RebuildData()
             hasFrameShown = true
         end
+        wt.UpdateToggleIcon()
         wt.Update(mainFrame, true)
     end)
     mainFrame.scrollBar = scrollBar
@@ -344,7 +380,6 @@ function wt.CreateFrame()
         rawset(rows, i, row)
     end
     mainFrame.rows = rows
-    wt.MainFrame = mainFrame
 end
 
 local function addIgnoreLines(rootDescription, config)

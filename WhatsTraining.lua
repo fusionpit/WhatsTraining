@@ -147,6 +147,13 @@ local headers = {
         nameSort = true
     }, 
 }
+local weaponCategoryKeys = {
+    [WEAPON_AVAILABLE_KEY] = true,
+    [WEAPON_NEXTLEVEL_KEY] = true,
+    [WEAPON_NOTLEVEL_KEY] = true,
+    [WEAPON_KNOWN_KEY] = true,
+    [WEAPON_IGNORED_KEY] = true
+}
 local function makeCategories(headersDef, isBroker) 
     return {
         _spellsByCategoryKey = {},
@@ -187,7 +194,15 @@ wt.data = {}
 wt.brokerData = {}
 wt.filter = ''
 
-wt.categoryData = {}
+wt.spellCategoryData = {}
+wt.weaponCategoryData = {}
+wt.spellListData = {}
+wt.weaponListData = {}
+wt.showingWeaponSkills = false
+wt.showingBrokerWeaponSkills = false
+
+wt.brokerSpellData = {}
+wt.brokerWeaponData = {}
 
 local function matchesFilter(spellOrItem) 
     if wt.filter == '' then return true end
@@ -212,8 +227,11 @@ end
 local function buildCategorizedData(playerLevel, isLevelUpEvent)
     categories:ClearSpells()
     brokerCategories:ClearSpells()
-    wipe(wt.categoryData)
-    wipe(wt.brokerData)
+    wipe(wt.spellCategoryData)
+    wipe(wt.weaponCategoryData)
+    wipe(wt.brokerSpellData)
+    wipe(wt.brokerWeaponData)
+    wt.weaponSkills = {}
     
     local function getSpellLevelColor(spell)
         local effectiveLevel = spell.level
@@ -324,6 +342,7 @@ local function buildCategorizedData(playerLevel, isLevelUpEvent)
                         spellInfo.level = reqLevel
                         categories:Insert(categoryKey, spellInfo)
                         brokerCategories:Insert(categoryKey, spellInfo)
+                        tinsert(wt.weaponSkills, spellInfo)
                     end
                 end
             end
@@ -365,7 +384,11 @@ local function buildCategorizedData(playerLevel, isLevelUpEvent)
             end
             
             category.cost = categoryEntry.totalCost
-            tinsert(wt.categoryData, categoryEntry)
+            if weaponCategoryKeys[category.key] then
+                tinsert(wt.weaponCategoryData, categoryEntry)
+            else
+                tinsert(wt.spellCategoryData, categoryEntry)
+            end
         end
     end
 
@@ -394,130 +417,149 @@ local function buildCategorizedData(playerLevel, isLevelUpEvent)
             category.cost = totalCost
             category.displayed = {cost = displayedCost, costFormat = "%s"}
             category.hidden = {cost = hiddenCost, costFormat = "%s"}
-            if category.key == AVAILABLE_KEY then
-                brokerAvailable = #category.spells
+            
+            if weaponCategoryKeys[category.key] then
+                tinsert(wt.brokerWeaponData, category)
+            else
+                tinsert(wt.brokerSpellData, category)
             end
-            if category.key == NEXTLEVEL_KEY then
-                brokerComing = #category.spells
-            end
-            tinsert(wt.brokerData, category)
         end
     end
-    if wt.updateBroker ~= nil then wt.updateBroker(brokerAvailable, brokerComing) end
+
+    wt.brokerData = wt.showingBrokerWeaponSkills and wt.brokerWeaponData or wt.brokerSpellData
+
+    local brokerAvailable = 0
+    local brokerComing = 0
+    local availKey = wt.showingBrokerWeaponSkills and WEAPON_AVAILABLE_KEY or AVAILABLE_KEY
+    local nextKey = wt.showingBrokerWeaponSkills and WEAPON_NEXTLEVEL_KEY or NEXTLEVEL_KEY
+    for _, category in ipairs(wt.brokerData) do
+        if category.key == availKey then brokerAvailable = #category.spells end
+        if category.key == nextKey then brokerComing = #category.spells end
+    end
+
+    if wt.updateBroker ~= nil then wt.updateBroker(brokerAvailable, brokerComing, wt.showingBrokerWeaponSkills) end
 end
 
 local function applyFilter()
-    wipe(wt.data)
+    wipe(wt.spellListData)
+    wipe(wt.weaponListData)
     
-    for _, categoryEntry in ipairs(wt.categoryData) do
-        local category = categoryEntry.category
-        local hasMatchingSpells = false
-        local filteredSpells = {}
-        local filteredCost = 0
-        
-        if categoryEntry.byEnglishFamily then
-            -- Warlock pet abilities - check by family
-            local filteredFamilies = {}
-            for englishFamily, familyData in pairs(categoryEntry.byEnglishFamily) do
-                local familySpells = {}
-                local familyCost = 0
-                for _, s in ipairs(familyData.spells) do
+    local function filterCategoryData(categoryData, resultsList)
+        for _, categoryEntry in ipairs(categoryData) do
+            local category = categoryEntry.category
+            local hasMatchingSpells = false
+            local filteredSpells = {}
+            local filteredCost = 0
+            
+            if categoryEntry.byEnglishFamily then
+                -- Warlock pet abilities - check by family
+                local filteredFamilies = {}
+                for englishFamily, familyData in pairs(categoryEntry.byEnglishFamily) do
+                    local familySpells = {}
+                    local familyCost = 0
+                    for _, s in ipairs(familyData.spells) do
+                        if matchesFilter(s.searchText) then
+                            tinsert(familySpells, s)
+                            familyCost = familyCost + s.cost
+                            hasMatchingSpells = true
+                        end
+                    end
+                    if #familySpells > 0 then
+                        filteredFamilies[englishFamily] = {
+                            localFamily = familyData.localFamily,
+                            cost = familyCost,
+                            spells = familySpells
+                        }
+                        filteredCost = filteredCost + familyCost
+                    end
+                end
+                if hasMatchingSpells then
+                    filteredSpells = filteredFamilies
+                end
+            else
+                -- Normal spells
+                for _, s in ipairs(categoryEntry.spells) do
                     if matchesFilter(s.searchText) then
-                        tinsert(familySpells, s)
-                        familyCost = familyCost + s.cost
+                        tinsert(filteredSpells, s)
+                        filteredCost = filteredCost + s.cost
                         hasMatchingSpells = true
                     end
                 end
-                if #familySpells > 0 then
-                    filteredFamilies[englishFamily] = {
-                        localFamily = familyData.localFamily,
-                        cost = familyCost,
-                        spells = familySpells
-                    }
-                    filteredCost = filteredCost + familyCost
-                end
             end
+            
             if hasMatchingSpells then
-                filteredSpells = filteredFamilies
-            end
-        else
-            -- Normal spells
-            for _, s in ipairs(categoryEntry.spells) do
-                if matchesFilter(s.searchText) then
-                    tinsert(filteredSpells, s)
-                    filteredCost = filteredCost + s.cost
-                    hasMatchingSpells = true
+                if not (category.key == PET_KEY and wt.currentClass == "WARLOCK") then
+                    tinsert(resultsList, category)
                 end
-            end
-        end
-        
-        if hasMatchingSpells then
-            if not (category.key == PET_KEY and wt.currentClass == "WARLOCK") then
-                tinsert(wt.data, category)
-            end
-            
-            -- Add special headers for pet category
-            if (category.key == PET_KEY and wt.needsBeastTraining()) then
-                tinsert(wt.data, {
-                    formattedName = ORANGE_FONT_COLOR_CODE ..
-                        wt.L.OPEN_BEAST_TRAINING .. FONT_COLOR_CODE_CLOSE,
-                    isHeader = true,
-                    cost = 0,
-                    tooltip = wt.L.CLICK_TO_OPEN,
-                    click = function() 
-                        if InCombatLockdown() then
-                            print(wt.L.OPEN_BEAST_IN_COMBAT)
-                        else
-                            wt.openBeastTraining()
-                        end
-                    end
-                })
-            end
-            if WT_ShowLearnedNotice == true and category.key == PET_KEY and wt.currentClass == "WARLOCK" then
-                tinsert(wt.data, {
-                    formattedName = wt.L.RIGHT_CLICK_LEARNED,
-                    isHeader = true,
-                    cost = 0,
-                    tooltip = wt.L.CLICK_TO_DISMISS,
-                    click = function()
-                        WT_ShowLearnedNotice = false
-                        wt:RebuildData()
-                    end
-                })
-            end
-            
-            if categoryEntry.byEnglishFamily then
-                -- Warlock pet abilities with family sub-headers
-                for _, englishFamily in ipairs(wt.WarlockPetOrder) do
-                    local family = filteredSpells[englishFamily]
-                    if family and #family.spells > 0 then
-                        tinsert(wt.data, {
-                            formattedName = family.localFamily,
-                            isHeader = true,
-                            cost = family.cost
-                        })
-                        for _, s in ipairs(family.spells) do
-                            if s.isItem then
-                                local taughtSpellId = wt.TomeTaughtSpells[s.itemId]
-                                if taughtSpellId then 
-                                    s.tooltipId = taughtSpellId
-                                else
-                                    print('no taught spell found for tome', s.itemId)
-                                end
+                
+                -- Add special headers for pet category
+                if (category.key == PET_KEY and wt.needsBeastTraining()) then
+                    tinsert(resultsList, {
+                        formattedName = ORANGE_FONT_COLOR_CODE ..
+                            wt.L.OPEN_BEAST_TRAINING .. FONT_COLOR_CODE_CLOSE,
+                        isHeader = true,
+                        cost = 0,
+                        tooltip = wt.L.CLICK_TO_OPEN,
+                        click = function() 
+                            if InCombatLockdown() then
+                                print(wt.L.OPEN_BEAST_IN_COMBAT)
+                            else
+                                wt.openBeastTraining()
                             end
-                            tinsert(wt.data, s)
+                        end
+                    })
+                end
+                if WT_ShowLearnedNotice == true and category.key == PET_KEY and wt.currentClass == "WARLOCK" then
+                    tinsert(resultsList, {
+                        formattedName = wt.L.RIGHT_CLICK_LEARNED,
+                        isHeader = true,
+                        cost = 0,
+                        tooltip = wt.L.CLICK_TO_DISMISS,
+                        click = function()
+                            WT_ShowLearnedNotice = false
+                            wt:RebuildData()
+                        end
+                    })
+                end
+                
+                if categoryEntry.byEnglishFamily then
+                    -- Warlock pet abilities with family sub-headers
+                    for _, englishFamily in ipairs(wt.WarlockPetOrder) do
+                        local family = filteredSpells[englishFamily]
+                        if family and #family.spells > 0 then
+                            tinsert(resultsList, {
+                                formattedName = family.localFamily,
+                                isHeader = true,
+                                cost = family.cost
+                            })
+                            for _, s in ipairs(family.spells) do
+                                if s.isItem then
+                                    local taughtSpellId = wt.TomeTaughtSpells[s.itemId]
+                                    if taughtSpellId then 
+                                        s.tooltipId = taughtSpellId
+                                    else
+                                        print('no taught spell found for tome', s.itemId)
+                                    end
+                                end
+                                tinsert(resultsList, s)
+                            end
                         end
                     end
+                else
+                    for _, s in ipairs(filteredSpells) do
+                        tinsert(resultsList, s)
+                    end
                 end
-            else
-                for _, s in ipairs(filteredSpells) do
-                    tinsert(wt.data, s)
-                end
+                
+                category.cost = filteredCost
             end
-            
-            category.cost = filteredCost
         end
     end
+
+    filterCategoryData(wt.spellCategoryData, wt.spellListData)
+    filterCategoryData(wt.weaponCategoryData, wt.weaponListData)
+    
+    wt.data = wt.showingWeaponSkills and wt.weaponListData or wt.spellListData
     
     if #wt.data == 0 and wt.filter ~= '' then
         tinsert(wt.data, {
@@ -547,6 +589,31 @@ function wt:ApplyFilter()
     if (self.MainFrame and self.MainFrame:IsVisible()) then
         self.Update(self.MainFrame, true)
     end
+end
+
+function wt:ToggleWeaponSkills()
+    self.showingWeaponSkills = not self.showingWeaponSkills
+    self.data = self.showingWeaponSkills and self.weaponListData or self.spellListData
+    if self.MainFrame and self.MainFrame:IsVisible() then
+        wt.UpdateToggleIcon()
+        self.Update(self.MainFrame, true)
+    end
+end
+
+function wt:ToggleBrokerWeaponSkills()
+    self.showingBrokerWeaponSkills = not self.showingBrokerWeaponSkills
+    self.brokerData = self.showingBrokerWeaponSkills and self.brokerWeaponData or self.brokerSpellData
+    -- Trigger broker icon/text update
+    local brokerAvailable = 0
+    local brokerComing = 0
+    local availKey = self.showingBrokerWeaponSkills and WEAPON_AVAILABLE_KEY or AVAILABLE_KEY
+    local nextKey = self.showingBrokerWeaponSkills and WEAPON_NEXTLEVEL_KEY or NEXTLEVEL_KEY
+    
+    for _, category in ipairs(self.brokerData) do
+        if category.key == availKey then brokerAvailable = #category.spells end
+        if category.key == nextKey then brokerComing = #category.spells end
+    end
+    if self.updateBroker ~= nil then self.updateBroker(brokerAvailable, brokerComing, self.showingBrokerWeaponSkills) end
 end
 
 function wt.afterPetUpdate()
@@ -643,9 +710,13 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         if (wt.MainFrame and wt.MainFrame:IsVisible()) then
             wt.Update(wt.MainFrame, true)
         end
+    elseif event == "PLAYER_EQUIPMENT_CHANGED" then
+        local slot, hasCurrent = ...
+        if (slot == 16 or slot == 18) and wt.UpdateToggleIcon then wt.UpdateToggleIcon() end
     end
 end)
 eventFrame:RegisterEvent("ADDON_LOADED")
 eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 eventFrame:RegisterEvent(learnedSpellEvent)
 eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
+eventFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")

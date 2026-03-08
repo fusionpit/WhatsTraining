@@ -25,6 +25,8 @@ local localeText = {
         BROKER_HIDDEN_FORMAT = "And another %d that cost %s",
         BROKER_NOTHING = "Nothing left to learn!",
         BROKER_CLICK_BEAST_TRAIN = "Hint: Shift-Click to open the Beast Training UI",
+        BROKER_CLICK_TOGGLE_WEAPONS = "Hint: Right-Click to toggle weapon skills",
+        BROKER_CLICK_TOGGLE_SPELLS = "Hint: Right-Click to toggle spells",
         BROKER_CLICK_OPEN = "Hint: Click to open spellbook.",
         BROKER_OPEN_IN_COMBAT = "Can't open spellbook while in combat",
         OPEN_BEAST_IN_COMBAT = "Can't open Beast Training while in combat",
@@ -43,6 +45,8 @@ local localeText = {
         INCUBUS = "Incubus",
         NOT_KNOWN = "Not known",
         SETTINGS = "Settings",
+        SHOW_WEAPONS = "Show Weapon Skills",
+        SHOW_SPELLS = "Show Spells",
     },
     frFR = {
         AVAILABLE_HEADER = "Disponible",

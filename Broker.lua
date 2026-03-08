@@ -5,11 +5,21 @@ if not ldb then return end
 local FONT_SIZE = 12
 local _, addonTitle = C_AddOns.GetAddOnInfo(addonName)
 
-local plugin = ldb:NewDataObject(addonName, {
+local plugin 
+plugin = ldb:NewDataObject(addonName, {
     type = "data source",
     text = addonTitle,
     icon = WT_Settings and WT_Settings.IconType or "Interface\\Icons\\INV_Misc_QuestionMark",
-    OnClick = function(_,button)
+    OnClick = function(self, button)
+        if button == "RightButton" then
+            wt:ToggleBrokerWeaponSkills()
+            if GameTooltip:IsOwned(self) then
+                GameTooltip:ClearLines()
+                plugin.OnTooltipShow(GameTooltip)
+                GameTooltip:Show()
+            end
+            return
+        end
         local openBeastTraining = wt.needsBeastTraining() and IsShiftKeyDown()
         if InCombatLockdown() then
             print(openBeastTraining and wt.L.OPEN_BEAST_IN_COMBAT or wt.L.BROKER_OPEN_IN_COMBAT)
@@ -37,11 +47,13 @@ end
 local ttShown = false
 local OPEN_HINT = formatGreen(wt.L.BROKER_CLICK_OPEN)
 local OPEN_BEAST_TRAINING_HINT = formatGreen(wt.L.BROKER_CLICK_BEAST_TRAIN)
+local TOGGLE_SPELLS_HINT = formatGreen(wt.L.BROKER_CLICK_TOGGLE_SPELLS)
+local TOGGLE_WEAPONS_HINT = formatGreen(wt.L.BROKER_CLICK_TOGGLE_WEAPONS)
 function plugin.OnTooltipShow(tt)
-    if ttShown == false then 
-        wt:RebuildData() 
-        ttShown = true
-    end
+    -- if ttShown == false then 
+    --     wt:RebuildData() 
+    --     ttShown = true
+    -- end
     
     tt:AddLine(wt.L.TAB_TEXT)
     tt:AddLine(" ")
@@ -57,6 +69,8 @@ function plugin.OnTooltipShow(tt)
         if wt.needsBeastTraining() then
             tt:AddLine(OPEN_BEAST_TRAINING_HINT)
         end
+        local toggleHint = wt.showingBrokerWeaponSkills and TOGGLE_SPELLS_HINT or TOGGLE_WEAPONS_HINT
+        tt:AddLine(toggleHint)
         tt:AddLine(OPEN_HINT)
         return
     end
@@ -85,16 +99,20 @@ function plugin.OnTooltipShow(tt)
     if wt.needsBeastTraining() then
         tt:AddLine(OPEN_BEAST_TRAINING_HINT)
     end
+    local toggleHint = wt.showingBrokerWeaponSkills and TOGGLE_SPELLS_HINT or TOGGLE_WEAPONS_HINT
+    tt:AddLine(toggleHint)
     tt:AddLine(OPEN_HINT)
 end
 
-function wt.updateBroker(available, coming)
+function wt.updateBroker(available, coming, showingWeaponSkills)
+    local availHeader = showingWeaponSkills and wt.L.WEAPON_AVAILABLE_HEADER or wt.L.AVAILABLE_HEADER
+    local comingHeader = showingWeaponSkills and wt.L.WEAPON_NEXTLEVEL_HEADER or wt.L.NEXTLEVEL_HEADER
     if available > 0 then
         local coloredAvailable = formatGreen(available)
-        plugin.text = string.format("%s %s", coloredAvailable, wt.L.AVAILABLE_HEADER)
+        plugin.text = string.format("%s %s", coloredAvailable, availHeader)
     elseif coming > 0 then
         local coloredComing = formatBlue(coming)
-        plugin.text = string.format("%s %s", coloredComing, wt.L.NEXTLEVEL_HEADER)
+        plugin.text = string.format("%s %s", coloredComing, comingHeader)
     else
         plugin.text = addonTitle
     end
