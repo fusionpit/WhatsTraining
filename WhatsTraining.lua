@@ -269,13 +269,9 @@ local function buildCategorizedData(playerLevel, isLevelUpEvent)
                 local categoryKey
 
                 if (isAbilityKnown(spellInfo.id)) then
-                    if WT_Settings.ShowKnown then
-                        categoryKey = wt:IsPetAbility(spellInfo.id) and KNOWN_PET_KEY or KNOWN_KEY
-                    end
+                    categoryKey = wt:IsPetAbility(spellInfo.id) and KNOWN_PET_KEY or KNOWN_KEY
                 elseif (ignoreStore:IsIgnored(spellInfo.id)) then
-                    if WT_Settings.ShowIgnored then
-                        categoryKey = wt:IsPetAbility(spellInfo.id) and IGNORED_PET_KEY or IGNORED_KEY
-                    end
+                    categoryKey = wt:IsPetAbility(spellInfo.id) and IGNORED_PET_KEY or IGNORED_KEY
                 elseif (wt:IsPetAbility(spellInfo.id)) then
                     categoryKey = PET_KEY
                 elseif (spell.requiredTalentId ~= nil and not isAbilityKnown(spell.requiredTalentId)) then
@@ -304,7 +300,7 @@ local function buildCategorizedData(playerLevel, isLevelUpEvent)
         categorizeGroup(spellsAtLevel, level)
     end
     
-    if WT_Settings.EnableWeaponTraining and wt.WeaponSkills then
+    if wt.WeaponSkills then
         for weaponSpellId, weaponData in pairs(wt.WeaponSkills) do
             local isClassEligible = false
             if weaponData.classes then
@@ -325,13 +321,9 @@ local function buildCategorizedData(playerLevel, isLevelUpEvent)
                     local reqLevel = weaponData.level or 1
                     
                     if (isAbilityKnown(spellInfo.id)) then
-                        if WT_Settings.ShowKnown then
-                            categoryKey = WEAPON_KNOWN_KEY
-                        end
+                        categoryKey = WEAPON_KNOWN_KEY
                     elseif (ignoreStore:IsIgnored(spellInfo.id)) then
-                        if WT_Settings.ShowIgnored then
-                            categoryKey = WEAPON_IGNORED_KEY
-                        end
+                        categoryKey = WEAPON_IGNORED_KEY
                     elseif reqLevel > playerLevel then
                         categoryKey = reqLevel <= playerLevel + 2 and WEAPON_NEXTLEVEL_KEY or WEAPON_NOTLEVEL_KEY
                     else
@@ -676,14 +668,6 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         end
         if WT_IgnoredSpells == nil then
             WT_IgnoredSpells = {}
-        end
-        if WT_Settings == nil then
-            WT_Settings = {
-                EnableWeaponTraining = true,
-                ShowKnown = true,
-                ShowIgnored = true,
-                IconType = "Interface\\Icons\\INV_Misc_QuestionMark"
-            }
         end
         ignoreStore:MigrateOrUse(WT_IgnoredSpells)
         if WT_LearnedPetAbilities == nil then

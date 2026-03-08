@@ -9,7 +9,7 @@ local plugin
 plugin = ldb:NewDataObject(addonName, {
     type = "data source",
     text = addonTitle,
-    icon = WT_Settings and WT_Settings.IconType or "Interface\\Icons\\INV_Misc_QuestionMark",
+    icon = "Interface\\Icons\\INV_Misc_QuestionMark",
     OnClick = function(self, button)
         if button == "RightButton" then
             wt:ToggleBrokerWeaponSkills()
@@ -32,11 +32,6 @@ plugin = ldb:NewDataObject(addonName, {
         end
     end
 })
-function wt.UpdateBrokerIcon(icon)
-    if plugin then
-        plugin.icon = icon or (WT_Settings and WT_Settings.IconType) or "Interface\\Icons\\INV_Misc_QuestionMark"
-    end
-end
 local function formatGreen(text)
     return '|cff19ff19'..text..'|r'
 end

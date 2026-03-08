@@ -185,44 +185,6 @@ function wt.CreateFrame()
         mainFrame.weaponSkillToggleButton = toggleBtn
     end
 
-    local SETTINGS_ICON_FILEID = GetFileIDFromPath("Interface\\Worldmap\\Gear_64Grey")
-    local settingsBtn = CreateFrame("Button", "$parentSettingsButton", mainFrame, "SquareIconButtonTemplate")
-    settingsBtn:SetWidth(30)
-    settingsBtn:SetHeight(30)
-    settingsBtn:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", -34, -34)
-    settingsBtn:SetIcon(SETTINGS_ICON_FILEID)
-    settingsBtn.tooltipTitle = ("Settings")
-    
-    settingsBtn:SetScript("OnClick", function(self)
-        PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
-        MenuUtil.CreateContextMenu(self, function(owner, rootDescription)
-            rootDescription:CreateTitle("Settings")
-            
-            rootDescription:CreateCheckbox("Include Weapon Training", 
-                function() return WT_Settings.EnableWeaponTraining end, 
-                function() 
-                    WT_Settings.EnableWeaponTraining = not WT_Settings.EnableWeaponTraining
-                    wt:RebuildData()
-                end
-            )
-            
-            rootDescription:CreateCheckbox("Show Known Spells", 
-                function() return WT_Settings.ShowKnown end, 
-                function()
-                    WT_Settings.ShowKnown = not WT_Settings.ShowKnown
-                    wt:RebuildData()
-                end
-            )
-            
-            rootDescription:CreateCheckbox("Show Ignored Spells", 
-                function() return WT_Settings.ShowIgnored end, 
-                function()
-                    WT_Settings.ShowIgnored = not WT_Settings.ShowIgnored
-                    wt:RebuildData()
-                end
-            )
-        end)
-    end)
 
     mainFrame:Hide()
     
@@ -260,7 +222,7 @@ function wt.CreateFrame()
 
     local skillLineTab = _G["SpellBookSkillLineTab" .. SKILL_LINE_TAB]
     hooksecurefunc(SpellBookFrame, "UpdateSkillLineTabs", function()
-        skillLineTab:SetNormalTexture(WT_Settings and WT_Settings.IconType or TAB_TEXTURE_FILEID)
+        skillLineTab:SetNormalTexture(TAB_TEXTURE_FILEID)
         skillLineTab.tooltip = wt.L.TAB_TEXT
         skillLineTab:Show()
         if SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB then
