@@ -77,6 +77,16 @@ function plugin.OnTooltipShow(tt)
 
         for _, spell in ipairs(category.displayedSpells) do
             local spellText = string.format("  |T%d:0|t %s — %s", spell.icon, spell.formattedFullName or spell.name, wt.formatSpellCost(spell, FONT_SIZE))
+            if spell.trainerZones and #spell.trainerZones > 0 then
+                local names = {}
+                for _, zoneData in ipairs(spell.trainerZones) do
+                    local name = C_Map.GetAreaInfo(zoneData.id)
+                    if name then tinsert(names, name) end
+                end
+                if #names > 0 then
+                    spellText = spellText .. " — " .. table.concat(names, wt.L.OR)
+                end
+            end
             if spell.hideLevel then
                 tt:AddLine(spellText)
             else
