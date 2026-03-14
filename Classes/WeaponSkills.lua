@@ -8,203 +8,227 @@ local THUNDER_BLUFF = 1638
 local UNDERCITY = 1497
 
 wt.cityIconIds = {
-    [IRONFORGE] = 135757, -- Ironforge
-    [STORMWIND] = 135763, -- Stormwind
-    [DARNASSUS] = 135755, -- Darnassus
-    [ORGRIMMAR] = 135759, -- Orgrimmar
-    [THUNDER_BLUFF] = 135765, -- Thunder Bluff
-    [UNDERCITY] = 135766, -- Undercity
+    [IRONFORGE] = 135757,
+    [STORMWIND] = 135763,
+    [DARNASSUS] = 135755,
+    [ORGRIMMAR] = 135759,
+    [THUNDER_BLUFF] = 135765,
+    [UNDERCITY] = 135766,
 }
 local function npcLocation(id, zone, x, y) 
     return { npc = id, zone = zone, zoneIcon = wt.cityIconIds[zone], x = x, y = y }
 end
 
+local BULIWYF_STONEHAND = npcLocation(11865, IRONFORGE, 61.2, 89.5)
+local BIXI_WOBBLEBONK = npcLocation(11866, IRONFORGE, 62.2, 89.6)
+local WOO_PING = npcLocation(11869, STORMWIND, 57.1, 57.7)
+local ILYENIA_MOONFIRE = npcLocation(11867, DARNASSUS, 57.7, 46.0)
+local HANASHI = npcLocation(2704, ORGRIMMAR, 81.5, 19.6)
+local SAYOC = npcLocation(11868, ORGRIMMAR, 81.7, 19.6)
+local ANSEKHWA = npcLocation(11870, THUNDER_BLUFF, 40.0, 63.1)
+local ARCHIBALD = npcLocation(11871, UNDERCITY, 57.3, 32.8)
+
+local ONE_HANDED_AXES = 196
+local TWO_HANDED_AXES = 197
+local ONE_HANDED_MACES = 198
+local TWO_HANDED_MACES = 199
+local POLEARMS = 200
+local ONE_HANDED_SWORDS = 201
+local TWO_HANDED_SWORDS = 202
+local STAVES = 227
+local BOWS = 264
+local GUNS = 266
+local DAGGERS = 1180
+local THROWN = 2567
+local CROSSBOWS = 5011
+local FIST_WEAPONS = 15590
+
 wt.WeaponSkills = {
-    [196] = {
+    [ONE_HANDED_AXES] = {
         classes = {"WARRIOR", "PALADIN", "HUNTER", "SHAMAN"},
         trainers = {
             Alliance = {
-                npcLocation(11865, IRONFORGE, 61.2, 89.5) -- Buliwyf Stonehand
+                BULIWYF_STONEHAND
             },
             Horde = {
-                npcLocation(2704, ORGRIMMAR, 81.5, 19.6), -- Hanashi
-                npcLocation(11868, ORGRIMMAR, 81.7, 19.6) -- Sayoc
+                HANASHI,
+                SAYOC
             }
         }
-    }, -- One-Handed Axes
-    [197] = {
+    },
+    [TWO_HANDED_AXES] = {
         classes = {"WARRIOR", "PALADIN", "HUNTER", "SHAMAN"},
         trainers = {
             Alliance = {
-                npcLocation(11865, IRONFORGE, 61.2, 89.5) -- Buliwyf Stonehand
+                BULIWYF_STONEHAND
             },
             Horde = {
-                npcLocation(2704, ORGRIMMAR, 81.5, 19.6), -- Hanashi
-                npcLocation(11868, ORGRIMMAR, 81.7, 19.6) -- Sayoc
+                HANASHI,
+                SAYOC
             }
         }
-    }, -- Two-Handed Axes
-    [198] = {
+    },
+    [ONE_HANDED_MACES] = {
         classes = {"WARRIOR", "PALADIN", "ROGUE", "PRIEST", "SHAMAN", "DRUID"},
         trainers = {
             Alliance = {
-                npcLocation(11865, IRONFORGE, 61.2, 89.5) -- Buliwyf Stonehand
+                BULIWYF_STONEHAND
             },
             Horde = {
-                npcLocation(11870, THUNDER_BLUFF, 40.0, 63.1) -- Ansekhwa
+                ANSEKHWA
             }
         }
-    }, -- One-Handed Maces
-    [199] = {
+    },
+    [TWO_HANDED_MACES] = {
         classes = {"WARRIOR", "PALADIN", "SHAMAN", "DRUID"},
         trainers = {
             Alliance = {
-                npcLocation(11865, IRONFORGE, 61.2, 89.5) -- Buliwyf Stonehand
+                BULIWYF_STONEHAND
             },
             Horde = {
-                npcLocation(11870, THUNDER_BLUFF, 40.0, 63.1) -- Ansekhwa
+                ANSEKHWA
             }
         }
-    }, -- Two-Handed Maces
-    [200] = {
+    },
+    [POLEARMS] = {
         classes = {"WARRIOR", "PALADIN", "HUNTER", "DRUID"},
         level = 20,
         cost = 10000,
         trainers = {
             Alliance = {
-                npcLocation(11869, STORMWIND, 57.1, 57.7) -- Woo Ping
+                WOO_PING
             },
             Horde = {
-                npcLocation(11871, UNDERCITY, 57.3, 32.8) -- Archibald
+                ARCHIBALD
             }
         }
-    }, -- Polearms
-    [201] = {
+    },
+    [ONE_HANDED_SWORDS] = {
         classes = {"WARRIOR", "PALADIN", "HUNTER", "ROGUE", "MAGE", "WARLOCK"},
         trainers = {
             Alliance = {
-                npcLocation(11869, STORMWIND, 57.1, 57.7) -- Woo Ping
+                WOO_PING
             },
             Horde = {
-                npcLocation(11871, UNDERCITY, 57.3, 32.8) -- Archibald
+                ARCHIBALD
             }
         }
-    }, -- One-Handed Swords
-    [202] = {
+    },
+    [TWO_HANDED_SWORDS] = {
         classes = {"WARRIOR", "PALADIN", "HUNTER"},
         trainers = {
             Alliance = {
-                npcLocation(11869, STORMWIND, 57.1, 57.7) -- Woo Ping
+                WOO_PING
             },
             Horde = {
-                npcLocation(11871, UNDERCITY, 57.3, 32.8) -- Archibald
+                ARCHIBALD
             }
         }
-    }, -- Two-Handed Swords
-    [227] = {
+    },
+    [STAVES] = {
         classes = {"WARRIOR", "HUNTER", "PRIEST", "SHAMAN", "DRUID", "WARLOCK", "MAGE"},
         trainers = {
             Alliance = {
-                npcLocation(11867, DARNASSUS, 57.7, 46.0), -- Ilyenia Moonfire
-                npcLocation(11869, STORMWIND, 57.1, 57.7) -- Woo Ping
+                ILYENIA_MOONFIRE,
+                WOO_PING
             },
             Horde = {
-                npcLocation(2704, ORGRIMMAR, 81.5, 19.6), -- Hanashi
-                npcLocation(11868, ORGRIMMAR, 81.7, 19.6), -- Sayoc
-                npcLocation(11870, THUNDER_BLUFF, 40.0, 63.1) -- Ansekhwa
+                HANASHI,
+                SAYOC,
+                ANSEKHWA
             }
         }
-    }, -- Staves
-    [264] = {
+    },
+    [BOWS] = {
         classes = {"WARRIOR", "HUNTER", "ROGUE"},
         trainers = {
             Alliance = {
-                npcLocation(11867, DARNASSUS, 57.7, 46.0) -- Ilyenia Moonfire
+                ILYENIA_MOONFIRE
             },
             Horde = {
-                npcLocation(2704, ORGRIMMAR, 81.5, 19.6), -- Hanashi
-                npcLocation(11868, ORGRIMMAR, 81.7, 19.6) -- Sayoc
+                HANASHI,
+                SAYOC
             }
         }
-    }, -- Bows
-    [266] = {
+    },
+    [GUNS] = {
         classes = {"WARRIOR", "HUNTER", "ROGUE"},
         trainers = {
             Alliance = {
-                npcLocation(11865, IRONFORGE, 61.2, 89.5) -- Buliwyf Stonehand
+                BULIWYF_STONEHAND
             },
             Horde = {
-                npcLocation(11870, THUNDER_BLUFF, 40.0, 63.1) -- Ansekhwa
+                ANSEKHWA
             }
         }
-    }, -- Guns
-    [1180] = {
+    },
+    [DAGGERS] = {
         classes = {"WARRIOR", "HUNTER", "ROGUE", "PRIEST", "SHAMAN", "DRUID", "WARLOCK", "MAGE"},
         trainers = {
             Alliance = {
-                npcLocation(11867, DARNASSUS, 57.7, 46.0), -- Ilyenia Moonfire
-                npcLocation(11866, IRONFORGE, 62.2, 89.6), -- Bixi Wobblebonk
-                npcLocation(11869, STORMWIND, 57.1, 57.7) -- Woo Ping
+                ILYENIA_MOONFIRE,
+                BIXI_WOBBLEBONK,
+                WOO_PING
             },
             Horde = {
-                npcLocation(11868, ORGRIMMAR, 81.7, 19.6), -- Sayoc
-                npcLocation(11871, UNDERCITY, 57.3, 32.8) -- Archibald
+                SAYOC,
+                ARCHIBALD
             }
         }
-    }, -- Daggers
-    [2567] = {
+    },
+    [THROWN] = {
         classes = {"WARRIOR", "HUNTER", "ROGUE"},
         trainers = {
             Alliance = {
-                npcLocation(11867, DARNASSUS, 57.7, 46.0), -- Ilyenia Moonfire
-                npcLocation(11866, IRONFORGE, 62.2, 89.6) -- Bixi Wobblebonk
+                ILYENIA_MOONFIRE,
+                BIXI_WOBBLEBONK
             },
             Horde = {
-                npcLocation(2704, ORGRIMMAR, 81.5, 19.6), -- Hanashi
-                npcLocation(11868, ORGRIMMAR, 81.7, 19.6) -- Sayoc
+                HANASHI,
+                SAYOC
             }
         }
-    }, -- Thrown
-    [5011] = {
+    },
+    [CROSSBOWS] = {
         classes = {"WARRIOR", "HUNTER", "ROGUE"},
         trainers = {
             Alliance = {
-                npcLocation(11866, IRONFORGE, 62.2, 89.6), -- Bixi Wobblebonk
-                npcLocation(11869, STORMWIND, 57.1, 57.7) -- Woo Ping
+                BIXI_WOBBLEBONK,
+                WOO_PING
             },
             Horde = {
-                npcLocation(11871, UNDERCITY, 57.3, 32.8) -- Archibald
+                ARCHIBALD
             }
         }
-    }, -- Crossbows
-    [15590] = {
+    },
+    [FIST_WEAPONS] = {
         classes = {"WARRIOR", "HUNTER", "ROGUE", "SHAMAN", "DRUID"},
         trainers = {
             Alliance = {
-                npcLocation(11867, DARNASSUS, 57.7, 46.0), -- Ilyenia Moonfire
-                npcLocation(11865, IRONFORGE, 61.2, 89.5) -- Buliwyf Stonehand
+                ILYENIA_MOONFIRE,
+                BULIWYF_STONEHAND
             },
             Horde = {
-                npcLocation(11868, ORGRIMMAR, 81.7, 19.6) -- Sayoc
+                SAYOC
             }
         }
-    }, -- Fist Weapons
+    },
 }
 wt.WeaponSkillDisplayOrder = {
-    196, -- One-Handed Axes
-    197, -- Two-Handed Axes
-    198, -- One-Handed Maces
-    199, -- Two-Handed Maces
-    201, -- One-Handed Swords
-    202, -- Two-Handed Swords
-    1180, -- Daggers
-    15590, -- Fist Weapons
-    227, -- Staves
-    200, -- Polearms
-    264, -- Bows
-    266, -- Guns
-    5011, -- Crossbows
-    2567 -- Thrown
+    ONE_HANDED_AXES,
+    TWO_HANDED_AXES,
+    ONE_HANDED_MACES,
+    TWO_HANDED_MACES,
+    ONE_HANDED_SWORDS,
+    TWO_HANDED_SWORDS,
+    DAGGERS,
+    FIST_WEAPONS,
+    STAVES,
+    POLEARMS,
+    BOWS,
+    GUNS,
+    CROSSBOWS,
+    THROWN
 }
 
 for index, id in ipairs(wt.WeaponSkillDisplayOrder) do
