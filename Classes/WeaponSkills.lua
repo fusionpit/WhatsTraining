@@ -190,3 +190,25 @@ wt.WeaponSkills = {
         }
     }, -- Fist Weapons
 }
+wt.WeaponSkillDisplayOrder = {
+    196, -- One-Handed Axes
+    197, -- Two-Handed Axes
+    198, -- One-Handed Maces
+    199, -- Two-Handed Maces
+    201, -- One-Handed Swords
+    202, -- Two-Handed Swords
+    1180, -- Daggers
+    15590, -- Fist Weapons
+    227, -- Staves
+    200, -- Polearms
+    264, -- Bows
+    266, -- Guns
+    5011, -- Crossbows
+    2567 -- Thrown
+}
+
+for index, id in ipairs(wt.WeaponSkillDisplayOrder) do
+    if wt.WeaponSkills[id] then
+        wt.WeaponSkills[id].orderIndex = index
+    end
+end

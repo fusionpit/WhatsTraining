@@ -218,10 +218,10 @@ function wt.CreateFrame()
             if wt.filter ~= oldFilter then wt:ApplyFilter() end
         end)
 
-        local toggleBtn = CreateFrame("Button", "$parentWeaponSkillToggle", mainFrame, "SquareIconButtonTemplate")
-        toggleBtn:SetSize(32, 32)
-        toggleBtn:SetPoint("LEFT", search, "RIGHT", 5, 0)
-        toggleBtn:SetScript("OnClick", function(self)
+        local toggleButton = CreateFrame("Button", "$parentWeaponSkillToggle", mainFrame, "SquareIconButtonTemplate")
+        toggleButton:SetSize(32, 32)
+        toggleButton:SetPoint("LEFT", search, "RIGHT", 0, 0)
+        toggleButton:SetScript("OnClick", function(self)
             wt:ToggleWeaponSkills()
             if GameTooltip:IsOwned(self) then
                 local onEnter = self:GetScript("OnEnter")
@@ -230,13 +230,13 @@ function wt.CreateFrame()
                 end
             end
         end)
-        toggleBtn:SetScript("OnEnter", function(self)
+        toggleButton:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
             GameTooltip:SetText(wt.showingWeaponSkills and wt.L.SHOW_SPELLS or wt.L.SHOW_WEAPONS)
             GameTooltip:Show()
         end)
-        toggleBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
-        mainFrame.weaponSkillToggleButton = toggleBtn
+        toggleButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
+        mainFrame.weaponSkillToggleButton = toggleButton
     end
 
 

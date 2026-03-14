@@ -68,7 +68,8 @@ local headers = {
         color = GREEN_FONT_COLOR_CODE,
         hideLevel = true,
         key = WEAPON_AVAILABLE_KEY,
-        brokerMaxDisplayEntries = 10
+        brokerMaxDisplayEntries = 10,
+        weaponSort = true
     }, {
         name = wt.L.NEXTLEVEL_HEADER,
         color = COMINGSOON_FONT_COLOR_CODE,
@@ -78,7 +79,8 @@ local headers = {
         name = wt.L.WEAPON_NEXTLEVEL_HEADER,
         color = COMINGSOON_FONT_COLOR_CODE,
         key = WEAPON_NEXTLEVEL_KEY,
-        brokerMaxDisplayEntries = 10
+        brokerMaxDisplayEntries = 10,
+        weaponSort = true
     }, {
         name = wt.L.NOTLEVEL_HEADER,
         color = RED_FONT_COLOR_CODE,
@@ -88,7 +90,8 @@ local headers = {
         name = wt.L.WEAPON_NOTLEVEL_HEADER,
         color = RED_FONT_COLOR_CODE,
         key = WEAPON_NOTLEVEL_KEY,
-        brokerMaxDisplayEntries = 5
+        brokerMaxDisplayEntries = 5,
+        weaponSort = true
     }, {
         name = wt.L.PET_HEADER,
         color = PET_FONT_COLOR_CODE,
@@ -114,7 +117,7 @@ local headers = {
         costColor = GREEN_FONT_COLOR_CODE,
         hideLevel = true,
         key = WEAPON_IGNORED_KEY,
-        nameSort = true
+        weaponSort = true
     }, {
         name = wt.L.IGNORED_PET_HEADER,
         color = LIGHTYELLOW_FONT_COLOR_CODE,
@@ -137,7 +140,7 @@ local headers = {
         key = WEAPON_KNOWN_KEY,
         costFormat = wt.L.TOTALSPENT_FORMAT,
         costColor = RED_FONT_COLOR_CODE,
-        nameSort = true
+        weaponSort = true
     },{
         name = wt.L.KNOWN_PET_HEADER,
         color = GRAY_FONT_COLOR_CODE,
@@ -218,9 +221,18 @@ local function byNameThenLevel(a, b)
     if a.name == b.name then return a.level < b.level end
     return a.name < b.name
 end
+local function byWeaponOrder(a, b)
+    local orderA = a.weaponOrder or 999
+    local orderB = b.weaponOrder or 999
+    if orderA == orderB then
+        return byLevelThenName(a, b)
+    end
+    return orderA < orderB
+end
 
 local function categorySort(category)
     local sortFunc = category.nameSort and byNameThenLevel or byLevelThenName
+    if category.weaponSort then sortFunc = byWeaponOrder end
     sort(category.spells, sortFunc)
 end
 
@@ -333,6 +345,7 @@ local function buildCategorizedData(playerLevel, isLevelUpEvent)
                     
                     if categoryKey ~= nil then
                         spellInfo.level = reqLevel
+                        spellInfo.weaponOrder = weaponData.orderIndex
                         local englishFaction = UnitFactionGroup("player")
                         if weaponData.trainers and weaponData.trainers[englishFaction] then
                             local trainerZones = {}
