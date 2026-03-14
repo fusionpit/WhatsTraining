@@ -140,6 +140,7 @@ local function categorizeWeaponSkills(playerLevel)
                 if categoryKey ~= nil then
                     spellInfo.level = reqLevel
                     spellInfo.weaponOrder = weaponData.orderIndex
+                    spellInfo.altTooltipType = "weapon"
                     local englishFaction = UnitFactionGroup("player")
                     if weaponData.trainers and weaponData.trainers[englishFaction] then
                         local trainerZones = {}

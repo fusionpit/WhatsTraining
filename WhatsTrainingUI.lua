@@ -21,7 +21,10 @@ local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent,
                             "GameTooltipTemplate")
 
 local function setTooltip(spellInfo)
-    if spellInfo.tooltipType == "item" then
+    if spellInfo.altTooltipType == "weapon" then
+        tooltip:ClearLines()
+        tooltip:AddLine(spellInfo.name, 1, 1, 1)
+    elseif spellInfo.tooltipType == "item" then
         tooltip:SetSpellByID(spellInfo.tooltipId)
         tooltip:AddLine(spellInfo.formattedFullName, 1, 1, 1)
     elseif spellInfo.tooltipType == "spell" then
