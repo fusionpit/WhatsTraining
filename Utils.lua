@@ -86,3 +86,31 @@ end
 function wt.openBeastTraining()
     CastSpellByID(BEAST_TRAINING_SPELL)
 end
+
+function wt.isPreviouslyLearnedAbility(spellId)
+    if wt.overriddenSpellsMap == nil or not wt.overriddenSpellsMap[spellId] then
+        return false
+    end
+
+    local spellIndex, knownIndex = 0, 0
+    for i, otherId in ipairs(wt.overriddenSpellsMap[spellId]) do
+        if otherId == spellId then spellIndex = i end
+        if (IsSpellKnown(otherId) or IsPlayerSpell(otherId)) then
+            knownIndex = i
+        end
+    end
+    return spellIndex <= knownIndex
+end
+
+function wt.isAbilityKnown(spellId)
+    if (IsSpellKnown(spellId) or IsPlayerSpell(spellId) or
+        wt.isPreviouslyLearnedAbility(spellId)) then return true end
+    if (not wt:IsPetAbility(spellId)) then return false end
+    local info = wt:SpellInfo(spellId)
+
+    if info.subText == nil or wt.learnedPetAbilityMap[info.name] == nil then
+        return false
+    end
+
+    return wt.learnedPetAbilityMap[info.name][info.subText]
+end

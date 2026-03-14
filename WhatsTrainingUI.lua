@@ -165,12 +165,12 @@ function wt.Update(frame, forceUpdate)
         local spell = wt.data[spellIndex]
         setRowSpell(row, spell)
     end
-    FauxScrollFrame_Update(wt.MainFrame.scrollBar, #wt.data, MAX_ROWS,
+    FauxScrollFrame_Update(frame.scrollBar, #wt.data, MAX_ROWS,
                            ROW_HEIGHT, nil, nil, nil, nil, nil, nil, true)
     lastOffset = offset
 end
-function wt.UpdateToggleIcon()
-    if not wt.MainFrame or not wt.MainFrame.weaponSkillToggleButton then return end
+function wt.UpdateToggleIcon(frame)
+    if not frame or not frame.weaponSkillToggleButton then return end
     local icon
     if wt.showingWeaponSkills then
         icon = "Interface\\Icons\\INV_Misc_Book_09"
@@ -186,7 +186,7 @@ function wt.UpdateToggleIcon()
             icon = "Interface\\Icons\\INV_Weapon_ShortBlade_04" -- Dagger fallback
         end
     end
-    wt.MainFrame.weaponSkillToggleButton:SetIcon(icon)
+    frame.weaponSkillToggleButton:SetIcon(icon)
 end
 
 function wt.CreateFrame()
@@ -317,7 +317,7 @@ function wt.CreateFrame()
                                          function() wt.Update(mainFrame) end)
     end)
     scrollBar:SetScript("OnShow", function()
-        wt.UpdateToggleIcon()
+        wt.UpdateToggleIcon(mainFrame)
         wt.Update(mainFrame, true)
     end)
     mainFrame.scrollBar = scrollBar

@@ -35,6 +35,8 @@ Classes\[Game]\Warrior.lua
 Classes\WeaponSkills.lua
 
 WhatsTrainingUI.lua
+Categories.lua
+DataBuilder.lua
 WhatsTraining.lua
 
 Broker.lua
