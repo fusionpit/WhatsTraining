@@ -189,7 +189,6 @@ function wt.UpdateToggleIcon()
     wt.MainFrame.weaponSkillToggleButton:SetIcon(icon)
 end
 
-local hasFrameShown = false
 function wt.CreateFrame()
     local mainFrame = CreateFrame("Frame", "WhatsTrainingFrame", SpellBookFrame)
     wt.MainFrame = mainFrame
@@ -318,10 +317,6 @@ function wt.CreateFrame()
                                          function() wt.Update(mainFrame) end)
     end)
     scrollBar:SetScript("OnShow", function()
-        if not hasFrameShown then
-            wt:RebuildData()
-            hasFrameShown = true
-        end
         wt.UpdateToggleIcon()
         wt.Update(mainFrame, true)
     end)
