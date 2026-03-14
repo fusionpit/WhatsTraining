@@ -730,10 +730,17 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
     elseif event == "PLAYER_EQUIPMENT_CHANGED" then
         local slot, hasCurrent = ...
         if (slot == 16 or slot == 18) and wt.UpdateToggleIcon then wt.UpdateToggleIcon() end
+    elseif event == "SKILL_LINES_CHANGED" then
+        buildCategorizedData(UnitLevel("player"))
+        applyFilter()
+        if (wt.MainFrame and wt.MainFrame:IsVisible()) then
+            wt.Update(wt.MainFrame, true)
+        end
     end
 end)
 eventFrame:RegisterEvent("ADDON_LOADED")
 eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 eventFrame:RegisterEvent(learnedSpellEvent)
 eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
+eventFrame:RegisterEvent("SKILL_LINES_CHANGED")
 eventFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
