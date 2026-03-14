@@ -212,3 +212,35 @@ for index, id in ipairs(wt.WeaponSkillDisplayOrder) do
         wt.WeaponSkills[id].orderIndex = index
     end
 end
+
+for id, weaponData in pairs(wt.WeaponSkills) do
+    if weaponData.trainers then
+        for faction, trainers in pairs(weaponData.trainers) do
+            local trainerZones = {}
+            local seenZones = {}
+            for _, trainer in ipairs(trainers) do
+                if not seenZones[trainer.zone] then
+                    tinsert(trainerZones, {
+                        id = trainer.zone,
+                        icon = wt.cityIconIds[trainer.zone] or trainer.zoneIcon,
+                        name = C_Map.GetAreaInfo(trainer.zone)
+                    })
+                    seenZones[trainer.zone] = true
+                end
+            end
+            table.sort(trainerZones, function(a, b)
+                return (a.name or "") < (b.name or "")
+            end)
+            
+            local zoneNames = {}
+            for _, zoneData in ipairs(trainerZones) do
+                if zoneData.name then tinsert(zoneNames, zoneData.name) end
+            end
+            
+            weaponData[faction .. "TrainerZones"] = trainerZones
+            if #zoneNames > 0 then
+                weaponData[faction .. "FormattedTrainerZones"] = table.concat(zoneNames, wt.L.OR)
+            end
+        end
+    end
+end

@@ -36,16 +36,9 @@ local function setTooltip(spellInfo)
         tooltip:AddLine(wt.formatSpellCost(spellInfo))
     end
     if spellInfo.tooltip then tooltip:AddLine(spellInfo.tooltip) end
-    if spellInfo.trainerZones and #spellInfo.trainerZones > 0 then
-        local names = {}
-        for _, zoneData in ipairs(spellInfo.trainerZones) do
-            local name = C_Map.GetAreaInfo(zoneData.id)
-            if name then tinsert(names, name) end
-        end
-        if #names > 0 then
-            tooltip:AddLine(string.format(wt.L.TRAINED_IN, table.concat(names, wt.L.OR)),
-                            0.8, 0.8, 0.8)
-        end
+    if spellInfo.formattedTrainerZones then
+        tooltip:AddLine(string.format(wt.L.TRAINED_IN, spellInfo.formattedTrainerZones),
+                        0.8, 0.8, 0.8)
     end
     tooltip:Show()
 end

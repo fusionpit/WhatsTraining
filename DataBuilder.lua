@@ -143,21 +143,8 @@ local function categorizeWeaponSkills(playerLevel)
                     spellInfo.altTooltipType = "weapon"
                     local englishFaction = UnitFactionGroup("player")
                     if weaponData.trainers and weaponData.trainers[englishFaction] then
-                        local trainerZones = {}
-                        local seenZones = {}
-                        for _, trainer in ipairs(weaponData.trainers[englishFaction]) do
-                            if not seenZones[trainer.zone] then
-                                tinsert(trainerZones, {
-                                    id = trainer.zone,
-                                    icon = wt.cityIconIds[trainer.zone] or trainer.zoneIcon
-                                })
-                                seenZones[trainer.zone] = true
-                            end
-                        end
-                        spellInfo.trainerZones = trainerZones
-                        table.sort(spellInfo.trainerZones, function(a, b)
-                            return (C_Map.GetAreaInfo(a.id) or "") < (C_Map.GetAreaInfo(b.id) or "")
-                        end)
+                        spellInfo.trainerZones = weaponData[englishFaction .. "TrainerZones"]
+                        spellInfo.formattedTrainerZones = weaponData[englishFaction .. "FormattedTrainerZones"]
                     end
 
                     wt.categories:Insert(categoryKey, spellInfo)
