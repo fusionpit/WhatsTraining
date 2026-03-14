@@ -28,7 +28,7 @@ plugin = ldb:NewDataObject(addonName, {
         if openBeastTraining then
             wt.openBeastTraining()
         else
-            wt.Open()
+            wt.Open(wt.showingBrokerWeaponSkills and true or false)
         end
     end
 })

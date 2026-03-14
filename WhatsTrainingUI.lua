@@ -264,7 +264,13 @@ function wt.CreateFrame()
             end
         end
     end)
-    function wt.Open()
+    function wt.Open(toWeapons)
+        if wt.showingWeaponSkills ~= toWeapons then
+            wt.showingWeaponSkills = toWeapons
+            wt.data = toWeapons and wt.weaponListData or wt.spellListData
+            wt.UpdateToggleIcon(wt.MainFrame)
+            wt.Update(wt.MainFrame, true)
+        end
         SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB
         if SpellBookFrame:IsVisible() then
             SpellBookFrame:Update()
