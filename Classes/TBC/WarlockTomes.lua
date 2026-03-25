@@ -31,7 +31,7 @@ wt.WarlockTomeMerchantIds = {
     [5749] = true,  -- Kayla Smithe, Tirisfall Glades
     [5750] = true,  -- Gina Lang, Tirisfall Glades
     [5815] = true,  -- Kurgul, Orgrimmar
-    [6328] = true,  -- Jubahl Corpseseeker, Ironforge
+    [6382] = true,  -- Jubahl Corpseseeker, Ironforge
 
     [12807] = true, -- Greshka, Swamp of Sorrows,
     [12776] = true, -- Hraug, Durotar
