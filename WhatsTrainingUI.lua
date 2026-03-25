@@ -125,7 +125,7 @@ local function setRowSpell(row, spell)
                 xOffset = -2
             end
         end
-        for j = #spell.trainerZones + 1, 3 do
+        for j = #spell.trainerZones + 1, wt.NumCityIcons do
             row.zoneIcons[j]:Hide()
         end
 
@@ -388,7 +388,7 @@ function wt.CreateFrame()
         row.spell = spell
 
         row.zoneIcons = {}
-        for j = 1, 3 do
+        for j = 1, wt.NumCityIcons do
             local zoneFrame = CreateFrame("Frame", nil, row)
             zoneFrame:SetSize(ROW_HEIGHT, ROW_HEIGHT)
             zoneFrame.icon = zoneFrame:CreateTexture(nil, "OVERLAY")
