@@ -28,6 +28,7 @@ wt.WarlockTomeMerchantIds = {
     [6374] = true,  -- Cylina Darkheart, Elwynn Forest
     [6373] = true,  -- Dane Winslow, Elwynn Forest
     [6376] = true,  -- Wren Darkspring, Dun Morogh
+    [6328] = true,  -- Dannie Fizzwizzle, Dun Morogh
     [5749] = true,  -- Kayla Smithe, Tirisfall Glades
     [5750] = true,  -- Gina Lang, Tirisfall Glades
     [5815] = true,  -- Kurgul, Orgrimmar
