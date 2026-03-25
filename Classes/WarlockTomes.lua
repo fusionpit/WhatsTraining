@@ -314,7 +314,15 @@ end
 hooksecurefunc("MerchantFrame_UpdateMerchantInfo", updateMerchantFrame)
 
 local tomeSpellTooltip = CreateFrame("GameTooltip", "WhatsTrainingTomeSpellTooltip", UIParent, "GameTooltipTemplate")
-local function showSecondaryTooltip(tt, itemId)
+local function addStatusTooltip(tt, statusLeft, statusRight)
+    if statusRight ~= nil then
+        tt:AddDoubleLine(statusLeft, statusRight)
+    else
+        tt:AddLine(statusLeft)
+    end
+    tt:Show()
+end
+local function showSpellTooltip(tt, itemId)
     local taughtSpell = wt.TomeTaughtSpells[itemId]
     if not taughtSpell then return end
     tomeSpellTooltip:SetOwner(tt, "ANCHOR_NONE")
@@ -329,15 +337,15 @@ hooksecurefunc(GameTooltip, "SetMerchantItem", function(tt, index)
         local succubusKey, incubusKey = sayaadKeys(merchantItemID)
         local succubusTip = coloredStatusTip(succubusKey)
         local incubusTip = coloredStatusTip(incubusKey)
-        tt:AddDoubleLine(succubusTip, incubusTip)
+        addStatusTooltip(tt, succubusTip, incubusTip)
     else
         if wt:IsPetAbilityLearned(merchantItemID) then 
-            tt:AddLine(RED_FONT_COLOR:WrapTextInColorCode(spaced(tomes[merchantItemID].localFamily, status(merchantItemID))))
+            addStatusTooltip(tt, RED_FONT_COLOR:WrapTextInColorCode(spaced(tomes[merchantItemID].localFamily, status(merchantItemID))))
         elseif ignoreStore:IsIgnored(merchantItemID) then
-            tt:AddLine(LIGHTYELLOW_FONT_COLOR:WrapTextInColorCode(spaced(tomes[merchantItemID].localFamily, status(merchantItemID))))
+            addStatusTooltip(tt, LIGHTYELLOW_FONT_COLOR:WrapTextInColorCode(spaced(tomes[merchantItemID].localFamily, status(merchantItemID))))
         end
     end
-    showSecondaryTooltip(tt, merchantItemID)
+    showSpellTooltip(tt, merchantItemID)
 end)
 hooksecurefunc(GameTooltip, "Hide", function()
     tomeSpellTooltip:Hide()
