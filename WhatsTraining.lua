@@ -124,6 +124,10 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
     elseif event == "PLAYER_ENTERING_WORLD" then
         local isLogin, isReload = ...
         if isLogin or isReload then
+            if wt.buildWeaponTrainerZones then
+                wt.buildWeaponTrainerZones()
+                wt.buildWeaponTrainerZones = nil
+            end
             wt.buildCategorizedData(UnitLevel("player"))
             wt.applyFilter()
             wt.CreateFrame()
