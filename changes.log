@@ -1,3 +1,6 @@
+* 9.2.0
+    - Fix lua error when tab is active and player levels up
+
 * 9.1.0
     - Fix TBC tome vendor display
 
