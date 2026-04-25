@@ -163,9 +163,20 @@ function wt.CreateFrame()
             and deferredPriorTabSelection == SKILL_LINE_TAB 
             and SpellBookFrame.selectedSkillLine ~= SKILL_LINE_TAB 
         then
-            SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB
-            if SpellBookFrame:IsVisible() then
+            local inCombat = InCombatLockdown()
+            if not inCombat and SpellBookFrame:IsVisible() then
+                -- out of combat can directly update the spell book
+                SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB
                 SpellBookFrame:Update()
+            elseif inCombat and SpellBookFrame:IsVisible() then
+                -- in combat manually update the tab selection, then update the selected tab variable in the next frame
+                for i = 1, MAX_SKILLLINE_TABS do
+                    _G["SpellBookSkillLineTab" .. i]:SetChecked(i == SKILL_LINE_TAB)
+                end
+                -- the SpellBookFrame code will try to disable the actual buttons if the selected skill line is out of range
+                -- the SpellButton..n buttons are protected in combat, and setting this in the same frame will cause an lua error
+                RunNextFrame(function() SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB end)
+                mainFrame:Show()
             end
         end
     end)
@@ -208,7 +219,7 @@ function wt.CreateFrame()
         elseif SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB then
             mainFrame:Show()
         end
-        C_Timer.After(0, function()
+        RunNextFrame(function()
             deferredPriorTabSelection = SpellBookFrame.selectedSkillLine
         end)
     end)
