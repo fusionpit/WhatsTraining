@@ -10,6 +10,7 @@ wt.weaponCategoryData = {}
 wt.spellListData = {}
 wt.weaponListData = {}
 wt.weaponGroupedData = {}
+wt.weaponSkillGroupedData = {}
 wt.showingWeaponSkills = false
 wt.showingBrokerWeaponSkills = false
 
@@ -80,7 +81,10 @@ end
 -- Built once per session; the caller nils this after calling it.
 function wt.buildWeaponSkeleton()
     local faction = UnitFactionGroup("player")
-    wt.weaponSkeleton = wt.WeaponGrouping.buildSkeleton(wt.WeaponSkills, faction, buildZoneNames(faction))
+    local zoneNames = buildZoneNames(faction)
+    wt.weaponSkeleton = wt.WeaponGrouping.buildSkeleton(wt.WeaponSkills, faction, zoneNames)
+    wt.weaponSkillSkeleton = wt.WeaponGrouping.buildSkillSkeleton(wt.WeaponSkills, faction, zoneNames,
+        wt.WeaponSkillDisplayOrder)
 end
 
 local function categorizeGroup(spellGroup, levelGroup, playerLevel)
@@ -458,13 +462,16 @@ local function filterCategoryData(categoryData, resultsList)
     end
 end
 
--- Grouped vs. flat for the weapon-skills view, per WT_GroupWeaponsByTrainer.
+-- Grouped vs. flat for the weapon-skills view, per WT_WeaponGrouping.
 local function selectPanelData()
     if wt.showingWeaponSkills then
-        if WT_GroupWeaponsByTrainer then
-            return wt.weaponGroupedData
+        local mode = WT_WeaponGrouping or "zone"
+        if mode == "weaponskill" then
+            return wt.weaponSkillGroupedData
+        elseif mode == "list" then
+            return wt.weaponListData
         end
-        return wt.weaponListData
+        return wt.weaponGroupedData
     end
     return wt.spellListData
 end
@@ -494,13 +501,37 @@ local function buildFilteredGroupedData()
     end
 end
 
+-- Rebuild wt.weaponSkillGroupedData from the shared wrappers, applying behavior-B
+-- filtering inside the assembler (pass the lowercased filter through).
+local function buildFilteredSkillGroupedData()
+    wipe(wt.weaponSkillGroupedData)
+    if not wt.weaponSkillSkeleton or not wt.WeaponGrouping or not wt.weaponWrapperById then return end
+
+    local rows = wt.WeaponGrouping.assembleSkillList(wt.weaponSkillSkeleton, wt.weaponWrapperById,
+        wt.weaponIgnoredIds, wt.L.WEAPON_IGNORED_HEADER, wt.filter)
+    for _, row in ipairs(rows) do
+        tinsert(wt.weaponSkillGroupedData, row)
+    end
+end
+
 function wt.applyFilter()
     wipe(wt.spellListData)
     wipe(wt.weaponListData)
 
     filterCategoryData(wt.spellCategoryData, wt.spellListData)
     filterCategoryData(wt.weaponCategoryData, wt.weaponListData)
-    buildFilteredGroupedData()
+
+    -- Only ONE grouped assembler may run per pass: each stamps wrapper.indent on the
+    -- shared wrappers, so assembling both would clobber the other's indents. Assemble
+    -- exactly the grouped view that is currently active (and only in weapon view).
+    if wt.showingWeaponSkills then
+        local mode = WT_WeaponGrouping or "zone"
+        if mode == "weaponskill" then
+            buildFilteredSkillGroupedData()
+        elseif mode ~= "list" then
+            buildFilteredGroupedData()
+        end
+    end
 
     wt.data = selectPanelData()
 

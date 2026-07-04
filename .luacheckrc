@@ -59,6 +59,8 @@ read_globals = {
     "LIGHTYELLOW_FONT_COLOR",
     "NORMAL_FONT_COLOR",
     "GRAY_FONT_COLOR",
+    "BACKDROP_DIALOG_32_32",
+    "DONE",
     "C_Map",
     "FONT_COLOR_CODE_CLOSE",
     "HIGHLIGHT_FONT_COLOR_CODE",
@@ -75,5 +77,5 @@ globals = {
     "WhatsTrainingFrame",
     "WT_NeedsToOpenBeastTraining",
     "WT_LearnedPetAbilities",
-    "WT_GroupWeaponsByTrainer",
+    "WT_WeaponGrouping",
 }

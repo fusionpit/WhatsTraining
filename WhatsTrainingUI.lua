@@ -218,14 +218,13 @@ function wt.UpdateToggleIcon(frame)
     frame.weaponSkillToggleButton:SetIcon(icon)
 end
 
-function wt.UpdateGroupCheckbox(frame)
-    if not frame or not frame.groupByMasterCheck then return end
-    local check = frame.groupByMasterCheck
+function wt.UpdateGroupingButton(frame)
+    if not frame or not frame.groupingButton then return end
     if wt.showingWeaponSkills then
-        check:SetChecked(WT_GroupWeaponsByTrainer and true or false)
-        check:Show()
+        frame.groupingButton:Show()
     else
-        check:Hide()
+        frame.groupingButton:Hide()
+        if frame.groupingPopup then frame.groupingPopup:Hide() end
     end
 end
 
@@ -277,20 +276,81 @@ function wt.CreateFrame()
         toggleButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
         mainFrame.weaponSkillToggleButton = toggleButton
 
-        local groupCheck = CreateFrame("CheckButton", "$parentGroupByMaster", mainFrame, "UICheckButtonTemplate")
-        groupCheck:SetSize(24, 24)
-        groupCheck:SetPoint("LEFT", toggleButton, "RIGHT", 4, 0)
-        local groupLabel = groupCheck.text or groupCheck.Text or _G[groupCheck:GetName() .. "Text"]
-        if groupLabel then
-            groupLabel:SetFontObject("GameFontNormalSmall")
-            groupLabel:SetText(wt.L.GROUP_BY_MASTER)
-        end
-        groupCheck:SetScript("OnClick", function(self)
-            WT_GroupWeaponsByTrainer = self:GetChecked() and true or false
-            wt.applyFilter()
-            wt.Update(mainFrame, true)
+        local groupingButton = CreateFrame("Button", "$parentGroupingButton", mainFrame, "SquareIconButtonTemplate")
+        groupingButton:SetSize(32, 32)
+        groupingButton:SetPoint("LEFT", toggleButton, "RIGHT", -4, 0)
+        groupingButton:SetIcon("Interface\\Worldmap\\Gear_64Grey.blp")
+        groupingButton:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(wt.L.GROUPING_OPTIONS)
+            GameTooltip:Show()
         end)
-        mainFrame.groupByMasterCheck = groupCheck
+        groupingButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
+        mainFrame.groupingButton = groupingButton
+
+        local popup = CreateFrame("Frame", "$parentGroupingPopup", mainFrame, "BackdropTemplate")
+        popup:SetSize(200, 132)
+        popup:SetPoint("TOPLEFT", groupingButton, "BOTTOMLEFT", 0, -2)
+        popup:SetFrameStrata("DIALOG")
+        popup:SetBackdrop(BACKDROP_DIALOG_32_32)
+        popup:EnableMouse(true)
+        popup:Hide()
+        mainFrame.groupingPopup = popup
+
+        local title = popup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        title:SetPoint("TOPLEFT", popup, "TOPLEFT", 16, -14)
+        title:SetText(wt.L.GROUPING_OPTIONS_TITLE)
+
+        local radioDefs = {
+            { mode = "zone",        label = wt.L.GROUP_BY_ZONE },
+            { mode = "weaponskill", label = wt.L.GROUP_BY_WEAPON_SKILL },
+            { mode = "list",        label = wt.L.GROUP_LIST },
+        }
+        popup.radios = {}
+        local prev
+        for i, def in ipairs(radioDefs) do
+            local radio = CreateFrame("CheckButton", "$parentRadio" .. i, popup, "UIRadioButtonTemplate")
+            if prev then
+                radio:SetPoint("TOPLEFT", prev, "BOTTOMLEFT", 0, -6)
+            else
+                radio:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -8)
+            end
+            local text = radio.text or radio.Text or _G[radio:GetName() .. "Text"]
+            if text then
+                text:SetFontObject("GameFontNormalSmall")
+                text:SetText(def.label)
+                text:SetPoint("LEFT", radio, "RIGHT", 2, 0)
+            end
+            radio.mode = def.mode
+            radio:SetScript("OnClick", function(self)
+                WT_WeaponGrouping = self.mode
+                for _, r in ipairs(popup.radios) do
+                    r:SetChecked(r.mode == self.mode)
+                end
+                PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+                wt.applyFilter()
+                wt.Update(mainFrame, true)
+            end)
+            tinsert(popup.radios, radio)
+            prev = radio
+        end
+
+        local doneButton = CreateFrame("Button", "$parentDone", popup, "UIPanelButtonTemplate")
+        doneButton:SetSize(80, 22)
+        doneButton:SetPoint("BOTTOMRIGHT", popup, "BOTTOMRIGHT", -12, 10)
+        doneButton:SetText(DONE)
+        doneButton:SetScript("OnClick", function() popup:Hide() end)
+
+        popup:SetScript("OnShow", function(self)
+            local mode = WT_WeaponGrouping or "zone"
+            for _, r in ipairs(self.radios) do
+                r:SetChecked(r.mode == mode)
+            end
+        end)
+
+        groupingButton:SetScript("OnClick", function()
+            if popup:IsShown() then popup:Hide() else popup:Show() end
+        end)
     end
 
 
@@ -324,7 +384,7 @@ function wt.CreateFrame()
             wt.showingWeaponSkills = toWeapons
             wt.applyFilter()
             wt.UpdateToggleIcon(wt.MainFrame)
-            wt.UpdateGroupCheckbox(wt.MainFrame)
+            wt.UpdateGroupingButton(wt.MainFrame)
             wt.Update(wt.MainFrame, true)
         end
         SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB
@@ -380,7 +440,7 @@ function wt.CreateFrame()
     end)
     scrollBar:SetScript("OnShow", function()
         wt.UpdateToggleIcon(mainFrame)
-        wt.UpdateGroupCheckbox(mainFrame)
+        wt.UpdateGroupingButton(mainFrame)
         wt.Update(mainFrame, true)
     end)
     mainFrame.scrollBar = scrollBar

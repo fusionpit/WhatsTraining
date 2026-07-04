@@ -29,7 +29,7 @@ function wt:ToggleWeaponSkills()
     wt.applyFilter()
     if self.MainFrame and self.MainFrame:IsVisible() then
         wt.UpdateToggleIcon(self.MainFrame)
-        wt.UpdateGroupCheckbox(self.MainFrame)
+        wt.UpdateGroupingButton(self.MainFrame)
         self.Update(self.MainFrame, true)
     end
 end
@@ -108,8 +108,8 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         if WT_ShowIgnoreNotice == nil then
             WT_ShowIgnoreNotice = true
         end
-        if WT_GroupWeaponsByTrainer == nil then
-            WT_GroupWeaponsByTrainer = true
+        if WT_WeaponGrouping == nil then
+            WT_WeaponGrouping = "zone"
         end
         if WT_IgnoredSpells == nil then
             WT_IgnoredSpells = {}
