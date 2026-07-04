@@ -15,18 +15,18 @@ wt.cityIconIds = {
     [THUNDER_BLUFF] = 135765,
     [UNDERCITY] = 135766,
 }
-local function npcLocation(id, faction, zone, x, y) 
-    return { npc = id, faction = faction, zone = zone, zoneIcon = wt.cityIconIds[zone], x = x, y = y }
+local function npcLocation(id, name, faction, zone, x, y, groupedOnly)
+    return { npc = id, name = name, faction = faction, zone = zone, zoneIcon = wt.cityIconIds[zone], x = x, y = y, groupedOnly = groupedOnly }
 end
 
-local BULIWYF_STONEHAND = npcLocation(11865, "Alliance", IRONFORGE, 61.2, 89.5)
-local BIXI_WOBBLEBONK = npcLocation(11866, "Alliance", IRONFORGE, 62.2, 89.6)
-local WOO_PING = npcLocation(11869, "Alliance", STORMWIND, 57.1, 57.7)
-local ILYENIA_MOONFIRE = npcLocation(11867, "Alliance", DARNASSUS, 57.7, 46.0)
-local HANASHI = npcLocation(2704, "Horde", ORGRIMMAR, 81.5, 19.6)
-local SAYOC = npcLocation(11868, "Horde", ORGRIMMAR, 81.7, 19.6)
-local ANSEKHWA = npcLocation(11870, "Horde", THUNDER_BLUFF, 40.0, 63.1)
-local ARCHIBALD = npcLocation(11871, "Horde", UNDERCITY, 57.3, 32.8)
+local BULIWYF_STONEHAND = npcLocation(11865, "Buliwyf Stonehand", "Alliance", IRONFORGE, 61.2, 89.5)
+local BIXI_WOBBLEBONK = npcLocation(11866, "Bixi Wobblebonk", "Alliance", IRONFORGE, 62.2, 89.6)
+local WOO_PING = npcLocation(11869, "Woo Ping", "Alliance", STORMWIND, 57.1, 57.7)
+local ILYENIA_MOONFIRE = npcLocation(11867, "Ilyenia Moonfire", "Alliance", DARNASSUS, 57.7, 46.0)
+local HANASHI = npcLocation(2704, "Hanashi", "Horde", ORGRIMMAR, 81.5, 19.6)
+local SAYOC = npcLocation(11868, "Sayoc", "Horde", ORGRIMMAR, 81.7, 19.6)
+local ANSEKHWA = npcLocation(11870, "Ansekhwa", "Horde", THUNDER_BLUFF, 40.0, 63.1)
+local ARCHIBALD = npcLocation(11871, "Archibald", "Horde", UNDERCITY, 57.3, 32.8)
 
 local ONE_HANDED_AXES = 196
 local TWO_HANDED_AXES = 197
@@ -122,12 +122,15 @@ if WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC then
     wt.cityIconIds[EXODAR] = 135756
     wt.cityIconIds[SILVERMOON] = 135761
     
-    local HANDIIR = npcLocation(16773, "Alliance", EXODAR, 54.6, 85.9)
-    local ILEDA = npcLocation(16621, "Horde", SILVERMOON, 91.0, 38.6)
+    local HANDIIR = npcLocation(16773, "Handiir", "Alliance", EXODAR, 54.6, 85.9)
+    local ILEDA = npcLocation(16621, "Ileda", "Horde", SILVERMOON, 91.0, 38.6)
 
     AddTrainer(HANDIIR, CROSSBOWS, DAGGERS, ONE_HANDED_MACES, TWO_HANDED_MACES, ONE_HANDED_SWORDS, TWO_HANDED_SWORDS)
     AddTrainer(ILEDA, BOWS, DAGGERS, ONE_HANDED_SWORDS, TWO_HANDED_SWORDS, POLEARMS, THROWN)
-    -- There is also a trainer in Eversong Woods, but there's no icon for the zone
+
+    local EVERSONG_WOODS = 3430
+    local DUELIST_LARENIS = npcLocation(17005, "Duelist Larenis", "Horde", EVERSONG_WOODS, 48.4, 46.0, true)
+    AddTrainer(DUELIST_LARENIS, BOWS, ONE_HANDED_SWORDS, TWO_HANDED_SWORDS, POLEARMS, THROWN)
 end
 
 wt.WeaponSkillDisplayOrder = {
@@ -160,7 +163,7 @@ function wt.buildWeaponTrainerZones()
                 local trainerZones = {}
                 local seenZones = {}
                 for _, trainer in ipairs(trainers) do
-                    if not seenZones[trainer.zone] then
+                    if not trainer.groupedOnly and not seenZones[trainer.zone] then
                         tinsert(trainerZones, {
                             id = trainer.zone,
                             icon = wt.cityIconIds[trainer.zone] or trainer.zoneIcon,

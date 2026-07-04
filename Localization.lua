@@ -49,6 +49,7 @@ local localeText = {
         SHOW_SPELLS = "Show Spells",
         TRAINED_IN = "Trained in %s",
         OR = " or ",
+        GROUP_BY_MASTER = "Group by Master",
     },
     frFR = {
         AVAILABLE_HEADER = "Disponible",

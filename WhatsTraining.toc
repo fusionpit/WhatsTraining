@@ -3,7 +3,7 @@
 ## Version: @project-version@
 ## Author: Sveng
 ## Notes: Shows you what spells are available at your class trainer
-## SavedVariables: WT_ShowIgnoreNotice, WT_ShowLearnedNotice
+## SavedVariables: WT_ShowIgnoreNotice, WT_ShowLearnedNotice, WT_GroupWeaponsByTrainer
 ## SavedVariablesPerCharacter: WT_LearnedPetAbilities, WT_NeedsToOpenBeastTraining, WT_IgnoredSpells
 ## OptionalDeps: ClassTrainerPlus
 ## X-Curse-Project-ID: 324944
@@ -33,6 +33,8 @@ Classes\[Game]\WarlockTomes.lua
 Classes\WarlockTomes.lua
 Classes\[Game]\Warrior.lua
 Classes\WeaponSkills.lua
+
+WeaponGrouping.lua
 
 WhatsTrainingUI.lua
 Categories.lua

@@ -7,6 +7,7 @@ local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 
 local MAX_ROWS = 22
 local ROW_HEIGHT = 14
+local INDENT_STEP = 12   -- px added per indent level for grouped rows
 local SKILL_LINE_TAB = MAX_SKILLLINE_TABS - 1
 local HIGHLIGHT_TEXTURE_FILEID = GetFileIDFromPath(
                                      "Interface\\AddOns\\WhatsTraining\\highlight")
@@ -32,7 +33,7 @@ local function setTooltip(spellInfo)
     else
         tooltip:ClearLines()
     end
-    if spellInfo.cost > 0 then
+    if spellInfo.cost and spellInfo.cost > 0 then
         tooltip:AddLine(wt.formatSpellCost(spellInfo))
     end
     if spellInfo.tooltip then tooltip:AddLine(spellInfo.tooltip) end
@@ -53,16 +54,48 @@ local function setRowSpell(row, spell)
     elseif spell.isHeader then
         row.spell:Hide()
         row.header:Show()
-        row.header:SetText(spell.formattedName)
         row:SetID(0)
         row.highlight:SetTexture(nil)
+        if spell.indent ~= nil then
+            row.header:SetText(spell.name)
+            row.header:ClearAllPoints()
+            row.header:SetPoint("LEFT", row, "LEFT", spell.indent * INDENT_STEP, 0)
+            row.header:SetPoint("RIGHT", row, "RIGHT")
+            row.header:SetPoint("TOP", row)
+            row.header:SetPoint("BOTTOM", row)
+            row.header:SetJustifyH("LEFT")
+            if spell.indent == 1 then
+                row.header:SetTextColor(LIGHTYELLOW_FONT_COLOR.r, LIGHTYELLOW_FONT_COLOR.g, LIGHTYELLOW_FONT_COLOR.b)
+            else
+                row.header:SetTextColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
+            end
+        else
+            -- Reset centered/full-width in case this reused row last held a grouped header.
+            row.header:SetText(spell.formattedName)
+            row.header:ClearAllPoints()
+            row.header:SetAllPoints()
+            row.header:SetJustifyH("CENTER")
+            row.header:SetTextColor(1, 1, 1)
+        end
     else
         local rowSpell = row.spell
         row.header:Hide()
         row.isHeader = false
         row.highlight:SetTexture(HIGHLIGHT_TEXTURE_FILEID)
         rowSpell:Show()
+        local indentPx = (spell.indent or 0) * INDENT_STEP
+        rowSpell.icon:ClearAllPoints()
+        rowSpell.icon:SetPoint("TOPLEFT", rowSpell, "TOPLEFT", indentPx, 0)
+        rowSpell.icon:SetPoint("BOTTOMLEFT", rowSpell, "BOTTOMLEFT", indentPx, 0)
+        rowSpell.label:ClearAllPoints()
+        rowSpell.label:SetPoint("TOPLEFT", rowSpell, "TOPLEFT", indentPx + ROW_HEIGHT + 4, 0)
+        rowSpell.label:SetPoint("BOTTOM", rowSpell)
         rowSpell.label:SetText(spell.name)
+        if spell.isKnown then
+            rowSpell.label:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
+        else
+            rowSpell.label:SetTextColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
+        end
         rowSpell.subLabel:SetText(spell.formattedSubText)
         if not spell.hideLevel then
             rowSpell.level:Show()
@@ -103,7 +136,7 @@ local function setRowSpell(row, spell)
         row:SetScript("OnClick", nil)
     end
 
-    if not spell.isHeader and spell.trainerZones and #spell.trainerZones > 0 then
+    if not spell.isHeader and spell.indent == nil and spell.trainerZones and #spell.trainerZones > 0 then
         local lastFrame = row
         local point = "TOPRIGHT"
         local relativePoint = "TOPRIGHT"
@@ -185,6 +218,17 @@ function wt.UpdateToggleIcon(frame)
     frame.weaponSkillToggleButton:SetIcon(icon)
 end
 
+function wt.UpdateGroupCheckbox(frame)
+    if not frame or not frame.groupByMasterCheck then return end
+    local check = frame.groupByMasterCheck
+    if wt.showingWeaponSkills then
+        check:SetChecked(WT_GroupWeaponsByTrainer and true or false)
+        check:Show()
+    else
+        check:Hide()
+    end
+end
+
 function wt.CreateFrame()
     local mainFrame = CreateFrame("Frame", "WhatsTrainingFrame", SpellBookFrame)
     wt.MainFrame = mainFrame
@@ -232,6 +276,21 @@ function wt.CreateFrame()
         end)
         toggleButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
         mainFrame.weaponSkillToggleButton = toggleButton
+
+        local groupCheck = CreateFrame("CheckButton", "$parentGroupByMaster", mainFrame, "UICheckButtonTemplate")
+        groupCheck:SetSize(24, 24)
+        groupCheck:SetPoint("LEFT", toggleButton, "RIGHT", 4, 0)
+        local groupLabel = groupCheck.text or groupCheck.Text or _G[groupCheck:GetName() .. "Text"]
+        if groupLabel then
+            groupLabel:SetFontObject("GameFontNormalSmall")
+            groupLabel:SetText(wt.L.GROUP_BY_MASTER)
+        end
+        groupCheck:SetScript("OnClick", function(self)
+            WT_GroupWeaponsByTrainer = self:GetChecked() and true or false
+            wt.applyFilter()
+            wt.Update(mainFrame, true)
+        end)
+        mainFrame.groupByMasterCheck = groupCheck
     end
 
 
@@ -263,8 +322,9 @@ function wt.CreateFrame()
     function wt.Open(toWeapons)
         if wt.showingWeaponSkills ~= toWeapons then
             wt.showingWeaponSkills = toWeapons
-            wt.data = toWeapons and wt.weaponListData or wt.spellListData
+            wt.applyFilter()
             wt.UpdateToggleIcon(wt.MainFrame)
+            wt.UpdateGroupCheckbox(wt.MainFrame)
             wt.Update(wt.MainFrame, true)
         end
         SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB
@@ -320,6 +380,7 @@ function wt.CreateFrame()
     end)
     scrollBar:SetScript("OnShow", function()
         wt.UpdateToggleIcon(mainFrame)
+        wt.UpdateGroupCheckbox(mainFrame)
         wt.Update(mainFrame, true)
     end)
     mainFrame.scrollBar = scrollBar

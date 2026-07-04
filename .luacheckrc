@@ -56,6 +56,10 @@ read_globals = {
     "RED_FONT_COLOR_CODE",
     "LIGHTYELLOW_FONT_COLOR_CODE",
     "GRAY_FONT_COLOR_CODE",
+    "LIGHTYELLOW_FONT_COLOR",
+    "NORMAL_FONT_COLOR",
+    "GRAY_FONT_COLOR",
+    "C_Map",
     "FONT_COLOR_CODE_CLOSE",
     "HIGHLIGHT_FONT_COLOR_CODE",
     "PARENS_TEMPLATE",
@@ -70,5 +74,6 @@ globals = {
     "CTP_UpdateService", 
     "WhatsTrainingFrame",
     "WT_NeedsToOpenBeastTraining",
-    "WT_LearnedPetAbilities"
+    "WT_LearnedPetAbilities",
+    "WT_GroupWeaponsByTrainer",
 }

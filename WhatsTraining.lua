@@ -26,9 +26,10 @@ end
 
 function wt:ToggleWeaponSkills()
     self.showingWeaponSkills = not self.showingWeaponSkills
-    self.data = self.showingWeaponSkills and self.weaponListData or self.spellListData
+    wt.applyFilter()
     if self.MainFrame and self.MainFrame:IsVisible() then
         wt.UpdateToggleIcon(self.MainFrame)
+        wt.UpdateGroupCheckbox(self.MainFrame)
         self.Update(self.MainFrame, true)
     end
 end
@@ -107,6 +108,9 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         if WT_ShowIgnoreNotice == nil then
             WT_ShowIgnoreNotice = true
         end
+        if WT_GroupWeaponsByTrainer == nil then
+            WT_GroupWeaponsByTrainer = true
+        end
         if WT_IgnoredSpells == nil then
             WT_IgnoredSpells = {}
         end
@@ -127,6 +131,10 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
             if wt.buildWeaponTrainerZones then
                 wt.buildWeaponTrainerZones()
                 wt.buildWeaponTrainerZones = nil
+            end
+            if wt.buildWeaponSkeleton then
+                wt.buildWeaponSkeleton()
+                wt.buildWeaponSkeleton = nil
             end
             wt.buildCategorizedData(UnitLevel("player"))
             wt.applyFilter()

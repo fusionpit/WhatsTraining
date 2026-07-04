@@ -9,6 +9,7 @@ wt.spellCategoryData = {}
 wt.weaponCategoryData = {}
 wt.spellListData = {}
 wt.weaponListData = {}
+wt.weaponGroupedData = {}
 wt.showingWeaponSkills = false
 wt.showingBrokerWeaponSkills = false
 
@@ -51,6 +52,35 @@ local function getSpellLevelColor(spell, isLevelUpEvent)
         effectiveLevel = effectiveLevel - 1
     end
     return GetQuestDifficultyColor(effectiveLevel)
+end
+
+local function buildZoneNames(faction)
+    local zoneNames = {}
+    for _, weaponData in pairs(wt.WeaponSkills) do
+        local trainerZones = weaponData[faction .. "TrainerZones"]
+        if trainerZones then
+            for _, z in ipairs(trainerZones) do
+                if z.id and z.name and not zoneNames[z.id] then
+                    zoneNames[z.id] = z.name
+                end
+            end
+        end
+        local trainers = weaponData.trainers and weaponData.trainers[faction]
+        if trainers then
+            for _, trainer in ipairs(trainers) do
+                if trainer.zone and not zoneNames[trainer.zone] then
+                    zoneNames[trainer.zone] = C_Map.GetAreaInfo(trainer.zone)
+                end
+            end
+        end
+    end
+    return zoneNames
+end
+
+-- Built once per session; the caller nils this after calling it.
+function wt.buildWeaponSkeleton()
+    local faction = UnitFactionGroup("player")
+    wt.weaponSkeleton = wt.WeaponGrouping.buildSkeleton(wt.WeaponSkills, faction, buildZoneNames(faction))
 end
 
 local function categorizeGroup(spellGroup, levelGroup, playerLevel)
@@ -156,6 +186,50 @@ local function categorizeWeaponSkills(playerLevel)
     end
 end
 
+-- One wrapper per weapon skill over the shared spellInfo; view-specific fields live on the
+-- wrapper, never on spellInfo (the flat view references it too). Stashed unfiltered; applyFilter
+-- rebuilds wt.weaponGroupedData from a filtered subset.
+local function buildGroupedWeaponData(playerLevel, isLevelUpEvent)
+    wipe(wt.weaponGroupedData)
+    wt.weaponWrapperById = {}
+    wt.weaponIgnoredIds = {}
+    if not wt.WeaponSkills or not wt.WeaponGrouping then return end
+
+    for weaponSpellId, weaponData in pairs(wt.WeaponSkills) do
+        local isClassEligible = false
+        if weaponData.classes then
+            for _, class in ipairs(weaponData.classes) do
+                if class == wt.currentClass then isClassEligible = true break end
+            end
+        else
+            isClassEligible = true
+        end
+
+        if isClassEligible then
+            local spellInfo = wt:SpellInfo(weaponSpellId)
+            if spellInfo ~= nil then
+                local isKnown = wt.isAbilityKnown(spellInfo.id)
+                local isIgnored = ignoreStore:IsIgnored(spellInfo.id)
+                if isIgnored then wt.weaponIgnoredIds[weaponSpellId] = true end
+
+                -- Show the level only for level-gated skills, matching the flat view. Derived
+                -- from state (not isIgnored) so ignoring a skill never changes its level tag.
+                local reqLevel = weaponData.level or 1
+                local isLevelGated = not isKnown and not isIgnored and reqLevel > playerLevel
+
+                wt.weaponWrapperById[weaponSpellId] = setmetatable({
+                    weaponOrder = weaponData.orderIndex,
+                    altTooltipType = "weapon",
+                    isKnown = isKnown,
+                    hideLevel = not isLevelGated,
+                    levelColor = getSpellLevelColor(spellInfo, isLevelUpEvent),
+                    sortOrder = wt.WeaponGrouping.computeSortOrder(weaponData.orderIndex, isKnown),
+                }, { __index = spellInfo })
+            end
+        end
+    end
+end
+
 local function processCategories(isLevelUpEvent)
     for _, category in ipairs(wt.categories) do
         if #category.spells > 0 then
@@ -253,6 +327,8 @@ function wt.buildCategorizedData(playerLevel, isLevelUpEvent)
     categorizeWeaponSkills(playerLevel)
 
     processCategories(isLevelUpEvent)
+
+    buildGroupedWeaponData(playerLevel, isLevelUpEvent)
 
     processBrokerCategories(isLevelUpEvent)
 
@@ -382,15 +458,52 @@ local function filterCategoryData(categoryData, resultsList)
     end
 end
 
+-- Grouped vs. flat for the weapon-skills view, per WT_GroupWeaponsByTrainer.
+local function selectPanelData()
+    if wt.showingWeaponSkills then
+        if WT_GroupWeaponsByTrainer then
+            return wt.weaponGroupedData
+        end
+        return wt.weaponListData
+    end
+    return wt.spellListData
+end
+
+-- Rebuild wt.weaponGroupedData from the stashed wrappers, keeping only those matching wt.filter.
+-- The assembler drops empty masters/zones, so a filtered wrapper map prunes correctly.
+local function buildFilteredGroupedData()
+    wipe(wt.weaponGroupedData)
+    if not wt.weaponSkeleton or not wt.WeaponGrouping or not wt.weaponWrapperById then return end
+
+    local filteredWrappers
+    if wt.filter == '' then
+        filteredWrappers = wt.weaponWrapperById
+    else
+        filteredWrappers = {}
+        for weaponId, wrapper in pairs(wt.weaponWrapperById) do
+            if matchesFilter(wrapper.searchText) then
+                filteredWrappers[weaponId] = wrapper
+            end
+        end
+    end
+
+    local rows = wt.WeaponGrouping.assembleList(wt.weaponSkeleton, filteredWrappers,
+        wt.weaponIgnoredIds, wt.L.WEAPON_IGNORED_HEADER)
+    for _, row in ipairs(rows) do
+        tinsert(wt.weaponGroupedData, row)
+    end
+end
+
 function wt.applyFilter()
     wipe(wt.spellListData)
     wipe(wt.weaponListData)
-    
+
     filterCategoryData(wt.spellCategoryData, wt.spellListData)
     filterCategoryData(wt.weaponCategoryData, wt.weaponListData)
-    
-    wt.data = wt.showingWeaponSkills and wt.weaponListData or wt.spellListData
-    
+    buildFilteredGroupedData()
+
+    wt.data = selectPanelData()
+
     if #wt.data == 0 and wt.filter ~= '' then
         tinsert(wt.data, {
             formattedName = wt.L.SEARCH_NO_RESULTS,
