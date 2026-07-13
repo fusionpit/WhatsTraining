@@ -1,3 +1,6 @@
+* 9.2.2
+    - Attempt to fix errors in Cache when loading into Warlock
+
 * 9.2.1
     - Update TBC ToC version
 

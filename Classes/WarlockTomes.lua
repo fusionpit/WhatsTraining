@@ -11,9 +11,8 @@ local tomes = {}
 -- everything but Incubus, which does not have an entry in LibCreatureType
 local families = {}
 local tomesByFamily = {}
-wt.TomeIds = {}
--- Succubus and Incubus share tomes, but you need to buy them twice to train both
-wt.SayaadTomes = {}
+-- wt.TomeIds and wt.SayaadTomes is set in Cache.lua directly to
+-- fix an error that can be thrown during loading
 for _, tomesByLevel in pairs(wt.TomesByLevel) do
     for _, tome in ipairs(tomesByLevel) do 
         if not tome.id then
