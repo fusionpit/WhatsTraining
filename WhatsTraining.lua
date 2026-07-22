@@ -15,7 +15,7 @@ local COMINGSOON_FONT_COLOR_CODE = "|cff82c5ff"
 local MISSINGTALENT_FONT_COLOR_CODE = "|cffffffff"
 local PET_FONT_COLOR_CODE = "|cffffffff"
 
-local learnedSpellEvent = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC and "LEARNED_SPELL_IN_SKILL_LINE" or "LEARNED_SPELL_IN_TAB"
+local learnedSpellEvent = "LEARNED_SPELL_IN_SKILL_LINE"
 
 local function isPreviouslyLearnedAbility(spellId)
     if wt.overriddenSpellsMap == nil or not wt.overriddenSpellsMap[spellId] then
