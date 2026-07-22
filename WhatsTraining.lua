@@ -15,7 +15,9 @@ local COMINGSOON_FONT_COLOR_CODE = "|cff82c5ff"
 local MISSINGTALENT_FONT_COLOR_CODE = "|cffffffff"
 local PET_FONT_COLOR_CODE = "|cffffffff"
 
-local learnedSpellEvent = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC and "LEARNED_SPELL_IN_SKILL_LINE" or "LEARNED_SPELL_IN_TAB"
+-- 1.15.9 dropped LEARNED_SPELL_IN_TAB in favor of LEARNED_SPELL_IN_SKILL_LINE, so the
+-- client gets probed at registration time rather than gated on WOW_PROJECT_ID
+local learnedSpellEvent
 
 local function isPreviouslyLearnedAbility(spellId)
     if wt.overriddenSpellsMap == nil or not wt.overriddenSpellsMap[spellId] then
@@ -562,5 +564,11 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
 end)
 eventFrame:RegisterEvent("ADDON_LOADED")
 eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-eventFrame:RegisterEvent(learnedSpellEvent)
 eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
+-- RegisterEvent throws on an event the client doesn't know, so take the first one that sticks
+for _, event in ipairs({"LEARNED_SPELL_IN_SKILL_LINE", "LEARNED_SPELL_IN_TAB"}) do
+    if pcall(eventFrame.RegisterEvent, eventFrame, event) then
+        learnedSpellEvent = event
+        break
+    end
+end
