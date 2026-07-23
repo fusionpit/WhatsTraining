@@ -42,8 +42,6 @@ wt.WarlockTomeMerchantIds = {
     [16649] = true, -- Torian, Silvermoon City
 }
 
-wt.IsAddOnLoaded = C_AddOns.IsAddOnLoaded
-
 wt.TomesByLevel = {
     [4] = {{itemId = 16321, cost = 100, family = "Imp"}},
     [8] = {{itemId = 16302, cost = 100, family = "Imp"}},

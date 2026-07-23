@@ -1,6 +1,8 @@
 local _, wt = ...
 if wt.currentClass ~= "WARLOCK" then return end
 
+wt.IsAddOnLoaded = C_AddOns.IsAddOnLoaded -- Classic Era was unified 1.15.9
+
 local LCT = LibStub("LibBabble-CreatureType-3.0"):GetLookupTable()
 local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
 
