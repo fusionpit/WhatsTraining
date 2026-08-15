@@ -59,6 +59,7 @@ read_globals = {
     "LIGHTYELLOW_FONT_COLOR",
     "NORMAL_FONT_COLOR",
     "GRAY_FONT_COLOR",
+    "RED_FONT_COLOR",
     "BACKDROP_DIALOG_32_32",
     "DONE",
     "C_Map",
