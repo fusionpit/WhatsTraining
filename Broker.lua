@@ -5,19 +5,25 @@ if not ldb then return end
 local FONT_SIZE = 12
 local _, addonTitle = C_AddOns.GetAddOnInfo(addonName)
 
-local plugin 
+local plugin
+local activeTooltip
+
+local function refreshTooltip()
+    local tt = activeTooltip
+    if not tt or not tt:IsShown() or not tt.ClearLines then return end
+    tt:ClearLines()
+    plugin.OnTooltipShow(tt)
+    tt:Show()
+end
+
 plugin = ldb:NewDataObject(addonName, {
     type = "data source",
     text = addonTitle,
     icon = "Interface\\Icons\\INV_Misc_QuestionMark",
-    OnClick = function(self, button)
+    OnClick = function(_, button)
         if button == "RightButton" then
             wt:ToggleBrokerWeaponSkills()
-            if GameTooltip:IsOwned(self) then
-                GameTooltip:ClearLines()
-                plugin.OnTooltipShow(GameTooltip)
-                GameTooltip:Show()
-            end
+            refreshTooltip()
             return
         end
         local openBeastTraining = wt.needsBeastTraining() and IsShiftKeyDown()
@@ -39,17 +45,13 @@ local function formatBlue(text)
     return '|cff82c5ff'..text..'|r'
 end
 
-local ttShown = false
 local OPEN_HINT = formatGreen(wt.L.BROKER_CLICK_OPEN)
 local OPEN_BEAST_TRAINING_HINT = formatGreen(wt.L.BROKER_CLICK_BEAST_TRAIN)
 local TOGGLE_SPELLS_HINT = formatGreen(wt.L.BROKER_CLICK_TOGGLE_SPELLS)
 local TOGGLE_WEAPONS_HINT = formatGreen(wt.L.BROKER_CLICK_TOGGLE_WEAPONS)
 function plugin.OnTooltipShow(tt)
-    -- if ttShown == false then 
-    --     wt:RebuildData() 
-    --     ttShown = true
-    -- end
-    
+    activeTooltip = tt
+
     tt:AddLine(wt.L.TAB_TEXT)
     tt:AddLine(" ")
 
