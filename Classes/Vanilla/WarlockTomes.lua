@@ -35,8 +35,6 @@ wt.WarlockTomeMerchantIds = {
     [6328] = true
 }
 
-wt.IsAddOnLoaded = IsAddOnLoaded
-
 wt.TomesByLevel = {
     [4] = {{itemId = 16321, cost = 100, family = "Imp"}},
     [8] = {{itemId = 16302, cost = 100, family = "Imp"}},

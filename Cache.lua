@@ -5,6 +5,11 @@ wt.petAbilities = {}
 wt.spellInfoCache = {}
 wt.allRanksCache = {}
 wt.idToRanks = {}
+if wt.currentClass == "WARLOCK" then
+    wt.TomeIds = {}
+    -- Succubus and Incubus share tomes, but you need to buy them twice to train both
+    wt.SayaadTomes = {}
+end
 
 -- done has params cacheHit: bool, spellInfo
 function wt:CacheSpell(spell, level, done)

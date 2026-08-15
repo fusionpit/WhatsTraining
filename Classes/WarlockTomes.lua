@@ -1,6 +1,8 @@
 local _, wt = ...
 if wt.currentClass ~= "WARLOCK" then return end
 
+wt.IsAddOnLoaded = C_AddOns.IsAddOnLoaded -- Classic Era was unified 1.15.9
+
 local LCT = LibStub("LibBabble-CreatureType-3.0"):GetLookupTable()
 local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
 
@@ -11,9 +13,8 @@ local tomes = {}
 -- everything but Incubus, which does not have an entry in LibCreatureType
 local families = {}
 local tomesByFamily = {}
-wt.TomeIds = {}
--- Succubus and Incubus share tomes, but you need to buy them twice to train both
-wt.SayaadTomes = {}
+-- wt.TomeIds and wt.SayaadTomes is set in Cache.lua directly to
+-- fix an error that can be thrown during loading
 for _, tomesByLevel in pairs(wt.TomesByLevel) do
     for _, tome in ipairs(tomesByLevel) do 
         if not tome.id then
