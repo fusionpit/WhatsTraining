@@ -42,7 +42,7 @@ local function setTooltip(spellInfo)
                         0.8, 0.8, 0.8)
     end
     if spellInfo.altTooltipType == "weapon" and wt.isAbilityKnown(spellInfo.id) then
-        tooltip:AddLine(wt.L.KNOWN_HEADER, RED_FONT_COLOR.r, RED_FONT_COLOR.g,
+        tooltip:AddLine(ITEM_SPELL_KNOWN, RED_FONT_COLOR.r, RED_FONT_COLOR.g,
                         RED_FONT_COLOR.b)
     end
     tooltip:Show()
