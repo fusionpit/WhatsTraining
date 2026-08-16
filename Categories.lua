@@ -119,7 +119,7 @@ wt.headers = {
         costFormat = wt.L.TOTALSPENT_FORMAT,
         costColor = RED_FONT_COLOR_CODE,
         nameSort = true
-    }, 
+    },
 }
 
 wt.weaponCategoryKeys = {
@@ -130,7 +130,7 @@ wt.weaponCategoryKeys = {
     [wt.WEAPON_IGNORED_KEY] = true
 }
 
-function wt.makeCategories(headersDef, isBroker) 
+function wt.makeCategories(headersDef, isBroker)
     return {
         _spellsByCategoryKey = {},
         Insert = function(self, key, spellInfo)

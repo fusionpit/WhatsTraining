@@ -1,8 +1,6 @@
 local _, wt = ...
 local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
 
-local hasNewSpellbook = WOW_PROJECT_ID >= WOW_PROJECT_CATACLYSM_CLASSIC
-
 local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 
 local MAX_ROWS = 22
@@ -69,8 +67,6 @@ local function setTooltip(spellInfo)
     tooltip:Show()
 end
 
-local menuFrame = CreateFrame("Frame", "WTRightClickFrame", UIParent,
-                              "UIDropDownMenuTemplate")
 local function setRowSpell(row, spell)
     if spell == nil then
         row.currentSpell = nil
@@ -279,134 +275,124 @@ function wt.CreateFrame()
     right:SetWidth(128)
     right:SetHeight(512)
     right:SetPoint("TOPRIGHT", mainFrame)
-    if not hasNewSpellbook then
-        local search = CreateFrame("EditBox", "$parentSearchBox", mainFrame, "SearchBoxTemplate")
-        search:SetWidth(124)
-        search:SetHeight(32)
-        search:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 81, -34)
-        search:SetScript("OnTextChanged", function (self)
-            SearchBoxTemplate_OnTextChanged(self)
-            local oldFilter = wt.filter
-            wt.filter = strlower(self:GetText())
-            if wt.filter ~= oldFilter then wt:ApplyFilter() end
-        end)
+    local search = CreateFrame("EditBox", "$parentSearchBox", mainFrame, "SearchBoxTemplate")
+    search:SetWidth(124)
+    search:SetHeight(32)
+    search:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 81, -34)
+    search:SetScript("OnTextChanged", function (self)
+        SearchBoxTemplate_OnTextChanged(self)
+        local oldFilter = wt.filter
+        wt.filter = strlower(self:GetText())
+        if wt.filter ~= oldFilter then wt:ApplyFilter() end
+    end)
 
-        local toggleButton = CreateFrame("Button", "$parentWeaponSkillToggle", mainFrame, "SquareIconButtonTemplate")
-        toggleButton:SetSize(32, 32)
-        toggleButton:SetPoint("LEFT", search, "RIGHT", 0, 0)
-        toggleButton:SetScript("OnClick", function(self)
-            wt:ToggleWeaponSkills()
-            if GameTooltip:IsOwned(self) then
-                local onEnter = self:GetScript("OnEnter")
-                if onEnter ~= nil then
-                    onEnter(self)
-                end
+    local toggleButton = CreateFrame("Button", "$parentWeaponSkillToggle", mainFrame, "SquareIconButtonTemplate")
+    toggleButton:SetSize(32, 32)
+    toggleButton:SetPoint("LEFT", search, "RIGHT", 0, 0)
+    toggleButton:SetScript("OnClick", function(self)
+        wt:ToggleWeaponSkills()
+        if GameTooltip:IsOwned(self) then
+            local onEnter = self:GetScript("OnEnter")
+            if onEnter ~= nil then
+                onEnter(self)
             end
-        end)
-        toggleButton:SetScript("OnEnter", function(self)
-            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(wt.showingWeaponSkills and wt.L.SHOW_SPELLS or wt.L.SHOW_WEAPONS)
-            GameTooltip:Show()
-        end)
-        toggleButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
-        mainFrame.weaponSkillToggleButton = toggleButton
-
-        local groupingButton = CreateFrame("Button", "$parentGroupingButton", mainFrame, "SquareIconButtonTemplate")
-        groupingButton:SetSize(32, 32)
-        groupingButton:SetPoint("LEFT", toggleButton, "RIGHT", -4, 0)
-        groupingButton:SetIcon("Interface\\Worldmap\\Gear_64Grey.blp")
-        groupingButton:SetScript("OnEnter", function(self)
-            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(wt.L.GROUPING_OPTIONS)
-            GameTooltip:Show()
-        end)
-        groupingButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
-        mainFrame.groupingButton = groupingButton
-
-        local popup = CreateFrame("Frame", "$parentGroupingPopup", mainFrame, "BackdropTemplate")
-        popup:SetSize(200, 132)
-        popup:SetPoint("TOPLEFT", groupingButton, "BOTTOMLEFT", 0, -2)
-        popup:SetFrameStrata("DIALOG")
-        popup:SetBackdrop(BACKDROP_DIALOG_32_32)
-        popup:EnableMouse(true)
-        popup:Hide()
-        mainFrame.groupingPopup = popup
-
-        local title = popup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        title:SetPoint("TOPLEFT", popup, "TOPLEFT", 16, -14)
-        title:SetText(wt.L.GROUPING_OPTIONS_TITLE)
-
-        local radioDefs = {
-            { mode = "zone",        label = wt.L.GROUP_BY_ZONE },
-            { mode = "weaponskill", label = wt.L.GROUP_BY_WEAPON_SKILL },
-            { mode = "list",        label = wt.L.GROUP_LIST },
-        }
-        popup.radios = {}
-        local prev
-        for i, def in ipairs(radioDefs) do
-            local radio = CreateFrame("CheckButton", "$parentRadio" .. i, popup, "UIRadioButtonTemplate")
-            if prev then
-                radio:SetPoint("TOPLEFT", prev, "BOTTOMLEFT", 0, -6)
-            else
-                radio:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -8)
-            end
-            local text = radio.text or radio.Text or _G[radio:GetName() .. "Text"]
-            if text then
-                text:SetFontObject("GameFontNormalSmall")
-                text:SetText(def.label)
-                text:SetPoint("LEFT", radio, "RIGHT", 2, 0)
-            end
-            radio.mode = def.mode
-            radio:SetScript("OnClick", function(self)
-                WT_WeaponGrouping = self.mode
-                for _, r in ipairs(popup.radios) do
-                    r:SetChecked(r.mode == self.mode)
-                end
-                PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-                wt.applyFilter()
-                wt.Update(mainFrame, true)
-            end)
-            tinsert(popup.radios, radio)
-            prev = radio
         end
+    end)
+    toggleButton:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText(wt.showingWeaponSkills and wt.L.SHOW_SPELLS or wt.L.SHOW_WEAPONS)
+        GameTooltip:Show()
+    end)
+    toggleButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
+    mainFrame.weaponSkillToggleButton = toggleButton
 
-        local doneButton = CreateFrame("Button", "$parentDone", popup, "UIPanelButtonTemplate")
-        doneButton:SetSize(80, 22)
-        doneButton:SetPoint("BOTTOMRIGHT", popup, "BOTTOMRIGHT", -12, 10)
-        doneButton:SetText(DONE)
-        doneButton:SetScript("OnClick", function() popup:Hide() end)
+    local groupingButton = CreateFrame("Button", "$parentGroupingButton", mainFrame, "SquareIconButtonTemplate")
+    groupingButton:SetSize(32, 32)
+    groupingButton:SetPoint("LEFT", toggleButton, "RIGHT", -4, 0)
+    groupingButton:SetIcon("Interface\\Worldmap\\Gear_64Grey.blp")
+    groupingButton:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText(wt.L.GROUPING_OPTIONS)
+        GameTooltip:Show()
+    end)
+    groupingButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
+    mainFrame.groupingButton = groupingButton
 
-        popup:SetScript("OnShow", function(self)
-            local mode = WT_WeaponGrouping or "zone"
-            for _, r in ipairs(self.radios) do
-                r:SetChecked(r.mode == mode)
+    local popup = CreateFrame("Frame", "$parentGroupingPopup", mainFrame, "BackdropTemplate")
+    popup:SetSize(200, 132)
+    popup:SetPoint("TOPLEFT", groupingButton, "BOTTOMLEFT", 0, -2)
+    popup:SetFrameStrata("DIALOG")
+    popup:SetBackdrop(BACKDROP_DIALOG_32_32)
+    popup:EnableMouse(true)
+    popup:Hide()
+    mainFrame.groupingPopup = popup
+
+    local title = popup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    title:SetPoint("TOPLEFT", popup, "TOPLEFT", 16, -14)
+    title:SetText(wt.L.GROUPING_OPTIONS_TITLE)
+
+    local radioDefs = {
+        { mode = "zone",        label = wt.L.GROUP_BY_ZONE },
+        { mode = "weaponskill", label = wt.L.GROUP_BY_WEAPON_SKILL },
+        { mode = "list",        label = wt.L.GROUP_LIST },
+    }
+    popup.radios = {}
+    local prev
+    for i, def in ipairs(radioDefs) do
+        local radio = CreateFrame("CheckButton", "$parentRadio" .. i, popup, "UIRadioButtonTemplate")
+        if prev then
+            radio:SetPoint("TOPLEFT", prev, "BOTTOMLEFT", 0, -6)
+        else
+            radio:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -8)
+        end
+        local text = radio.text or radio.Text or _G[radio:GetName() .. "Text"]
+        if text then
+            text:SetFontObject("GameFontNormalSmall")
+            text:SetText(def.label)
+            text:SetPoint("LEFT", radio, "RIGHT", 2, 0)
+        end
+        radio.mode = def.mode
+        radio:SetScript("OnClick", function(self)
+            WT_WeaponGrouping = self.mode
+            for _, r in ipairs(popup.radios) do
+                r:SetChecked(r.mode == self.mode)
             end
+            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+            wt.applyFilter()
+            wt.Update(mainFrame, true)
         end)
-
-        groupingButton:SetScript("OnClick", function()
-            if popup:IsShown() then popup:Hide() else popup:Show() end
-        end)
+        tinsert(popup.radios, radio)
+        prev = radio
     end
+
+    local doneButton = CreateFrame("Button", "$parentDone", popup, "UIPanelButtonTemplate")
+    doneButton:SetSize(80, 22)
+    doneButton:SetPoint("BOTTOMRIGHT", popup, "BOTTOMRIGHT", -12, 10)
+    doneButton:SetText(DONE)
+    doneButton:SetScript("OnClick", function() popup:Hide() end)
+
+    popup:SetScript("OnShow", function(self)
+        local mode = WT_WeaponGrouping or "zone"
+        for _, r in ipairs(self.radios) do
+            r:SetChecked(r.mode == mode)
+        end
+    end)
+
+    groupingButton:SetScript("OnClick", function()
+        if popup:IsShown() then popup:Hide() else popup:Show() end
+    end)
 
 
     mainFrame:Hide()
-    
-    if hasNewSpellbook then
-    	left:SetWidth(350)
-    	left:SetHeight(536)
-    	left:SetPoint("TOPLEFT", mainFrame, 72, 8)
-    	right:SetHeight(536)
-    	right:SetPoint("TOPRIGHT", mainFrame, 0, 8)
-    end
 
     -- Fix for Season of Discovery's Shaman 'Way of the Earth' rune
     -- When this rune is engraved, it constantly causes a `SPELLS_CHANGED` event
     -- That event will keep switching the tab back to the first non-general tab when fired
     local deferredPriorTabSelection = SpellBookFrame.selectedSkillLine
-    SpellBookFrame:HookScript("OnEvent", function(self, event)
+    SpellBookFrame:HookScript("OnEvent", function(_, event)
         if event == "SPELLS_CHANGED"
-            and deferredPriorTabSelection == SKILL_LINE_TAB 
-            and SpellBookFrame.selectedSkillLine ~= SKILL_LINE_TAB 
+            and deferredPriorTabSelection == SKILL_LINE_TAB
+            and SpellBookFrame.selectedSkillLine ~= SKILL_LINE_TAB
         then
             local inCombat = InCombatLockdown()
             if not inCombat and SpellBookFrame:IsVisible() then
@@ -418,8 +404,9 @@ function wt.CreateFrame()
                 for i = 1, MAX_SKILLLINE_TABS do
                     _G["SpellBookSkillLineTab" .. i]:SetChecked(i == SKILL_LINE_TAB)
                 end
-                -- the SpellBookFrame code will try to disable the actual buttons if the selected skill line is out of range
-                -- the SpellButton..n buttons are protected in combat, and setting this in the same frame will cause an lua error
+                -- the SpellBookFrame code will try to disable the actual buttons if the selected
+                -- skill line is out of range. the SpellButton..n buttons are protected in combat,
+                -- and setting this in the same frame will cause an lua error
                 RunNextFrame(function() SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB end)
                 mainFrame:Show()
             end
@@ -449,18 +436,12 @@ function wt.CreateFrame()
         if SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB then
             skillLineTab:SetChecked(true)
             mainFrame:Show()
-            if hasNewSpellbook then
-                SpellBookPrevPageButton:Disable()
-                SpellBookNextPageButton:Disable()
-                SpellBookPageText:SetText('')
-            else
-                ShowAllSpellRanksCheckbox:Hide()
-            end
+            ShowAllSpellRanksCheckbox:Hide()
         else
             skillLineTab:SetChecked(false)
             mainFrame:Hide()
             local _, class = UnitClass("player")
-            if not hasNewSpellbook and class ~= "ROGUE" and class ~= "WARRIOR" then
+            if class ~= "ROGUE" and class ~= "WARRIOR" then
                 ShowAllSpellRanksCheckbox:Show()
             end
         end
@@ -555,7 +536,7 @@ function wt.CreateFrame()
         row.spell = spell
 
         row.zoneIcons = {}
-        for j = 1, wt.NumCityIcons do
+        for _ = 1, wt.NumCityIcons do
             local zoneFrame = CreateFrame("Frame", nil, row)
             zoneFrame:SetSize(ROW_HEIGHT, ROW_HEIGHT)
             zoneFrame.icon = zoneFrame:CreateTexture(nil, "OVERLAY")
@@ -564,13 +545,9 @@ function wt.CreateFrame()
             zoneFrame:Hide()
             tinsert(row.zoneIcons, zoneFrame)
         end
-        
+
         if rows[i - 1] == nil then
-        	if hasNewSpellbook then
-        		row:SetPoint("TOPLEFT", mainFrame, 110, -78)
-        	else
-            	row:SetPoint("TOPLEFT", mainFrame, 26, -78)
-            end
+            row:SetPoint("TOPLEFT", mainFrame, 26, -78)
         else
             row:SetPoint("TOPLEFT", rows[i - 1], "BOTTOMLEFT", 0, -2)
         end
@@ -583,7 +560,7 @@ end
 
 local function addIgnoreLines(rootDescription, config)
     rootDescription:CreateTitle(config.title)
-    rootDescription:CreateCheckbox(wt.L.IGNORED_TT, function() return config.isIgnored end, function() 
+    rootDescription:CreateCheckbox(wt.L.IGNORED_TT, function() return config.isIgnored end, function()
         PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
         ignoreStore:Flip(config.id)
         config.afterClick()
@@ -608,7 +585,7 @@ end
 wt.NpcClickHook = function(spell, row)
     if not wt.canSetWaypoint(spell) then return end
     PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-    MenuUtil.CreateContextMenu(row, function(owner, rootDescription)
+    MenuUtil.CreateContextMenu(row, function(_, rootDescription)
         rootDescription:CreateTitle(spell.masterName or spell.name)
         rootDescription:CreateButton(wt.L.WAYPOINT_SET, function()
             wt.setWaypoint(spell)
@@ -621,7 +598,7 @@ wt.ClickHook = function(spell, afterClick, row)
     if not wt.TomeIds or not wt.TomeIds[spell.itemId or spell.id] then
         PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
         local isIgnored = ignoreStore:IsIgnored(spell.id)
-        MenuUtil.CreateContextMenu(row, function(owner, rootDescription)
+        MenuUtil.CreateContextMenu(row, function(_, rootDescription)
             addIgnoreLines(rootDescription, {
                 title = spell.formattedFullName,
                 isIgnored = isIgnored,
@@ -629,20 +606,20 @@ wt.ClickHook = function(spell, afterClick, row)
                 afterClick = afterClick
             })
         end)
-        
+
         return
     end
 
     local checked = wt:IsPetAbilityLearned(spell.id)
     PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
     local isIgnored = ignoreStore:IsIgnored(spell.id)
-    MenuUtil.CreateContextMenu(row, function(owner, rootDescription)
+    MenuUtil.CreateContextMenu(row, function(_, rootDescription)
         if wt.SayaadTomes[spell.itemId] then
             rootDescription:CreateTitle(string.format("%s — %s", wt.L.TOME_HEADER, spell.localFamily))
         else
             rootDescription:CreateTitle(wt.L.TOME_HEADER)
         end
-        rootDescription:CreateCheckbox(wt.L.TOME_LEARNED, function() return checked end, function() 
+        rootDescription:CreateCheckbox(wt.L.TOME_LEARNED, function() return checked end, function()
             PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
             wt:SetPetAbilityStatus(spell.id, not checked)
             afterClick()

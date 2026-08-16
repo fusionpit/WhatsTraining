@@ -1,4 +1,4 @@
-local addonName, wt = ...
+local _, wt = ...
 local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
 
 wt.data = {}
@@ -17,7 +17,7 @@ wt.showingBrokerWeaponSkills = false
 wt.brokerSpellData = {}
 wt.brokerWeaponData = {}
 
-local function matchesFilter(spellOrItem) 
+local function matchesFilter(spellOrItem)
     if wt.filter == '' then return true end
     return strfind(spellOrItem, wt.filter, 1, true)
 end
@@ -112,7 +112,7 @@ local function categorizeGroup(spellGroup, levelGroup, playerLevel)
                 end
                 categoryKey = hasReqs and wt.AVAILABLE_KEY or wt.MISSINGREQS_KEY
             end
-            
+
             if categoryKey ~= nil then
                 wt.categories:Insert(categoryKey, spellInfo)
                 wt.brokerCategories:Insert(categoryKey, spellInfo)
@@ -123,13 +123,13 @@ end
 
 local function categorizeTomes()
     if not wt.TomesByLevel then return end
-    for level, tomesAtLevel in pairs(wt.TomesByLevel) do
+    for _, tomesAtLevel in pairs(wt.TomesByLevel) do
         for _, tome in ipairs(tomesAtLevel) do
             local itemInfo = wt:ItemInfo(tome.id)
             if itemInfo ~= nil then
                 local key = wt.PET_KEY
                 if wt:IsPetAbilityLearned(tome.id) then
-                    key = wt.KNOWN_PET_KEY 
+                    key = wt.KNOWN_PET_KEY
                 elseif ignoreStore:IsIgnored(tome.id) then
                     key = wt.IGNORED_PET_KEY
                 end
@@ -154,13 +154,13 @@ local function categorizeWeaponSkills(playerLevel)
         else
             isClassEligible = true
         end
-        
+
         if isClassEligible then
             local spellInfo = wt:SpellInfo(weaponSpellId)
             if spellInfo ~= nil then
                 local categoryKey
                 local reqLevel = weaponData.level or 1
-                
+
                 if (wt.isAbilityKnown(spellInfo.id)) then
                     categoryKey = wt.WEAPON_KNOWN_KEY
                 elseif (ignoreStore:IsIgnored(spellInfo.id)) then
@@ -170,7 +170,7 @@ local function categorizeWeaponSkills(playerLevel)
                 else
                     categoryKey = wt.WEAPON_AVAILABLE_KEY
                 end
-                
+
                 if categoryKey ~= nil then
                     spellInfo.level = reqLevel
                     spellInfo.weaponOrder = weaponData.orderIndex
@@ -243,15 +243,15 @@ local function processCategories(isLevelUpEvent)
                 spells = {},
                 totalCost = 0
             }
-            
+
             if category.key == wt.PET_KEY and wt.currentClass == "WARLOCK" then
                 -- split by family, then weave sub-headers in
                 local byEnglishFamily = {}
                 for _, s in ipairs(category.spells) do
                     s.levelColor = getSpellLevelColor(s, isLevelUpEvent)
                     s.useAltIcon = false
-                    if not byEnglishFamily[s.family] then 
-                        byEnglishFamily[s.family] = {localFamily = s.localFamily, cost = 0, spells = {}} 
+                    if not byEnglishFamily[s.family] then
+                        byEnglishFamily[s.family] = {localFamily = s.localFamily, cost = 0, spells = {}}
                     end
                     local familyTable = byEnglishFamily[s.family]
                     tinsert(familyTable.spells, s)
@@ -268,7 +268,7 @@ local function processCategories(isLevelUpEvent)
                     tinsert(categoryEntry.spells, s)
                 end
             end
-            
+
             category.cost = categoryEntry.totalCost
             if wt.weaponCategoryKeys[category.key] then
                 tinsert(wt.weaponCategoryData, categoryEntry)
@@ -303,7 +303,7 @@ local function processBrokerCategories(isLevelUpEvent)
             category.cost = totalCost
             category.displayed = {cost = displayedCost, costFormat = "%s"}
             category.hidden = {cost = hiddenCost, costFormat = "%s"}
-            
+
             if wt.weaponCategoryKeys[category.key] then
                 tinsert(wt.brokerWeaponData, category)
             else
@@ -321,13 +321,13 @@ function wt.buildCategorizedData(playerLevel, isLevelUpEvent)
     wipe(wt.brokerSpellData)
     wipe(wt.brokerWeaponData)
     wt.weaponSkills = {}
-    
+
     categorizeTomes()
 
     for level, spellsAtLevel in pairs(wt.SpellsByLevel) do
         categorizeGroup(spellsAtLevel, level, playerLevel)
     end
-    
+
     categorizeWeaponSkills(playerLevel)
 
     processCategories(isLevelUpEvent)
@@ -356,7 +356,7 @@ local function filterCategoryData(categoryData, resultsList)
         local hasMatchingSpells = false
         local filteredSpells = {}
         local filteredCost = 0
-        
+
         if categoryEntry.byEnglishFamily then
             -- Warlock pet abilities - check by family
             local filteredFamilies = {}
@@ -392,12 +392,12 @@ local function filterCategoryData(categoryData, resultsList)
                 end
             end
         end
-        
+
         if hasMatchingSpells then
             if not (category.key == wt.PET_KEY and wt.currentClass == "WARLOCK") then
                 tinsert(resultsList, category)
             end
-            
+
             -- Add special headers for pet category
             if (category.key == wt.PET_KEY and wt.needsBeastTraining()) then
                 tinsert(resultsList, {
@@ -406,7 +406,7 @@ local function filterCategoryData(categoryData, resultsList)
                     isHeader = true,
                     cost = 0,
                     tooltip = wt.L.CLICK_TO_OPEN,
-                    click = function() 
+                    click = function()
                         if InCombatLockdown() then
                             print(wt.L.OPEN_BEAST_IN_COMBAT)
                         else
@@ -427,7 +427,7 @@ local function filterCategoryData(categoryData, resultsList)
                     end
                 })
             end
-            
+
             if categoryEntry.byEnglishFamily then
                 -- Warlock pet abilities with family sub-headers
                 for _, englishFamily in ipairs(wt.WarlockPetOrder) do
@@ -441,7 +441,7 @@ local function filterCategoryData(categoryData, resultsList)
                         for _, s in ipairs(family.spells) do
                             if s.isItem then
                                 local taughtSpellId = wt.TomeTaughtSpells[s.itemId]
-                                if taughtSpellId then 
+                                if taughtSpellId then
                                     s.tooltipId = taughtSpellId
                                 else
                                     print('no taught spell found for tome', s.itemId)
@@ -456,7 +456,7 @@ local function filterCategoryData(categoryData, resultsList)
                     tinsert(resultsList, s)
                 end
             end
-            
+
             category.cost = filteredCost
         end
     end

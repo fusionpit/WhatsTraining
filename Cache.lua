@@ -47,7 +47,7 @@ function wt:CacheSpell(spell, level, done)
                 searchText = strlower(formattedFullName),
                 link = string.format("|cff71d5ff|Hspell:%d:0|h[%s]|h|r", spell.id, name),
             }
-        
+
             if self.allRanksCache[name] == nil then
                 self.allRanksCache[name] = {}
             end
@@ -94,7 +94,7 @@ function wt:CacheItem(item, level, done, taughtSpell)
         local ranklessName = string.gsub(ii:GetItemName(), parensPattern, "")
         local rankCacheKey = ranklessName
         if wt.SayaadTomes[item.itemId] then
-           rankCacheKey = item.family..ranklessName 
+           rankCacheKey = item.family..ranklessName
         end
         self.itemInfoCache[item.id] = {
             id = item.id,

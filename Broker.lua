@@ -74,11 +74,16 @@ function plugin.OnTooltipShow(tt)
     for i, category in ipairs(wt.brokerData) do
         local header = #category.spells == #category.displayedSpells
             and string.format("%s — %s", category.formattedName, wt.formatSpellCost(category, FONT_SIZE))
-            or string.format("%s — %s", category.formattedName, string.format(wt.L.BROKER_HEADER_HIDDEN_FORMAT, wt.formatSpellCost(category.displayed, FONT_SIZE), wt.formatSpellCost(category, FONT_SIZE)))
+            or string.format("%s — %s", category.formattedName,
+                string.format(wt.L.BROKER_HEADER_HIDDEN_FORMAT,
+                    wt.formatSpellCost(category.displayed, FONT_SIZE),
+                    wt.formatSpellCost(category, FONT_SIZE)))
         tt:AddLine(header)
 
         for _, spell in ipairs(category.displayedSpells) do
-            local spellText = string.format("  |T%d:0|t %s — %s", spell.icon, spell.formattedFullName or spell.name, wt.formatSpellCost(spell, FONT_SIZE))
+            local spellText = string.format("  |T%d:0|t %s — %s", spell.icon,
+                spell.formattedFullName or spell.name,
+                wt.formatSpellCost(spell, FONT_SIZE))
             if spell.formattedTrainerZones then
                 spellText = spellText .. " — " .. spell.formattedTrainerZones
             end
@@ -88,10 +93,12 @@ function plugin.OnTooltipShow(tt)
                 local color = spell.levelColor
                 tt:AddDoubleLine(spellText, spell.formattedLevel, nil, nil, nil, color.r, color.g, color.b)
             end
-            
+
         end
         if #category.spells ~= #category.displayedSpells then
-            tt:AddLine(string.format("  "..wt.L.BROKER_HIDDEN_FORMAT, #category.spells - #category.displayedSpells, wt.formatSpellCost(category.hidden, FONT_SIZE)))
+            tt:AddLine(string.format("  "..wt.L.BROKER_HIDDEN_FORMAT,
+                #category.spells - #category.displayedSpells,
+                wt.formatSpellCost(category.hidden, FONT_SIZE)))
         end
         if i ~= #wt.brokerData then tt:AddLine(" ") end
     end

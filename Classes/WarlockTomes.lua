@@ -16,13 +16,13 @@ local tomesByFamily = {}
 -- wt.TomeIds and wt.SayaadTomes is set in Cache.lua directly to
 -- fix an error that can be thrown during loading
 for _, tomesByLevel in pairs(wt.TomesByLevel) do
-    for _, tome in ipairs(tomesByLevel) do 
+    for _, tome in ipairs(tomesByLevel) do
         if not tome.id then
             tome.id = tome.itemId
         else
             wt.SayaadTomes[tome.itemId] = true
         end
-        wt.TomeIds[tome.itemId] = true 
+        wt.TomeIds[tome.itemId] = true
         tomes[tome.id] = tome
         tome.altIcon = wt.WarlockAltIcons[tome.family]
         if tome.family == 'Incubus' then
@@ -107,7 +107,7 @@ local events = CreateFrame("Frame")
 events:RegisterEvent("PET_DISMISS_START")
 events:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 events:RegisterEvent("PLAYER_ENTERING_WORLD")
-events:SetScript("OnEvent", function(self, event, arg1, ...)
+events:SetScript("OnEvent", function(_, event, arg1, ...)
     if event == "PET_DISMISS_START" then
         checkCurrentPetSpells()
     elseif event == "UNIT_SPELLCAST_SUCCEEDED" and arg1 == "player" then
@@ -173,10 +173,11 @@ local function colorIgnored(merchantButton, itemButton)
     )
 end
 
-local sayaadTomeSpellTooltip = CreateFrame("GameTooltip", "WhatsTrainingSayaadTomeTooltip", UIParent, "GameTooltipTemplate")
+local sayaadTomeSpellTooltip = CreateFrame("GameTooltip", "WhatsTrainingSayaadTomeTooltip",
+    UIParent, "GameTooltipTemplate")
 
 local ICON_SIZE = 16
-local function createIcon(sayaad, textureId, parent, point)
+local function createIcon(textureId, parent, point)
     local icon = parent:CreateTexture(nil, "OVERLAY")
     icon:SetSize(ICON_SIZE, ICON_SIZE)
     icon:SetPoint(point, parent)
@@ -203,22 +204,22 @@ for i = 1, MERCHANT_ITEMS_PER_PAGE do
     parent:SetScript("OnLeave", function()
         sayaadTomeSpellTooltip:Hide()
     end)
-    local succubusIcon = createIcon("Succubus", wt.WarlockAltIcons.Succubus, parent, "LEFT")
-    local incubusIcon = createIcon("Incubus", wt.WarlockAltIcons.Incubus, parent, "RIGHT")
+    local succubusIcon = createIcon(wt.WarlockAltIcons.Succubus, parent, "LEFT")
+    local incubusIcon = createIcon(wt.WarlockAltIcons.Incubus, parent, "RIGHT")
     iconFrames[i] = {
         Hide = function()
             parent:Hide()
             parent.tooltip = nil
             succubusIcon:SetVertexColor(1, 1, 1)
             incubusIcon:SetVertexColor(1, 1, 1)
-        end, 
+        end,
         Show = function(self, succubusKnown, succubusTip, incubusKnown, incubusTip)
             parent:Show()
             parent.tooltip = succubusTip..' \124 '..incubusTip
             self:showIcon(succubusIcon, succubusKnown)
             self:showIcon(incubusIcon, incubusKnown)
         end,
-        showIcon = function(self, icon, known)
+        showIcon = function(_, icon, known)
             if known == true then
                 icon:SetVertexColor(0.5, 0, 0)
             elseif known == false then
@@ -256,9 +257,11 @@ local function updateMerchantFrame()
             if wt.SayaadTomes[merchantItemID] then
                 local petMatches = matchesCurrentPet(merchantItemID, engPet)
                 local succubusKey, incubusKey = sayaadKeys(merchantItemID)
-                if not wt:IsPetAbilityLearned(succubusKey) and petMatches and engPet == "Succubus" and isKnown(index) then
+                if not wt:IsPetAbilityLearned(succubusKey) and petMatches
+                    and engPet == "Succubus" and isKnown(index) then
                     hasUpdate = hasUpdate or wt:SetPetAbilityStatus(succubusKey, true)
-                elseif not wt:IsPetAbilityLearned(incubusKey) and petMatches and engPet == "Incubus" and isKnown(index) then
+                elseif not wt:IsPetAbilityLearned(incubusKey) and petMatches
+                    and engPet == "Incubus" and isKnown(index) then
                     hasUpdate = hasUpdate or wt:SetPetAbilityStatus(incubusKey, true)
                 end
                 local succubusKnown = wt:IsPetAbilityLearned(succubusKey)
@@ -266,7 +269,6 @@ local function updateMerchantFrame()
                 local incubusKnown = wt:IsPetAbilityLearned(incubusKey)
                 local incubusIgnored = ignoreStore:IsIgnored(incubusKey)
                 local eitherKnown = succubusKnown or incubusKnown
-                local eitherIgnored = succubusIgnored or incubusIgnored
 
                 local succubusState = nil
                 if succubusKnown then succubusState = true elseif succubusIgnored then succubusState = false end
@@ -289,7 +291,6 @@ local function updateMerchantFrame()
                         itemButton, 0.75, 0, 0
                     )
                 end
-                local succubusKey, incubusKey = sayaadKeys(merchantItemID)
                 local succubusTip = coloredStatusTip(succubusKey)
                 local incubusTip = coloredStatusTip(incubusKey)
                 iconFrame:Show(succubusState, succubusTip, incubusState, incubusTip)
@@ -340,10 +341,11 @@ hooksecurefunc(GameTooltip, "SetMerchantItem", function(tt, index)
         local incubusTip = coloredStatusTip(incubusKey)
         addStatusTooltip(tt, succubusTip, incubusTip)
     else
-        if wt:IsPetAbilityLearned(merchantItemID) then 
-            addStatusTooltip(tt, RED_FONT_COLOR:WrapTextInColorCode(spaced(tomes[merchantItemID].localFamily, status(merchantItemID))))
-        elseif ignoreStore:IsIgnored(merchantItemID) then
-            addStatusTooltip(tt, LIGHTYELLOW_FONT_COLOR:WrapTextInColorCode(spaced(tomes[merchantItemID].localFamily, status(merchantItemID))))
+        local statusColor = wt:IsPetAbilityLearned(merchantItemID) and RED_FONT_COLOR
+            or ignoreStore:IsIgnored(merchantItemID) and LIGHTYELLOW_FONT_COLOR
+        if statusColor then
+            addStatusTooltip(tt, statusColor:WrapTextInColorCode(
+                spaced(tomes[merchantItemID].localFamily, status(merchantItemID))))
         end
     end
     showSpellTooltip(tt, merchantItemID)

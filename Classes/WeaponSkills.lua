@@ -26,7 +26,16 @@ wt.zoneUiMapIds = {
 }
 local function npcLocation(id, name, faction, zone, x, y, groupedOnly)
     local localized = wt.weaponTrainerNames
-    return { npc = id, name = localized and localized[id] or name, faction = faction, zone = zone, zoneIcon = wt.cityIconIds[zone], x = x, y = y, groupedOnly = groupedOnly }
+    return {
+        npc = id,
+        name = localized and localized[id] or name,
+        faction = faction,
+        zone = zone,
+        zoneIcon = wt.cityIconIds[zone],
+        x = x,
+        y = y,
+        groupedOnly = groupedOnly
+    }
 end
 
 local BULIWYF_STONEHAND = npcLocation(11865, "Buliwyf Stonehand", "Alliance", IRONFORGE, 61.2, 89.5)
@@ -132,13 +141,13 @@ if WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC then
     wt.zoneUiMapIds[EXODAR] = 1947
     local HANDIIR = npcLocation(16773, "Handiir", "Alliance", EXODAR, 54.6, 85.9)
     AddTrainer(HANDIIR, CROSSBOWS, DAGGERS, ONE_HANDED_MACES, TWO_HANDED_MACES, ONE_HANDED_SWORDS, TWO_HANDED_SWORDS)
-    
+
     local SILVERMOON = 3487
     wt.cityIconIds[SILVERMOON] = 135761
     wt.zoneUiMapIds[SILVERMOON] = 1954
     local ILEDA = npcLocation(16621, "Ileda", "Horde", SILVERMOON, 91.0, 38.6)
     AddTrainer(ILEDA, BOWS, DAGGERS, ONE_HANDED_SWORDS, TWO_HANDED_SWORDS, POLEARMS, THROWN)
-    
+
     local EVERSONG_WOODS = 3430
     wt.zoneUiMapIds[EVERSONG_WOODS] = 1941
     local DUELIST_LARENIS = npcLocation(17005, "Duelist Larenis", "Horde", EVERSONG_WOODS, 48.4, 46.0, true)
@@ -169,7 +178,7 @@ for index, id in ipairs(wt.WeaponSkillDisplayOrder) do
 end
 
 function wt.buildWeaponTrainerZones()
-    for id, weaponData in pairs(wt.WeaponSkills) do
+    for _, weaponData in pairs(wt.WeaponSkills) do
         if weaponData.trainers then
             for faction, trainers in pairs(weaponData.trainers) do
                 local trainerZones = {}
@@ -187,12 +196,12 @@ function wt.buildWeaponTrainerZones()
                 table.sort(trainerZones, function(a, b)
                     return (a.name or "") < (b.name or "")
                 end)
-                
+
                 local zoneNames = {}
                 for _, zoneData in ipairs(trainerZones) do
                     if zoneData.name then tinsert(zoneNames, zoneData.name) end
                 end
-                
+
                 weaponData[faction .. "TrainerZones"] = trainerZones
                 if #zoneNames > 0 then
                     weaponData[faction .. "FormattedTrainerZones"] = table.concat(zoneNames, wt.L.OR)

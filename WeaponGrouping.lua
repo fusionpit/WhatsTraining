@@ -91,9 +91,9 @@ function WeaponGrouping.buildSkeleton(weaponSkills, faction, zoneNames)
     return zones
 end
 
--- Flattens the skeleton into ordered rows: 
--- zone header (indent 0) -> 
---   Master subheader (indent 1) -> 
+-- Flattens the skeleton into ordered rows:
+-- zone header (indent 0) ->
+--   Master subheader (indent 1) ->
 --     skill rows (indent 2)
 function WeaponGrouping.assembleList(skeleton, wrapperByWeaponId, ignoredIds, ignoredHeaderText)
     local ignored = ignoredIds or {}

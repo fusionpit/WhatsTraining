@@ -1,3 +1,6 @@
+exclude_files = {
+    "libs/**/*.lua",
+}
 read_globals = {
     -- api functions
     "CastSpellByID",
@@ -11,8 +14,11 @@ read_globals = {
     "GetSpellInfo",
     "GetSpellSubtext",
     "GetQuestDifficultyColor",
+    "InCombatLockdown",
     "IsSpellKnown",
+    "IsPetActive",
     "IsPlayerSpell",
+    "IsShiftKeyDown",
     "UnitClass",
     "UnitLevel",
     "UnitRace",
@@ -26,11 +32,20 @@ read_globals = {
     "GetMerchantItemLink",
     "GetMerchantNumItems",
     "GetMerchantItemID",
+    "UnitCreatureFamily",
+    "UnitCreatureType",
     "UnitGUID",
+    "RunNextFrame",
     "SetItemButtonNameFrameVertexColor",
     "SetItemButtonSlotVertexColor",
     "SetItemButtonTextureVertexColor",
     "SetItemButtonNormalTextureVertexColor",
+    "ShowAllSpellRanksCheckbox",
+    "SpellBookPageText",
+    "ToggleSpellBook",
+    "GetInventoryItemTexture",
+    "SpellBookPrevPageButton",
+    "SpellBookNextPageButton",
     -- function aliases
     "tinsert",
     "format",
@@ -38,14 +53,26 @@ read_globals = {
     "foreachi",
     "wipe",
     "sort",
+    "strlower",
+    "strfind",
     "strsplit",
     -- api classes
     "Spell",
     "Item",
+    "MenuUtil",
     -- blizzard frames
-    "SpellBookFrame",
     "UIParent",
     "MerchantFrame",
+    "GameTooltip",
+    -- frame methods
+    "SearchBoxTemplate_OnTextChanged",
+    "ChatEdit_GetActiveWindow",
+    "ChatFrame_OpenChat",
+    -- namespaces
+    "C_AddOns",
+    "C_Timer",
+    -- enums
+    "MenuResponse",
     -- constants
     "MERCHANT_ITEMS_PER_PAGE",
     "SPELL_REQUIRED_FORM",
@@ -70,16 +97,29 @@ read_globals = {
     "MAX_SKILLLINE_TABS",
     "BOOKTYPE_SPELL",
     "ERR_LEARN_SPELL_S",
+    "WHITE_FONT_COLOR",
     "WOW_PROJECT_ID",
     "WOW_PROJECT_BURNING_CRUSADE_CLASSIC",
 
-    "HookCTPUpdate"
+    -- my other addons
+    "HookCTPUpdate",
+
+    -- libs
+    "LibStub",
 }
 globals = {
-    "ClassTrainerPlusDBPC", 
-    "CTP_UpdateService", 
+    -- blzzard frames
+    "SpellBookFrame",
+
+    -- my other addons
+    "ClassTrainerPlusDBPC",
+    "CTP_UpdateService",
+
     "WhatsTrainingFrame",
     "WT_NeedsToOpenBeastTraining",
     "WT_LearnedPetAbilities",
     "WT_WeaponGrouping",
+    "WT_ShowLearnedNotice",
+    "WT_ShowIgnoreNotice",
+    "WT_IgnoredSpells"
 }

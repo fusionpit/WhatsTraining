@@ -47,149 +47,149 @@ wt.TomesByLevel = {
     [8] = {{itemId = 16302, cost = 100, family = "Imp"}},
     [12] = {{itemId = 16331, cost = 600, family = "Imp"}},
     [14] = {
-        {itemId = 16322, cost = 900, family = "Imp"}, 
+        {itemId = 16322, cost = 900, family = "Imp"},
         {itemId = 16326, cost = 900, family = "Imp"}
     },
     [16] = {{itemId = 16351, cost = 1200, family = "Voidwalker"}},
     [18] = {
-        {itemId = 16316, cost = 1500, family = "Imp"}, 
+        {itemId = 16316, cost = 1500, family = "Imp"},
         {itemId = 16357, cost = 1500, family = "Voidwalker"}
     },
     [20] = {{itemId = 16346, cost = 2000, family = "Voidwalker"}},
     [22] = {
-        {id = "SUC:16375", itemId = 16375, cost = 2500, family = "Succubus"}, 
+        {id = "SUC:16375", itemId = 16375, cost = 2500, family = "Succubus"},
         {id = "INC:16375", itemId = 16375, cost = 2500, family = "Incubus"}
     },
     [24] = {
-        {itemId = 16327, cost = 3000, family = "Imp"}, 
-        {itemId = 16352, cost = 3000, family = "Voidwalker"}, 
+        {itemId = 16327, cost = 3000, family = "Imp"},
+        {itemId = 16352, cost = 3000, family = "Voidwalker"},
         {itemId = 16363, cost = 3000, family = "Voidwalker"}
     },
     [26] = {
-        {itemId = 16323, cost = 4000, family = "Imp"}, 
-        {itemId = 16358, cost = 4000, family = "Voidwalker"}, 
+        {itemId = 16323, cost = 4000, family = "Imp"},
+        {itemId = 16358, cost = 4000, family = "Voidwalker"},
         {id = "SUC:16379", itemId = 16379, cost = 4000, family = "Succubus"},
         {id = "INC:16379", itemId = 16379, cost = 4000, family = "Incubus"}
     },
     [28] = {
-        {itemId = 16317, cost = 5000, family = "Imp"}, 
-        {id = "SUC:16368", itemId = 16368, cost = 5000, family = "Succubus"}, 
+        {itemId = 16317, cost = 5000, family = "Imp"},
+        {id = "SUC:16368", itemId = 16368, cost = 5000, family = "Succubus"},
         {id = "INC:16368", itemId = 16368, cost = 5000, family = "Incubus"}
     },
     [30] = {{itemId = 16347, cost = 6000, family = "Voidwalker"}},
     [32] = {
-        {itemId = 16353, cost = 7000, family = "Voidwalker"}, 
-        {id = "SUC:16380", itemId = 16380, cost = 7000, family = "Succubus"}, 
-        {id = "INC:16380", itemId = 16380, cost = 7000, family = "Incubus"}, 
+        {itemId = 16353, cost = 7000, family = "Voidwalker"},
+        {id = "SUC:16380", itemId = 16380, cost = 7000, family = "Succubus"},
+        {id = "INC:16380", itemId = 16380, cost = 7000, family = "Incubus"},
         {itemId = 16384, cost = 7000, family = "Felhunter"}
     },
     [34] = {
-        {itemId = 16328, cost = 8000, family = "Imp"}, 
-        {itemId = 16359, cost = 8000, family = "Voidwalker"}, 
-        {id = "SUC:16376", itemId = 16376, cost = 8000, family = "Succubus"}, 
+        {itemId = 16328, cost = 8000, family = "Imp"},
+        {itemId = 16359, cost = 8000, family = "Voidwalker"},
+        {id = "SUC:16376", itemId = 16376, cost = 8000, family = "Succubus"},
         {id = "INC:16376", itemId = 16376, cost = 8000, family = "Incubus"}
     },
     [36] = {
-        {itemId = 16364, cost = 9000, family = "Voidwalker"}, 
-        {id = "SUC:16371", itemId = 16371, cost = 9000, family = "Succubus"}, 
-        {id = "INC:16371", itemId = 16371, cost = 9000, family = "Incubus"}, 
+        {itemId = 16364, cost = 9000, family = "Voidwalker"},
+        {id = "SUC:16371", itemId = 16371, cost = 9000, family = "Succubus"},
+        {id = "INC:16371", itemId = 16371, cost = 9000, family = "Incubus"},
         {itemId = 16388, cost = 9000, family = "Felhunter"}
     },
     [38] = {
-        {itemId = 16318, cost = 10000, family = "Imp"}, 
-        {itemId = 16324, cost = 10000, family = "Imp"}, 
+        {itemId = 16318, cost = 10000, family = "Imp"},
+        {itemId = 16324, cost = 10000, family = "Imp"},
         {itemId = 16381, cost = 10000, family = "Felhunter"}
     },
     [40] = {
-        {itemId = 16348, cost = 11000, family = "Voidwalker"}, 
-        {itemId = 16354, cost = 11000, family = "Voidwalker"}, 
+        {itemId = 16348, cost = 11000, family = "Voidwalker"},
+        {itemId = 16354, cost = 11000, family = "Voidwalker"},
         {itemId = 16385, cost = 11000, family = "Felhunter"}
     },
     [42] = {
-        {itemId = 16360, cost = 11000, family = "Voidwalker"}, 
+        {itemId = 16360, cost = 11000, family = "Voidwalker"},
         {itemId = 16390, cost = 11000, family = "Felhunter"}
     },
     [44] = {
-        {itemId = 16329, cost = 12000, family = "Imp"}, 
-        {id = "SUC:16372", itemId = 16372, cost = 12000, family = "Succubus"}, 
+        {itemId = 16329, cost = 12000, family = "Imp"},
+        {id = "SUC:16372", itemId = 16372, cost = 12000, family = "Succubus"},
         {id = "INC:16372", itemId = 16372, cost = 12000, family = "Incubus"}
     },
     [46] = {
-        {id = "SUC:16377", itemId = 16377, cost = 13000, family = "Succubus"}, 
-        {id = "INC:16377", itemId = 16377, cost = 13000, family = "Incubus"}, 
+        {id = "SUC:16377", itemId = 16377, cost = 13000, family = "Succubus"},
+        {id = "INC:16377", itemId = 16377, cost = 13000, family = "Incubus"},
         {itemId = 16382, cost = 13000, family = "Felhunter"}
     },
     [48] = {
-        {itemId = 16319, cost = 14000, family = "Imp"}, 
-        {itemId = 16355, cost = 14000, family = "Voidwalker"}, 
-        {itemId = 16365, cost = 14000, family = "Voidwalker"}, 
+        {itemId = 16319, cost = 14000, family = "Imp"},
+        {itemId = 16355, cost = 14000, family = "Voidwalker"},
+        {itemId = 16365, cost = 14000, family = "Voidwalker"},
         {itemId = 16386, cost = 14000, family = "Felhunter"}
     },
     [50] = {
-        {itemId = 16325, cost = 15000, family = "Imp"}, 
-        {itemId = 16349, cost = 15000, family = "Voidwalker"}, 
+        {itemId = 16325, cost = 15000, family = "Imp"},
+        {itemId = 16349, cost = 15000, family = "Voidwalker"},
         {itemId = 16361, cost = 15000, family = "Voidwalker"},
         {itemId = 28071, cost = 15000, family = "Felguard"},
         {itemId = 23734, cost = 15000, family = "Felguard"},
     },
     [52] = {
-        {id = "SUC:16373", itemId = 16373, cost = 18000, family = "Succubus"}, 
-        {id = "INC:16373", itemId = 16373, cost = 18000, family = "Incubus"}, 
+        {id = "SUC:16373", itemId = 16373, cost = 18000, family = "Succubus"},
+        {id = "INC:16373", itemId = 16373, cost = 18000, family = "Incubus"},
         {itemId = 16389, cost = 18000, family = "Felhunter"},
         {itemId = 23711, cost = 18000, family = "Felguard"}
     },
     [54] = {
-        {itemId = 16330, cost = 20000, family = "Imp"}, 
+        {itemId = 16330, cost = 20000, family = "Imp"},
         {itemId = 16383, cost = 20000, family = "Felhunter"}
     },
     [56] = {
-        {itemId = 16356, cost = 22000, family = "Voidwalker"}, 
+        {itemId = 16356, cost = 22000, family = "Voidwalker"},
         {itemId = 16387, cost = 22000, family = "Felhunter"},
         {itemId = 25900, cost = 22000, family = "Felguard"}
     },
     [58] = {
-        {itemId = 16320, cost = 24000, family = "Imp"}, 
-        {itemId = 16362, cost = 24000, family = "Voidwalker"}, 
+        {itemId = 16320, cost = 24000, family = "Imp"},
+        {itemId = 16362, cost = 24000, family = "Voidwalker"},
         {id = "SUC:16378", itemId = 16378, cost = 24000, family = "Succubus"},
         {id = "INC:16378", itemId = 16378, cost = 24000, family = "Incubus"}
     },
     [60] = {
-        {itemId = 16350, cost = 26000, family = "Voidwalker"}, 
-        {itemId = 16366, cost = 26000, family = "Voidwalker"}, 
-        {itemId = 28072, cost = 26000, family = "Felguard"}, 
-        {itemId = 25469, cost = 26000, family = "Felguard"}, 
-        {itemId = 23745, cost = 26000, family = "Felguard"}, 
-        {id = "SUC:16374", itemId = 16374, cost = 26000, family = "Succubus"}, 
+        {itemId = 16350, cost = 26000, family = "Voidwalker"},
+        {itemId = 16366, cost = 26000, family = "Voidwalker"},
+        {itemId = 28072, cost = 26000, family = "Felguard"},
+        {itemId = 25469, cost = 26000, family = "Felguard"},
+        {itemId = 23745, cost = 26000, family = "Felguard"},
+        {id = "SUC:16374", itemId = 16374, cost = 26000, family = "Succubus"},
         {id = "INC:16374", itemId = 16374, cost = 26000, family = "Incubus"}
-    },    
+    },
 
     [61] = {{itemId = 23730, cost = 26000, family = "Felguard"}},
     [62] = {
-        {itemId = 22180, cost = 26000, family = "Imp"}, 
+        {itemId = 22180, cost = 26000, family = "Imp"},
         {itemId = 22188, cost = 29000, family = "Felhunter"}
     },
     [63] = {{itemId = 22183, cost = 32000, family = "Voidwalker"}},
     [64] = {
-        {itemId = 22181, cost = 36000, family = "Imp"}, 
-        {itemId = 22185, cost = 36000, family = "Voidwalker"}, 
+        {itemId = 22181, cost = 36000, family = "Imp"},
+        {itemId = 22185, cost = 36000, family = "Voidwalker"},
         {itemId = 22190, cost = 36000, family = "Felhunter"}
     },
     [66] = {{itemId = 22184, cost = 44000, family = "Voidwalker"}},
     [68] = {
-        {itemId = 22179, cost = 54000, family = "Imp"}, 
-        {id = "SUC:22186", itemId = 22186, cost = 54000, family = "Succubus"}, 
-        {id = "INC:22186", itemId = 22186, cost = 54000, family = "Incubus"}, 
+        {itemId = 22179, cost = 54000, family = "Imp"},
+        {id = "SUC:22186", itemId = 22186, cost = 54000, family = "Succubus"},
+        {id = "INC:22186", itemId = 22186, cost = 54000, family = "Incubus"},
         {itemId = 23755, cost = 60000, family = "Felguard"}
     },
     [69] = {
-        {itemId = 28068, cost = 60000, family = "Voidwalker"}, 
+        {itemId = 28068, cost = 60000, family = "Voidwalker"},
         {itemId = 23731, cost = 60000, family = "Felguard"}
     },
     [70] = {
-        {itemId = 22182, cost = 67000, family = "Voidwalker"}, 
-        {id = "SUC:22187", itemId = 22187, cost = 67000, family = "Succubus"}, 
-        {id = "INC:22187", itemId = 22187, cost = 67000, family = "Incubus"}, 
-        {itemId = 22189, cost = 67000, family = "Felhunter"}, 
+        {itemId = 22182, cost = 67000, family = "Voidwalker"},
+        {id = "SUC:22187", itemId = 22187, cost = 67000, family = "Succubus"},
+        {id = "INC:22187", itemId = 22187, cost = 67000, family = "Incubus"},
+        {itemId = 22189, cost = 67000, family = "Felhunter"},
         {itemId = 28073, cost = 67000, family = "Felguard"}
     },
 }
