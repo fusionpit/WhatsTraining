@@ -52,8 +52,8 @@ local localeText = {
         GROUP_BY_ZONE = "Group by Zone",
         GROUP_BY_WEAPON_SKILL = "Group by Weapon Skill",
         GROUP_LIST = "List",
-        GROUPING_OPTIONS = "Grouping Options",
-        GROUPING_OPTIONS_TITLE = "Group weapon skills by:",
+        GROUPING_OPTIONS = "Display Options",
+        GROUPING_OPTIONS_TITLE = "Weapon skills display:",
     },
     frFR = {
         AVAILABLE_HEADER = "Disponible",
