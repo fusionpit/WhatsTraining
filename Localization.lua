@@ -54,6 +54,8 @@ local localeText = {
         GROUP_LIST = "List",
         GROUPING_OPTIONS = "Display Options",
         GROUPING_OPTIONS_TITLE = "Weapon skills display:",
+        WAYPOINT_SET = "Set Waypoint",
+        CLICK_TO_WAYPOINT = "Click to set a waypoint",
     },
     frFR = {
         AVAILABLE_HEADER = "Disponible",

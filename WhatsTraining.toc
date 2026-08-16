@@ -5,7 +5,7 @@
 ## Notes: Shows you what spells are available at your class trainer
 ## SavedVariables: WT_ShowIgnoreNotice, WT_ShowLearnedNotice, WT_WeaponGrouping
 ## SavedVariablesPerCharacter: WT_LearnedPetAbilities, WT_NeedsToOpenBeastTraining, WT_IgnoredSpells
-## OptionalDeps: ClassTrainerPlus
+## OptionalDeps: ClassTrainerPlus, TomTom
 ## X-Curse-Project-ID: 324944
 ## X-WoWI-ID: 25031
 ## X-Thanks: capitano666 on curse for Shaman SoD info
@@ -34,6 +34,7 @@ Classes\WarlockTomes.lua
 Classes\[Game]\Warrior.lua
 Classes\WeaponSkills.lua
 
+Waypoint.lua
 WeaponGrouping.lua
 
 WhatsTrainingUI.lua

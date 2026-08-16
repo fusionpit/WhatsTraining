@@ -15,6 +15,15 @@ wt.cityIconIds = {
     [THUNDER_BLUFF] = 135765,
     [UNDERCITY] = 135766,
 }
+
+wt.zoneUiMapIds = {
+    [IRONFORGE] = 1455, -- confirmed
+    [STORMWIND] = 1453, -- confirmed
+    [DARNASSUS] = 1457, -- confirmed
+    [ORGRIMMAR] = 1454, -- confirmed
+    [THUNDER_BLUFF] = 1456, -- confirmed
+    [UNDERCITY] = 1458, -- confirmed
+}
 local function npcLocation(id, name, faction, zone, x, y, groupedOnly)
     return { npc = id, name = name, faction = faction, zone = zone, zoneIcon = wt.cityIconIds[zone], x = x, y = y, groupedOnly = groupedOnly }
 end
@@ -116,19 +125,21 @@ wt.NumCityIcons = 3
 
 if WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC then
     wt.NumCityIcons = 4
+
     local EXODAR = 3557
-    local SILVERMOON = 3487
-
     wt.cityIconIds[EXODAR] = 135756
-    wt.cityIconIds[SILVERMOON] = 135761
-    
+    wt.zoneUiMapIds[EXODAR] = 1947
     local HANDIIR = npcLocation(16773, "Handiir", "Alliance", EXODAR, 54.6, 85.9)
-    local ILEDA = npcLocation(16621, "Ileda", "Horde", SILVERMOON, 91.0, 38.6)
-
     AddTrainer(HANDIIR, CROSSBOWS, DAGGERS, ONE_HANDED_MACES, TWO_HANDED_MACES, ONE_HANDED_SWORDS, TWO_HANDED_SWORDS)
+    
+    local SILVERMOON = 3487
+    wt.cityIconIds[SILVERMOON] = 135761
+    wt.zoneUiMapIds[SILVERMOON] = 1954
+    local ILEDA = npcLocation(16621, "Ileda", "Horde", SILVERMOON, 91.0, 38.6)
     AddTrainer(ILEDA, BOWS, DAGGERS, ONE_HANDED_SWORDS, TWO_HANDED_SWORDS, POLEARMS, THROWN)
-
+    
     local EVERSONG_WOODS = 3430
+    wt.zoneUiMapIds[EVERSONG_WOODS] = 1941
     local DUELIST_LARENIS = npcLocation(17005, "Duelist Larenis", "Horde", EVERSONG_WOODS, 48.4, 46.0, true)
     AddTrainer(DUELIST_LARENIS, BOWS, ONE_HANDED_SWORDS, TWO_HANDED_SWORDS, POLEARMS, THROWN)
 end

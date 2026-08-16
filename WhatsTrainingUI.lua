@@ -31,6 +31,10 @@ local function setNpcTooltip(npcInfo)
     elseif zoneName then
         tooltip:AddLine(zoneName, 0.8, 0.8, 0.8)
     end
+    if wt.canSetWaypoint(npcInfo) then
+        tooltip:AddLine(wt.L.CLICK_TO_WAYPOINT, GREEN_FONT_COLOR.r,
+                        GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b)
+    end
     tooltip:Show()
 end
 
@@ -151,6 +155,16 @@ local function setRowSpell(row, spell)
                 wt.ClickHook(spell, function()
                     wt:RebuildData()
                 end, row)
+            end
+        end)
+    elseif spell.npc then
+        row:SetScript("OnClick", function(_, button)
+            if not wt.canSetWaypoint(spell) then return end
+            if button == "RightButton" then
+                wt.NpcClickHook(spell, row)
+            else
+                PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+                wt.setWaypoint(spell)
             end
         end)
     else
@@ -589,6 +603,18 @@ local function addIgnoreLines(rootDescription, config)
             return MenuResponse.Close
         end)
     end
+end
+
+wt.NpcClickHook = function(spell, row)
+    if not wt.canSetWaypoint(spell) then return end
+    PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+    MenuUtil.CreateContextMenu(row, function(owner, rootDescription)
+        rootDescription:CreateTitle(spell.masterName or spell.name)
+        rootDescription:CreateButton(wt.L.WAYPOINT_SET, function()
+            wt.setWaypoint(spell)
+            return MenuResponse.Close
+        end)
+    end)
 end
 
 wt.ClickHook = function(spell, afterClick, row)
