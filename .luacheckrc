@@ -70,6 +70,8 @@ read_globals = {
     "MAX_SKILLLINE_TABS",
     "BOOKTYPE_SPELL",
     "ERR_LEARN_SPELL_S",
+    "WOW_PROJECT_ID",
+    "WOW_PROJECT_BURNING_CRUSADE_CLASSIC",
 
     "HookCTPUpdate"
 }

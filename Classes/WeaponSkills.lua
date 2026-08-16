@@ -17,25 +17,26 @@ wt.cityIconIds = {
 }
 
 wt.zoneUiMapIds = {
-    [IRONFORGE] = 1455, -- confirmed
-    [STORMWIND] = 1453, -- confirmed
-    [DARNASSUS] = 1457, -- confirmed
-    [ORGRIMMAR] = 1454, -- confirmed
-    [THUNDER_BLUFF] = 1456, -- confirmed
-    [UNDERCITY] = 1458, -- confirmed
+    [IRONFORGE] = 1455,
+    [STORMWIND] = 1453,
+    [DARNASSUS] = 1457,
+    [ORGRIMMAR] = 1454,
+    [THUNDER_BLUFF] = 1456,
+    [UNDERCITY] = 1458,
 }
 local function npcLocation(id, name, faction, zone, x, y, groupedOnly)
-    return { npc = id, name = name, faction = faction, zone = zone, zoneIcon = wt.cityIconIds[zone], x = x, y = y, groupedOnly = groupedOnly }
+    local localized = wt.weaponTrainerNames
+    return { npc = id, name = localized and localized[id] or name, faction = faction, zone = zone, zoneIcon = wt.cityIconIds[zone], x = x, y = y, groupedOnly = groupedOnly }
 end
 
 local BULIWYF_STONEHAND = npcLocation(11865, "Buliwyf Stonehand", "Alliance", IRONFORGE, 61.2, 89.5)
-local BIXI_WOBBLEBONK = npcLocation(11866, "Bixi Wobblebonk", "Alliance", IRONFORGE, 62.2, 89.6)
-local WOO_PING = npcLocation(11869, "Woo Ping", "Alliance", STORMWIND, 57.1, 57.7)
-local ILYENIA_MOONFIRE = npcLocation(11867, "Ilyenia Moonfire", "Alliance", DARNASSUS, 57.7, 46.0)
+local BIXI_WOBBLEBONK = npcLocation(13084, "Bixi Wobblebonk", "Alliance", IRONFORGE, 62.2, 89.6)
+local WOO_PING = npcLocation(11867, "Woo Ping", "Alliance", STORMWIND, 57.1, 57.7)
+local ILYENIA_MOONFIRE = npcLocation(11866, "Ilyenia Moonfire", "Alliance", DARNASSUS, 57.7, 46.0)
 local HANASHI = npcLocation(2704, "Hanashi", "Horde", ORGRIMMAR, 81.5, 19.6)
 local SAYOC = npcLocation(11868, "Sayoc", "Horde", ORGRIMMAR, 81.7, 19.6)
-local ANSEKHWA = npcLocation(11870, "Ansekhwa", "Horde", THUNDER_BLUFF, 40.0, 63.1)
-local ARCHIBALD = npcLocation(11871, "Archibald", "Horde", UNDERCITY, 57.3, 32.8)
+local ANSEKHWA = npcLocation(11869, "Ansekhwa", "Horde", THUNDER_BLUFF, 40.0, 63.1)
+local ARCHIBALD = npcLocation(11870, "Archibald", "Horde", UNDERCITY, 57.3, 32.8)
 
 local ONE_HANDED_AXES = 196
 local TWO_HANDED_AXES = 197
