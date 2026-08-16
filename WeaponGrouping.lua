@@ -133,8 +133,10 @@ function WeaponGrouping.assembleList(skeleton, wrapperByWeaponId, ignoredIds, ig
                     isHeader = true,
                     indent = 1,
                     name = master.name,
+                    masterName = master.name,
                     npc = master.npc,
                     zone = master.zone,
+                    zoneName = zone.name,
                     x = master.x,
                     y = master.y,
                 })
@@ -280,8 +282,10 @@ function WeaponGrouping.assembleSkillList(skillSkeleton, wrapperByWeaponId, igno
                 isHeader = true,
                 indent = 1,
                 name = r.zoneName .. " \226\128\148 " .. r.masterName, -- em-dash U+2014
+                masterName = r.masterName,
                 npc = r.npc,
                 zone = r.zone,
+                zoneName = r.zoneName,
                 x = r.x,
                 y = r.y,
             })

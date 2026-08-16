@@ -8,6 +8,7 @@ local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 local MAX_ROWS = 22
 local ROW_HEIGHT = 14
 local INDENT_STEP = 12   -- px added per indent level for grouped rows
+local NPC_LOCATION_FORMAT = "%s (%.1f, %.1f)"
 local SKILL_LINE_TAB = MAX_SKILLLINE_TABS - 1
 local HIGHLIGHT_TEXTURE_FILEID = GetFileIDFromPath(
                                      "Interface\\AddOns\\WhatsTraining\\highlight")
@@ -21,7 +22,23 @@ local TAB_TEXTURE_FILEID = GetFileIDFromPath(
 local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent,
                             "GameTooltipTemplate")
 
+local function setNpcTooltip(npcInfo)
+    tooltip:ClearLines()
+    tooltip:AddLine(npcInfo.masterName or npcInfo.name, 1, 1, 1)
+    local zoneName = npcInfo.zoneName or (npcInfo.zone and C_Map.GetAreaInfo(npcInfo.zone))
+    if zoneName and npcInfo.x and npcInfo.y then
+        tooltip:AddLine(format(NPC_LOCATION_FORMAT, zoneName, npcInfo.x, npcInfo.y), 0.8, 0.8, 0.8)
+    elseif zoneName then
+        tooltip:AddLine(zoneName, 0.8, 0.8, 0.8)
+    end
+    tooltip:Show()
+end
+
 local function setTooltip(spellInfo)
+    if spellInfo.npc then
+        setNpcTooltip(spellInfo)
+        return
+    end
     if spellInfo.altTooltipType == "weapon" then
         tooltip:ClearLines()
         tooltip:AddLine(spellInfo.name, 1, 1, 1)
@@ -59,7 +76,7 @@ local function setRowSpell(row, spell)
         row.spell:Hide()
         row.header:Show()
         row:SetID(0)
-        row.highlight:SetTexture(nil)
+        row.highlight:SetTexture(spell.npc and HIGHLIGHT_TEXTURE_FILEID or nil)
         if spell.indent ~= nil then
             row.header:SetText(spell.name)
             row.header:ClearAllPoints()
