@@ -29,7 +29,8 @@ function wt:CacheSpell(spell, level, done)
             local subText = si:GetSpellSubtext() -- C_Spell.GetSpellSubtext(spell.id)
             local formattedSubText = (subText and subText ~= "") and
                                          format(PARENS_TEMPLATE, subText) or ""
-            local name = si:GetSpellName()
+            local spellName = si:GetSpellName()
+            local name = wt.stripRankNumeral(spellName, subText)
             local formattedFullName = (subText and subText ~= "") and format("%s %s", name, formattedSubText) or name
             self.spellInfoCache[spell.id] = {
                 id = spell.id,
@@ -45,7 +46,7 @@ function wt:CacheSpell(spell, level, done)
                 formattedLevel = format(wt.L.LEVEL_FORMAT, level),
                 formattedFullName = formattedFullName,
                 searchText = strlower(formattedFullName),
-                link = string.format("|cff71d5ff|Hspell:%d:0|h[%s]|h|r", spell.id, name),
+                link = string.format("|cff71d5ff|Hspell:%d:0|h[%s]|h|r", spell.id, spellName),
             }
 
             if self.allRanksCache[name] == nil then

@@ -48,6 +48,29 @@ function wt:AddOverriddenSpells(...)
     self.overriddenSpellsMap = abilityMap
 end
 
+local ROMAN_DIGITS = { I = 1, V = 5, X = 10 }
+local function romanToNumber(numeral)
+    local total, prev = 0, 0
+    for i = #numeral, 1, -1 do
+        local value = ROMAN_DIGITS[numeral:sub(i, i)]
+        total = value < prev and total - value or total + value
+        prev = value
+    end
+    return total
+end
+
+-- In Classic Era 1.15.9, trainers list poisons without a roman numeral
+-- TBC Anniversary does include the roman numeral (as 1.15.8 did)
+-- strip roman numerals if the name has the same number as the subText (Rank #)
+function wt.stripRankNumeral(name, subText)
+    local base, numeral = string.match(name, "^(.-)%s+([IVX]+)$")
+    local rank = subText and string.match(subText, "%d+")
+    if base and rank and romanToNumber(numeral) == tonumber(rank) then
+        return base
+    end
+    return name
+end
+
 function wt:IsPetAbility(spellId)
     return self.PetAbilityIds ~= nil and self.PetAbilityIds[spellId]
 end
