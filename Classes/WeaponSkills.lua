@@ -6,46 +6,9 @@ local DARNASSUS = 1657
 local ORGRIMMAR = 1637
 local THUNDER_BLUFF = 1638
 local UNDERCITY = 1497
-
-wt.cityIconIds = {
-    [IRONFORGE] = 135757,
-    [STORMWIND] = 135763,
-    [DARNASSUS] = 135755,
-    [ORGRIMMAR] = 135759,
-    [THUNDER_BLUFF] = 135765,
-    [UNDERCITY] = 135766,
-}
-
-wt.zoneUiMapIds = {
-    [IRONFORGE] = 1455,
-    [STORMWIND] = 1453,
-    [DARNASSUS] = 1457,
-    [ORGRIMMAR] = 1454,
-    [THUNDER_BLUFF] = 1456,
-    [UNDERCITY] = 1458,
-}
-local function npcLocation(id, name, faction, zone, x, y, groupedOnly)
-    local localized = wt.weaponTrainerNames
-    return {
-        npc = id,
-        name = localized and localized[id] or name,
-        faction = faction,
-        zone = zone,
-        zoneIcon = wt.cityIconIds[zone],
-        x = x,
-        y = y,
-        groupedOnly = groupedOnly
-    }
-end
-
-local BULIWYF_STONEHAND = npcLocation(11865, "Buliwyf Stonehand", "Alliance", IRONFORGE, 61.2, 89.5)
-local BIXI_WOBBLEBONK = npcLocation(13084, "Bixi Wobblebonk", "Alliance", IRONFORGE, 62.2, 89.6)
-local WOO_PING = npcLocation(11867, "Woo Ping", "Alliance", STORMWIND, 57.1, 57.7)
-local ILYENIA_MOONFIRE = npcLocation(11866, "Ilyenia Moonfire", "Alliance", DARNASSUS, 57.7, 46.0)
-local HANASHI = npcLocation(2704, "Hanashi", "Horde", ORGRIMMAR, 81.5, 19.6)
-local SAYOC = npcLocation(11868, "Sayoc", "Horde", ORGRIMMAR, 81.7, 19.6)
-local ANSEKHWA = npcLocation(11869, "Ansekhwa", "Horde", THUNDER_BLUFF, 40.0, 63.1)
-local ARCHIBALD = npcLocation(11870, "Archibald", "Horde", UNDERCITY, 57.3, 32.8)
+local EXODAR = 3557
+local SILVERMOON = 3487
+local EVERSONG_WOODS = 3430
 
 local ONE_HANDED_AXES = 196
 local TWO_HANDED_AXES = 197
@@ -62,118 +25,411 @@ local THROWN = 2567
 local CROSSBOWS = 5011
 local FIST_WEAPONS = 15590
 
-wt.WeaponSkills = {
+local zones = {
+    [IRONFORGE] = { uiMapId = 1455, iconId = 135757 },
+    [STORMWIND] = { uiMapId = 1453, iconId = 135763 },
+    [DARNASSUS] = { uiMapId = 1457, iconId = 135755 },
+    [ORGRIMMAR] = { uiMapId = 1454, iconId = 135759 },
+    [THUNDER_BLUFF] = { uiMapId = 1456, iconId = 135765 },
+    [UNDERCITY] = { uiMapId = 1458, iconId = 135766 },
+    [EXODAR] = { uiMapId = 1947, iconId = 135756 },
+    [SILVERMOON] = { uiMapId = 1954, iconId = 135761 },
+    [EVERSONG_WOODS] = { uiMapId = 1941 },
+}
+
+local weaponSkills = {
     [ONE_HANDED_AXES] = {
-        classes = {"WARRIOR", "PALADIN", "HUNTER", "SHAMAN"},
+        classes = {
+            WARRIOR = true, PALADIN = true, HUNTER = true, SHAMAN = true,
+        },
     },
     [TWO_HANDED_AXES] = {
-        classes = {"WARRIOR", "PALADIN", "HUNTER", "SHAMAN"},
+        classes = {
+            WARRIOR = true, PALADIN = true, HUNTER = true, SHAMAN = true,
+        },
     },
     [ONE_HANDED_MACES] = {
-        classes = {"WARRIOR", "PALADIN", "ROGUE", "PRIEST", "SHAMAN", "DRUID"},
+        classes = {
+            WARRIOR = true, PALADIN = true, ROGUE = true, PRIEST = true,
+            SHAMAN = true, DRUID = true,
+        },
     },
     [TWO_HANDED_MACES] = {
-        classes = {"WARRIOR", "PALADIN", "SHAMAN", "DRUID"},
+        classes = {
+            WARRIOR = true, PALADIN = true, SHAMAN = true, DRUID = true,
+        },
     },
     [POLEARMS] = {
-        classes = {"WARRIOR", "PALADIN", "HUNTER", "DRUID"},
-        level = 20,
-        cost = 10000,
+        classes = {
+            WARRIOR = true, PALADIN = true, HUNTER = true, DRUID = true,
+        },
+        requiredLevel = 20,
+        costCopper = 10000,
     },
     [ONE_HANDED_SWORDS] = {
-        classes = {"WARRIOR", "PALADIN", "HUNTER", "ROGUE", "MAGE", "WARLOCK"},
+        classes = {
+            WARRIOR = true, PALADIN = true, HUNTER = true, ROGUE = true,
+            MAGE = true, WARLOCK = true,
+        },
     },
     [TWO_HANDED_SWORDS] = {
-        classes = {"WARRIOR", "PALADIN", "HUNTER"},
+        classes = {
+            WARRIOR = true, PALADIN = true, HUNTER = true,
+        },
     },
     [STAVES] = {
-        classes = {"WARRIOR", "HUNTER", "PRIEST", "SHAMAN", "DRUID", "WARLOCK", "MAGE"},
+        classes = {
+            WARRIOR = true, HUNTER = true, PRIEST = true, SHAMAN = true,
+            DRUID = true, WARLOCK = true, MAGE = true,
+        },
     },
     [BOWS] = {
-        classes = {"WARRIOR", "HUNTER", "ROGUE"},
+        classes = {
+            WARRIOR = true, HUNTER = true, ROGUE = true,
+        },
     },
     [GUNS] = {
-        classes = {"WARRIOR", "HUNTER", "ROGUE"},
+        classes = {
+            WARRIOR = true, HUNTER = true, ROGUE = true,
+        },
     },
     [DAGGERS] = {
-        classes = {"WARRIOR", "HUNTER", "ROGUE", "PRIEST", "SHAMAN", "DRUID", "WARLOCK", "MAGE"},
+        classes = {
+            WARRIOR = true, HUNTER = true, ROGUE = true, PRIEST = true,
+            SHAMAN = true, DRUID = true, WARLOCK = true, MAGE = true,
+        },
     },
     [THROWN] = {
-        classes = {"WARRIOR", "HUNTER", "ROGUE"},
+        classes = {
+            WARRIOR = true, HUNTER = true, ROGUE = true,
+        },
     },
     [CROSSBOWS] = {
-        classes = {"WARRIOR", "HUNTER", "ROGUE"},
+        classes = {
+            WARRIOR = true, HUNTER = true, ROGUE = true,
+        },
     },
     [FIST_WEAPONS] = {
-        classes = {"WARRIOR", "HUNTER", "ROGUE", "SHAMAN", "DRUID"},
+        classes = {
+            WARRIOR = true, HUNTER = true, ROGUE = true, SHAMAN = true,
+            DRUID = true,
+        },
     },
 }
 
-local function AddTrainer(trainer, ...)
-    for _, weaponId in ipairs({...}) do
-        local weaponData = wt.WeaponSkills[weaponId]
-        if weaponData then
-            if not weaponData.trainers then
-                weaponData.trainers = { Alliance = {}, Horde = {} }
-            end
-            tinsert(weaponData.trainers[trainer.faction], trainer)
-        end
-    end
-end
-
-AddTrainer(BULIWYF_STONEHAND, ONE_HANDED_AXES, TWO_HANDED_AXES, ONE_HANDED_MACES, TWO_HANDED_MACES, GUNS, FIST_WEAPONS)
-AddTrainer(BIXI_WOBBLEBONK, DAGGERS, THROWN, CROSSBOWS)
-AddTrainer(WOO_PING, POLEARMS, ONE_HANDED_SWORDS, TWO_HANDED_SWORDS, STAVES, DAGGERS, CROSSBOWS)
-AddTrainer(ILYENIA_MOONFIRE, STAVES, BOWS, DAGGERS, THROWN, FIST_WEAPONS)
-
-AddTrainer(HANASHI, ONE_HANDED_AXES, TWO_HANDED_AXES, STAVES, BOWS, THROWN)
-AddTrainer(SAYOC, ONE_HANDED_AXES, TWO_HANDED_AXES, STAVES, BOWS, DAGGERS, THROWN, FIST_WEAPONS)
-AddTrainer(ANSEKHWA, ONE_HANDED_MACES, TWO_HANDED_MACES, STAVES, GUNS)
-AddTrainer(ARCHIBALD, POLEARMS, ONE_HANDED_SWORDS, TWO_HANDED_SWORDS, DAGGERS, CROSSBOWS)
-
-wt.NumCityIcons = 3
-
-if WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC then
-    wt.NumCityIcons = 4
-
-    local EXODAR = 3557
-    wt.cityIconIds[EXODAR] = 135756
-    wt.zoneUiMapIds[EXODAR] = 1947
-    local HANDIIR = npcLocation(16773, "Handiir", "Alliance", EXODAR, 54.6, 85.9)
-    AddTrainer(HANDIIR, CROSSBOWS, DAGGERS, ONE_HANDED_MACES, TWO_HANDED_MACES, ONE_HANDED_SWORDS, TWO_HANDED_SWORDS)
-
-    local SILVERMOON = 3487
-    wt.cityIconIds[SILVERMOON] = 135761
-    wt.zoneUiMapIds[SILVERMOON] = 1954
-    local ILEDA = npcLocation(16621, "Ileda", "Horde", SILVERMOON, 91.0, 38.6)
-    AddTrainer(ILEDA, BOWS, DAGGERS, ONE_HANDED_SWORDS, TWO_HANDED_SWORDS, POLEARMS, THROWN)
-
-    local EVERSONG_WOODS = 3430
-    wt.zoneUiMapIds[EVERSONG_WOODS] = 1941
-    local DUELIST_LARENIS = npcLocation(17005, "Duelist Larenis", "Horde", EVERSONG_WOODS, 48.4, 46.0, true)
-    AddTrainer(DUELIST_LARENIS, BOWS, ONE_HANDED_SWORDS, TWO_HANDED_SWORDS, POLEARMS, THROWN)
-end
-
-wt.WeaponSkillDisplayOrder = {
-    ONE_HANDED_AXES,
-    TWO_HANDED_AXES,
-    ONE_HANDED_MACES,
-    TWO_HANDED_MACES,
-    ONE_HANDED_SWORDS,
-    TWO_HANDED_SWORDS,
-    DAGGERS,
-    FIST_WEAPONS,
-    STAVES,
-    POLEARMS,
-    BOWS,
-    GUNS,
-    CROSSBOWS,
-    THROWN
+local weaponMasters = {
+    [11865] = {
+        versions = { era = true, tbc = true },
+        faction = "Alliance",
+        location = { zoneId = IRONFORGE, x = 61.2, y = 89.5 },
+        teaches = {
+            [ONE_HANDED_AXES] = true,
+            [TWO_HANDED_AXES] = true,
+            [ONE_HANDED_MACES] = true,
+            [TWO_HANDED_MACES] = true,
+            [GUNS] = true,
+            [FIST_WEAPONS] = true,
+        },
+        names = {
+            enUS = "Buliwyf Stonehand",
+            esES = "Buliwyf Petramano",
+            koKR = "불리위프 스톤헤드",
+            ptBR = "Bulif Manopedra",
+            ruRU = "Бульвайф Крепкорук",
+            zhCN = "布里维夫·石手",
+            zhTW = "布里維夫·石拳",
+        },
+        nameOverrides = {
+            tbc = {
+                deDE = "Buliwyf Steinhand",
+                frFR = "Buliwyf Main-de-pierre",
+            },
+        },
+    },
+    [13084] = {
+        versions = { era = true, tbc = true },
+        faction = "Alliance",
+        location = { zoneId = IRONFORGE, x = 62.2, y = 89.6 },
+        teaches = {
+            [DAGGERS] = true,
+            [THROWN] = true,
+            [CROSSBOWS] = true,
+        },
+        names = {
+            enUS = "Bixi Wobblebonk",
+            esES = "Bixi Tambaleapié",
+            koKR = "빅시 와블봉크",
+            ptBR = "Bixi Bateagita",
+            ruRU = "Бикси Пошатушка",
+            zhCN = "比克斯",
+            zhTW = "比克斯",
+        },
+        nameOverrides = {
+            tbc = {
+                deDE = "Bixi Wobbelbonk",
+                frFR = "Bixi Oscillognon",
+            },
+        },
+    },
+    [11867] = {
+        versions = { era = true, tbc = true },
+        faction = "Alliance",
+        location = { zoneId = STORMWIND, x = 57.1, y = 57.7 },
+        teaches = {
+            [POLEARMS] = true,
+            [ONE_HANDED_SWORDS] = true,
+            [TWO_HANDED_SWORDS] = true,
+            [STAVES] = true,
+            [DAGGERS] = true,
+            [CROSSBOWS] = true,
+        },
+        names = {
+            enUS = "Woo Ping",
+            koKR = "우 핑",
+            ruRU = "Ву Пинг",
+            zhCN = "吴平",
+            zhTW = "吳平",
+        },
+    },
+    [11866] = {
+        versions = { era = true, tbc = true },
+        faction = "Alliance",
+        location = { zoneId = DARNASSUS, x = 57.7, y = 46.0 },
+        teaches = {
+            [STAVES] = true,
+            [BOWS] = true,
+            [DAGGERS] = true,
+            [THROWN] = true,
+            [FIST_WEAPONS] = true,
+        },
+        names = {
+            enUS = "Ilyenia Moonfire",
+            esES = "Ilyenia Fuegolunar",
+            koKR = "일예니아 문파이어",
+            ptBR = "Ilyenia Flameluna",
+            ruRU = "Илиения Лунное Пламя",
+            zhCN = "伊琳尼雅·月火",
+            zhTW = "伊琳尼雅·月火",
+        },
+        nameOverrides = {
+            tbc = {
+                deDE = "Ilyenia Mondfeuer",
+                frFR = "Ilyenia Lunéclat",
+            },
+        },
+    },
+    [2704] = {
+        versions = { era = true, tbc = true },
+        faction = "Horde",
+        location = { zoneId = ORGRIMMAR, x = 81.5, y = 19.6 },
+        teaches = {
+            [ONE_HANDED_AXES] = true,
+            [TWO_HANDED_AXES] = true,
+            [STAVES] = true,
+            [BOWS] = true,
+            [THROWN] = true,
+        },
+        names = {
+            enUS = "Hanashi",
+            koKR = "하나시",
+            ruRU = "Ханаши",
+            zhCN = "哈纳什",
+            zhTW = "哈納什",
+        },
+    },
+    [11868] = {
+        versions = { era = true, tbc = true },
+        faction = "Horde",
+        location = { zoneId = ORGRIMMAR, x = 81.7, y = 19.6 },
+        teaches = {
+            [ONE_HANDED_AXES] = true,
+            [TWO_HANDED_AXES] = true,
+            [STAVES] = true,
+            [BOWS] = true,
+            [DAGGERS] = true,
+            [THROWN] = true,
+            [FIST_WEAPONS] = true,
+        },
+        names = {
+            enUS = "Sayoc",
+            koKR = "사요크",
+            ruRU = "Сайок",
+            zhCN = "塞尤克",
+            zhTW = "塞尤克",
+        },
+    },
+    [11869] = {
+        versions = { era = true, tbc = true },
+        faction = "Horde",
+        location = { zoneId = THUNDER_BLUFF, x = 40.0, y = 63.1 },
+        teaches = {
+            [ONE_HANDED_MACES] = true,
+            [TWO_HANDED_MACES] = true,
+            [STAVES] = true,
+            [GUNS] = true,
+        },
+        names = {
+            enUS = "Ansekhwa",
+            koKR = "안세크화",
+            ruRU = "Ансеква",
+            zhCN = "安塞瓦",
+            zhTW = "安塞瓦",
+        },
+    },
+    [11870] = {
+        versions = { era = true, tbc = true },
+        faction = "Horde",
+        location = { zoneId = UNDERCITY, x = 57.3, y = 32.8 },
+        teaches = {
+            [POLEARMS] = true,
+            [ONE_HANDED_SWORDS] = true,
+            [TWO_HANDED_SWORDS] = true,
+            [DAGGERS] = true,
+            [CROSSBOWS] = true,
+        },
+        names = {
+            enUS = "Archibald",
+            koKR = "아키발드",
+            ptBR = "Arquibaldo",
+            ruRU = "Арчибальд",
+            zhCN = "阿基巴德",
+            zhTW = "阿基巴德",
+        },
+    },
+    [16773] = {
+        versions = { tbc = true },
+        faction = "Alliance",
+        location = { zoneId = EXODAR, x = 54.6, y = 85.9 },
+        teaches = {
+            [CROSSBOWS] = true,
+            [DAGGERS] = true,
+            [ONE_HANDED_MACES] = true,
+            [TWO_HANDED_MACES] = true,
+            [ONE_HANDED_SWORDS] = true,
+            [TWO_HANDED_SWORDS] = true,
+        },
+        names = {
+            enUS = "Handiir",
+            koKR = "한디르",
+            ruRU = "Хандиир",
+            zhCN = "韩迪尔",
+            zhTW = "哈戴爾",
+        },
+    },
+    [16621] = {
+        versions = { tbc = true },
+        faction = "Horde",
+        location = { zoneId = SILVERMOON, x = 91.0, y = 38.6 },
+        teaches = {
+            [BOWS] = true,
+            [DAGGERS] = true,
+            [ONE_HANDED_SWORDS] = true,
+            [TWO_HANDED_SWORDS] = true,
+            [POLEARMS] = true,
+            [THROWN] = true,
+        },
+        names = {
+            enUS = "Ileda",
+            koKR = "일레다",
+            ruRU = "Иледа",
+            zhCN = "伊蕾达",
+            zhTW = "伊利達",
+        },
+    },
+    [17005] = {
+        versions = { tbc = true },
+        faction = "Horde",
+        location = { zoneId = EVERSONG_WOODS, x = 48.4, y = 46.0 },
+        teaches = {
+            [BOWS] = true,
+            [ONE_HANDED_SWORDS] = true,
+            [TWO_HANDED_SWORDS] = true,
+            [POLEARMS] = true,
+            [THROWN] = true,
+        },
+        names = {
+            enUS = "Duelist Larenis",
+            deDE = "Duellant Larenis",
+            esES = "Duelista Larenis",
+            frFR = "Duelliste Larenis",
+            koKR = "결투사 라레니스",
+            ptBR = "Duelista Larenis",
+            ruRU = "Дуэлянт Ларенис",
+            zhCN = "斗技者拉雷尼斯",
+            zhTW = "決鬥家·拉瑞尼斯",
+        },
+    },
 }
 
-for index, id in ipairs(wt.WeaponSkillDisplayOrder) do
-    if wt.WeaponSkills[id] then
-        wt.WeaponSkills[id].orderIndex = index
+local localeAliases = {
+    enGB = "enUS",
+    esMX = "esES",
+}
+
+local presentation = {
+    skillOrder = {
+        ONE_HANDED_AXES,
+        TWO_HANDED_AXES,
+        ONE_HANDED_MACES,
+        TWO_HANDED_MACES,
+        ONE_HANDED_SWORDS,
+        TWO_HANDED_SWORDS,
+        DAGGERS,
+        FIST_WEAPONS,
+        STAVES,
+        POLEARMS,
+        BOWS,
+        GUNS,
+        CROSSBOWS,
+        THROWN
+    },
+    groupedOnlyMasters = {
+        [17005] = true,
+    },
+    numCityIcons = { era = 3, tbc = 4 },
+}
+
+local version = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC and "tbc" or "era"
+local locale = GetLocale()
+locale = localeAliases[locale] or locale
+
+wt.WeaponSkills = {}
+wt.WeaponSkillDisplayOrder = presentation.skillOrder
+wt.NumCityIcons = presentation.numCityIcons[version]
+wt.cityIconIds = {}
+wt.zoneUiMapIds = {}
+
+for index, id in ipairs(presentation.skillOrder) do
+    local skill = weaponSkills[id]
+    wt.WeaponSkills[id] = {
+        classes = skill.classes,
+        level = skill.requiredLevel,
+        cost = skill.costCopper,
+        orderIndex = index,
+        trainers = { Alliance = {}, Horde = {} },
+    }
+end
+
+for npcId, master in pairs(weaponMasters) do
+    if master.versions[version] then
+        local location = master.location
+        local zone = zones[location.zoneId]
+        wt.cityIconIds[location.zoneId] = zone.iconId
+        wt.zoneUiMapIds[location.zoneId] = zone.uiMapId
+        local nameOverrides = master.nameOverrides and master.nameOverrides[version]
+        local trainer = {
+            npc = npcId,
+            name = nameOverrides and nameOverrides[locale] or master.names[locale] or master.names.enUS,
+            faction = master.faction,
+            zone = location.zoneId,
+            zoneIcon = zone.iconId,
+            x = location.x,
+            y = location.y,
+            groupedOnly = presentation.groupedOnlyMasters[npcId],
+        }
+        for skillId in pairs(master.teaches) do
+            tinsert(wt.WeaponSkills[skillId].trainers[master.faction], trainer)
+        end
     end
 end
 

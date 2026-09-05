@@ -32,7 +32,6 @@ Classes\[Game]\Warlock.lua
 Classes\[Game]\WarlockTomes.lua
 Classes\WarlockTomes.lua
 Classes\[Game]\Warrior.lua
-Classes\WeaponTrainerNames.lua
 Classes\WeaponSkills.lua
 
 Waypoint.lua

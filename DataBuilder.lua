@@ -143,19 +143,7 @@ end
 local function categorizeWeaponSkills(playerLevel)
     if not wt.WeaponSkills then return end
     for weaponSpellId, weaponData in pairs(wt.WeaponSkills) do
-        local isClassEligible = false
-        if weaponData.classes then
-            for _, class in ipairs(weaponData.classes) do
-                if class == wt.currentClass then
-                    isClassEligible = true
-                    break
-                end
-            end
-        else
-            isClassEligible = true
-        end
-
-        if isClassEligible then
+        if weaponData.classes[wt.currentClass] then
             local spellInfo = wt:SpellInfo(weaponSpellId)
             if spellInfo ~= nil then
                 local categoryKey
@@ -200,16 +188,7 @@ local function buildGroupedWeaponData(playerLevel, isLevelUpEvent)
     if not wt.WeaponSkills or not wt.WeaponGrouping then return end
 
     for weaponSpellId, weaponData in pairs(wt.WeaponSkills) do
-        local isClassEligible = false
-        if weaponData.classes then
-            for _, class in ipairs(weaponData.classes) do
-                if class == wt.currentClass then isClassEligible = true break end
-            end
-        else
-            isClassEligible = true
-        end
-
-        if isClassEligible then
+        if weaponData.classes[wt.currentClass] then
             local spellInfo = wt:SpellInfo(weaponSpellId)
             if spellInfo ~= nil then
                 local isKnown = wt.isAbilityKnown(spellInfo.id)
