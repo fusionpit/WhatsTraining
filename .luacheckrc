@@ -64,6 +64,7 @@ read_globals = {
     "UIParent",
     "MerchantFrame",
     "GameTooltip",
+    "SkillFrame",
     -- frame methods
     "SearchBoxTemplate_OnTextChanged",
     "ChatEdit_GetActiveWindow",
@@ -95,6 +96,7 @@ read_globals = {
     "HIGHLIGHT_FONT_COLOR_CODE",
     "PARENS_TEMPLATE",
     "MAX_SKILLLINE_TABS",
+    "SKILLS_TO_DISPLAY",
     "BOOKTYPE_SPELL",
     "ERR_LEARN_SPELL_S",
     "WHITE_FONT_COLOR",

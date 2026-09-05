@@ -1,4 +1,5 @@
 local _, wt = ...
+local isTBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
 
 local localeText = {
     enUS = {
@@ -11,6 +12,7 @@ local localeText = {
         IGNORED_PET_HEADER = "Ignored (Pet)",
         KNOWN_HEADER = "Already Known",
         KNOWN_PET_HEADER = "Already Known (Pet)",
+        WEAPON_SKILLS_HEADER = "Weapon Skills",
         WEAPON_AVAILABLE_HEADER = "Weapon Skills Available Now",
         WEAPON_NEXTLEVEL_HEADER = "Weapon Skills Coming Soon",
         WEAPON_NOTLEVEL_HEADER = "Weapon Skills Not Yet Available",
@@ -58,6 +60,7 @@ local localeText = {
         CLICK_TO_WAYPOINT = "Click to set a waypoint",
     },
     frFR = {
+        WEAPON_SKILLS_HEADER = isTBC and "Compétences d'armes" or "Compétences d’armes",
         AVAILABLE_HEADER = "Disponible",
         MISSINGREQS_HEADER = "Disponible mais pré-requis manquants",
         NEXTLEVEL_HEADER = "Bientôt disponible",
@@ -73,6 +76,7 @@ local localeText = {
         TAB_TEXT = "Que puis-je apprendre ?"
     },
     ruRU = {
+        WEAPON_SKILLS_HEADER = "Оружейные навыки",
         AVAILABLE_HEADER = "Доступен сейчас",
         MISSINGREQS_HEADER = "Доступно, но отсутствуют требования",
         NEXTLEVEL_HEADER = "Скоро будет",
@@ -88,6 +92,7 @@ local localeText = {
         TAB_TEXT = "Что я могу изучить?"
     },
     zhCN = {
+        WEAPON_SKILLS_HEADER = "武器技能",
         AVAILABLE_HEADER = "可学",
         MISSINGREQS_HEADER = "满足条件方可学习",
         NEXTLEVEL_HEADER = "即将学习",
@@ -103,6 +108,7 @@ local localeText = {
         TAB_TEXT = "我能学什么技能?"
     },
     zhTW = {
+        WEAPON_SKILLS_HEADER = "武器技能",
         AVAILABLE_HEADER = "現在可以訓練",
         MISSINGREQS_HEADER = "可以訓練但是缺少需求條件",
         NEXTLEVEL_HEADER = "即將可以訓練",
@@ -118,6 +124,7 @@ local localeText = {
         TAB_TEXT = "我可以接受什麼訓練?"
     },
     deDE = {
+        WEAPON_SKILLS_HEADER = "Waffenfertigkeiten",
         AVAILABLE_HEADER = "Jetzt verfügbar",
         MISSINGREQS_HEADER = "Verfügbar, aber fehlende Anforderungen",
         NEXTLEVEL_HEADER = "Demnächst",
@@ -133,6 +140,7 @@ local localeText = {
         TAB_TEXT = "Was kann ich Lernen?"
     },
     koKR = {
+        WEAPON_SKILLS_HEADER = "무기 기술",
         AVAILABLE_HEADER = "지금 사용 가능",
         MISSINGREQS_HEADER = "사용 가능하지만 누락된 요구 사항",
         NEXTLEVEL_HEADER = "곧 사용 가능",
@@ -146,7 +154,10 @@ local localeText = {
         TOTALSAVINGS_FORMAT = "총 절감: %s",
         LEVEL_FORMAT = "레벨 %s",
         TAB_TEXT = "무엇을 훈련할 수 있나요?"
-    }
+    },
+    esES = { WEAPON_SKILLS_HEADER = isTBC and "Armas disponibles" or "Habilidad con las armas" },
+    esMX = { WEAPON_SKILLS_HEADER = "Habilidades con armas" },
+    ptBR = { WEAPON_SKILLS_HEADER = "Perícias com Armas" },
 }
 
 wt.L = localeText["enUS"]

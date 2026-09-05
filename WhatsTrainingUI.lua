@@ -259,6 +259,48 @@ function wt.UpdateGroupingButton(frame)
     end
 end
 
+local function createWeaponSkillsButton()
+    local button = CreateFrame("Button", "WhatsTrainingSkillsButton", SkillFrame, "SquareIconButtonTemplate")
+    button:SetSize(18, 18)
+    button.Icon:SetSize(12, 12)
+    button:SetIcon(TAB_TEXTURE_FILEID)
+    button:SetScript("OnClick", function()
+        if InCombatLockdown() then
+            print(wt.L.BROKER_OPEN_IN_COMBAT)
+            return
+        end
+        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+        wt.Open(true)
+    end)
+    button:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText(wt.L.TAB_TEXT)
+        GameTooltip:AddLine(wt.L.SHOW_WEAPONS, 1, 1, 1)
+        GameTooltip:Show()
+    end)
+    local function hideTooltip(self)
+        if GameTooltip:IsOwned(self) then GameTooltip:Hide() end
+    end
+    button:SetScript("OnLeave", hideTooltip)
+    button:SetScript("OnHide", hideTooltip)
+
+    local function updateButton()
+        for i = 1, SKILLS_TO_DISPLAY do
+            local header = _G["SkillTypeLabel" .. i]
+            if header:IsShown() and header:GetText() == wt.L.WEAPON_SKILLS_HEADER then
+                button:SetParent(header)
+                button:ClearAllPoints()
+                button:SetPoint("LEFT", header:GetFontString(), "RIGHT", 4, 0)
+                button:Show()
+                return
+            end
+        end
+        button:Hide()
+    end
+    hooksecurefunc("SkillFrame_UpdateSkills", updateButton)
+    updateButton()
+end
+
 function wt.CreateFrame()
     local mainFrame = CreateFrame("Frame", "WhatsTrainingFrame", SpellBookFrame)
     wt.MainFrame = mainFrame
@@ -556,6 +598,7 @@ function wt.CreateFrame()
         rawset(rows, i, row)
     end
     mainFrame.rows = rows
+    createWeaponSkillsButton()
 end
 
 local function addIgnoreLines(rootDescription, config)
