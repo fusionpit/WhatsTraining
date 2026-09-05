@@ -23,6 +23,7 @@ Cache.lua
 Classes\[Game]\Druid.lua
 Classes\[Game]\Hunter.lua
 Classes\[Game]\HunterPets.lua
+Classes\HunterPets.lua
 Classes\[Game]\Mage.lua
 Classes\[Game]\Paladin.lua
 Classes\[Game]\Priest.lua
