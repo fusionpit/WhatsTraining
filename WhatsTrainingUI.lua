@@ -5,7 +5,7 @@ local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 
 local MAX_ROWS = 22
 local ROW_HEIGHT = 14
-local INDENT_STEP = 12   -- px added per indent level for grouped rows
+local INDENT_STEP = ROW_HEIGHT + 4
 local NPC_LOCATION_FORMAT = "%s (%.1f, %.1f)"
 local SKILL_LINE_TAB = MAX_SKILLLINE_TABS - 1
 local HIGHLIGHT_TEXTURE_FILEID = GetFileIDFromPath(
