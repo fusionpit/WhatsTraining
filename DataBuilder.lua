@@ -224,6 +224,7 @@ local function buildGroupedWeaponData(playerLevel, isLevelUpEvent)
                 wt.weaponWrapperById[weaponSpellId] = setmetatable({
                     weaponOrder = weaponData.orderIndex,
                     altTooltipType = "weapon",
+                    formattedTrainerZones = weaponData[UnitFactionGroup("player") .. "GroupedFormattedTrainerZones"],
                     isKnown = isKnown,
                     hideLevel = not isLevelGated,
                     levelColor = getSpellLevelColor(spellInfo, isLevelUpEvent),

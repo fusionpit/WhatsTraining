@@ -206,6 +206,18 @@ function wt.buildWeaponTrainerZones()
                 if #zoneNames > 0 then
                     weaponData[faction .. "FormattedTrainerZones"] = table.concat(zoneNames, wt.L.OR)
                 end
+
+                -- Grouped tooltips also list trainers whose zones have no list-mode icon.
+                for _, trainer in ipairs(trainers) do
+                    if trainer.groupedOnly and not seenZones[trainer.zone] then
+                        local name = C_Map.GetAreaInfo(trainer.zone)
+                        if name then tinsert(zoneNames, name) end
+                        seenZones[trainer.zone] = true
+                    end
+                end
+                if #zoneNames > 0 then
+                    weaponData[faction .. "GroupedFormattedTrainerZones"] = table.concat(zoneNames, wt.L.OR)
+                end
             end
         end
     end
