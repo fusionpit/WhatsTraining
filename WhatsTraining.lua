@@ -107,9 +107,6 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         if WT_ShowLearnedNotice == nil then
             WT_ShowLearnedNotice = true
         end
-        if WT_ShowIgnoreNotice == nil then
-            WT_ShowIgnoreNotice = true
-        end
         if WT_WeaponGrouping == nil then
             WT_WeaponGrouping = "zone"
         end
