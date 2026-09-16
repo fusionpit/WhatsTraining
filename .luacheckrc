@@ -121,6 +121,5 @@ globals = {
     "WT_NeedsToOpenBeastTraining",
     "WT_LearnedPetAbilities",
     "WT_WeaponGrouping",
-    "WT_ShowLearnedNotice",
     "WT_IgnoredSpells"
 }

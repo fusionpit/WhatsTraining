@@ -104,9 +104,6 @@ end)
 local eventFrame = CreateFrame("Frame")
 eventFrame:SetScript("OnEvent", function(self, event, ...)
     if event == "ADDON_LOADED" and ... == addonName then
-        if WT_ShowLearnedNotice == nil then
-            WT_ShowLearnedNotice = true
-        end
         if WT_WeaponGrouping == nil then
             WT_WeaponGrouping = "zone"
         end
