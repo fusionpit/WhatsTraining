@@ -419,6 +419,7 @@ function wt.CreateFrame()
             text:SetFontObject("GameFontNormalSmall")
             text:SetText(def.label)
             text:SetPoint("LEFT", radio, "RIGHT", 2, 0)
+            radio:SetHitRectInsets(0, -(text:GetStringWidth() + 2), 0, 0)
         end
         radio.mode = def.mode
         radio:SetScript("OnClick", function(self)
