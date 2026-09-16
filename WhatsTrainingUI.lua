@@ -217,6 +217,7 @@ end
 -- the offset hasn't changed so this will help throttle that
 local lastOffset = -1
 function wt.Update(frame, forceUpdate)
+    frame.noticeButton:SetShown(not wt.showingWeaponSkills and wt.needsBeastTraining())
     local scrollBar = frame.scrollBar
     local offset = FauxScrollFrame_GetOffset(scrollBar)
     if offset == lastOffset and not forceUpdate then return end
@@ -347,6 +348,32 @@ function wt.CreateFrame()
     end)
     toggleButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
     mainFrame.weaponSkillToggleButton = toggleButton
+
+    local noticeButton = CreateFrame("Button", "$parentNoticeButton", mainFrame, "UIPanelInfoButton")
+    noticeButton:SetPoint("LEFT", toggleButton, "RIGHT", 4, 0)
+    noticeButton:Hide()
+    noticeButton:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText(wt.L.OPEN_BEAST_TRAINING, 1, 1, 1, 1, true)
+        GameTooltip:AddLine(wt.L.CLICK_TO_OPEN,
+                            GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b, true)
+        GameTooltip:Show()
+    end)
+    local function hideNoticeTooltip(self)
+        if GameTooltip:IsOwned(self) then GameTooltip:Hide() end
+    end
+    noticeButton:SetScript("OnLeave", hideNoticeTooltip)
+    noticeButton:SetScript("OnHide", hideNoticeTooltip)
+    noticeButton:SetScript("OnClick", function()
+        if wt.needsBeastTraining() then
+            if InCombatLockdown() then
+                print(wt.L.OPEN_BEAST_IN_COMBAT)
+            else
+                wt.openBeastTraining()
+            end
+        end
+    end)
+    mainFrame.noticeButton = noticeButton
 
     local groupingButton = CreateFrame("Button", "$parentGroupingButton", mainFrame, "SquareIconButtonTemplate")
     groupingButton:SetSize(32, 32)

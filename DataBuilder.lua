@@ -378,36 +378,6 @@ local function filterCategoryData(categoryData, resultsList)
                 tinsert(resultsList, category)
             end
 
-            -- Add special headers for pet category
-            if (category.key == wt.PET_KEY and wt.needsBeastTraining()) then
-                tinsert(resultsList, {
-                    formattedName = ORANGE_FONT_COLOR_CODE ..
-                        wt.L.OPEN_BEAST_TRAINING .. FONT_COLOR_CODE_CLOSE,
-                    isHeader = true,
-                    cost = 0,
-                    tooltip = wt.L.CLICK_TO_OPEN,
-                    click = function()
-                        if InCombatLockdown() then
-                            print(wt.L.OPEN_BEAST_IN_COMBAT)
-                        else
-                            wt.openBeastTraining()
-                        end
-                    end
-                })
-            end
-            if WT_ShowLearnedNotice == true and category.key == wt.PET_KEY and wt.currentClass == "WARLOCK" then
-                tinsert(resultsList, {
-                    formattedName = wt.L.RIGHT_CLICK_LEARNED,
-                    isHeader = true,
-                    cost = 0,
-                    tooltip = wt.L.CLICK_TO_DISMISS,
-                    click = function()
-                        WT_ShowLearnedNotice = false
-                        wt:RebuildData()
-                    end
-                })
-            end
-
             if categoryEntry.byEnglishFamily then
                 -- Warlock pet abilities with family sub-headers
                 for _, englishFamily in ipairs(wt.WarlockPetOrder) do
