@@ -1,8 +1,6 @@
 local _, wt = ...
 if wt.currentClass ~= "WARLOCK" then return end
 
-wt.IsAddOnLoaded = C_AddOns.IsAddOnLoaded -- Classic Era was unified 1.15.9
-
 local LCT = LibStub("LibBabble-CreatureType-3.0"):GetLookupTable()
 local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
 
@@ -236,7 +234,7 @@ local function updateMerchantFrame()
     for _, f in ipairs(iconFrames) do
         f:Hide()
     end
-    if wt.IsAddOnLoaded('GrimoireKeeper') then return end
+    if C_AddOns.IsAddOnLoaded('GrimoireKeeper') then return end
     local guid = UnitGUID("npc")
     if guid == nil then return end
     local npcId = select(6, strsplit("-", guid))

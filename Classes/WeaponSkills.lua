@@ -1,4 +1,5 @@
 local _, wt = ...
+local version = wt.gameVersion
 
 local IRONFORGE = 1537
 local STORMWIND = 1519
@@ -45,7 +46,7 @@ local weaponSkills = {
     },
     [TWO_HANDED_AXES] = {
         classes = {
-            WARRIOR = true, PALADIN = true, HUNTER = true, SHAMAN = true,
+            WARRIOR = true, PALADIN = true, HUNTER = true, SHAMAN = version == "tbc",
         },
     },
     [ONE_HANDED_MACES] = {
@@ -56,7 +57,7 @@ local weaponSkills = {
     },
     [TWO_HANDED_MACES] = {
         classes = {
-            WARRIOR = true, PALADIN = true, SHAMAN = true, DRUID = true,
+            WARRIOR = true, PALADIN = true, SHAMAN = version == "tbc", DRUID = true,
         },
     },
     [POLEARMS] = {
@@ -389,9 +390,7 @@ local presentation = {
     numCityIcons = { era = 3, tbc = 4 },
 }
 
-local version = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC and "tbc" or "era"
-local locale = GetLocale()
-locale = localeAliases[locale] or locale
+local locale = localeAliases[wt.locale] or wt.locale
 
 wt.WeaponSkills = {}
 wt.WeaponSkillDisplayOrder = presentation.skillOrder

@@ -236,8 +236,7 @@ function wt.UpdateToggleIcon(frame)
     if wt.showingWeaponSkills then
         icon = "Interface\\Icons\\INV_Misc_Book_09"
     else
-        local _, class = UnitClass("player")
-        if class == "HUNTER" then
+        if wt.currentClass == "HUNTER" then
             icon = GetInventoryItemTexture("player", 18) -- Ranged
         end
         if not icon then
@@ -510,8 +509,7 @@ function wt.CreateFrame()
         else
             skillLineTab:SetChecked(false)
             mainFrame:Hide()
-            local _, class = UnitClass("player")
-            if class ~= "ROGUE" and class ~= "WARRIOR" then
+            if wt.currentClass ~= "ROGUE" and wt.currentClass ~= "WARRIOR" then
                 ShowAllSpellRanksCheckbox:Show()
             end
         end

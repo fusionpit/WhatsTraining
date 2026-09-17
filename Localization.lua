@@ -1,5 +1,5 @@
 local _, wt = ...
-local isTBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
+local isTBC = wt.gameVersion == "tbc"
 
 local localeText = {
     enUS = {
@@ -159,7 +159,7 @@ local localeText = {
 }
 
 wt.L = localeText["enUS"]
-local locale = GetLocale()
+local locale = wt.locale
 if locale == "enUS" or locale == "enGB" or localeText[locale] == nil then
     return
 end

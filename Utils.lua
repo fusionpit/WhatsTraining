@@ -3,8 +3,6 @@ local _, wt = ...
 local tinsert = tinsert
 local ipairs = ipairs
 
-wt.currentClass = select(2, UnitClass("player"))
-
 local function filter(spellsByLevel, pred)
     local output = {}
     for level, spells in pairs(spellsByLevel) do
@@ -17,18 +15,16 @@ local function filter(spellsByLevel, pred)
     end
     return output
 end
-local playerFaction = UnitFactionGroup("player")
 function wt.FactionFilter(spellsByLevel)
     return filter(spellsByLevel, function(spell)
-        return spell.faction == nil or spell.faction == playerFaction
+        return spell.faction == nil or spell.faction == wt.playerFaction
     end)
 end
-local playerRace = select(3, UnitRace("player"))
 function wt.RaceFilter(spellsByLevel)
     return filter(spellsByLevel, function(spell)
         if (spell.race == nil and spell.races == nil) then return true end
-        if (spell.races == nil) then return spell.race == playerRace end
-        return spell.races[1] == playerRace or spell.races[2] == playerRace
+        if (spell.races == nil) then return spell.race == wt.playerRace end
+        return spell.races[1] == wt.playerRace or spell.races[2] == wt.playerRace
     end)
 end
 

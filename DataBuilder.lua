@@ -80,7 +80,7 @@ end
 
 -- Built once per session; the caller nils this after calling it.
 function wt.buildWeaponSkeleton()
-    local faction = UnitFactionGroup("player")
+    local faction = wt.playerFaction
     local zoneNames = buildZoneNames(faction)
     wt.weaponSkeleton = wt.WeaponGrouping.buildSkeleton(wt.WeaponSkills, faction, zoneNames)
     wt.weaponSkillSkeleton = wt.WeaponGrouping.buildSkillSkeleton(wt.WeaponSkills, faction, zoneNames,
@@ -163,7 +163,7 @@ local function categorizeWeaponSkills(playerLevel)
                     spellInfo.level = reqLevel
                     spellInfo.weaponOrder = weaponData.orderIndex
                     spellInfo.altTooltipType = "weapon"
-                    local englishFaction = UnitFactionGroup("player")
+                    local englishFaction = wt.playerFaction
                     if weaponData.trainers and weaponData.trainers[englishFaction] then
                         spellInfo.trainerZones = weaponData[englishFaction .. "TrainerZones"]
                         spellInfo.formattedTrainerZones = weaponData[englishFaction .. "FormattedTrainerZones"]
@@ -203,7 +203,7 @@ local function buildGroupedWeaponData(playerLevel, isLevelUpEvent)
                 wt.weaponWrapperById[weaponSpellId] = setmetatable({
                     weaponOrder = weaponData.orderIndex,
                     altTooltipType = "weapon",
-                    formattedTrainerZones = weaponData[UnitFactionGroup("player") .. "GroupedFormattedTrainerZones"],
+                    formattedTrainerZones = weaponData[wt.playerFaction .. "GroupedFormattedTrainerZones"],
                     isKnown = isKnown,
                     hideLevel = not isLevelGated,
                     levelColor = getSpellLevelColor(spellInfo, isLevelUpEvent),
