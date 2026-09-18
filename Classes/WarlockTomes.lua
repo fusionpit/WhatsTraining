@@ -81,7 +81,7 @@ local function checkCurrentPetSpells()
     if not familyTomes then return end
     local hasUpdate = false
     for _, tome in ipairs(familyTomes) do
-        if IsSpellKnown(tome.taughtSpell, true) then
+        if C_SpellBook.IsSpellInSpellBook(tome.taughtSpell, Enum.SpellBookSpellBank.Pet, false) then
             if wt.SayaadTomes[tome.itemId] then
                 local succubusKey, incubusKey = sayaadKeys(tome.itemId)
                 if pet == "Succubus" then

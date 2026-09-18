@@ -82,7 +82,7 @@ end
 
 function wt.formatSpellCost(spellInfo, fontHeight)
     local coloredCoinString = spellInfo.formattedCost or
-                                    GetCoinTextureString(spellInfo.cost, fontHeight)
+                                    C_CurrencyInfo.GetCoinTextureString(spellInfo.cost, fontHeight)
     if spellInfo.costColor then
         coloredCoinString = spellInfo.costColor .. coloredCoinString .. FONT_COLOR_CODE_CLOSE
     elseif (GetMoney() < spellInfo.cost) then
@@ -100,7 +100,7 @@ function wt.needsBeastTraining()
     return WT_NeedsToOpenBeastTraining == true and wt.hasBeastTraining()
 end
 function wt.hasBeastTraining()
-    return IsPlayerSpell(BEAST_TRAINING_SPELL)
+    return C_SpellBook.IsSpellKnown(BEAST_TRAINING_SPELL, Enum.SpellBookSpellBank.Player)
 end
 function wt.openBeastTraining()
     CastSpellByID(BEAST_TRAINING_SPELL)
@@ -114,7 +114,8 @@ function wt.isPreviouslyLearnedAbility(spellId)
     local spellIndex, knownIndex = 0, 0
     for i, otherId in ipairs(wt.overriddenSpellsMap[spellId]) do
         if otherId == spellId then spellIndex = i end
-        if (IsSpellKnown(otherId) or IsPlayerSpell(otherId)) then
+        if (C_SpellBook.IsSpellInSpellBook(otherId, Enum.SpellBookSpellBank.Player, false)
+            or C_SpellBook.IsSpellKnown(otherId, Enum.SpellBookSpellBank.Player)) then
             knownIndex = i
         end
     end
@@ -122,7 +123,8 @@ function wt.isPreviouslyLearnedAbility(spellId)
 end
 
 function wt.isAbilityKnown(spellId)
-    if (IsSpellKnown(spellId) or IsPlayerSpell(spellId) or
+    if (C_SpellBook.IsSpellInSpellBook(spellId, Enum.SpellBookSpellBank.Player, false)
+        or C_SpellBook.IsSpellKnown(spellId, Enum.SpellBookSpellBank.Player) or
         wt.isPreviouslyLearnedAbility(spellId)) then return true end
     if (not wt:IsPetAbility(spellId)) then return false end
     local info = wt:SpellInfo(spellId)
