@@ -5,8 +5,7 @@ local learnedSpellEvent = "LEARNED_SPELL_IN_SKILL_LINE"
 
 local function rebuildIfNotCached(fromCache)
     if fromCache or wt.MainFrame == nil then return end
-    wt.buildCategorizedData(UnitLevel("player"))
-    wt.applyFilter()
+    wt:RebuildData()
 end
 
 function wt:RebuildData()

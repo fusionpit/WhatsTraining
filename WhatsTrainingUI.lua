@@ -1,3 +1,5 @@
+-- Era and TBC only; Forever owns its UI in WhatsTrainingUIForever.lua.
+
 local _, wt = ...
 local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
 
@@ -301,7 +303,65 @@ local function createWeaponSkillsButton()
     updateButton()
 end
 
+local function attachClassicSpellBook(mainFrame)
+    -- Fix for Season of Discovery's Shaman 'Way of the Earth' rune
+    -- When this rune is engraved, it constantly causes a `SPELLS_CHANGED` event
+    -- That event will keep switching the tab back to the first non-general tab when fired
+    local deferredPriorTabSelection = SpellBookFrame.selectedSkillLine
+    SpellBookFrame:HookScript("OnEvent", function(_, event)
+        if event == "SPELLS_CHANGED"
+            and deferredPriorTabSelection == SKILL_LINE_TAB
+            and SpellBookFrame.selectedSkillLine ~= SKILL_LINE_TAB
+        then
+            local inCombat = InCombatLockdown()
+            if not inCombat and SpellBookFrame:IsVisible() then
+                -- out of combat can directly update the spell book
+                SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB
+                SpellBookFrame:Update()
+            elseif inCombat and SpellBookFrame:IsVisible() then
+                -- in combat manually update the tab selection, then update the selected tab variable in the next frame
+                for i = 1, MAX_SKILLLINE_TABS do
+                    _G["SpellBookSkillLineTab" .. i]:SetChecked(i == SKILL_LINE_TAB)
+                end
+                -- the SpellBookFrame code will try to disable the actual buttons if the selected
+                -- skill line is out of range. the SpellButton..n buttons are protected in combat,
+                -- and setting this in the same frame will cause an lua error
+                RunNextFrame(function() SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB end)
+                mainFrame:Show()
+            end
+        end
+    end)
+    local skillLineTab = _G["SpellBookSkillLineTab" .. SKILL_LINE_TAB]
+    hooksecurefunc(SpellBookFrame, "UpdateSkillLineTabs", function()
+        skillLineTab:SetNormalTexture(TAB_TEXTURE_FILEID)
+        skillLineTab.tooltip = wt.L.TAB_TEXT
+        skillLineTab:Show()
+        if SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB then
+            skillLineTab:SetChecked(true)
+            mainFrame:Show()
+            ShowAllSpellRanksCheckbox:Hide()
+        else
+            skillLineTab:SetChecked(false)
+            mainFrame:Hide()
+            if wt.currentClass ~= "ROGUE" and wt.currentClass ~= "WARRIOR" then
+                ShowAllSpellRanksCheckbox:Show()
+            end
+        end
+    end)
+    hooksecurefunc(SpellBookFrame, "Update", function()
+        if SpellBookFrame.bookType ~= BOOKTYPE_SPELL then
+            mainFrame:Hide()
+        elseif SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB then
+            mainFrame:Show()
+        end
+        RunNextFrame(function()
+            deferredPriorTabSelection = SpellBookFrame.selectedSkillLine
+        end)
+    end)
+end
+
 function wt.CreateFrame()
+    if wt.MainFrame then return end
     local mainFrame = CreateFrame("Frame", "WhatsTrainingFrame", SpellBookFrame)
     wt.MainFrame = mainFrame
     mainFrame:SetPoint("TOPLEFT", SpellBookFrame, "TOPLEFT", 0, 0)
@@ -454,77 +514,6 @@ function wt.CreateFrame()
 
     mainFrame:Hide()
 
-    -- Fix for Season of Discovery's Shaman 'Way of the Earth' rune
-    -- When this rune is engraved, it constantly causes a `SPELLS_CHANGED` event
-    -- That event will keep switching the tab back to the first non-general tab when fired
-    local deferredPriorTabSelection = SpellBookFrame.selectedSkillLine
-    SpellBookFrame:HookScript("OnEvent", function(_, event)
-        if event == "SPELLS_CHANGED"
-            and deferredPriorTabSelection == SKILL_LINE_TAB
-            and SpellBookFrame.selectedSkillLine ~= SKILL_LINE_TAB
-        then
-            local inCombat = InCombatLockdown()
-            if not inCombat and SpellBookFrame:IsVisible() then
-                -- out of combat can directly update the spell book
-                SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB
-                SpellBookFrame:Update()
-            elseif inCombat and SpellBookFrame:IsVisible() then
-                -- in combat manually update the tab selection, then update the selected tab variable in the next frame
-                for i = 1, MAX_SKILLLINE_TABS do
-                    _G["SpellBookSkillLineTab" .. i]:SetChecked(i == SKILL_LINE_TAB)
-                end
-                -- the SpellBookFrame code will try to disable the actual buttons if the selected
-                -- skill line is out of range. the SpellButton..n buttons are protected in combat,
-                -- and setting this in the same frame will cause an lua error
-                RunNextFrame(function() SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB end)
-                mainFrame:Show()
-            end
-        end
-    end)
-    function wt.Open(toWeapons)
-        if wt.showingWeaponSkills ~= toWeapons then
-            wt.showingWeaponSkills = toWeapons
-            wt.applyFilter()
-            wt.UpdateToggleIcon(wt.MainFrame)
-            wt.UpdateGroupingButton(wt.MainFrame)
-            wt.Update(wt.MainFrame, true)
-        end
-        SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB
-        if SpellBookFrame:IsVisible() then
-            SpellBookFrame:Update()
-        else
-            ToggleSpellBook("spell")
-        end
-    end
-
-    local skillLineTab = _G["SpellBookSkillLineTab" .. SKILL_LINE_TAB]
-    hooksecurefunc(SpellBookFrame, "UpdateSkillLineTabs", function()
-        skillLineTab:SetNormalTexture(TAB_TEXTURE_FILEID)
-        skillLineTab.tooltip = wt.L.TAB_TEXT
-        skillLineTab:Show()
-        if SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB then
-            skillLineTab:SetChecked(true)
-            mainFrame:Show()
-            ShowAllSpellRanksCheckbox:Hide()
-        else
-            skillLineTab:SetChecked(false)
-            mainFrame:Hide()
-            if wt.currentClass ~= "ROGUE" and wt.currentClass ~= "WARRIOR" then
-                ShowAllSpellRanksCheckbox:Show()
-            end
-        end
-    end)
-    hooksecurefunc(SpellBookFrame, "Update", function()
-        if SpellBookFrame.bookType ~= BOOKTYPE_SPELL then
-            mainFrame:Hide()
-        elseif SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB then
-            mainFrame:Show()
-        end
-        RunNextFrame(function()
-            deferredPriorTabSelection = SpellBookFrame.selectedSkillLine
-        end)
-    end)
-
     local scrollBar = CreateFrame("ScrollFrame", "$parentScrollBar", mainFrame,
                                   "FauxScrollFrameTemplate")
     scrollBar:SetPoint("TOPLEFT", 0, -75)
@@ -624,6 +613,27 @@ function wt.CreateFrame()
         rawset(rows, i, row)
     end
     mainFrame.rows = rows
+    function wt.Open(toWeapons)
+        if InCombatLockdown() then
+            print(wt.L.BROKER_OPEN_IN_COMBAT)
+            return
+        end
+        if wt.showingWeaponSkills ~= toWeapons then
+            wt.showingWeaponSkills = toWeapons
+            wt.applyFilter()
+            wt.UpdateToggleIcon(wt.MainFrame)
+            wt.UpdateGroupingButton(wt.MainFrame)
+            wt.Update(wt.MainFrame, true)
+        end
+        SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB
+        if SpellBookFrame:IsVisible() then
+            SpellBookFrame:Update()
+        else
+            ToggleSpellBook("spell")
+        end
+    end
+
+    attachClassicSpellBook(mainFrame)
     createWeaponSkillsButton()
 end
 

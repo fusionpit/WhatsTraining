@@ -1,4 +1,4 @@
-## Interface: 20506, 11509
+## Interface: 20506, 16001, 11509
 ## Title: What's Training?
 ## Version: @project-version@
 ## Author: Sveng
@@ -39,7 +39,8 @@ Classes\WeaponSkills.lua
 Waypoint.lua
 WeaponGrouping.lua
 
-WhatsTrainingUI.lua
+WhatsTrainingUI.lua [AllowLoadGameType vanilla, tbc]
+WhatsTrainingUIForever.lua [AllowLoadGameType camelot]
 Categories.lua
 DataBuilder.lua
 WhatsTraining.lua

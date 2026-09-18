@@ -5,7 +5,6 @@ read_globals = {
     -- api functions
     "CastSpellByID",
     "GetLocale",
-    "GetCoinTextureString",
     "GetCraftDisplaySkillLine",
     "GetCraftInfo",
     "GetNumCrafts",
@@ -27,6 +26,7 @@ read_globals = {
     "FauxScrollFrame_GetOffset",
     "FauxScrollFrame_OnVerticalScroll",
     "CreateFrame",
+    "CreateColor",
     "PlaySound",
     "EasyMenu",
     "GetMerchantItemLink",
@@ -60,11 +60,14 @@ read_globals = {
     "Spell",
     "Item",
     "MenuUtil",
+    "EventUtil",
     -- blizzard frames
     "UIParent",
     "MerchantFrame",
     "GameTooltip",
     "SkillFrame",
+    "PlayerSpellsFrame",
+    "PlayerSpellsUtil",
     -- frame methods
     "SearchBoxTemplate_OnTextChanged",
     "ChatEdit_GetActiveWindow",
@@ -72,8 +75,12 @@ read_globals = {
     -- namespaces
     "C_AddOns",
     "C_Timer",
+    "C_Spell",
+    "C_CurrencyInfo",
+    "C_SpellBook",
     -- enums
     "MenuResponse",
+    "Enum",
     -- constants
     "MERCHANT_ITEMS_PER_PAGE",
     "SPELL_REQUIRED_FORM",
@@ -98,6 +105,7 @@ read_globals = {
     "MAX_SKILLLINE_TABS",
     "SKILLS_TO_DISPLAY",
     "BOOKTYPE_SPELL",
+    "UISpecialFrames",
     "ERR_LEARN_SPELL_S",
     "WHITE_FONT_COLOR",
     "WOW_PROJECT_ID",

@@ -294,6 +294,7 @@ local function processBrokerCategories(isLevelUpEvent)
 end
 
 function wt.buildCategorizedData(playerLevel, isLevelUpEvent)
+    wt.playerLevel = playerLevel
     wt.categories:ClearSpells()
     wt.brokerCategories:ClearSpells()
     wipe(wt.spellCategoryData)
