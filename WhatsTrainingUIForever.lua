@@ -217,6 +217,19 @@ local function attachForeverSpellBook(mainFrame)
         mainFrame.scrollFrame = scroll
         mainFrame.content, mainFrame.rows = content, {}
 
+        local search = CreateFrame("EditBox", "$parentSearchBox", mainFrame, "SearchBoxTemplate")
+        mainFrame.searchBox = search
+        search:SetAllPoints(book.SearchBox)
+        search:SetText(wt.filter)
+        search:HookScript("OnHide", function(self) self:ClearFocus() end)
+        search:HookScript("OnTextChanged", function(self)
+            local filter = strlower(self:GetText())
+            if filter == wt.filter then return end
+            wt.filter = filter
+            scroll:SetVerticalScroll(0)
+            wt:ApplyFilter()
+        end)
+
         -- keep our launcher outside blizz's pool: `CreateCategoryMixins` releases its tabs
         local button = CreateFrame("Button", "WhatsTrainingSpellBookButton", book.CategoryTabSystem,
                                    "SpellBookCategoryTabTemplate")
