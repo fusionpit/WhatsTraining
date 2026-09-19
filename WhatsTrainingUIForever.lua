@@ -335,11 +335,8 @@ local function updateWeaponGroups(mainFrame, data, byWeapon)
     return y
 end
 
-function wt.Update(mainFrame)
-    if not mainFrame or not mainFrame.rows then return end
-    local weapons = wt.showingWeaponSkills
-    wt.UpdateToggleIcon(mainFrame)
-    wt.UpdateGroupingButton(mainFrame)
+local function updatePage(mainFrame, weapons)
+    wt.UpdateGroupingButton(mainFrame, weapons)
     mainFrame.character:SetText(string.format("%s • %s", UnitClass("player"),
         weapons and wt.L.WEAPON_SKILLS_HEADER or
         string.format(wt.L.LEVEL_FORMAT, wt.playerLevel or UnitLevel("player"))))
@@ -483,13 +480,107 @@ function wt.UpdateToggleIcon(mainFrame)
     selectButton(mainFrame.weaponSkillsButton, wt.showingWeaponSkills)
 end
 
-function wt.UpdateGroupingButton(mainFrame)
+function wt.Update(mainFrame)
+    if not mainFrame or not mainFrame.rows then return end
+    wt.UpdateToggleIcon(mainFrame)
+    mainFrame.title:SetText(mainFrame.expanded and wt.L.LEDGER_CLASS_SPELLS or "What's Training?")
+    mainFrame.classSpellsButton:SetShown(not mainFrame.expanded)
+    mainFrame.weaponSkillsButton:SetShown(not mainFrame.expanded)
+    mainFrame.footer:SetWidth(mainFrame:GetWidth() - (mainFrame.expanded and 28 or 280))
+    updatePage(mainFrame, not mainFrame.expanded and wt.showingWeaponSkills)
+    mainFrame.weaponPage:SetShown(mainFrame.expanded)
+    if mainFrame.expanded then updatePage(mainFrame.weaponPage, true) end
+end
+
+function wt.UpdateGroupingButton(mainFrame, weapons)
     if not mainFrame or not mainFrame.weaponControls then return end
-    mainFrame.weaponControls:SetShown(wt.showingWeaponSkills)
+    if weapons == nil then weapons = not mainFrame.expanded and wt.showingWeaponSkills end
+    mainFrame.weaponControls:SetShown(weapons)
     for mode, button in pairs(mainFrame.groupingButtons) do
         selectButton(button, mode == WT_WeaponGrouping)
     end
     mainFrame.showKnown:SetChecked(WT_ShowKnownWeaponSkills)
+end
+
+local function createPage(mainFrame)
+    mainFrame.title = label(mainFrame, "What's Training?", "SystemFont_Huge2", 8, 0)
+    mainFrame.character = label(mainFrame, "", "SystemFont_Med3", 8, -32)
+    local total = label(mainFrame, "", "SystemFont_Med3", 0, 0)
+    mainFrame.total = total
+    total:ClearAllPoints()
+    total:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", -20, -32)
+    local divider = mainFrame:CreateTexture(nil, "ARTWORK")
+    divider:SetAtlas("spellbook-divider")
+    divider:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", -15, -58)
+    divider:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", 0, -58)
+    divider:SetHeight(11)
+
+    local rankX, levelX = mainFrame:GetWidth() - 260, mainFrame:GetWidth() - 155
+    mainFrame.rankX, mainFrame.levelX = rankX, levelX
+    mainFrame.columns = CreateFrame("Frame", nil, mainFrame)
+    mainFrame.columns:SetAllPoints()
+    label(mainFrame.columns, wt.L.LEDGER_SPELL, "SystemFont_Med3", 38, -78)
+    label(mainFrame.columns, wt.L.LEDGER_RANK, "SystemFont_Med3", rankX, -78)
+    label(mainFrame.columns, wt.L.LEDGER_REQUIRED_LEVEL, "SystemFont_Med3", levelX, -78)
+    local footer = label(mainFrame, wt.L.LEDGER_HINT, "GameFontNormalSmall", 0, 0)
+    mainFrame.footer = footer
+    footer:ClearAllPoints()
+    footer:SetPoint("LEFT", mainFrame, "BOTTOMLEFT", 8, 15)
+    footer:SetWidth(mainFrame:GetWidth() - 280)
+    mainFrame.empty = label(mainFrame, wt.L.LEDGER_EMPTY, "SystemFont_Med3", 8, -112)
+
+    local controls = CreateFrame("Frame", nil, mainFrame)
+    mainFrame.weaponControls = controls
+    controls:SetPoint("TOPLEFT", 8, -72)
+    controls:SetPoint("TOPRIGHT", -20, -72)
+    controls:SetHeight(26)
+    local groupLabel = label(controls, wt.L.LEDGER_GROUP_BY, "SystemFont_Med3", 0, -6)
+    mainFrame.groupingButtons = {}
+    local previous = groupLabel
+    for _, option in ipairs({
+        {"zone", wt.L.LEDGER_GROUP_CITY},
+        {"weaponskill", wt.L.LEDGER_GROUP_WEAPON},
+        {"list", wt.L.GROUP_LIST},
+    }) do
+        local mode = option[1]
+        local button = chromeButton(controls, option[2], 76, function()
+            WT_WeaponGrouping = mode
+            mainFrame.scrollFrame:SetVerticalScroll(0)
+            wt:ApplyFilter()
+        end)
+        button:SetPoint("LEFT", previous, "RIGHT", previous == groupLabel and 8 or 2, 0)
+        mainFrame.groupingButtons[mode] = button
+        previous = button
+    end
+    local showKnown = CreateFrame("CheckButton", nil, controls, "UICheckButtonTemplate")
+    mainFrame.showKnown = showKnown
+    showKnown:SetSize(26, 26)
+    showKnown.Text:SetText(wt.L.LEDGER_SHOW_KNOWN)
+    showKnown.Text:SetTextColor(0.19, 0.12, 0.06)
+    showKnown:SetPoint("RIGHT", controls, "RIGHT", -showKnown.Text:GetStringWidth(), 0)
+    showKnown:SetHitRectInsets(0, -showKnown.Text:GetStringWidth(), 0, 0)
+    showKnown:SetScript("OnClick", function(self)
+        WT_ShowKnownWeaponSkills = self:GetChecked()
+        mainFrame.scrollFrame:SetVerticalScroll(0)
+        wt:ApplyFilter()
+    end)
+
+    local scroll = CreateFrame("ScrollFrame", "$parentScrollFrame", mainFrame, "ScrollFrameTemplate")
+    scroll:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 0, -103)
+    scroll:SetPoint("BOTTOMRIGHT", mainFrame, "BOTTOMRIGHT", -20, 30)
+    local content = CreateFrame("Frame", nil, scroll)
+    content:SetWidth(mainFrame:GetWidth() - 20)
+    scroll:SetScrollChild(content)
+    mainFrame.scrollFrame = scroll
+    mainFrame.content, mainFrame.rows, mainFrame.weaponRows = content, {}, {}
+    mainFrame.cityX = math.floor(content:GetWidth() * 0.56)
+    mainFrame.listColumns = CreateFrame("Frame", nil, mainFrame)
+    mainFrame.listColumns:SetAllPoints()
+    label(mainFrame.listColumns, wt.L.LEDGER_WEAPON_SKILL, "SystemFont_Med3", 8, -110)
+    label(mainFrame.listColumns, wt.L.LEDGER_TRAINED_IN, "SystemFont_Med3", mainFrame.cityX, -110)
+    mainFrame.cityLegend = CreateFrame("Frame", nil, content)
+    mainFrame.cityLegend:SetSize(content:GetWidth() - 16, 24)
+    mainFrame.cityLegend.entries = {}
 end
 
 local function attachForeverSpellBook(mainFrame)
@@ -500,67 +591,16 @@ local function attachForeverSpellBook(mainFrame)
         mainFrame:SetPoint("BOTTOMLEFT", book, "BOTTOMLEFT", 65, 15)
         mainFrame:SetWidth(book.minimizedWidth - 110)
 
-        label(mainFrame, "What's Training?", "SystemFont_Huge2", 8, 0)
-        mainFrame.character = label(mainFrame, "", "SystemFont_Med3", 8, -32)
-        local total = label(mainFrame, "", "SystemFont_Med3", 0, 0)
-        mainFrame.total = total
-        total:ClearAllPoints()
-        total:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", -20, -32)
-        local divider = mainFrame:CreateTexture(nil, "ARTWORK")
-        divider:SetAtlas("spellbook-divider")
-        divider:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", -15, -58)
-        divider:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", 0, -58)
-        divider:SetHeight(11)
-
-        local rankX, levelX = mainFrame:GetWidth() - 260, mainFrame:GetWidth() - 155
-        mainFrame.rankX, mainFrame.levelX = rankX, levelX
-        mainFrame.columns = CreateFrame("Frame", nil, mainFrame)
-        mainFrame.columns:SetAllPoints()
-        label(mainFrame.columns, wt.L.LEDGER_SPELL, "SystemFont_Med3", 38, -78)
-        label(mainFrame.columns, wt.L.LEDGER_RANK, "SystemFont_Med3", rankX, -78)
-        label(mainFrame.columns, wt.L.LEDGER_REQUIRED_LEVEL, "SystemFont_Med3", levelX, -78)
-        local footer = label(mainFrame, wt.L.LEDGER_HINT, "GameFontNormalSmall", 0, 0)
-        mainFrame.footer = footer
-        footer:ClearAllPoints()
-        footer:SetPoint("LEFT", mainFrame, "BOTTOMLEFT", 8, 15)
-        footer:SetWidth(mainFrame:GetWidth() - 280)
-        mainFrame.empty = label(mainFrame, wt.L.LEDGER_EMPTY, "SystemFont_Med3", 8, -112)
-
-        local controls = CreateFrame("Frame", nil, mainFrame)
-        mainFrame.weaponControls = controls
-        controls:SetPoint("TOPLEFT", 8, -72)
-        controls:SetPoint("TOPRIGHT", -20, -72)
-        controls:SetHeight(26)
-        local groupLabel = label(controls, wt.L.LEDGER_GROUP_BY, "SystemFont_Med3", 0, -6)
-        mainFrame.groupingButtons = {}
-        local previous = groupLabel
-        for _, option in ipairs({
-            {"zone", wt.L.LEDGER_GROUP_CITY},
-            {"weaponskill", wt.L.LEDGER_GROUP_WEAPON},
-            {"list", wt.L.GROUP_LIST},
-        }) do
-            local mode = option[1]
-            local button = chromeButton(controls, option[2], 76, function()
-                WT_WeaponGrouping = mode
-                mainFrame.scrollFrame:SetVerticalScroll(0)
-                wt:ApplyFilter()
-            end)
-            button:SetPoint("LEFT", previous, "RIGHT", previous == groupLabel and 8 or 2, 0)
-            mainFrame.groupingButtons[mode] = button
-            previous = button
-        end
-        local showKnown = CreateFrame("CheckButton", nil, controls, "UICheckButtonTemplate")
-        mainFrame.showKnown = showKnown
-        showKnown:SetSize(26, 26)
-        showKnown.Text:SetText(wt.L.LEDGER_SHOW_KNOWN)
-        showKnown.Text:SetTextColor(0.19, 0.12, 0.06)
-        showKnown:SetPoint("RIGHT", controls, "RIGHT", -showKnown.Text:GetStringWidth(), 0)
-        showKnown:SetHitRectInsets(0, -showKnown.Text:GetStringWidth(), 0, 0)
-        showKnown:SetScript("OnClick", function(self)
-            WT_ShowKnownWeaponSkills = self:GetChecked()
-            mainFrame.scrollFrame:SetVerticalScroll(0)
-            wt:ApplyFilter()
-        end)
+        createPage(mainFrame)
+        local weaponPage = CreateFrame("Frame", "$parentWeaponPage", mainFrame)
+        mainFrame.weaponPage = weaponPage
+        weaponPage:SetPoint("TOPRIGHT", book, "TOPRIGHT", -45, -90)
+        weaponPage:SetPoint("BOTTOMRIGHT", book, "BOTTOMRIGHT", -45, 15)
+        weaponPage:SetWidth(mainFrame:GetWidth())
+        createPage(weaponPage)
+        weaponPage.title:SetText(wt.L.WEAPON_SKILLS_HEADER)
+        weaponPage.footer:SetWidth(weaponPage:GetWidth() - 28)
+        weaponPage:Hide()
 
         local function selectView(weapons)
             if wt.showingWeaponSkills == weapons then return end
@@ -574,23 +614,6 @@ local function attachForeverSpellBook(mainFrame)
             function() selectView(false) end)
         mainFrame.classSpellsButton:SetPoint("RIGHT", mainFrame.weaponSkillsButton, "LEFT", -2, 0)
 
-        local scroll = CreateFrame("ScrollFrame", "$parentScrollFrame", mainFrame, "ScrollFrameTemplate")
-        scroll:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 0, -103)
-        scroll:SetPoint("BOTTOMRIGHT", mainFrame, "BOTTOMRIGHT", -20, 30)
-        local content = CreateFrame("Frame", nil, scroll)
-        content:SetWidth(mainFrame:GetWidth() - 20)
-        scroll:SetScrollChild(content)
-        mainFrame.scrollFrame = scroll
-        mainFrame.content, mainFrame.rows, mainFrame.weaponRows = content, {}, {}
-        mainFrame.cityX = math.floor(content:GetWidth() * 0.56)
-        mainFrame.listColumns = CreateFrame("Frame", nil, mainFrame)
-        mainFrame.listColumns:SetAllPoints()
-        label(mainFrame.listColumns, wt.L.LEDGER_WEAPON_SKILL, "SystemFont_Med3", 8, -110)
-        label(mainFrame.listColumns, wt.L.LEDGER_TRAINED_IN, "SystemFont_Med3", mainFrame.cityX, -110)
-        mainFrame.cityLegend = CreateFrame("Frame", nil, content)
-        mainFrame.cityLegend:SetSize(content:GetWidth() - 16, 24)
-        mainFrame.cityLegend.entries = {}
-
         local search = CreateFrame("EditBox", "$parentSearchBox", mainFrame, "SearchBoxTemplate")
         mainFrame.searchBox = search
         search:SetAllPoints(book.SearchBox)
@@ -600,7 +623,8 @@ local function attachForeverSpellBook(mainFrame)
             local filter = strlower(self:GetText())
             if filter == wt.filter then return end
             wt.filter = filter
-            scroll:SetVerticalScroll(0)
+            mainFrame.scrollFrame:SetVerticalScroll(0)
+            weaponPage.scrollFrame:SetVerticalScroll(0)
             wt:ApplyFilter()
         end)
 
@@ -609,8 +633,20 @@ local function attachForeverSpellBook(mainFrame)
                                    "SpellBookCategoryTabTemplate")
         button:Init(0, nil, TAB_TEXTURE_FILEID)
         button:SetPoint("LEFT", book.CategoryTabSystem, "RIGHT", 8, 0)
+        local function updateLayout()
+            local expanded = not book.isMinimized
+            if mainFrame.expanded ~= expanded then
+                mainFrame.expanded = expanded
+                mainFrame.scrollFrame:SetVerticalScroll(0)
+                weaponPage.scrollFrame:SetVerticalScroll(0)
+                wt.applyFilter()
+            end
+        end
         local function selectTraining(selected)
-            if selected then wt.Update(mainFrame) end
+            if selected then
+                updateLayout()
+                wt.Update(mainFrame)
+            end
             mainFrame:SetShown(selected)
             book.PagedSpellsFrame:SetShown(not selected)
             book.SearchBox:SetShown(not selected)
@@ -645,6 +681,10 @@ local function attachForeverSpellBook(mainFrame)
         end)
         hooksecurefunc(book.CategoryTabSystem, "SetTab", function() selectTraining(false) end)
         hooksecurefunc(book, "SelectNextTab", function() selectTraining(false) end)
+        hooksecurefunc(book, "SetMinimized", function()
+            updateLayout()
+            if mainFrame:IsShown() then selectTraining(true) end
+        end)
         hooksecurefunc(book, "UpdateAllSpellData", function()
             if mainFrame:IsShown() then selectTraining(true) end
         end)

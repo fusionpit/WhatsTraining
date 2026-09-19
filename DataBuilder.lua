@@ -482,8 +482,9 @@ function wt.applyFilter()
 
     -- Only ONE grouped assembler may run per pass: each stamps wrapper.indent on the
     -- shared wrappers, so assembling both would clobber the other's indents. Assemble
-    -- exactly the grouped view that is currently active (and only in weapon view).
-    if wt.showingWeaponSkills then
+    -- exactly the grouped view that is currently active.
+    local expanded = wt.MainFrame and wt.MainFrame.expanded
+    if wt.showingWeaponSkills or expanded then
         local mode = WT_WeaponGrouping
         if mode == "weaponskill" then
             buildFilteredSkillGroupedData()
@@ -494,11 +495,18 @@ function wt.applyFilter()
 
     wt.data = selectPanelData()
 
-    if #wt.data == 0 and wt.filter ~= '' then
-        tinsert(wt.data, {
-            formattedName = wt.L.SEARCH_NO_RESULTS,
-            isHeader = true,
-            cost = 0
-        })
+    local visibleLists = {wt.data}
+    if expanded then
+        visibleLists = {wt.spellListData, WT_WeaponGrouping == "list" and wt.weaponListData or
+            WT_WeaponGrouping == "weaponskill" and wt.weaponSkillGroupedData or wt.weaponGroupedData}
+    end
+    for _, data in ipairs(visibleLists) do
+        if #data == 0 and wt.filter ~= '' then
+            tinsert(data, {
+                formattedName = wt.L.SEARCH_NO_RESULTS,
+                isHeader = true,
+                cost = 0
+            })
+        end
     end
 end
