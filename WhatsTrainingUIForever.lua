@@ -653,7 +653,15 @@ local function attachForeverSpellBook(mainFrame)
             book.SettingsDropdown:SetShown(not selected)
             book.SearchPreviewContainer:Hide()
             button:SetTabSelected(selected)
-            book.CategoryTabSystem:SetTabVisuallySelected(selected and 0 or book:GetTab())
+            -- SetTabVisuallySelected writes isSelected, which Blizzard reads when
+            -- reusing tabs in SetSquareMode. Keep that state untainted for combat.
+            for _, tab in ipairs(book.CategoryTabSystem.tabs) do
+                local active = not selected and tab:IsSelected()
+                tab.SquareBackground:SetShown(not active)
+                tab.SquareBackgroundActive:SetShown(active)
+                tab.SquareBackgroundActiveGlow:SetShown(active)
+                tab:SetEnabled(not active and not tab:IsForceDisabled())
+            end
         end
         mainFrame.selectTraining = selectTraining
         button:SetScript("OnClick", function()
@@ -708,7 +716,7 @@ function wt.CreateFrame()
         end
         wt.showingWeaponSkills = toWeapons == true
         wt.applyFilter()
-        PlayerSpellsUtil.OpenToSpellBookTab()
+        securecallfunction(PlayerSpellsUtil.OpenToSpellBookTab)
         if mainFrame.selectTraining then mainFrame.selectTraining(true) end
     end
     attachForeverSpellBook(mainFrame)
