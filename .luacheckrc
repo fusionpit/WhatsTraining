@@ -50,6 +50,7 @@ read_globals = {
     "tinsert",
     "format",
     "hooksecurefunc",
+    "securecallfunction",
     "foreachi",
     "wipe",
     "sort",
