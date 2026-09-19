@@ -39,7 +39,7 @@ Classes\WeaponSkills.lua
 Waypoint.lua
 WeaponGrouping.lua
 
-WhatsTrainingUI.lua [AllowLoadGameType vanilla, tbc]
+WhatsTrainingUI.lua
 WhatsTrainingUIForever.lua [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 Categories.lua
 DataBuilder.lua

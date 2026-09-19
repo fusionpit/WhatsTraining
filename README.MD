@@ -5,6 +5,10 @@ What's Training? is an addon for World of Warcraft Classic that adds a list of a
 
 New in version 5.0.0: Right-click a spell to ignore it
 
+In WoW: Forever, `/wt` toggles a movable training window the same size as the
+Classic Era/TBC spellbook. It includes search and the weapon-skills toggle and
+works independently of the spellbook, including when using a spellbook addon.
+
 ## Known Issues
  - Rogue Poisons not working well, it will show available even if you don't have the required skill level in poisons
  
@@ -12,4 +16,3 @@ New in version 5.0.0: Right-click a spell to ignore it
  - Forever gather warlock tomes
  - Forever gather class/race/faction specific spells
  - Forever ignoring
- - Forever "quick panel" that looks like Classic Era list

@@ -1,4 +1,4 @@
--- Era and TBC only; Forever owns its UI in WhatsTrainingUIForever.lua.
+-- Compact list shared by the Era/TBC spellbook and Forever's floating window.
 
 local _, wt = ...
 local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
@@ -9,7 +9,6 @@ local MAX_ROWS = 22
 local ROW_HEIGHT = 14
 local INDENT_STEP = ROW_HEIGHT + 4
 local NPC_LOCATION_FORMAT = "%s (%.1f, %.1f)"
-local SKILL_LINE_TAB = MAX_SKILLLINE_TABS - 1
 local HIGHLIGHT_TEXTURE_FILEID = GetFileIDFromPath(
                                      "Interface\\AddOns\\WhatsTraining\\highlight")
 local LEFT_BG_TEXTURE_FILEID = GetFileIDFromPath(
@@ -217,20 +216,25 @@ end
 
 -- When holding down left mouse on the slider knob, it will keep firing update even though
 -- the offset hasn't changed so this will help throttle that
-local lastOffset = -1
 function wt.Update(frame, forceUpdate)
     frame.noticeButton:SetShown(not wt.showingWeaponSkills and wt.needsBeastTraining())
     local scrollBar = frame.scrollBar
+    if frame.filter ~= wt.filter or frame.data ~= wt.data then
+        frame.filter, frame.data = wt.filter, wt.data
+        scrollBar.offset = 0
+        scrollBar:SetVerticalScroll(0)
+        scrollBar.ScrollBar:SetValue(0)
+    end
     local offset = FauxScrollFrame_GetOffset(scrollBar)
-    if offset == lastOffset and not forceUpdate then return end
+    if offset == frame.lastOffset and not forceUpdate then return end
     for i, row in ipairs(frame.rows) do
         local spellIndex = i + offset
         local spell = wt.data[spellIndex]
         setRowSpell(row, spell)
     end
-    FauxScrollFrame_Update(frame.scrollBar, #wt.data, MAX_ROWS,
-                           ROW_HEIGHT, nil, nil, nil, nil, nil, nil, true)
-    lastOffset = offset
+    FauxScrollFrame_Update(frame.scrollBar, #wt.data, frame.maxRows or MAX_ROWS,
+                           frame.scrollStep or ROW_HEIGHT, nil, nil, nil, nil, nil, nil, true)
+    frame.lastOffset = offset
 end
 function wt.UpdateToggleIcon(frame)
     if not frame or not frame.weaponSkillToggleButton then return end
@@ -260,6 +264,12 @@ function wt.UpdateGroupingButton(frame)
         if frame.groupingPopup then frame.groupingPopup:Hide() end
     end
 end
+
+wt.CompactUI = {
+    Update = wt.Update,
+    UpdateToggleIcon = wt.UpdateToggleIcon,
+    UpdateGroupingButton = wt.UpdateGroupingButton,
+}
 
 local function createWeaponSkillsButton()
     local button = CreateFrame("Button", "WhatsTrainingSkillsButton", SkillFrame, "SquareIconButtonTemplate")
@@ -304,6 +314,7 @@ local function createWeaponSkillsButton()
 end
 
 local function attachClassicSpellBook(mainFrame)
+    local SKILL_LINE_TAB = MAX_SKILLLINE_TABS - 1
     -- Fix for Season of Discovery's Shaman 'Way of the Earth' rune
     -- When this rune is engraved, it constantly causes a `SPELLS_CHANGED` event
     -- That event will keep switching the tab back to the first non-general tab when fired
@@ -360,24 +371,9 @@ local function attachClassicSpellBook(mainFrame)
     end)
 end
 
-function wt.CreateFrame()
-    if wt.MainFrame then return end
-    local mainFrame = CreateFrame("Frame", "WhatsTrainingFrame", SpellBookFrame)
-    wt.MainFrame = mainFrame
-    mainFrame:SetPoint("TOPLEFT", SpellBookFrame, "TOPLEFT", 0, 0)
-    mainFrame:SetPoint("BOTTOMRIGHT", SpellBookFrame, "BOTTOMRIGHT", 0, 0)
-    mainFrame:SetFrameStrata("HIGH")
-    local left = mainFrame:CreateTexture(nil, "ARTWORK")
-    left:SetTexture(LEFT_BG_TEXTURE_FILEID)
-    left:SetWidth(256)
-    left:SetHeight(512)
-    left:SetPoint("TOPLEFT", mainFrame)
-    local right = mainFrame:CreateTexture(nil, "ARTWORK")
-    right:SetTexture(RIGHT_BG_TEXTURE_FILEID)
-    right:SetWidth(128)
-    right:SetHeight(512)
-    right:SetPoint("TOPRIGHT", mainFrame)
+function wt.CreateCompactFrame(mainFrame)
     local search = CreateFrame("EditBox", "$parentSearchBox", mainFrame, "SearchBoxTemplate")
+    mainFrame.searchBox = search
     search:SetWidth(124)
     search:SetHeight(32)
     search:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 81, -34)
@@ -387,6 +383,7 @@ function wt.CreateFrame()
         wt.filter = strlower(self:GetText())
         if wt.filter ~= oldFilter then wt:ApplyFilter() end
     end)
+    search:HookScript("OnHide", function(self) self:ClearFocus() end)
 
     local toggleButton = CreateFrame("Button", "$parentWeaponSkillToggle", mainFrame, "SquareIconButtonTemplate")
     toggleButton:SetSize(32, 32)
@@ -487,8 +484,7 @@ function wt.CreateFrame()
                 r:SetChecked(r.mode == self.mode)
             end
             PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-            wt.applyFilter()
-            wt.Update(mainFrame, true)
+            wt:ApplyFilter()
         end)
         tinsert(popup.radios, radio)
         prev = radio
@@ -519,7 +515,7 @@ function wt.CreateFrame()
     scrollBar:SetPoint("TOPLEFT", 0, -75)
     scrollBar:SetPoint("BOTTOMRIGHT", -65, 81)
     scrollBar:SetScript("OnVerticalScroll", function(self, offset)
-        FauxScrollFrame_OnVerticalScroll(self, offset, ROW_HEIGHT,
+        FauxScrollFrame_OnVerticalScroll(self, offset, mainFrame.scrollStep or ROW_HEIGHT,
                                          function() wt.Update(mainFrame) end)
     end)
     scrollBar:SetScript("OnShow", function()
@@ -530,7 +526,7 @@ function wt.CreateFrame()
     mainFrame.scrollBar = scrollBar
 
     local rows = {}
-    for i = 1, MAX_ROWS do
+    for i = 1, mainFrame.maxRows or MAX_ROWS do
         local row = CreateFrame("Button", "$parentRow" .. i, mainFrame)
         row:SetHeight(ROW_HEIGHT)
         row:EnableMouse(true)
@@ -540,6 +536,9 @@ function wt.CreateFrame()
             setTooltip(self.currentSpell)
         end)
         row:SetScript("OnLeave", function() tooltip:Hide() end)
+        row:SetScript("OnHide", function(self)
+            if tooltip:IsOwned(self) then tooltip:Hide() end
+        end)
 
         local highlight = row:CreateTexture("$parentHighlight", "HIGHLIGHT")
         highlight:SetAllPoints()
@@ -613,6 +612,25 @@ function wt.CreateFrame()
         rawset(rows, i, row)
     end
     mainFrame.rows = rows
+end
+
+function wt.CreateFrame()
+    if wt.MainFrame then return end
+    local mainFrame = CreateFrame("Frame", "WhatsTrainingFrame", SpellBookFrame)
+    wt.MainFrame = mainFrame
+    mainFrame:SetPoint("TOPLEFT", SpellBookFrame, "TOPLEFT", 0, 0)
+    mainFrame:SetPoint("BOTTOMRIGHT", SpellBookFrame, "BOTTOMRIGHT", 0, 0)
+    mainFrame:SetFrameStrata("HIGH")
+    local left = mainFrame:CreateTexture(nil, "ARTWORK")
+    left:SetTexture(LEFT_BG_TEXTURE_FILEID)
+    left:SetSize(256, 512)
+    left:SetPoint("TOPLEFT", mainFrame)
+    local right = mainFrame:CreateTexture(nil, "ARTWORK")
+    right:SetTexture(RIGHT_BG_TEXTURE_FILEID)
+    right:SetSize(128, 512)
+    right:SetPoint("TOPRIGHT", mainFrame)
+    wt.CreateCompactFrame(mainFrame)
+    local SKILL_LINE_TAB = MAX_SKILLLINE_TABS - 1
     function wt.Open(toWeapons)
         if InCombatLockdown() then
             print(wt.L.BROKER_OPEN_IN_COMBAT)

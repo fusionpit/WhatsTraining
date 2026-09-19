@@ -475,12 +475,14 @@ local function updatePage(mainFrame, weapons)
 end
 
 function wt.UpdateToggleIcon(mainFrame)
+    if mainFrame and mainFrame.scrollBar then return wt.CompactUI.UpdateToggleIcon(mainFrame) end
     if not mainFrame or not mainFrame.classSpellsButton then return end
     selectButton(mainFrame.classSpellsButton, not wt.showingWeaponSkills)
     selectButton(mainFrame.weaponSkillsButton, wt.showingWeaponSkills)
 end
 
-function wt.Update(mainFrame)
+function wt.Update(mainFrame, forceUpdate)
+    if mainFrame and mainFrame.scrollBar then return wt.CompactUI.Update(mainFrame, forceUpdate) end
     if not mainFrame or not mainFrame.rows then return end
     wt.UpdateToggleIcon(mainFrame)
     mainFrame.title:SetText(mainFrame.expanded and wt.L.LEDGER_CLASS_SPELLS or "What's Training?")
@@ -493,6 +495,7 @@ function wt.Update(mainFrame)
 end
 
 function wt.UpdateGroupingButton(mainFrame, weapons)
+    if mainFrame and mainFrame.scrollBar then return wt.CompactUI.UpdateGroupingButton(mainFrame) end
     if not mainFrame or not mainFrame.weaponControls then return end
     if weapons == nil then weapons = not mainFrame.expanded and wt.showingWeaponSkills end
     mainFrame.weaponControls:SetShown(weapons)
@@ -621,10 +624,10 @@ local function attachForeverSpellBook(mainFrame)
         search:HookScript("OnHide", function(self) self:ClearFocus() end)
         search:HookScript("OnTextChanged", function(self)
             local filter = strlower(self:GetText())
-            if filter == wt.filter then return end
-            wt.filter = filter
             mainFrame.scrollFrame:SetVerticalScroll(0)
             weaponPage.scrollFrame:SetVerticalScroll(0)
+            if filter == wt.filter then return end
+            wt.filter = filter
             wt:ApplyFilter()
         end)
 
@@ -643,11 +646,11 @@ local function attachForeverSpellBook(mainFrame)
             end
         end
         local function selectTraining(selected)
+            mainFrame:SetShown(selected)
             if selected then
                 updateLayout()
-                wt.Update(mainFrame)
+                wt.RefreshUI()
             end
-            mainFrame:SetShown(selected)
             book.PagedSpellsFrame:SetShown(not selected)
             book.SearchBox:SetShown(not selected)
             book.SettingsDropdown:SetShown(not selected)
@@ -720,4 +723,41 @@ function wt.CreateFrame()
         if mainFrame.selectTraining then mainFrame.selectTraining(true) end
     end
     attachForeverSpellBook(mainFrame)
+end
+
+SLASH_WHATSTRAINING1 = "/wt"
+SlashCmdList.WHATSTRAINING = function()
+    local frame = wt.FloatingFrame
+    if not frame then
+        frame = CreateFrame("Frame", "WhatsTrainingFloatingFrame", UIParent, "UIPanelDialogTemplate")
+        wt.FloatingFrame = frame
+        -- The Classic Era/TBC SpellBookFrame dimensions, independent of any spellbook addon.
+        frame:SetSize(384, 512)
+        frame:SetPoint("CENTER")
+        frame:SetFrameStrata("HIGH")
+        frame:SetMovable(true)
+        frame:SetClampedToScreen(true)
+        frame:EnableMouse(true)
+        frame:RegisterForDrag("LeftButton")
+        frame:SetScript("OnDragStart", frame.StartMoving)
+        frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
+        frame.Title:SetText(wt.L.TAB_TEXT)
+        frame.maxRows, frame.scrollStep = 27, 16
+        wt.CreateCompactFrame(frame)
+        frame.searchBox:ClearAllPoints()
+        frame.searchBox:SetPoint("TOPLEFT", 20, -28)
+        -- Leave room for the weapon toggle and grouping button / hunter notice.
+        frame.searchBox:SetWidth(290)
+        frame.rows[1]:SetPoint("TOPLEFT", frame, "TOPLEFT", 12, -64)
+        frame.scrollBar:SetPoint("TOPLEFT", 0, -64)
+        frame.scrollBar:SetPoint("BOTTOMRIGHT", -32, 16)
+        frame:SetScript("OnShow", function() wt:ApplyFilter() end)
+        frame:SetScript("OnHide", function(self)
+            self:StopMovingOrSizing()
+            self.searchBox:ClearFocus()
+            self.groupingPopup:Hide()
+        end)
+        tinsert(UISpecialFrames, frame:GetName())
+    end
+    frame:SetShown(not frame:IsShown())
 end

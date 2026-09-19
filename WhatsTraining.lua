@@ -3,6 +3,19 @@ local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
 
 local learnedSpellEvent = "LEARNED_SPELL_IN_SKILL_LINE"
 
+function wt.RefreshUI()
+    for _, frame in pairs({wt.MainFrame, wt.FloatingFrame}) do
+        if frame.searchBox and strlower(frame.searchBox:GetText()) ~= wt.filter then
+            frame.searchBox:SetText(wt.filter)
+        end
+        if frame:IsVisible() then
+            wt.UpdateToggleIcon(frame)
+            wt.UpdateGroupingButton(frame)
+            wt.Update(frame, true)
+        end
+    end
+end
+
 local function rebuildIfNotCached(fromCache)
     if fromCache or wt.MainFrame == nil then return end
     wt:RebuildData()
@@ -11,26 +24,18 @@ end
 function wt:RebuildData()
     wt.buildCategorizedData(UnitLevel("player"))
     wt.applyFilter()
-    if (self.MainFrame and self.MainFrame:IsVisible()) then
-        self.Update(self.MainFrame, true)
-    end
+    wt.RefreshUI()
 end
 
 function wt:ApplyFilter()
     wt.applyFilter()
-    if (self.MainFrame and self.MainFrame:IsVisible()) then
-        self.Update(self.MainFrame, true)
-    end
+    wt.RefreshUI()
 end
 
 function wt:ToggleWeaponSkills()
     self.showingWeaponSkills = not self.showingWeaponSkills
     wt.applyFilter()
-    if self.MainFrame and self.MainFrame:IsVisible() then
-        wt.UpdateToggleIcon(self.MainFrame)
-        wt.UpdateGroupingButton(self.MainFrame)
-        self.Update(self.MainFrame, true)
-    end
+    wt.RefreshUI()
 end
 
 function wt:ToggleBrokerWeaponSkills()
@@ -148,20 +153,17 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         local isLevelUp = event == "PLAYER_LEVEL_UP"
         wt.buildCategorizedData(isLevelUp and ... or UnitLevel("player"), isLevelUp)
         wt.applyFilter()
-        if (wt.MainFrame and wt.MainFrame:IsVisible()) then
-            wt.Update(wt.MainFrame, true)
-        end
+        wt.RefreshUI()
     elseif event == "PLAYER_EQUIPMENT_CHANGED" then
         local slot = ...
         if (slot == 16 or slot == 18) and wt.UpdateToggleIcon and wt.MainFrame then
             wt.UpdateToggleIcon(wt.MainFrame)
+            if wt.FloatingFrame then wt.UpdateToggleIcon(wt.FloatingFrame) end
         end
     elseif event == "SKILL_LINES_CHANGED" then
         wt.buildCategorizedData(UnitLevel("player"))
         wt.applyFilter()
-        if (wt.MainFrame and wt.MainFrame:IsVisible()) then
-            wt.Update(wt.MainFrame, true)
-        end
+        wt.RefreshUI()
     end
 end)
 eventFrame:RegisterEvent("ADDON_LOADED")
