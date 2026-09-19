@@ -8,3 +8,8 @@ New in version 5.0.0: Right-click a spell to ignore it
 ## Known Issues
  - Rogue Poisons not working well, it will show available even if you don't have the required skill level in poisons
  
+## TODO
+ - Forever gather warlock tomes
+ - Forever gather class/race/faction specific spells
+ - Forever ignoring
+ - Forever "quick panel" that looks like Classic Era list
