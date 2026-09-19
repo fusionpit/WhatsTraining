@@ -3,7 +3,7 @@
 ## Version: @project-version@
 ## Author: Sveng
 ## Notes: Shows you what spells are available at your class trainer
-## SavedVariables: WT_WeaponGrouping
+## SavedVariables: WT_WeaponGrouping, WT_ShowKnownWeaponSkills
 ## SavedVariablesPerCharacter: WT_LearnedPetAbilities, WT_NeedsToOpenBeastTraining, WT_IgnoredSpells
 ## OptionalDeps: ClassTrainerPlus, TomTom
 ## X-Curse-Project-ID: 324944
@@ -40,7 +40,7 @@ Waypoint.lua
 WeaponGrouping.lua
 
 WhatsTrainingUI.lua [AllowLoadGameType vanilla, tbc]
-WhatsTrainingUIForever.lua [AllowLoadGameType camelot]
+WhatsTrainingUIForever.lua [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 Categories.lua
 DataBuilder.lua
 WhatsTraining.lua

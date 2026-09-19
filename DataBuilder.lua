@@ -366,7 +366,8 @@ local function filterCategoryData(categoryData, resultsList)
         else
             -- Normal spells
             for _, s in ipairs(categoryEntry.spells) do
-                if matchesFilter(s.searchText) then
+                if matchesFilter(s.searchText) and not
+                    (category.key == wt.WEAPON_KNOWN_KEY and not WT_ShowKnownWeaponSkills) then
                     tinsert(filteredSpells, s)
                     filteredCost = filteredCost + s.cost
                     hasMatchingSpells = true
@@ -416,7 +417,7 @@ end
 -- Grouped vs. flat for the weapon-skills view, per WT_WeaponGrouping.
 local function selectPanelData()
     if wt.showingWeaponSkills then
-        local mode = WT_WeaponGrouping or "zone"
+        local mode = WT_WeaponGrouping
         if mode == "weaponskill" then
             return wt.weaponSkillGroupedData
         elseif mode == "list" then
@@ -434,12 +435,12 @@ local function buildFilteredGroupedData()
     if not wt.weaponSkeleton or not wt.WeaponGrouping or not wt.weaponWrapperById then return end
 
     local filteredWrappers
-    if wt.filter == '' then
+    if wt.filter == '' and WT_ShowKnownWeaponSkills then
         filteredWrappers = wt.weaponWrapperById
     else
         filteredWrappers = {}
         for weaponId, wrapper in pairs(wt.weaponWrapperById) do
-            if matchesFilter(wrapper.searchText) then
+            if matchesFilter(wrapper.searchText) and (WT_ShowKnownWeaponSkills or not wrapper.isKnown) then
                 filteredWrappers[weaponId] = wrapper
             end
         end
@@ -458,7 +459,14 @@ local function buildFilteredSkillGroupedData()
     wipe(wt.weaponSkillGroupedData)
     if not wt.weaponSkillSkeleton or not wt.WeaponGrouping or not wt.weaponWrapperById then return end
 
-    local rows = wt.WeaponGrouping.assembleSkillList(wt.weaponSkillSkeleton, wt.weaponWrapperById,
+    local wrappers = wt.weaponWrapperById
+    if not WT_ShowKnownWeaponSkills then
+        wrappers = {}
+        for id, wrapper in pairs(wt.weaponWrapperById) do
+            if not wrapper.isKnown then wrappers[id] = wrapper end
+        end
+    end
+    local rows = wt.WeaponGrouping.assembleSkillList(wt.weaponSkillSkeleton, wrappers,
         wt.weaponIgnoredIds, wt.L.WEAPON_IGNORED_HEADER, wt.filter)
     for _, row in ipairs(rows) do
         tinsert(wt.weaponSkillGroupedData, row)
@@ -476,7 +484,7 @@ function wt.applyFilter()
     -- shared wrappers, so assembling both would clobber the other's indents. Assemble
     -- exactly the grouped view that is currently active (and only in weapon view).
     if wt.showingWeaponSkills then
-        local mode = WT_WeaponGrouping or "zone"
+        local mode = WT_WeaponGrouping
         if mode == "weaponskill" then
             buildFilteredSkillGroupedData()
         elseif mode ~= "list" then

@@ -501,7 +501,7 @@ function wt.CreateFrame()
     doneButton:SetScript("OnClick", function() popup:Hide() end)
 
     popup:SetScript("OnShow", function(self)
-        local mode = WT_WeaponGrouping or "zone"
+        local mode = WT_WeaponGrouping
         for _, r in ipairs(self.radios) do
             r:SetChecked(r.mode == mode)
         end

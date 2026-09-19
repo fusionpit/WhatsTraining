@@ -103,8 +103,17 @@ end)
 local eventFrame = CreateFrame("Frame")
 eventFrame:SetScript("OnEvent", function(self, event, ...)
     if event == "ADDON_LOADED" and ... == addonName then
-        if WT_WeaponGrouping == nil then
+        if type(WT_WeaponGrouping) == "table" then
+            if WT_ShowKnownWeaponSkills == nil then
+                WT_ShowKnownWeaponSkills = WT_WeaponGrouping.showKnown
+            end
+            WT_WeaponGrouping = WT_WeaponGrouping.mode
+        end
+        if WT_WeaponGrouping ~= "zone" and WT_WeaponGrouping ~= "weaponskill" and WT_WeaponGrouping ~= "list" then
             WT_WeaponGrouping = "zone"
+        end
+        if type(WT_ShowKnownWeaponSkills) ~= "boolean" then
+            WT_ShowKnownWeaponSkills = true
         end
         if WT_IgnoredSpells == nil then
             WT_IgnoredSpells = {}
