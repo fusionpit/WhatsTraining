@@ -31,8 +31,8 @@ wt.SpellsByLevel = wt.RaceFilter({
 		{id = 1277371, cost = 100, requiredIds = {1277370}, race = 1},
 		{id = 600, cost = 2000, requiredIds = {592}},
 		{id = 970, cost = 2000, requiredIds = {594}},
-		{id = 19236, cost = 100, race = 3},
-		{id = 19296, cost = 100, race = 4}
+		{id = 19236, cost = 100, requiredIds = {13908}, race = 3},
+		{id = 19296, cost = 100, requiredIds = {10797}, race = 4}
 	},
 	[20] = {
 		{id = 2944, cost = 300},
@@ -44,8 +44,8 @@ wt.SpellsByLevel = wt.RaceFilter({
 		{id = 453, cost = 3000},
 		{id = 6075, cost = 3000, requiredIds = {6074}},
 		{id = 9484, cost = 3000},
-		{id = 19261, cost = 150, race = 5},
-		{id = 19281, cost = 150, race = 8}
+		{id = 19261, cost = 150, requiredIds = {2652}, race = 5},
+		{id = 19281, cost = 150, requiredIds = {9035}, race = 8}
 	},
 	[22] = {
 		{id = 2055, cost = 4000, requiredIds = {2054}},
@@ -75,7 +75,7 @@ wt.SpellsByLevel = wt.RaceFilter({
 		{id = 8104, cost = 8000, requiredIds = {8103}},
 		{id = 17311, cost = 400, requiredIds = {15407}, requiredTalentId = 15407},
 		{id = 8124, cost = 8000, requiredIds = {8122}},
-		{id = 19308, cost = 400, race = 8}
+		{id = 19308, cost = 400, requiredIds = {18137}, race = 8}
 	},
 	[30] = {
 		{id = 14752, cost = 10000},
@@ -89,7 +89,10 @@ wt.SpellsByLevel = wt.RaceFilter({
 		{id = 976, cost = 10000},
 		{id = 1004, cost = 10000, requiredIds = {984}},
 		{id = 19262, cost = 500, requiredIds = {19261}, race = 5},
-		{id = 19282, cost = 500, requiredIds = {19281}, race = 8}
+		{id = 19282, cost = 500, requiredIds = {19281}, race = 8},
+		{id = 1277332, cost = 500, requiredIds = {1277331}, race = 3},
+		{id = 1277634, cost = 500, requiredIds = {1277462}, race = 7},
+		{id = 1277325, cost = 500, requiredIds = {1277324}, race = 5}
 	},
 	[32] = {
 		{id = 552, cost = 11000},
@@ -139,7 +142,10 @@ wt.SpellsByLevel = wt.RaceFilter({
 		{id = 9485, cost = 18000, requiredIds = {9484}},
 		{id = 1309633, cost = 18000, requiredIds = {1309595}},
 		{id = 19264, cost = 900, requiredIds = {19262}, race = 5},
-		{id = 19283, cost = 900, requiredIds = {19282}, race = 8}
+		{id = 19283, cost = 900, requiredIds = {19282}, race = 8},
+		{id = 1277333, cost = 900, requiredIds = {1277332}, race = 3},
+		{id = 1277638, cost = 900, requiredIds = {1277634}, race = 7},
+		{id = 1277326, cost = 900, requiredIds = {1277325}, race = 5}
 	},
 	[42] = {
 		{id = 1277376, cost = 1100, requiredIds = {1277374}, race = 1},
@@ -192,7 +198,10 @@ wt.SpellsByLevel = wt.RaceFilter({
 		{id = 19265, cost = 1500, requiredIds = {19264}, race = 5},
 		{id = 19284, cost = 1500, requiredIds = {19283}, race = 8},
 		{id = 19304, cost = 1500, requiredIds = {19303}, race = 4},
-		{id = 27870, cost = 1200}
+		{id = 27870, cost = 1200},
+		{id = 1277334, cost = 1500, requiredIds = {1277333}, race = 3},
+		{id = 1277639, cost = 1500, requiredIds = {1277638}, race = 7},
+		{id = 1277327, cost = 1500, requiredIds = {1277326}, race = 5}
 	},
 	[52] = {
 		{id = 19279, cost = 1900, requiredIds = {19278}},
@@ -246,6 +255,9 @@ wt.SpellsByLevel = wt.RaceFilter({
 		{id = 19266, cost = 2300, requiredIds = {19265}, race = 5},
 		{id = 19285, cost = 2300, requiredIds = {19284}, race = 8},
 		{id = 19312, cost = 2300, requiredIds = {19311}, race = 8},
-		{id = 27871, cost = 1500, requiredIds = {27870}}
+		{id = 27871, cost = 1500, requiredIds = {27870}},
+		{id = 1277335, cost = 2300, requiredIds = {1277334}, race = 3},
+		{id = 1277640, cost = 2300, requiredIds = {1277639}, race = 7},
+		{id = 1277328, cost = 2300, requiredIds = {1277327}, race = 5}
 	}
 })
