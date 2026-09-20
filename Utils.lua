@@ -127,6 +127,7 @@ function wt.isAbilityKnown(spellId)
         or C_SpellBook.IsSpellKnown(spellId, Enum.SpellBookSpellBank.Player) or
         wt.isPreviouslyLearnedAbility(spellId)) then return true end
     if (not wt:IsPetAbility(spellId)) then return false end
+    if wt:IsPetAbilityLearned(spellId) then return true end
     local info = wt:SpellInfo(spellId)
 
     if info.subText == nil or wt.learnedPetAbilityMap[info.name] == nil then
