@@ -15,4 +15,3 @@ works independently of the spellbook, including when using a spellbook addon.
 ## TODO
  - Forever gather warlock tomes
  - Forever gather class/race/faction specific spells
- - Forever ignoring
