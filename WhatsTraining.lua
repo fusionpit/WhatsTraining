@@ -117,6 +117,9 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         if WT_WeaponGrouping ~= "zone" and WT_WeaponGrouping ~= "weaponskill" and WT_WeaponGrouping ~= "list" then
             WT_WeaponGrouping = "zone"
         end
+        if WT_SpellDisplay ~= "ledger" and WT_SpellDisplay ~= "levels" then
+            WT_SpellDisplay = "ledger"
+        end
         if type(WT_ShowKnownWeaponSkills) ~= "boolean" then
             WT_ShowKnownWeaponSkills = true
         end

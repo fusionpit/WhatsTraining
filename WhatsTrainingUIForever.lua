@@ -123,6 +123,9 @@ local function createRow(content, rankX, levelX)
         if spell.npc then
             GameTooltip:SetText(spell.masterName or spell.name)
             GameTooltip:AddLine(string.format("%s (%.1f, %.1f)", spell.zoneName, spell.x, spell.y), 0.8, 0.8, 0.8)
+            if wt.canSetWaypoint(spell) then
+                GameTooltip:AddLine(wt.L.CLICK_TO_WAYPOINT, GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b)
+            end
         elseif spell.altTooltipType == "weapon" then
             GameTooltip:SetText(spell.name)
             if spell.formattedTrainerZones then
@@ -142,6 +145,13 @@ local function createRow(content, rankX, levelX)
     row:SetScript("OnLeave", hideTooltip)
     row:SetScript("OnHide", hideTooltip)
     row:SetScript("OnClick", function(self, button)
+        local trainer = self.spell
+        if button == "LeftButton" and not IsShiftKeyDown() and trainer and trainer.npc
+            and wt.canSetWaypoint(trainer) then
+            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+            wt.setWaypoint(trainer)
+            return
+        end
         if self.weaponRow then self = self.weaponRow end
         local spell = self.spell
         if not spell or spell.isHeader then return end
@@ -153,6 +163,122 @@ local function createRow(content, rankX, levelX)
         end
     end)
     return row
+end
+
+-- Levels: spells as icon cells, grouped per level for upcoming spells and per category otherwise.
+local COLS, CELL, GROUP_HEADER, GROUP_GAP = 3, 44, 42, 8
+
+local function buildGroups(data)
+    local groups, group, category = {}, nil, nil
+    for _, spell in ipairs(data) do
+        if spell.isHeader then
+            category, group = spell, nil
+        else
+            local level = (category.key == wt.NEXTLEVEL_KEY or category.key == wt.NOTLEVEL_KEY) and spell.level or nil
+            if not group or group.level ~= level then
+                group = {category = category, level = level, spells = {}}
+                tinsert(groups, group)
+            end
+            tinsert(group.spells, spell)
+        end
+    end
+    return groups
+end
+
+local function groupTitle(group)
+    local key = group.category.key
+    if key == wt.AVAILABLE_KEY then return wt.L.AVAILABLE_HEADER, 0.10, 0.38, 0.05 end
+    if key == wt.NEXTLEVEL_KEY then
+        return string.format(wt.L.LEVEL_FORMAT, group.level) .. " • " .. wt.L.NEXTLEVEL_HEADER, 0.08, 0.22, 0.50
+    end
+    if key == wt.NOTLEVEL_KEY then return string.format(wt.L.LEVEL_FORMAT, group.level), 0.30, 0.10, 0.05 end
+    return group.category.name or group.category.formattedName, 0.30, 0.10, 0.05
+end
+
+local function createGroupHeader(parent)
+    local header = CreateFrame("Frame", nil, parent)
+    header:SetHeight(GROUP_HEADER)
+    header.rule = header:CreateTexture(nil, "BACKGROUND")
+    header.rule:SetColorTexture(0.30, 0.19, 0.08, 0.35)
+    header.rule:SetPoint("TOPLEFT", 8, 0)
+    header.rule:SetPoint("TOPRIGHT", -8, 0)
+    header.rule:SetHeight(1)
+    header.title = label(header, "", "SystemFont_Large", 8, -12)
+    header.count = label(header, "", "SystemFont_Med3", 0, 0)
+    header.count:ClearAllPoints()
+    header.count:SetPoint("BOTTOMLEFT", header.title, "BOTTOMRIGHT", 0, 0)
+    return header
+end
+
+local function createCell(mainFrame)
+    local cell = createRow(mainFrame.levels, mainFrame.rankX, mainFrame.levelX)
+    for _, region in ipairs({cell.band, cell.heading, cell.level, cell.separator}) do region:Hide() end
+    cell.icon:ClearAllPoints()
+    cell.icon:SetPoint("TOPLEFT", 4, -2)
+    cell.icon:SetSize(36, 36)
+    cell.iconBorder:SetSize(58, 58)
+    cell.name:ClearAllPoints()
+    cell.name:SetPoint("TOPLEFT", 48, -3)
+    cell.rank:ClearAllPoints()
+    cell.rank:SetPoint("TOPLEFT", 48, -21)
+    cell.rank:SetFontObject("SystemFont_Med1")
+    return cell
+end
+
+-- lays out every group whole and returns the content height and the cost of the available spells
+local function updateLevels(mainFrame, data)
+    local levels, y, cellIndex, availableCost = mainFrame.levels, 0, 0, 0
+    local width = (levels:GetWidth() - 32) / COLS
+    local groups = buildGroups(data)
+    for i, group in ipairs(groups) do
+        local header = mainFrame.groupHeaders[i]
+        if not header then
+            header = createGroupHeader(levels)
+            mainFrame.groupHeaders[i] = header
+        end
+        local total = #group.spells
+        local rows = math.ceil(total / COLS)
+        header:SetPoint("TOPLEFT", levels, "TOPLEFT", 0, -y)
+        header:SetPoint("TOPRIGHT", levels, "TOPRIGHT", 0, -y)
+        header.rule:SetShown(i > 1)
+        local title, r, g, b = groupTitle(group)
+        header.title:SetText(title)
+        header.title:SetTextColor(r, g, b)
+        header.count:SetText(" • " .. string.format(total == 1 and wt.L.LEVELS_SPELL_COUNT or
+            wt.L.LEVELS_SPELLS_COUNT, total))
+        header:Show()
+        y = y + GROUP_HEADER
+        for index, spell in ipairs(group.spells) do
+            cellIndex = cellIndex + 1
+            local cell = mainFrame.cells[cellIndex]
+            if not cell then
+                cell = createCell(mainFrame)
+                mainFrame.cells[cellIndex] = cell
+            end
+            hideTooltip(cell)
+            local offset = index - 1
+            cell.spell, cell.category = spell, group.category
+            cell:ClearAllPoints()
+            cell:SetPoint("TOPLEFT", levels, "TOPLEFT", 16 + (offset % COLS) * width,
+                -y - math.floor(offset / COLS) * CELL)
+            cell:SetSize(width - 4, CELL - 4)
+            cell.icon:SetTexture(spell.useAltIcon and spell.altIcon or spell.icon)
+            cell.name:SetWidth(width - 56)
+            cell.name:SetText(spell.name)
+            cell.rank:SetWidth(width - 56)
+            cell.rank:SetText(spell.subText or "")
+            cell:Show()
+            if group.category.key == wt.AVAILABLE_KEY then availableCost = availableCost + spell.cost end
+        end
+        y = y + rows * CELL + GROUP_GAP
+    end
+    for i = #groups + 1, #mainFrame.groupHeaders do mainFrame.groupHeaders[i]:Hide() end
+    for i = cellIndex + 1, #mainFrame.cells do
+        mainFrame.cells[i].spell = nil
+        mainFrame.cells[i]:Hide()
+    end
+    levels:SetHeight(math.max(1, y))
+    return y, availableCost
 end
 
 local function createCityIcon(parent)
@@ -336,24 +462,27 @@ local function updateWeaponGroups(mainFrame, data, byWeapon)
 end
 
 local function updatePage(mainFrame, weapons)
-    wt.UpdateGroupingButton(mainFrame, weapons)
     mainFrame.character:SetText(string.format("%s • %s", UnitClass("player"),
         weapons and wt.L.WEAPON_SKILLS_HEADER or
         string.format(wt.L.LEVEL_FORMAT, wt.playerLevel or UnitLevel("player"))))
     mainFrame.total:SetShown(not weapons)
-    mainFrame.columns:SetShown(not weapons)
+    local levels = not weapons and WT_SpellDisplay == "levels"
+    mainFrame.columns:SetShown(not weapons and not levels)
+    mainFrame.levels:SetShown(levels)
     local cityView = weapons and WT_WeaponGrouping == "zone"
     local skillView = weapons and WT_WeaponGrouping == "weaponskill"
     local listView = weapons and WT_WeaponGrouping == "list"
     mainFrame.scrollFrame:Show()
-    mainFrame.scrollFrame:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 0, listView and -134 or -103)
+    mainFrame.scrollFrame:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 0,
+        levels and -72 or listView and -103 or weapons and -84 or -103)
     mainFrame.listColumns:SetShown(listView)
     mainFrame.footer:SetText(listView and wt.L.LEDGER_WEAPON_LIST_HINT or
         weapons and wt.L.LEDGER_WEAPON_HINT or wt.L.LEDGER_HINT)
     local y, availableCost, category, headingRow = 0, 0
     local data = listView and wt.weaponListData or weapons and {} or wt.spellListData
+    local rows = levels and {} or data -- Levels draws cells instead of rows
     local hasListSkills = false
-    for i, spell in ipairs(data) do
+    for i, spell in ipairs(rows) do
         local row = mainFrame.rows[i]
         if not row then
             row = createRow(mainFrame.content, mainFrame.rankX, mainFrame.levelX)
@@ -394,7 +523,7 @@ local function updatePage(mainFrame, weapons)
             row.category = category
             headingRow.count = headingRow.count + 1
             if not listView then
-                headingRow.heading:SetText(string.format("%s - %d",
+                headingRow.heading:SetText(string.format("%s • %d",
                     category.name or category.formattedName, headingRow.count))
             end
             row.icon:SetTexture(spell.useAltIcon and spell.altIcon or spell.icon)
@@ -434,10 +563,11 @@ local function updatePage(mainFrame, weapons)
         row:Show()
         y = y + row:GetHeight() + (isHeader and 4 or 0)
     end
-    for i = #data + 1, #mainFrame.rows do
+    for i = #rows + 1, #mainFrame.rows do
         mainFrame.rows[i].spell = nil
         mainFrame.rows[i]:Hide()
     end
+    if levels then y, availableCost = updateLevels(mainFrame, data) end
     mainFrame.total:SetText(string.format(wt.L.LEDGER_AVAILABLE_TOTAL,
         C_CurrencyInfo.GetCoinTextureString(availableCost)))
     local weaponData = cityView and wt.weaponGroupedData or skillView and wt.weaponSkillGroupedData or {}
@@ -466,7 +596,7 @@ local function updatePage(mainFrame, weapons)
     end
     mainFrame.empty:SetText(weapons and wt.L.LEDGER_WEAPON_EMPTY or wt.L.LEDGER_EMPTY)
     mainFrame.empty:ClearAllPoints()
-    mainFrame.empty:SetPoint("TOPLEFT", 8, listView and -144 or -112)
+    mainFrame.empty:SetPoint("TOPLEFT", 8, levels and -80 or listView and -112 or weapons and -92 or -112)
     mainFrame.empty:SetShown(((not weapons or listView) and #data == 0) or ((cityView or skillView) and #weaponData == 0))
     mainFrame.content:SetHeight(math.max(1, y))
     local scroll = mainFrame.scrollFrame
@@ -494,15 +624,8 @@ function wt.Update(mainFrame, forceUpdate)
     if mainFrame.expanded then updatePage(mainFrame.weaponPage, true) end
 end
 
-function wt.UpdateGroupingButton(mainFrame, weapons)
+function wt.UpdateGroupingButton(mainFrame)
     if mainFrame and mainFrame.scrollBar then return wt.CompactUI.UpdateGroupingButton(mainFrame) end
-    if not mainFrame or not mainFrame.weaponControls then return end
-    if weapons == nil then weapons = not mainFrame.expanded and wt.showingWeaponSkills end
-    mainFrame.weaponControls:SetShown(weapons)
-    for mode, button in pairs(mainFrame.groupingButtons) do
-        selectButton(button, mode == WT_WeaponGrouping)
-    end
-    mainFrame.showKnown:SetChecked(WT_ShowKnownWeaponSkills)
 end
 
 local function createPage(mainFrame)
@@ -532,42 +655,6 @@ local function createPage(mainFrame)
     footer:SetWidth(mainFrame:GetWidth() - 280)
     mainFrame.empty = label(mainFrame, wt.L.LEDGER_EMPTY, "SystemFont_Med3", 8, -112)
 
-    local controls = CreateFrame("Frame", nil, mainFrame)
-    mainFrame.weaponControls = controls
-    controls:SetPoint("TOPLEFT", 8, -72)
-    controls:SetPoint("TOPRIGHT", -20, -72)
-    controls:SetHeight(26)
-    local groupLabel = label(controls, wt.L.LEDGER_GROUP_BY, "SystemFont_Med3", 0, -6)
-    mainFrame.groupingButtons = {}
-    local previous = groupLabel
-    for _, option in ipairs({
-        {"zone", wt.L.LEDGER_GROUP_CITY},
-        {"weaponskill", wt.L.LEDGER_GROUP_WEAPON},
-        {"list", wt.L.GROUP_LIST},
-    }) do
-        local mode = option[1]
-        local button = chromeButton(controls, option[2], 76, function()
-            WT_WeaponGrouping = mode
-            mainFrame.scrollFrame:SetVerticalScroll(0)
-            wt:ApplyFilter()
-        end)
-        button:SetPoint("LEFT", previous, "RIGHT", previous == groupLabel and 8 or 2, 0)
-        mainFrame.groupingButtons[mode] = button
-        previous = button
-    end
-    local showKnown = CreateFrame("CheckButton", nil, controls, "UICheckButtonTemplate")
-    mainFrame.showKnown = showKnown
-    showKnown:SetSize(26, 26)
-    showKnown.Text:SetText(wt.L.LEDGER_SHOW_KNOWN)
-    showKnown.Text:SetTextColor(0.19, 0.12, 0.06)
-    showKnown:SetPoint("RIGHT", controls, "RIGHT", -showKnown.Text:GetStringWidth(), 0)
-    showKnown:SetHitRectInsets(0, -showKnown.Text:GetStringWidth(), 0, 0)
-    showKnown:SetScript("OnClick", function(self)
-        WT_ShowKnownWeaponSkills = self:GetChecked()
-        mainFrame.scrollFrame:SetVerticalScroll(0)
-        wt:ApplyFilter()
-    end)
-
     local scroll = CreateFrame("ScrollFrame", "$parentScrollFrame", mainFrame, "ScrollFrameTemplate")
     scroll:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 0, -103)
     scroll:SetPoint("BOTTOMRIGHT", mainFrame, "BOTTOMRIGHT", -20, 30)
@@ -579,11 +666,15 @@ local function createPage(mainFrame)
     mainFrame.cityX = math.floor(content:GetWidth() * 0.56)
     mainFrame.listColumns = CreateFrame("Frame", nil, mainFrame)
     mainFrame.listColumns:SetAllPoints()
-    label(mainFrame.listColumns, wt.L.LEDGER_WEAPON_SKILL, "SystemFont_Med3", 8, -110)
-    label(mainFrame.listColumns, wt.L.LEDGER_TRAINED_IN, "SystemFont_Med3", mainFrame.cityX, -110)
+    label(mainFrame.listColumns, wt.L.LEDGER_WEAPON_SKILL, "SystemFont_Med3", 8, -78)
+    label(mainFrame.listColumns, wt.L.LEDGER_TRAINED_IN, "SystemFont_Med3", mainFrame.cityX, -78)
     mainFrame.cityLegend = CreateFrame("Frame", nil, content)
     mainFrame.cityLegend:SetSize(content:GetWidth() - 16, 24)
     mainFrame.cityLegend.entries = {}
+    mainFrame.levels = CreateFrame("Frame", nil, content)
+    mainFrame.levels:SetPoint("TOPLEFT")
+    mainFrame.levels:SetWidth(content:GetWidth())
+    mainFrame.cells, mainFrame.groupHeaders = {}, {}
 end
 
 local function attachForeverSpellBook(mainFrame)
@@ -629,6 +720,43 @@ local function attachForeverSpellBook(mainFrame)
             if filter == wt.filter then return end
             wt.filter = filter
             wt:ApplyFilter()
+        end)
+
+        local dropdown = CreateFrame("DropdownButton", nil, mainFrame, "SpellBookSettingsDropdownTemplate")
+        mainFrame.displayDropdown = dropdown
+        dropdown:ClearAllPoints()
+        dropdown:SetAllPoints(book.SettingsDropdown)
+        local function rescroll()
+            (mainFrame.expanded and weaponPage or mainFrame).scrollFrame:SetVerticalScroll(0)
+        end
+        local function isStyle(style) return WT_SpellDisplay == style end
+        local function setStyle(style)
+            WT_SpellDisplay = style
+            mainFrame.scrollFrame:SetVerticalScroll(0)
+            wt.RefreshUI()
+        end
+        local function isGrouping(mode) return WT_WeaponGrouping == mode end
+        local function setGrouping(mode)
+            WT_WeaponGrouping = mode
+            rescroll()
+            wt:ApplyFilter()
+        end
+        local function showsKnown() return WT_ShowKnownWeaponSkills end
+        local function toggleKnown()
+            WT_ShowKnownWeaponSkills = not WT_ShowKnownWeaponSkills
+            rescroll()
+            wt:ApplyFilter()
+        end
+        dropdown:SetupMenu(function(_, rootDescription)
+            rootDescription:CreateTitle(wt.L.LEDGER_OPT_CLASS_HEADER)
+            rootDescription:CreateRadio(wt.L.DISPLAY_LEVELS, isStyle, setStyle, "levels")
+            rootDescription:CreateRadio(wt.L.GROUP_LIST, isStyle, setStyle, "ledger")
+            rootDescription:CreateDivider()
+            rootDescription:CreateTitle(wt.L.GROUPING_OPTIONS_TITLE)
+            rootDescription:CreateRadio(wt.L.GROUP_BY_ZONE, isGrouping, setGrouping, "zone")
+            rootDescription:CreateRadio(wt.L.GROUP_BY_WEAPON_SKILL, isGrouping, setGrouping, "weaponskill")
+            rootDescription:CreateRadio(wt.L.GROUP_LIST, isGrouping, setGrouping, "list")
+            rootDescription:CreateCheckbox(wt.L.LEDGER_SHOW_KNOWN, showsKnown, toggleKnown)
         end)
 
         -- keep our launcher outside blizz's pool: `CreateCategoryMixins` releases its tabs

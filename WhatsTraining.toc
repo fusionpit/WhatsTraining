@@ -3,7 +3,8 @@
 ## Version: @project-version@
 ## Author: Sveng
 ## Notes: Shows you what spells are available at your class trainer
-## SavedVariables: WT_WeaponGrouping, WT_ShowKnownWeaponSkills
+## SavedVariables: WT_WeaponGrouping [AllowLoadGameType classic][ExcludeLoadGameType camelot]
+## SavedVariables: WT_WeaponGrouping, WT_ShowKnownWeaponSkills, WT_SpellDisplay [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 ## SavedVariablesPerCharacter: WT_LearnedPetAbilities, WT_NeedsToOpenBeastTraining, WT_IgnoredSpells
 ## OptionalDeps: ClassTrainerPlus, TomTom [AllowLoadGameType classic][ExcludeLoadGameType camelot]
 ## OptionalDeps: ClassTrainerPlusForever, TomTom [AllowLoadGameType camelot][ExcludeLoadGameType classic]
