@@ -120,6 +120,9 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         if WT_SpellDisplay ~= "ledger" and WT_SpellDisplay ~= "levels" then
             WT_SpellDisplay = "ledger"
         end
+        if type(WT_SideBySide) ~= "boolean" then
+            WT_SideBySide = false
+        end
         if type(WT_ShowKnownWeaponSkills) ~= "boolean" then
             WT_ShowKnownWeaponSkills = true
         end

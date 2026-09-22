@@ -484,7 +484,8 @@ function wt.applyFilter()
     -- shared wrappers, so assembling both would clobber the other's indents. Assemble
     -- exactly the grouped view that is currently active.
     local expanded = wt.MainFrame and wt.MainFrame.expanded
-    if wt.showingWeaponSkills or expanded then
+    local sideBySide = expanded and wt.MainFrame.sideBySide
+    if wt.showingWeaponSkills or sideBySide then
         local mode = WT_WeaponGrouping
         if mode == "weaponskill" then
             buildFilteredSkillGroupedData()
@@ -496,9 +497,10 @@ function wt.applyFilter()
     wt.data = selectPanelData()
 
     local visibleLists = {wt.data}
-    if expanded then
-        visibleLists = {wt.spellListData, WT_WeaponGrouping == "list" and wt.weaponListData or
-            WT_WeaponGrouping == "weaponskill" and wt.weaponSkillGroupedData or wt.weaponGroupedData}
+    if expanded then tinsert(visibleLists, wt.spellListData) end
+    if sideBySide then
+        tinsert(visibleLists, WT_WeaponGrouping == "list" and wt.weaponListData or
+            WT_WeaponGrouping == "weaponskill" and wt.weaponSkillGroupedData or wt.weaponGroupedData)
     end
     for _, data in ipairs(visibleLists) do
         if #data == 0 and wt.filter ~= '' then

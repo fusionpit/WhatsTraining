@@ -225,30 +225,44 @@ local function createCell(mainFrame)
     return cell
 end
 
--- lays out every group whole and returns the content height and the cost of the available spells
-local function updateLevels(mainFrame, data)
-    local levels, y, cellIndex, availableCost = mainFrame.levels, 0, 0, 0
+local function wholeBlocks(groups)
+    local blocks = {}
+    for i, group in ipairs(groups) do blocks[i] = {group = group, first = 1, last = #group.spells} end
+    return blocks
+end
+
+-- lays out blocks ({group, first, last} slices of a group's spells) and returns the content height
+local function updateLevels(mainFrame, blocks)
+    local levels, y, cellIndex = mainFrame.levels, 0, 0
     local width = (levels:GetWidth() - 32) / COLS
-    local groups = buildGroups(data)
-    for i, group in ipairs(groups) do
+    for i, block in ipairs(blocks) do
+        local group, first, last = block.group, block.first, block.last
         local header = mainFrame.groupHeaders[i]
         if not header then
             header = createGroupHeader(levels)
             mainFrame.groupHeaders[i] = header
         end
         local total = #group.spells
-        local rows = math.ceil(total / COLS)
+        local rows = math.ceil((last - first + 1) / COLS)
         header:SetPoint("TOPLEFT", levels, "TOPLEFT", 0, -y)
         header:SetPoint("TOPRIGHT", levels, "TOPRIGHT", 0, -y)
         header.rule:SetShown(i > 1)
         local title, r, g, b = groupTitle(group)
-        header.title:SetText(title)
+        header.title:SetText(first > 1 and title .. " " .. wt.L.CONTINUED or title)
         header.title:SetTextColor(r, g, b)
-        header.count:SetText(" • " .. string.format(total == 1 and wt.L.LEVELS_SPELL_COUNT or
-            wt.L.LEVELS_SPELLS_COUNT, total))
+        local count
+        if first == 1 and last == total then
+            count = string.format(total == 1 and wt.L.LEVELS_SPELL_COUNT or wt.L.LEVELS_SPELLS_COUNT, total)
+        elseif first == last then
+            count = string.format(wt.L.LEVELS_SPLIT_ONE, first, total)
+        else
+            count = string.format(wt.L.LEVELS_SPLIT_COUNT, first, last, total)
+        end
+        header.count:SetText(" • " .. count)
         header:Show()
         y = y + GROUP_HEADER
-        for index, spell in ipairs(group.spells) do
+        for index = first, last do
+            local spell = group.spells[index]
             cellIndex = cellIndex + 1
             local cell = mainFrame.cells[cellIndex]
             if not cell then
@@ -256,7 +270,7 @@ local function updateLevels(mainFrame, data)
                 mainFrame.cells[cellIndex] = cell
             end
             hideTooltip(cell)
-            local offset = index - 1
+            local offset = index - first
             cell.spell, cell.category = spell, group.category
             cell:ClearAllPoints()
             cell:SetPoint("TOPLEFT", levels, "TOPLEFT", 16 + (offset % COLS) * width,
@@ -266,19 +280,103 @@ local function updateLevels(mainFrame, data)
             cell.name:SetWidth(width - 56)
             cell.name:SetText(spell.name)
             cell.rank:SetWidth(width - 56)
-            cell.rank:SetText(spell.subText or "")
+            local subText = spell.subText or ""
+            if not group.level and not group.category.hideLevel then
+                subText = (subText ~= "" and subText .. " • " or "") .. spell.formattedLevel
+            end
+            cell.rank:SetText(subText)
             cell:Show()
-            if group.category.key == wt.AVAILABLE_KEY then availableCost = availableCost + spell.cost end
         end
         y = y + rows * CELL + GROUP_GAP
     end
-    for i = #groups + 1, #mainFrame.groupHeaders do mainFrame.groupHeaders[i]:Hide() end
+    for i = #blocks + 1, #mainFrame.groupHeaders do mainFrame.groupHeaders[i]:Hide() end
     for i = cellIndex + 1, #mainFrame.cells do
         mainFrame.cells[i].spell = nil
         mainFrame.cells[i]:Hide()
     end
     levels:SetHeight(math.max(1, y))
-    return y, availableCost
+    return y
+end
+
+-- expanded paging: split the class spell display into halves of `height` px, two halves per page
+local function paginateLedger(data, height)
+    local counts, category = {}, nil
+    for _, s in ipairs(data) do
+        if s.isHeader then category, counts[s] = s, 0 else counts[category] = counts[category] + 1 end
+    end
+    local function header(cat, suffix)
+        local name = cat.name or cat.formattedName
+        return setmetatable({label = suffix and name .. " • " .. suffix or name}, {__index = cat})
+    end
+    local halves, half, y = {}, {}, 0
+    for _, s in ipairs(data) do
+        -- mirrors updatePage's spacing: 8 above a header, 4 below it
+        local gap = s.isHeader and #half > 0 and 8 or 0
+        local needed = s.isHeader and ROW_HEIGHT * 2 + 4 or ROW_HEIGHT
+        if #half > 0 and y + gap + needed > height then
+            tinsert(halves, half)
+            half, y, gap = {}, 0, 0
+            if not s.isHeader then
+                tinsert(half, header(category, wt.L.CONTINUED))
+                y = ROW_HEIGHT + 4
+            end
+        end
+        if s.isHeader then category = s end
+        tinsert(half, s.isHeader and header(s, counts[s] > 0 and counts[s]) or s)
+        y = y + gap + (s.isHeader and ROW_HEIGHT + 4 or ROW_HEIGHT)
+    end
+    tinsert(halves, half)
+    return halves
+end
+
+-- level halves are block lists for updateLevels. a group that does not fit moves whole to the
+-- next half unless that would leave more than MAX_WASTE of this half empty. then it splits.
+local MAX_WASTE = 0.4
+local function paginateLevels(groups, height)
+    local halves, half, y = {}, {}, 0
+    local maxRows = math.floor((height - GROUP_HEADER) / CELL)
+    for _, group in ipairs(groups) do
+        local first, total = 1, #group.spells
+        while first <= total do
+            local rowsLeft = math.floor((height - y - GROUP_HEADER) / CELL)
+            local rowsNeeded = math.ceil((total - first + 1) / COLS)
+            if #half > 0 and rowsNeeded > rowsLeft and (rowsLeft < 1
+                or (rowsNeeded <= maxRows and (height - y) / height <= MAX_WASTE)) then
+                tinsert(halves, half)
+                half, y, rowsLeft = {}, 0, maxRows
+            end
+            local rows = math.max(1, math.min(rowsNeeded, rowsLeft))
+            local last = math.min(total, first + rows * COLS - 1)
+            tinsert(half, {group = group, first = first, last = last})
+            y = y + GROUP_HEADER + rows * CELL + GROUP_GAP
+            first = last + 1
+        end
+    end
+    tinsert(halves, half)
+    return halves
+end
+
+local function paginate(mainFrame)
+    local levels = WT_SpellDisplay == "levels"
+    -- the content area updatePage anchors: top offset per display, 30 above the bottom;
+    -- levels also keep a line free for the "Continues on ..." note
+    local height = mainFrame:GetHeight() - (levels and 72 + 12 or 103) - 30
+    if levels then return paginateLevels(buildGroups(wt.spellListData), height) end
+    return paginateLedger(wt.spellListData, height)
+end
+
+local function endsSplit(blocks)
+    local block = blocks[#blocks]
+    return block ~= nil and block.last ~= nil and block.last < #block.group.spells
+end
+
+local function levelRange(blocks)
+    local lo, hi
+    for _, block in ipairs(blocks) do
+        local level = block.group and block.group.level
+        if level then lo, hi = math.min(lo or level, level), math.max(hi or level, level) end
+    end
+    return lo, hi
 end
 
 local function createCityIcon(parent)
@@ -461,7 +559,8 @@ local function updateWeaponGroups(mainFrame, data, byWeapon)
     return y
 end
 
-local function updatePage(mainFrame, weapons)
+-- pageData: one paginated half (ledger rows or levels blocks) instead of the whole scrolling list
+local function updatePage(mainFrame, weapons, pageData)
     mainFrame.character:SetText(string.format("%s • %s", UnitClass("player"),
         weapons and wt.L.WEAPON_SKILLS_HEADER or
         string.format(wt.L.LEVEL_FORMAT, wt.playerLevel or UnitLevel("player"))))
@@ -475,11 +574,16 @@ local function updatePage(mainFrame, weapons)
     mainFrame.scrollFrame:Show()
     mainFrame.scrollFrame:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 0,
         levels and -72 or listView and -103 or weapons and -84 or -103)
+    mainFrame.scrollFrame.ScrollBar:SetShown(not pageData)
+    mainFrame.scrollFrame:EnableMouseWheel(not pageData)
     mainFrame.listColumns:SetShown(listView)
     mainFrame.footer:SetText(listView and wt.L.LEDGER_WEAPON_LIST_HINT or
         weapons and wt.L.LEDGER_WEAPON_HINT or wt.L.LEDGER_HINT)
     local y, availableCost, category, headingRow = 0, 0
-    local data = listView and wt.weaponListData or weapons and {} or wt.spellListData
+    for _, spell in ipairs(wt.spellListData) do
+        if spell.isHeader and spell.key == wt.AVAILABLE_KEY then availableCost = spell.cost end
+    end
+    local data = listView and wt.weaponListData or weapons and {} or pageData or wt.spellListData
     local rows = levels and {} or data -- Levels draws cells instead of rows
     local hasListSkills = false
     for i, spell in ipairs(rows) do
@@ -518,11 +622,11 @@ local function updatePage(mainFrame, weapons)
             row.band:SetGradient("HORIZONTAL", CreateColor(color[1], color[2], color[3], 0.75),
                 CreateColor(color[1], color[2], color[3], 0))
             row.heading:SetTextColor(color[4], color[5], color[6])
-            row.heading:SetText(spell.name or spell.formattedName)
+            row.heading:SetText(spell.label or spell.name or spell.formattedName)
         else
             row.category = category
             headingRow.count = headingRow.count + 1
-            if not listView then
+            if not listView and not category.label then
                 headingRow.heading:SetText(string.format("%s • %d",
                     category.name or category.formattedName, headingRow.count))
             end
@@ -535,7 +639,6 @@ local function updatePage(mainFrame, weapons)
             else
                 row.level:SetTextColor(0.19, 0.12, 0.06)
             end
-            if category.key == wt.AVAILABLE_KEY then availableCost = availableCost + spell.cost end
             if listView then
                 hasListSkills = true
                 row.rank:Hide()
@@ -567,7 +670,7 @@ local function updatePage(mainFrame, weapons)
         mainFrame.rows[i].spell = nil
         mainFrame.rows[i]:Hide()
     end
-    if levels then y, availableCost = updateLevels(mainFrame, data) end
+    if levels then y = updateLevels(mainFrame, pageData or wholeBlocks(buildGroups(data))) end
     mainFrame.total:SetText(string.format(wt.L.LEDGER_AVAILABLE_TOTAL,
         C_CurrencyInfo.GetCoinTextureString(availableCost)))
     local weaponData = cityView and wt.weaponGroupedData or skillView and wt.weaponSkillGroupedData or {}
@@ -607,21 +710,41 @@ end
 function wt.UpdateToggleIcon(mainFrame)
     if mainFrame and mainFrame.scrollBar then return wt.CompactUI.UpdateToggleIcon(mainFrame) end
     if not mainFrame or not mainFrame.classSpellsButton then return end
-    selectButton(mainFrame.classSpellsButton, not wt.showingWeaponSkills)
-    selectButton(mainFrame.weaponSkillsButton, wt.showingWeaponSkills)
+    local weapons = mainFrame.expanded and mainFrame.sideBySide or (not mainFrame.expanded and wt.showingWeaponSkills)
+    selectButton(mainFrame.classSpellsButton, not weapons)
+    selectButton(mainFrame.weaponSkillsButton, weapons)
 end
 
 function wt.Update(mainFrame, forceUpdate)
     if mainFrame and mainFrame.scrollBar then return wt.CompactUI.Update(mainFrame, forceUpdate) end
     if not mainFrame or not mainFrame.rows then return end
     wt.UpdateToggleIcon(mainFrame)
-    mainFrame.title:SetText(mainFrame.expanded and wt.L.LEDGER_CLASS_SPELLS or "What's Training?")
-    mainFrame.classSpellsButton:SetShown(not mainFrame.expanded)
-    mainFrame.weaponSkillsButton:SetShown(not mainFrame.expanded)
-    mainFrame.footer:SetWidth(mainFrame:GetWidth() - (mainFrame.expanded and 28 or 280))
-    updatePage(mainFrame, not mainFrame.expanded and wt.showingWeaponSkills)
-    mainFrame.weaponPage:SetShown(mainFrame.expanded)
-    if mainFrame.expanded then updatePage(mainFrame.weaponPage, true) end
+    local expanded, weaponPage = mainFrame.expanded, mainFrame.weaponPage
+    local dual = expanded and not mainFrame.sideBySide
+    mainFrame.title:SetText(expanded and wt.L.LEDGER_CLASS_SPELLS or "What's Training?")
+    weaponPage.title:SetText(dual and wt.L.LEDGER_CLASS_SPELLS .. " " .. wt.L.CONTINUED or wt.L.WEAPON_SKILLS_HEADER)
+    weaponPage:SetShown(expanded)
+    weaponPage.footer:SetShown(not dual)
+    mainFrame.pagingControls:SetShown(dual)
+    mainFrame.continues:SetShown(false)
+    weaponPage.continues:SetShown(false)
+    if not dual then
+        updatePage(mainFrame, not expanded and wt.showingWeaponSkills)
+        if expanded then updatePage(weaponPage, true) end
+        return
+    end
+    local halves, controls = paginate(mainFrame), mainFrame.pagingControls
+    controls:SetMaxPages(math.ceil(#halves / 2)) -- clamping re-enters through OnPageChanged; harmless
+    local page = controls:GetCurrentPage()
+    local left, right = halves[page * 2 - 1] or {}, halves[page * 2] or {}
+    updatePage(mainFrame, false, left)
+    updatePage(weaponPage, false, right)
+    weaponPage.total:Hide()
+    weaponPage.empty:Hide()
+    mainFrame.continues:SetShown(endsSplit(left))
+    weaponPage.continues:SetShown(endsSplit(right))
+    local lo, hi = levelRange(right)
+    if lo then weaponPage.character:SetText(string.format(wt.L.LEVELS_RANGE, lo, hi)) end
 end
 
 function wt.UpdateGroupingButton(mainFrame)
@@ -654,6 +777,10 @@ local function createPage(mainFrame)
     footer:SetPoint("LEFT", mainFrame, "BOTTOMLEFT", 8, 15)
     footer:SetWidth(mainFrame:GetWidth() - 280)
     mainFrame.empty = label(mainFrame, wt.L.LEDGER_EMPTY, "SystemFont_Med3", 8, -112)
+    mainFrame.continues = label(mainFrame, "", "GameFontNormalSmall", 0, 0)
+    mainFrame.continues:ClearAllPoints()
+    mainFrame.continues:SetPoint("BOTTOMRIGHT", mainFrame, "BOTTOMRIGHT", -24, 30)
+    mainFrame.continues:SetJustifyH("RIGHT")
 
     local scroll = CreateFrame("ScrollFrame", "$parentScrollFrame", mainFrame, "ScrollFrameTemplate")
     scroll:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 0, -103)
@@ -692,14 +819,39 @@ local function attachForeverSpellBook(mainFrame)
         weaponPage:SetPoint("BOTTOMRIGHT", book, "BOTTOMRIGHT", -45, 15)
         weaponPage:SetWidth(mainFrame:GetWidth())
         createPage(weaponPage)
-        weaponPage.title:SetText(wt.L.WEAPON_SKILLS_HEADER)
         weaponPage.footer:SetWidth(weaponPage:GetWidth() - 28)
         weaponPage:Hide()
+        mainFrame.continues:SetText(wt.L.CONTINUES_RIGHT)
+        weaponPage.continues:SetText(wt.L.CONTINUES_NEXT)
+        mainFrame.sideBySide = WT_SideBySide
+
+        local controls = CreateFrame("Frame", nil, weaponPage, "PagingControlsHorizontalTemplate")
+        mainFrame.pagingControls = controls
+        controls:SetPoint("BOTTOMRIGHT", weaponPage, "BOTTOMRIGHT", -20, 7)
+        controls.PageText:SetFontObject("SystemFont_Med3")
+        controls.PageText:SetTextColor(0.19, 0.12, 0.06)
+        controls.spacing = 8
+        weaponPage.continues:ClearAllPoints()
+        weaponPage.continues:SetPoint("RIGHT", controls, "LEFT", -12, 0)
+        controls.prevPageSound, controls.nextPageSound = SOUNDKIT.IG_ABILITY_PAGE_TURN, SOUNDKIT.IG_ABILITY_PAGE_TURN
+        function weaponPage:OnPageChanged() wt.Update(mainFrame) end
+        book:EnableMouseWheel(true)
+        book:HookScript("OnMouseWheel", function(_, delta)
+            if mainFrame:IsShown() and mainFrame.expanded and not mainFrame.sideBySide then
+                controls:OnMouseWheel(delta)
+            end
+        end)
 
         local function selectView(weapons)
-            if wt.showingWeaponSkills == weapons then return end
-            mainFrame.scrollFrame:SetVerticalScroll(0)
-            wt:ToggleWeaponSkills()
+            if mainFrame.expanded then
+                if mainFrame.sideBySide ~= weapons then
+                    mainFrame.sideBySide = weapons
+                    wt:ApplyFilter()
+                end
+            elseif wt.showingWeaponSkills ~= weapons then
+                mainFrame.scrollFrame:SetVerticalScroll(0)
+                wt:ToggleWeaponSkills()
+            end
         end
         mainFrame.weaponSkillsButton = chromeButton(mainFrame, wt.L.WEAPON_SKILLS_HEADER, 120,
             function() selectView(true) end)
@@ -717,6 +869,7 @@ local function attachForeverSpellBook(mainFrame)
             local filter = strlower(self:GetText())
             mainFrame.scrollFrame:SetVerticalScroll(0)
             weaponPage.scrollFrame:SetVerticalScroll(0)
+            controls:SetCurrentPage(1)
             if filter == wt.filter then return end
             wt.filter = filter
             wt:ApplyFilter()
@@ -747,10 +900,17 @@ local function attachForeverSpellBook(mainFrame)
             rescroll()
             wt:ApplyFilter()
         end
+        local function isSideBySide() return WT_SideBySide end
+        local function toggleSideBySide()
+            WT_SideBySide = not WT_SideBySide
+            mainFrame.sideBySide = WT_SideBySide
+            wt:ApplyFilter()
+        end
         dropdown:SetupMenu(function(_, rootDescription)
             rootDescription:CreateTitle(wt.L.LEDGER_OPT_CLASS_HEADER)
             rootDescription:CreateRadio(wt.L.DISPLAY_LEVELS, isStyle, setStyle, "levels")
             rootDescription:CreateRadio(wt.L.GROUP_LIST, isStyle, setStyle, "ledger")
+            rootDescription:CreateCheckbox(wt.L.LEDGER_SIDE_BY_SIDE, isSideBySide, toggleSideBySide)
             rootDescription:CreateDivider()
             rootDescription:CreateTitle(wt.L.GROUPING_OPTIONS_TITLE)
             rootDescription:CreateRadio(wt.L.GROUP_BY_ZONE, isGrouping, setGrouping, "zone")
