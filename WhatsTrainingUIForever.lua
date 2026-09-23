@@ -28,27 +28,92 @@ local function hideTooltip(self)
     if GameTooltip:IsOwned(self) then GameTooltip:Hide() end
 end
 
-local function chromeButton(parent, text, width, onClick)
-    local button = CreateFrame("Button", nil, parent, "UIMenuButtonStretchTemplate")
-    button:SetSize(width, 26)
-    button:SetText(text)
-    local highlight = button:GetHighlightTexture()
-    highlight:SetColorTexture(1, 0.65, 0.15, 0.22)
-    highlight:SetBlendMode("BLEND")
-    highlight:ClearAllPoints()
-    highlight:SetPoint("TOPLEFT", 5, -5)
-    highlight:SetPoint("BOTTOMRIGHT", -5, 5)
-    button:SetScript("OnClick", function(self)
-        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-        onClick(self)
-    end)
-    return button
+local function showingWeapons(frame)
+    if frame.expanded then return frame.sideBySide end
+    return wt.showingWeaponSkills
 end
 
-local function selectButton(button, selected)
-    button:SetNormalFontObject(selected and "GameFontNormalSmall" or "GameFontHighlightSmall")
-    button:SetHighlightFontObject(selected and "GameFontNormalSmall" or "GameFontHighlightSmall")
-    if selected then button:LockHighlight() else button:UnlockHighlight() end
+local function createCategoryRibbon(frame, selectView)
+    local bookmark = CreateFrame("Button", nil, frame)
+    bookmark:SetFrameLevel(frame:GetFrameLevel() + 25)
+    bookmark:RegisterForClicks("LeftButtonUp")
+    bookmark.art = bookmark:CreateTexture(nil, "BACKGROUND")
+    bookmark.art:SetAllPoints()
+    bookmark.badgeBackground = bookmark:CreateTexture(nil, "BORDER")
+    bookmark.badgeBackground:SetTexture("Interface\\Minimap\\UI-Minimap-Background")
+    bookmark.badgeBackground:SetPoint("CENTER", bookmark, "TOP", -5, -35)
+    bookmark.icon = bookmark:CreateTexture(nil, "ARTWORK")
+    bookmark.icon:SetPoint("CENTER", bookmark.badgeBackground)
+    bookmark.iconMask = bookmark:CreateMaskTexture()
+    bookmark.iconMask:SetTexture("Interface\\CharacterFrame\\TempPortraitAlphaMask",
+        "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    bookmark.iconMask:SetPoint("CENTER", bookmark.badgeBackground)
+    bookmark.icon:AddMaskTexture(bookmark.iconMask)
+    bookmark.iconBorder = bookmark:CreateTexture(nil, "OVERLAY")
+    bookmark.iconBorder:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
+    -- the ring occupies the upper-left 40px of its 64px texture
+    bookmark.iconBorder:SetTexCoord(0, 40 / 64, 0, 40 / 64)
+    bookmark.iconBorder:SetPoint("CENTER", bookmark.badgeBackground)
+    bookmark.glow = bookmark:CreateTexture(nil, "OVERLAY", nil, 1)
+    bookmark.glow:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
+    bookmark.glow:SetTexCoord(0, 40 / 64, 0, 40 / 64)
+    bookmark.glow:SetAllPoints(bookmark.iconBorder)
+    bookmark.glow:SetBlendMode("ADD")
+    bookmark.glow:SetVertexColor(1, 0.8, 0.35)
+    bookmark.glow:SetAlpha(0)
+    local function updateGlow(self, elapsed)
+        local alpha, target = self.glow:GetAlpha(), self.glowTarget
+        local step = elapsed * 0.45 / 0.15
+        alpha = alpha < target and math.min(target, alpha + step) or math.max(target, alpha - step)
+        self.glow:SetAlpha(alpha)
+        if alpha == target then self:SetScript("OnUpdate", nil) end
+    end
+    local function releaseBadge(self)
+        self.badgeBackground:SetPoint("CENTER", self, "TOP", -5, -35)
+    end
+    bookmark:SetScript("OnMouseDown", function(self, button)
+        if button == "LeftButton" and not InCombatLockdown() then
+            self.badgeBackground:SetPoint("CENTER", self, "TOP", -5, -37)
+        end
+    end)
+    bookmark:SetScript("OnMouseUp", releaseBadge)
+    bookmark:SetSize(84, 126)
+    bookmark.badgeBackground:SetSize(32, 32)
+    bookmark.iconBorder:SetSize(32, 32)
+    bookmark.iconMask:SetSize(32 * 0.78, 32 * 0.78)
+    local info = C_Texture.GetAtlasInfo("spellbook-background-evergreen-ribbon")
+    local uRange = info.rightTexCoord - info.leftTexCoord
+    local vRange = info.bottomTexCoord - info.topTexCoord
+    bookmark.art:SetTexture(info.file or info.filename)
+    bookmark.art:SetTexCoord(info.leftTexCoord + uRange * 4 / info.width,
+        info.leftTexCoord + uRange * 67 / info.width,
+        info.bottomTexCoord - vRange * 110 / info.height, info.bottomTexCoord)
+    bookmark.art:SetBlendMode("BLEND")
+    bookmark:SetScript("OnClick", function()
+        if InCombatLockdown() then return end
+        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+        selectView(not showingWeapons(frame))
+    end)
+    bookmark:SetScript("OnEnter", function(self)
+        self.glowTarget = 0.45
+        self:SetScript("OnUpdate", updateGlow)
+        GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+        GameTooltip:SetText(showingWeapons(frame) and wt.L.LEDGER_CLASS_SPELLS or wt.L.WEAPON_SKILLS_HEADER)
+        GameTooltip:Show()
+    end)
+    bookmark:SetScript("OnLeave", function(self)
+        self.glowTarget = 0
+        self:SetScript("OnUpdate", updateGlow)
+        releaseBadge(self)
+        hideTooltip(self)
+    end)
+    bookmark:SetScript("OnHide", function(self)
+        self:SetScript("OnUpdate", nil)
+        self.glow:SetAlpha(0)
+        releaseBadge(self)
+        hideTooltip(self)
+    end)
+    return bookmark
 end
 
 local function weaponStatus(spell)
@@ -709,10 +774,24 @@ end
 
 function wt.UpdateToggleIcon(mainFrame)
     if mainFrame and mainFrame.scrollBar then return wt.CompactUI.UpdateToggleIcon(mainFrame) end
-    if not mainFrame or not mainFrame.classSpellsButton then return end
-    local weapons = mainFrame.expanded and mainFrame.sideBySide or (not mainFrame.expanded and wt.showingWeaponSkills)
-    selectButton(mainFrame.classSpellsButton, not weapons)
-    selectButton(mainFrame.weaponSkillsButton, weapons)
+    if not mainFrame or not mainFrame.categoryRibbon then return end
+    local ribbon = mainFrame.categoryRibbon
+    local page = mainFrame.expanded and mainFrame.weaponPage or mainFrame
+    ribbon:ClearAllPoints()
+    ribbon:SetPoint("TOPRIGHT", page, "TOPRIGHT", 24, 38)
+    mainFrame.total:ClearAllPoints()
+    mainFrame.total:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", mainFrame.expanded and -20 or -84, -32)
+    if showingWeapons(mainFrame) then
+        ribbon.icon:SetTexture("Interface\\Icons\\INV_Misc_Book_09")
+        ribbon.icon:SetTexCoord(0, 1, 0, 1)
+        ribbon.icon:SetSize(32 * 0.7, 32 * 0.7)
+    else
+        ribbon.icon:SetAtlas("pvptalents-warmode-swords", false, nil, true)
+        ribbon.icon:SetSize(32 * 0.62, 32 * 0.62)
+    end
+    if GameTooltip:IsOwned(ribbon) then
+        ribbon:GetScript("OnEnter")(ribbon)
+    end
 end
 
 function wt.Update(mainFrame, forceUpdate)
@@ -775,7 +854,7 @@ local function createPage(mainFrame)
     mainFrame.footer = footer
     footer:ClearAllPoints()
     footer:SetPoint("LEFT", mainFrame, "BOTTOMLEFT", 8, 15)
-    footer:SetWidth(mainFrame:GetWidth() - 280)
+    footer:SetWidth(mainFrame:GetWidth() - 28)
     mainFrame.empty = label(mainFrame, wt.L.LEDGER_EMPTY, "SystemFont_Med3", 8, -112)
     mainFrame.continues = label(mainFrame, "", "GameFontNormalSmall", 0, 0)
     mainFrame.continues:ClearAllPoints()
@@ -853,12 +932,7 @@ local function attachForeverSpellBook(mainFrame)
                 wt:ToggleWeaponSkills()
             end
         end
-        mainFrame.weaponSkillsButton = chromeButton(mainFrame, wt.L.WEAPON_SKILLS_HEADER, 120,
-            function() selectView(true) end)
-        mainFrame.weaponSkillsButton:SetPoint("RIGHT", mainFrame, "BOTTOMRIGHT", -20, 15)
-        mainFrame.classSpellsButton = chromeButton(mainFrame, wt.L.LEDGER_CLASS_SPELLS, 120,
-            function() selectView(false) end)
-        mainFrame.classSpellsButton:SetPoint("RIGHT", mainFrame.weaponSkillsButton, "LEFT", -2, 0)
+        mainFrame.categoryRibbon = createCategoryRibbon(mainFrame, selectView)
 
         local search = CreateFrame("EditBox", "$parentSearchBox", mainFrame, "SearchBoxTemplate")
         mainFrame.searchBox = search
