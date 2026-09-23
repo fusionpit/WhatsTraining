@@ -802,6 +802,10 @@ function wt.Update(mainFrame, forceUpdate)
     local dual = expanded and not mainFrame.sideBySide
     mainFrame.title:SetText(expanded and wt.L.LEDGER_CLASS_SPELLS or "What's Training?")
     weaponPage.title:SetText(dual and wt.L.LEDGER_CLASS_SPELLS .. " " .. wt.L.CONTINUED or wt.L.WEAPON_SKILLS_HEADER)
+    mainFrame.titleBackplate:SetWidth(math.min(mainFrame:GetWidth() + 69,
+        math.max(416, mainFrame.title:GetStringWidth() * 2.5)))
+    weaponPage.titleBackplate:SetWidth(math.min(weaponPage:GetWidth() + 69,
+        math.max(416, weaponPage.title:GetStringWidth() * 2.5)))
     weaponPage:SetShown(expanded)
     weaponPage.footer:SetShown(not dual)
     mainFrame.pagingControls:SetShown(dual)
@@ -831,7 +835,13 @@ function wt.UpdateGroupingButton(mainFrame)
 end
 
 local function createPage(mainFrame)
+    local backplate = mainFrame:CreateTexture(nil, "BACKGROUND")
+    backplate:SetAtlas("spellbook-list-backplate")
+    backplate:SetAlpha(0.65)
+    backplate:SetSize(416, 106)
     mainFrame.title = label(mainFrame, "What's Training?", "SystemFont_Huge2", 8, 0)
+    backplate:SetPoint("LEFT", mainFrame, "TOPLEFT", -69, -16)
+    mainFrame.titleBackplate = backplate
     mainFrame.character = label(mainFrame, "", "SystemFont_Med3", 8, -32)
     local total = label(mainFrame, "", "SystemFont_Med3", 0, 0)
     mainFrame.total = total
