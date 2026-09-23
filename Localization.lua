@@ -56,7 +56,6 @@ local localeText = {
         LEVELS_SPELLS_COUNT = "%d spells",
         LEVELS_SPLIT_COUNT = "%d–%d of %d",
         LEVELS_SPLIT_ONE = "%d of %d",
-        LEVELS_RANGE = "Levels %d – %d",
         CONTINUED = "continued",
         CONTINUES_RIGHT = "Continues on right »",
         CONTINUES_NEXT = "Continues on next page »",

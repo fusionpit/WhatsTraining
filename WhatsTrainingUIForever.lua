@@ -4,6 +4,7 @@ local TAB_TEXTURE_FILEID = GetFileIDFromPath("Interface\\Icons\\INV_Misc_Questio
 local ROW_HEIGHT = 28
 local WEAPON_HEADING_HEIGHT = 24
 local TRAINER_ROW_HEIGHT = 20
+local CONTENT_RISE = 16
 local sectionColors = {
     available = {0.12, 0.24, 0.08, 0.65, 1, 0.40},
     missingReqs = {0.32, 0.15, 0.03, 1, 0.82, 0.30},
@@ -423,8 +424,8 @@ end
 
 local function paginate(mainFrame)
     local levels = WT_SpellDisplay == "levels"
-    -- the content area updatePage anchors: top offset per display, 30 above the bottom;
-    -- levels also keep a line free for the "Continues on ..." note
+    -- Moving both edges up by CONTENT_RISE keeps the page height and row count unchanged.
+    -- Levels also keep a line free for the "Continues on ..." note.
     local height = mainFrame:GetHeight() - (levels and 72 + 12 or 103) - 30
     if levels then return paginateLevels(buildGroups(wt.spellListData), height) end
     return paginateLedger(wt.spellListData, height)
@@ -433,15 +434,6 @@ end
 local function endsSplit(blocks)
     local block = blocks[#blocks]
     return block ~= nil and block.last ~= nil and block.last < #block.group.spells
-end
-
-local function levelRange(blocks)
-    local lo, hi
-    for _, block in ipairs(blocks) do
-        local level = block.group and block.group.level
-        if level then lo, hi = math.min(lo or level, level), math.max(hi or level, level) end
-    end
-    return lo, hi
 end
 
 local function createCityIcon(parent)
@@ -626,9 +618,6 @@ end
 
 -- pageData: one paginated half (ledger rows or levels blocks) instead of the whole scrolling list
 local function updatePage(mainFrame, weapons, pageData)
-    mainFrame.character:SetText(string.format("%s • %s", UnitClass("player"),
-        weapons and wt.L.WEAPON_SKILLS_HEADER or
-        string.format(wt.L.LEVEL_FORMAT, wt.playerLevel or UnitLevel("player"))))
     mainFrame.total:SetShown(not weapons)
     local levels = not weapons and WT_SpellDisplay == "levels"
     mainFrame.columns:SetShown(not weapons and not levels)
@@ -637,8 +626,8 @@ local function updatePage(mainFrame, weapons, pageData)
     local skillView = weapons and WT_WeaponGrouping == "weaponskill"
     local listView = weapons and WT_WeaponGrouping == "list"
     mainFrame.scrollFrame:Show()
-    mainFrame.scrollFrame:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 0,
-        levels and -72 or listView and -103 or weapons and -84 or -103)
+    local scrollTop = levels and -72 or listView and -103 or weapons and -84 or -103
+    mainFrame.scrollFrame:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 0, scrollTop + CONTENT_RISE)
     mainFrame.scrollFrame.ScrollBar:SetShown(not pageData)
     mainFrame.scrollFrame:EnableMouseWheel(not pageData)
     mainFrame.listColumns:SetShown(listView)
@@ -764,7 +753,8 @@ local function updatePage(mainFrame, weapons, pageData)
     end
     mainFrame.empty:SetText(weapons and wt.L.LEDGER_WEAPON_EMPTY or wt.L.LEDGER_EMPTY)
     mainFrame.empty:ClearAllPoints()
-    mainFrame.empty:SetPoint("TOPLEFT", 8, levels and -80 or listView and -112 or weapons and -92 or -112)
+    local emptyTop = levels and -80 or listView and -112 or weapons and -92 or -112
+    mainFrame.empty:SetPoint("TOPLEFT", 8, emptyTop + CONTENT_RISE)
     mainFrame.empty:SetShown(((not weapons or listView) and #data == 0) or ((cityView or skillView) and #weaponData == 0))
     mainFrame.content:SetHeight(math.max(1, y))
     local scroll = mainFrame.scrollFrame
@@ -780,7 +770,7 @@ function wt.UpdateToggleIcon(mainFrame)
     ribbon:ClearAllPoints()
     ribbon:SetPoint("TOPRIGHT", page, "TOPRIGHT", 24, 38)
     mainFrame.total:ClearAllPoints()
-    mainFrame.total:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", mainFrame.expanded and -20 or -84, -32)
+    mainFrame.total:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", mainFrame.expanded and -20 or -84, -26)
     if showingWeapons(mainFrame) then
         ribbon.icon:SetTexture("Interface\\Icons\\INV_Misc_Book_09")
         ribbon.icon:SetTexCoord(0, 1, 0, 1)
@@ -802,9 +792,9 @@ function wt.Update(mainFrame, forceUpdate)
     local dual = expanded and not mainFrame.sideBySide
     mainFrame.title:SetText(expanded and wt.L.LEDGER_CLASS_SPELLS or "What's Training?")
     weaponPage.title:SetText(dual and wt.L.LEDGER_CLASS_SPELLS .. " " .. wt.L.CONTINUED or wt.L.WEAPON_SKILLS_HEADER)
-    mainFrame.titleBackplate:SetWidth(math.min(mainFrame:GetWidth() + 69,
+    mainFrame.titleBackplate:SetWidth(math.min(mainFrame.header:GetWidth() + 85,
         math.max(416, mainFrame.title:GetStringWidth() * 2.5)))
-    weaponPage.titleBackplate:SetWidth(math.min(weaponPage:GetWidth() + 69,
+    weaponPage.titleBackplate:SetWidth(math.min(weaponPage.header:GetWidth() + 85,
         math.max(416, weaponPage.title:GetStringWidth() * 2.5)))
     weaponPage:SetShown(expanded)
     weaponPage.footer:SetShown(not dual)
@@ -826,54 +816,47 @@ function wt.Update(mainFrame, forceUpdate)
     weaponPage.empty:Hide()
     mainFrame.continues:SetShown(endsSplit(left))
     weaponPage.continues:SetShown(endsSplit(right))
-    local lo, hi = levelRange(right)
-    if lo then weaponPage.character:SetText(string.format(wt.L.LEVELS_RANGE, lo, hi)) end
 end
 
 function wt.UpdateGroupingButton(mainFrame)
     if mainFrame and mainFrame.scrollBar then return wt.CompactUI.UpdateGroupingButton(mainFrame) end
 end
 
-local function createPage(mainFrame)
-    local backplate = mainFrame:CreateTexture(nil, "BACKGROUND")
-    backplate:SetAtlas("spellbook-list-backplate")
-    backplate:SetAlpha(0.65)
-    backplate:SetSize(416, 106)
-    mainFrame.title = label(mainFrame, "What's Training?", "SystemFont_Huge2", 8, 0)
-    backplate:SetPoint("LEFT", mainFrame, "TOPLEFT", -69, -16)
-    mainFrame.titleBackplate = backplate
-    mainFrame.character = label(mainFrame, "", "SystemFont_Med3", 8, -32)
+local function createPage(mainFrame, viewFrame)
+    local header = CreateFrame("Frame", nil, mainFrame, "SpellBookHeaderTemplate")
+    header:SetWidth(viewFrame:GetWidth())
+    header:ClearAllPoints()
+    header:SetPoint("TOPLEFT", viewFrame, "TOPLEFT")
+    mainFrame.header = header
+    mainFrame.title = header.Text
+    mainFrame.title:SetText("What's Training?")
+    mainFrame.titleBackplate = header.Backplate
     local total = label(mainFrame, "", "SystemFont_Med3", 0, 0)
     mainFrame.total = total
     total:ClearAllPoints()
-    total:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", -20, -32)
-    local divider = mainFrame:CreateTexture(nil, "ARTWORK")
-    divider:SetAtlas("spellbook-divider")
-    divider:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", -15, -58)
-    divider:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", 0, -58)
-    divider:SetHeight(11)
+    total:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", -20, -26)
 
     local rankX, levelX = mainFrame:GetWidth() - 260, mainFrame:GetWidth() - 155
     mainFrame.rankX, mainFrame.levelX = rankX, levelX
     mainFrame.columns = CreateFrame("Frame", nil, mainFrame)
     mainFrame.columns:SetAllPoints()
-    label(mainFrame.columns, wt.L.LEDGER_SPELL, "SystemFont_Med3", 38, -78)
-    label(mainFrame.columns, wt.L.LEDGER_RANK, "SystemFont_Med3", rankX, -78)
-    label(mainFrame.columns, wt.L.LEDGER_REQUIRED_LEVEL, "SystemFont_Med3", levelX, -78)
-    local footer = label(mainFrame, wt.L.LEDGER_HINT, "GameFontNormalSmall", 0, 0)
+    label(mainFrame.columns, wt.L.LEDGER_SPELL, "SystemFont_Med3", 38, -78 + CONTENT_RISE)
+    label(mainFrame.columns, wt.L.LEDGER_RANK, "SystemFont_Med3", rankX, -78 + CONTENT_RISE)
+    label(mainFrame.columns, wt.L.LEDGER_REQUIRED_LEVEL, "SystemFont_Med3", levelX, -78 + CONTENT_RISE)
+    local footer = label(mainFrame, wt.L.LEDGER_HINT, "GameFontNormal", 0, 0)
     mainFrame.footer = footer
     footer:ClearAllPoints()
-    footer:SetPoint("LEFT", mainFrame, "BOTTOMLEFT", 8, 15)
+    footer:SetPoint("LEFT", mainFrame, "BOTTOMLEFT", 8, 15 + CONTENT_RISE)
     footer:SetWidth(mainFrame:GetWidth() - 28)
-    mainFrame.empty = label(mainFrame, wt.L.LEDGER_EMPTY, "SystemFont_Med3", 8, -112)
+    mainFrame.empty = label(mainFrame, wt.L.LEDGER_EMPTY, "SystemFont_Med3", 8, -112 + CONTENT_RISE)
     mainFrame.continues = label(mainFrame, "", "GameFontNormalSmall", 0, 0)
     mainFrame.continues:ClearAllPoints()
-    mainFrame.continues:SetPoint("BOTTOMRIGHT", mainFrame, "BOTTOMRIGHT", -24, 30)
+    mainFrame.continues:SetPoint("BOTTOMRIGHT", mainFrame, "BOTTOMRIGHT", -24, 30 + CONTENT_RISE)
     mainFrame.continues:SetJustifyH("RIGHT")
 
     local scroll = CreateFrame("ScrollFrame", "$parentScrollFrame", mainFrame, "ScrollFrameTemplate")
-    scroll:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 0, -103)
-    scroll:SetPoint("BOTTOMRIGHT", mainFrame, "BOTTOMRIGHT", -20, 30)
+    scroll:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 0, -103 + CONTENT_RISE)
+    scroll:SetPoint("BOTTOMRIGHT", mainFrame, "BOTTOMRIGHT", -20, 30 + CONTENT_RISE)
     local content = CreateFrame("Frame", nil, scroll)
     content:SetWidth(mainFrame:GetWidth() - 20)
     scroll:SetScrollChild(content)
@@ -882,8 +865,8 @@ local function createPage(mainFrame)
     mainFrame.cityX = math.floor(content:GetWidth() * 0.56)
     mainFrame.listColumns = CreateFrame("Frame", nil, mainFrame)
     mainFrame.listColumns:SetAllPoints()
-    label(mainFrame.listColumns, wt.L.LEDGER_WEAPON_SKILL, "SystemFont_Med3", 8, -78)
-    label(mainFrame.listColumns, wt.L.LEDGER_TRAINED_IN, "SystemFont_Med3", mainFrame.cityX, -78)
+    label(mainFrame.listColumns, wt.L.LEDGER_WEAPON_SKILL, "SystemFont_Med3", 8, -78 + CONTENT_RISE)
+    label(mainFrame.listColumns, wt.L.LEDGER_TRAINED_IN, "SystemFont_Med3", mainFrame.cityX, -78 + CONTENT_RISE)
     mainFrame.cityLegend = CreateFrame("Frame", nil, content)
     mainFrame.cityLegend:SetSize(content:GetWidth() - 16, 24)
     mainFrame.cityLegend.entries = {}
@@ -901,13 +884,13 @@ local function attachForeverSpellBook(mainFrame)
         mainFrame:SetPoint("BOTTOMLEFT", book, "BOTTOMLEFT", 65, 15)
         mainFrame:SetWidth(book.minimizedWidth - 110)
 
-        createPage(mainFrame)
+        createPage(mainFrame, book.PagedSpellsFrame.ViewFrames[1])
         local weaponPage = CreateFrame("Frame", "$parentWeaponPage", mainFrame)
         mainFrame.weaponPage = weaponPage
         weaponPage:SetPoint("TOPRIGHT", book, "TOPRIGHT", -45, -90)
         weaponPage:SetPoint("BOTTOMRIGHT", book, "BOTTOMRIGHT", -45, 15)
         weaponPage:SetWidth(mainFrame:GetWidth())
-        createPage(weaponPage)
+        createPage(weaponPage, book.PagedSpellsFrame.ViewFrames[2])
         weaponPage.footer:SetWidth(weaponPage:GetWidth() - 28)
         weaponPage:Hide()
         mainFrame.continues:SetText(wt.L.CONTINUES_RIGHT)
@@ -916,7 +899,8 @@ local function attachForeverSpellBook(mainFrame)
 
         local controls = CreateFrame("Frame", nil, weaponPage, "PagingControlsHorizontalTemplate")
         mainFrame.pagingControls = controls
-        controls:SetPoint("BOTTOMRIGHT", weaponPage, "BOTTOMRIGHT", -20, 7)
+        controls:ClearAllPoints()
+        controls:SetPoint("BOTTOMRIGHT", book.PagedSpellsFrame.PagingControls, "BOTTOMRIGHT")
         controls.PageText:SetFontObject("SystemFont_Med3")
         controls.PageText:SetTextColor(0.19, 0.12, 0.06)
         controls.spacing = 8
