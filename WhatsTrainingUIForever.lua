@@ -995,6 +995,7 @@ local function attachForeverSpellBook(mainFrame)
         local function updateLayout()
             local expanded = not book.isMinimized
             if mainFrame.expanded ~= expanded then
+                if expanded then mainFrame.sideBySide = wt.showingWeaponSkills or WT_SideBySide end
                 mainFrame.expanded = expanded
                 mainFrame.scrollFrame:SetVerticalScroll(0)
                 weaponPage.scrollFrame:SetVerticalScroll(0)
