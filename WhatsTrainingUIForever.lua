@@ -179,7 +179,7 @@ local function createRow(content, rankX, levelX)
     end
     local highlight = row:CreateTexture(nil, "HIGHLIGHT")
     highlight:SetAllPoints()
-    highlight:SetColorTexture(1, 0.85, 0.50, 0.15)
+    highlight:SetColorTexture(1, 0.85, 0.50, 0.06)
     row:SetHighlightTexture(highlight)
     row:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     row:SetScript("OnEnter", function(self)
