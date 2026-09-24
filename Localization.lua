@@ -40,6 +40,7 @@ local localeText = {
         LEDGER_HINT = "Hover a spell for details; <Shift>Click to link; Right-click to ignore",
         LEDGER_EMPTY = "No training spells loaded",
         LEDGER_CLASS_SPELLS = "Class Spells",
+        LEDGER_MORE_SPELLS = "More Class Spells",
         LEDGER_GROUP_CITY = "City",
         LEDGER_GROUP_WEAPON = "Weapon",
         LEDGER_SHOW_KNOWN = "Show known weapon skills",

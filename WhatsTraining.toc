@@ -43,7 +43,7 @@ Waypoint.lua
 WeaponGrouping.lua
 
 WhatsTrainingUI.lua
-WhatsTrainingUIForever.lua [AllowLoadGameType camelot][ExcludeLoadGameType classic]
+Forever\Forever.xml [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 Categories.lua
 DataBuilder.lua
 WhatsTraining.lua

@@ -8,11 +8,7 @@ function wt.RefreshUI()
         if frame.searchBox and strlower(frame.searchBox:GetText()) ~= wt.filter then
             frame.searchBox:SetText(wt.filter)
         end
-        if frame:IsVisible() then
-            wt.UpdateToggleIcon(frame)
-            wt.UpdateGroupingButton(frame)
-            wt.Update(frame, true)
-        end
+        if frame:IsVisible() then frame:Refresh(true) end
     end
 end
 
@@ -108,12 +104,6 @@ end)
 local eventFrame = CreateFrame("Frame")
 eventFrame:SetScript("OnEvent", function(self, event, ...)
     if event == "ADDON_LOADED" and ... == addonName then
-        if type(WT_WeaponGrouping) == "table" then
-            if WT_ShowKnownWeaponSkills == nil then
-                WT_ShowKnownWeaponSkills = WT_WeaponGrouping.showKnown
-            end
-            WT_WeaponGrouping = WT_WeaponGrouping.mode
-        end
         if WT_WeaponGrouping ~= "zone" and WT_WeaponGrouping ~= "weaponskill" and WT_WeaponGrouping ~= "list" then
             WT_WeaponGrouping = "zone"
         end
@@ -124,7 +114,7 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
             WT_SideBySide = false
         end
         if type(WT_ShowKnownWeaponSkills) ~= "boolean" then
-            WT_ShowKnownWeaponSkills = true
+            WT_ShowKnownWeaponSkills = false
         end
         if WT_IgnoredSpells == nil then
             WT_IgnoredSpells = {}
@@ -162,10 +152,8 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         wt.RefreshUI()
     elseif event == "PLAYER_EQUIPMENT_CHANGED" then
         local slot = ...
-        if (slot == 16 or slot == 18) and wt.UpdateToggleIcon and wt.MainFrame then
-            wt.UpdateToggleIcon(wt.MainFrame)
-            if wt.FloatingFrame then wt.UpdateToggleIcon(wt.FloatingFrame) end
-        end
+        -- the compact list's weapon toggle shows the equipped weapon
+        if slot == 16 or slot == 18 then wt.RefreshUI() end
     elseif event == "SKILL_LINES_CHANGED" then
         wt.buildCategorizedData(UnitLevel("player"))
         wt.applyFilter()

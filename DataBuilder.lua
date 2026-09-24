@@ -415,17 +415,14 @@ local function filterCategoryData(categoryData, resultsList)
 end
 
 -- Grouped vs. flat for the weapon-skills view, per WT_WeaponGrouping.
-local function selectPanelData()
-    if wt.showingWeaponSkills then
-        local mode = WT_WeaponGrouping
-        if mode == "weaponskill" then
-            return wt.weaponSkillGroupedData
-        elseif mode == "list" then
-            return wt.weaponListData
-        end
-        return wt.weaponGroupedData
+local function selectWeaponData()
+    local mode = WT_WeaponGrouping
+    if mode == "weaponskill" then
+        return wt.weaponSkillGroupedData
+    elseif mode == "list" then
+        return wt.weaponListData
     end
-    return wt.spellListData
+    return wt.weaponGroupedData
 end
 
 -- Rebuild wt.weaponGroupedData from the stashed wrappers, keeping only those matching wt.filter.
@@ -482,27 +479,18 @@ function wt.applyFilter()
 
     -- Only ONE grouped assembler may run per pass: each stamps wrapper.indent on the
     -- shared wrappers, so assembling both would clobber the other's indents. Assemble
-    -- exactly the grouped view that is currently active.
-    local expanded = wt.MainFrame and wt.MainFrame.expanded
-    local sideBySide = expanded and wt.MainFrame.sideBySide
-    if wt.showingWeaponSkills or sideBySide then
-        local mode = WT_WeaponGrouping
-        if mode == "weaponskill" then
-            buildFilteredSkillGroupedData()
-        elseif mode ~= "list" then
-            buildFilteredGroupedData()
-        end
+    -- exactly the grouped view that is currently selected.
+    local mode = WT_WeaponGrouping
+    if mode == "weaponskill" then
+        buildFilteredSkillGroupedData()
+    elseif mode ~= "list" then
+        buildFilteredGroupedData()
     end
 
-    wt.data = selectPanelData()
+    local weaponData = selectWeaponData()
+    wt.data = wt.showingWeaponSkills and weaponData or wt.spellListData
 
-    local visibleLists = {wt.data}
-    if expanded then tinsert(visibleLists, wt.spellListData) end
-    if sideBySide then
-        tinsert(visibleLists, WT_WeaponGrouping == "list" and wt.weaponListData or
-            WT_WeaponGrouping == "weaponskill" and wt.weaponSkillGroupedData or wt.weaponGroupedData)
-    end
-    for _, data in ipairs(visibleLists) do
+    for _, data in ipairs({wt.spellListData, weaponData}) do
         if #data == 0 and wt.filter ~= '' then
             tinsert(data, {
                 formattedName = wt.L.SEARCH_NO_RESULTS,

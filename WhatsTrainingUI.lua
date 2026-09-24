@@ -21,6 +21,21 @@ local TAB_TEXTURE_FILEID = GetFileIDFromPath(
 local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent,
                             "GameTooltipTemplate")
 
+-- Shared with the Forever book. A tome shows the spell it teaches, then names itself.
+function wt.SetSpellTooltip(owner, spell)
+    owner:SetSpellByID(spell.tooltipId or spell.id)
+    if spell.tooltipType == "item" then owner:AddLine(spell.formattedFullName, 1, 1, 1) end
+end
+
+-- Shift-click. A tome links itself and the spell it teaches.
+function wt.InsertLink(spell)
+    local link = spell.link
+    if not link then return end
+    if spell.taughtSpell then link = link .. " " .. spell.taughtSpell.link end
+    local window = ChatEdit_GetActiveWindow()
+    if window then window:Insert(link) else ChatFrame_OpenChat(link) end
+end
+
 local function setNpcTooltip(npcInfo)
     tooltip:ClearLines()
     tooltip:AddLine(npcInfo.masterName or npcInfo.name, 1, 1, 1)
@@ -45,11 +60,8 @@ local function setTooltip(spellInfo)
     if spellInfo.altTooltipType == "weapon" then
         tooltip:ClearLines()
         tooltip:AddLine(spellInfo.name, 1, 1, 1)
-    elseif spellInfo.tooltipType == "item" then
-        tooltip:SetSpellByID(spellInfo.tooltipId)
-        tooltip:AddLine(spellInfo.formattedFullName, 1, 1, 1)
-    elseif spellInfo.tooltipType == "spell" then
-        tooltip:SetSpellByID(spellInfo.tooltipId)
+    elseif spellInfo.tooltipType then
+        wt.SetSpellTooltip(tooltip, spellInfo)
     else
         tooltip:ClearLines()
     end
@@ -135,18 +147,7 @@ local function setRowSpell(row, spell)
         row:SetScript("OnClick", spell.click)
     elseif not spell.isHeader then
         row:SetScript("OnClick", function(_, button)
-            if button == "LeftButton" and IsShiftKeyDown() then
-                local link = spell.link
-                if spell.taughtSpell then
-                    link = link..' '..spell.taughtSpell.link
-                end
-                local window = ChatEdit_GetActiveWindow()
-                if window then
-                    window:Insert(link)
-                else
-                    ChatFrame_OpenChat(link)
-                end
-            end
+            if button == "LeftButton" and IsShiftKeyDown() then wt.InsertLink(spell) end
             if not wt.ClickHook then return end
             if button == "RightButton" then
                 wt.ClickHook(spell, function()
@@ -216,7 +217,7 @@ end
 
 -- When holding down left mouse on the slider knob, it will keep firing update even though
 -- the offset hasn't changed so this will help throttle that
-function wt.Update(frame, forceUpdate)
+local function update(frame, forceUpdate)
     frame.noticeButton:SetShown(not wt.showingWeaponSkills and wt.needsBeastTraining())
     local scrollBar = frame.scrollBar
     if frame.filter ~= wt.filter or frame.data ~= wt.data then
@@ -236,8 +237,7 @@ function wt.Update(frame, forceUpdate)
                            frame.scrollStep or ROW_HEIGHT, nil, nil, nil, nil, nil, nil, true)
     frame.lastOffset = offset
 end
-function wt.UpdateToggleIcon(frame)
-    if not frame or not frame.weaponSkillToggleButton then return end
+local function updateToggleIcon(frame)
     local icon
     if wt.showingWeaponSkills then
         icon = "Interface\\Icons\\INV_Misc_Book_09"
@@ -255,21 +255,14 @@ function wt.UpdateToggleIcon(frame)
     frame.weaponSkillToggleButton:SetIcon(icon)
 end
 
-function wt.UpdateGroupingButton(frame)
-    if not frame or not frame.groupingButton then return end
+local function updateGroupingButton(frame)
     if wt.showingWeaponSkills then
         frame.groupingButton:Show()
     else
         frame.groupingButton:Hide()
-        if frame.groupingPopup then frame.groupingPopup:Hide() end
+        frame.groupingPopup:Hide()
     end
 end
-
-wt.CompactUI = {
-    Update = wt.Update,
-    UpdateToggleIcon = wt.UpdateToggleIcon,
-    UpdateGroupingButton = wt.UpdateGroupingButton,
-}
 
 local function createWeaponSkillsButton()
     local button = CreateFrame("Button", "WhatsTrainingSkillsButton", SkillFrame, "SquareIconButtonTemplate")
@@ -516,13 +509,14 @@ function wt.CreateCompactFrame(mainFrame)
     scrollBar:SetPoint("BOTTOMRIGHT", -65, 81)
     scrollBar:SetScript("OnVerticalScroll", function(self, offset)
         FauxScrollFrame_OnVerticalScroll(self, offset, mainFrame.scrollStep or ROW_HEIGHT,
-                                         function() wt.Update(mainFrame) end)
+                                         function() update(mainFrame) end)
     end)
-    scrollBar:SetScript("OnShow", function()
-        wt.UpdateToggleIcon(mainFrame)
-        wt.UpdateGroupingButton(mainFrame)
-        wt.Update(mainFrame, true)
-    end)
+    function mainFrame:Refresh(forceUpdate)
+        updateToggleIcon(self)
+        updateGroupingButton(self)
+        update(self, forceUpdate)
+    end
+    scrollBar:SetScript("OnShow", function() mainFrame:Refresh(true) end)
     mainFrame.scrollBar = scrollBar
 
     local rows = {}
@@ -639,9 +633,7 @@ function wt.CreateFrame()
         if wt.showingWeaponSkills ~= toWeapons then
             wt.showingWeaponSkills = toWeapons
             wt.applyFilter()
-            wt.UpdateToggleIcon(wt.MainFrame)
-            wt.UpdateGroupingButton(wt.MainFrame)
-            wt.Update(wt.MainFrame, true)
+            mainFrame:Refresh(true)
         end
         SpellBookFrame.selectedSkillLine = SKILL_LINE_TAB
         if SpellBookFrame:IsVisible() then
