@@ -118,18 +118,20 @@ end
 
 local function updateBanner(mainFrame)
     local banner = mainFrame.categoryBanner
-    local color = FACTION_COLORS[wt.playerFaction]
-    if color then banner.art:SetVertexColor(unpack(color)) end
     local page = mainFrame.expanded and mainFrame.weaponPage or mainFrame
     banner.clip:ClearAllPoints()
     banner.clip:SetPoint("TOPRIGHT", page, "TOPRIGHT", 16, CLIP_TOP)
     banner:ClearAllPoints()
     banner:SetPoint("TOPRIGHT", banner.clip, "TOPRIGHT", 0, BANNER_TOP - CLIP_TOP)
     if showingWeapons(mainFrame) then
+        local color = RAID_CLASS_COLORS[wt.currentClass]
+        if color then banner.art:SetVertexColor(color.r, color.g, color.b) end
         banner.icon:SetTexture("Interface\\Icons\\INV_Misc_Book_09")
         banner.icon:SetTexCoord(0, 1, 0, 1)
         banner.icon:SetSize(32 * 0.7, 32 * 0.7)
     else
+        local color = FACTION_COLORS[wt.playerFaction]
+        if color then banner.art:SetVertexColor(unpack(color)) end
         banner.icon:SetAtlas("pvptalents-warmode-swords", false, nil, true)
         banner.icon:SetSize(32 * 0.62, 32 * 0.62)
     end
