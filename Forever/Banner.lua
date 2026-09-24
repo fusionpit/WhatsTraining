@@ -1,6 +1,6 @@
 local _, wt = ...
 local Forever = wt.Forever
-local BANNER_TOP, CLIP_TOP = 60, 38
+local BANNER_TOP, CLIP_TOP = 54, 38
 -- CharacterSelect.xml faction colors.
 local FACTION_COLORS = {
     Alliance = {0.29, 0.33, 0.91},
@@ -22,7 +22,7 @@ local function createCategoryBanner(frame, selectView)
     banner:SetFrameLevel(frame:GetFrameLevel() + 25)
     banner:RegisterForClicks("LeftButtonUp")
     banner:SetSize(60, 112)
-    banner:SetHitRectInsets(0, 0, BANNER_TOP - CLIP_TOP, 0)
+    banner:SetHitRectInsets(0, 0, 34, 0)
 
     banner.art = banner:CreateTexture(nil, "BACKGROUND")
     banner.art:SetAllPoints()
@@ -38,6 +38,14 @@ local function createCategoryBanner(frame, selectView)
     banner.borderGlow:SetBlendMode("ADD")
     banner.borderGlow:SetVertexColor(1, 0.8, 0.35)
     banner.borderGlow:SetAlpha(0)
+    -- Follows the page-to-cover seam at the upper-right of spellbook-background-evergreen-right.
+    banner.pageMask = banner:CreateMaskTexture()
+    banner.pageMask:SetTexture("Interface\\AddOns\\WhatsTraining\\Forever\\banner-corner-mask",
+        "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    banner.pageMask:SetAllPoints(banner)
+    banner.art:AddMaskTexture(banner.pageMask)
+    banner.border:AddMaskTexture(banner.pageMask)
+    banner.borderGlow:AddMaskTexture(banner.pageMask)
     banner.badgeBackground = banner:CreateTexture(nil, "BORDER")
     banner.badgeBackground:SetTexture("Interface\\Minimap\\UI-Minimap-Background")
     banner.badgeBackground:SetPoint("CENTER", banner, "TOP", 0, -52)
