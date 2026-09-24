@@ -13,5 +13,4 @@ works independently of the spellbook, including when using a spellbook addon.
  - Rogue Poisons not working well, it will show available even if you don't have the required skill level in poisons
  
 ## TODO
- - Forever gather warlock tomes
  - Forever gather class/race/faction specific spells

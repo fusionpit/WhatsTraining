@@ -101,6 +101,7 @@ function wt:CacheItem(item, level, done, taughtSpell)
             id = item.id,
             itemId = item.itemId,
             name = ranklessName,
+            subText = taughtSpell.subText,
             formattedSubText = rankText,
             icon = ii:GetItemIcon(),
             cost = item.cost,

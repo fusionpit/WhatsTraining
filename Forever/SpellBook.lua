@@ -31,7 +31,7 @@ local function refresh(mainFrame)
     local spells, weapons = views[WT_SpellDisplay], views[WT_WeaponGrouping]
     local leftView = not expanded and wt.showingWeaponSkills and weapons or spells
     mainFrame.total:ClearAllPoints()
-    mainFrame.total:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", expanded and -60 or -84, -26)
+    mainFrame.total:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", -60, -26)
     mainFrame.total:SetShown(leftView == spells)
     mainFrame.total:SetText(string.format(wt.L.LEDGER_AVAILABLE_TOTAL,
         C_CurrencyInfo.GetCoinTextureString(availableCost())))
