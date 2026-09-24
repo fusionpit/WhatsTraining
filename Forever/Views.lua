@@ -88,7 +88,10 @@ local function showHeading(page, item, y, color, fromAlpha, toAlpha)
     local heading = page.headings:Acquire()
     heading.spell = item
     heading:SetPoint("TOPLEFT", page.content, "TOPLEFT", 0, -y)
-    heading.band:SetGradient("HORIZONTAL", CreateColor(color[1], color[2], color[3], fromAlpha),
+    local capAlpha = fromAlpha + (toAlpha - fromAlpha) * (8 / 1024)
+    heading.bandCap:SetGradient("HORIZONTAL", CreateColor(color[1], color[2], color[3], fromAlpha),
+        CreateColor(color[1], color[2], color[3], capAlpha))
+    heading.band:SetGradient("HORIZONTAL", CreateColor(color[1], color[2], color[3], capAlpha),
         CreateColor(color[1], color[2], color[3], toAlpha))
     heading.heading:SetTextColor(color[4], color[5], color[6])
     heading.heading:SetText(item.label or item.name or item.formattedName)

@@ -6,6 +6,7 @@ local WEAPON_HEADING_HEIGHT = 24
 local TRAINER_ROW_HEIGHT = 20
 local SKILL_HEIGHT = 42
 local CONTENT_RISE = 16
+local HEADER_CAP_FRACTION = 8 / 1024
 
 local function label(parent, text, font, x, y)
     local value = parent:CreateFontString(nil, "OVERLAY", font)
@@ -38,11 +39,6 @@ local function createRow(page, parent)
     row.band = row:CreateTexture(nil, "BACKGROUND")
     row.band:SetAllPoints()
     row.band:SetTexture("Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal-Desaturated")
-    local mask = row:CreateMaskTexture()
-    mask:SetAllPoints(row.band)
-    mask:SetTexture("Interface\\AddOns\\WhatsTraining\\Forever\\header-mask", "CLAMPTOBLACKADDITIVE",
-        "CLAMPTOBLACKADDITIVE")
-    row.band:AddMaskTexture(mask)
     row.heading = label(row, "", "SystemFont_Med3", 8, -5)
     row.heading:ClearAllPoints()
     row.heading:SetPoint("TOPLEFT", row, "TOPLEFT", 8, 0)
@@ -159,6 +155,21 @@ end
 
 local function createHeading(page)
     local heading = createRow(page)
+    local capWidth = heading:GetWidth() * HEADER_CAP_FRACTION
+    heading.band:ClearAllPoints()
+    heading.band:SetPoint("TOPLEFT", heading, "TOPLEFT", capWidth, 0)
+    heading.band:SetPoint("BOTTOMRIGHT", heading, "BOTTOMRIGHT", 0, 0)
+    heading.band:SetTexCoord(HEADER_CAP_FRACTION, 1, 0, 1)
+    heading.bandCap = heading:CreateTexture(nil, "BACKGROUND")
+    heading.bandCap:SetPoint("TOPLEFT")
+    heading.bandCap:SetSize(capWidth, ROW_HEIGHT)
+    heading.bandCap:SetTexture("Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal-Desaturated")
+    heading.bandCap:SetTexCoord(0, HEADER_CAP_FRACTION, 0, 1)
+    local mask = heading:CreateMaskTexture()
+    mask:SetAllPoints(heading.bandCap)
+    mask:SetTexture("Interface\\AddOns\\WhatsTraining\\Forever\\header-mask", "CLAMPTOBLACKADDITIVE",
+        "CLAMPTOBLACKADDITIVE")
+    heading.bandCap:AddMaskTexture(mask)
     for _, region in ipairs({heading.icon, heading.iconBorder, heading.name, heading.rank, heading.level,
         heading.separator}) do region:Hide() end
     heading:EnableMouse(false)
