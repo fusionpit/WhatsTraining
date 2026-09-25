@@ -17,7 +17,6 @@ wt.TrainerFactions = {
 		[2778] = { side = 2 },
 		[2779] = { side = 1 },
 		[2787] = { side = 2 },
-		["area:15"] = { area = 15, side = 0, noRep = true },
 	},
 	roles = {
 		DRUID = {
@@ -37,7 +36,7 @@ wt.TrainerFactions = {
 			Horde = { 68, 76, 530 },
 		},
 		PALADIN = {
-			Alliance = { 47, 72, "area:15" },
+			Alliance = { 47, 72 },
 			Horde = { 68 },
 		},
 		PET = {

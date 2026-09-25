@@ -17,7 +17,6 @@ wt.TrainerFactions = {
 		[930] = { side = 1 },
 		[934] = { side = 0 },
 		[935] = { side = 0 },
-		["area:17"] = { area = 17, side = 0, noRep = true },
 	},
 	roles = {
 		DRUID = {
@@ -25,8 +24,8 @@ wt.TrainerFactions = {
 			Horde = { 81, 609, 911 },
 		},
 		GRIMOIRE = {
-			Alliance = { 54, 72, "area:17" },
-			Horde = { 68, 76, 911, "area:17" },
+			Alliance = { 54, 72 },
+			Horde = { 68, 76, 911 },
 		},
 		HUNTER = {
 			Alliance = { 47, 69, 72, 930 },
