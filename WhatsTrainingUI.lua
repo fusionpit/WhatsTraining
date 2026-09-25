@@ -223,6 +223,7 @@ end
 
 -- When holding down left mouse on the slider knob, it will keep firing update even though
 -- the offset hasn't changed so this will help throttle that
+local NO_WEAPONS_ROW = { formattedName = wt.L.LEDGER_WEAPON_EMPTY, isHeader = true, cost = 0 }
 local function update(frame, forceUpdate)
     frame.noticeButton:SetShown(not wt.showingWeaponSkills and wt.needsBeastTraining())
     local scrollBar = frame.scrollBar
@@ -239,6 +240,8 @@ local function update(frame, forceUpdate)
         local spell = wt.data[spellIndex]
         setRowSpell(row, spell)
     end
+    -- same header row the search injects for "No results found"
+    if wt.showingWeaponSkills and #wt.data == 0 then setRowSpell(frame.rows[1], NO_WEAPONS_ROW) end
     FauxScrollFrame_Update(frame.scrollBar, #wt.data, frame.maxRows or MAX_ROWS,
                            frame.scrollStep or ROW_HEIGHT, nil, nil, nil, nil, nil, nil, true)
     frame.lastOffset = offset
@@ -443,7 +446,7 @@ function wt.CreateCompactFrame(mainFrame)
     mainFrame.groupingButton = groupingButton
 
     local popup = CreateFrame("Frame", "$parentGroupingPopup", mainFrame, "BackdropTemplate")
-    popup:SetSize(200, 132)
+    popup:SetSize(200, 156)
     popup:SetPoint("TOPLEFT", groupingButton, "BOTTOMLEFT", 0, -2)
     popup:SetFrameStrata("DIALOG")
     popup:SetBackdrop(BACKDROP_DIALOG_32_32)
@@ -489,6 +492,21 @@ function wt.CreateCompactFrame(mainFrame)
         prev = radio
     end
 
+    local showKnown = CreateFrame("CheckButton", "$parentShowKnown", popup, "UICheckButtonTemplate")
+    showKnown:SetSize(22, 22)
+    showKnown:SetPoint("TOPLEFT", prev, "BOTTOMLEFT", -3, -4)
+    local showKnownText = showKnown.text or showKnown.Text
+    showKnownText:SetFontObject("GameFontNormalSmall")
+    showKnownText:SetText(wt.L.LEDGER_SHOW_KNOWN)
+    showKnownText:ClearAllPoints()
+    showKnownText:SetPoint("LEFT", showKnown, "RIGHT", 0, 0)
+    showKnown:SetHitRectInsets(0, -(showKnownText:GetStringWidth() + 2), 0, 0)
+    showKnown:SetScript("OnClick", function(self)
+        WT_ShowKnownWeaponSkills = self:GetChecked()
+        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+        wt:ApplyFilter()
+    end)
+
     local doneButton = CreateFrame("Button", "$parentDone", popup, "UIPanelButtonTemplate")
     doneButton:SetSize(80, 22)
     doneButton:SetPoint("BOTTOMRIGHT", popup, "BOTTOMRIGHT", -12, 10)
@@ -500,6 +518,7 @@ function wt.CreateCompactFrame(mainFrame)
         for _, r in ipairs(self.radios) do
             r:SetChecked(r.mode == mode)
         end
+        showKnown:SetChecked(WT_ShowKnownWeaponSkills)
     end)
 
     groupingButton:SetScript("OnClick", function()
@@ -524,6 +543,7 @@ function wt.CreateCompactFrame(mainFrame)
     end
     scrollBar:SetScript("OnShow", function() mainFrame:Refresh(true) end)
     mainFrame.scrollBar = scrollBar
+
 
     local rows = {}
     for i = 1, mainFrame.maxRows or MAX_ROWS do
