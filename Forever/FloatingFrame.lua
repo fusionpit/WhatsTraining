@@ -1,7 +1,6 @@
 local _, wt = ...
 
-SLASH_WHATSTRAINING1 = "/wt"
-SlashCmdList.WHATSTRAINING = function()
+local function floatingFrame()
     local frame = wt.FloatingFrame
     if not frame then
         frame = CreateFrame("Frame", "WhatsTrainingFloatingFrame", UIParent, "UIPanelDialogTemplate")
@@ -33,5 +32,18 @@ SlashCmdList.WHATSTRAINING = function()
         end)
         tinsert(UISpecialFrames, frame:GetName())
     end
+    return frame
+end
+
+SLASH_WHATSTRAINING1 = "/wt"
+SlashCmdList.WHATSTRAINING = function()
+    local frame = floatingFrame()
     frame:SetShown(not frame:IsShown())
+end
+
+-- Broker opens this window, not the spellbook as that taints a whoooole lotta things
+function wt.Open(toWeapons)
+    wt.showingWeaponSkills = toWeapons == true
+    local frame = floatingFrame()
+    if frame:IsShown() then wt:ApplyFilter() else frame:Show() end
 end

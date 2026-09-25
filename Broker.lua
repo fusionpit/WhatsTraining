@@ -26,12 +26,12 @@ plugin = ldb:NewDataObject(addonName, {
             refreshTooltip()
             return
         end
-        local openBeastTraining = wt.needsBeastTraining() and IsShiftKeyDown()
-        if InCombatLockdown() then
-            print(openBeastTraining and wt.L.OPEN_BEAST_IN_COMBAT or wt.L.BROKER_OPEN_IN_COMBAT)
-            return
-        end
-        if openBeastTraining then
+        -- wt.Open handles combat itself; Forever's window can open during combat
+        if wt.needsBeastTraining() and IsShiftKeyDown() then
+            if InCombatLockdown() then
+                print(wt.L.OPEN_BEAST_IN_COMBAT)
+                return
+            end
             wt.openBeastTraining()
         else
             wt.Open(wt.showingBrokerWeaponSkills and true or false)
@@ -45,7 +45,7 @@ local function formatBlue(text)
     return '|cff82c5ff'..text..'|r'
 end
 
-local OPEN_HINT = formatGreen(wt.L.BROKER_CLICK_OPEN)
+local OPEN_HINT = formatGreen(wt.gameVersion == "forever" and wt.L.BROKER_CLICK_OPEN_WINDOW or wt.L.BROKER_CLICK_OPEN)
 local OPEN_BEAST_TRAINING_HINT = formatGreen(wt.L.BROKER_CLICK_BEAST_TRAIN)
 local TOGGLE_SPELLS_HINT = formatGreen(wt.L.BROKER_CLICK_TOGGLE_SPELLS)
 local TOGGLE_WEAPONS_HINT = formatGreen(wt.L.BROKER_CLICK_TOGGLE_WEAPONS)

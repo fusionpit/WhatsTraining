@@ -34,6 +34,7 @@ local localeText = {
         BROKER_CLICK_TOGGLE_WEAPONS = "Hint: Right-Click to toggle weapon skills",
         BROKER_CLICK_TOGGLE_SPELLS = "Hint: Right-Click to toggle spells",
         BROKER_CLICK_OPEN = "Hint: Click to open spellbook",
+        BROKER_CLICK_OPEN_WINDOW = "Hint: Click to open the What's Training window",
         BROKER_OPEN_IN_COMBAT = "Can't open spellbook while in combat",
         OPEN_BEAST_IN_COMBAT = "Can't open Beast Training while in combat",
         LEVEL_FORMAT = "Level %s",

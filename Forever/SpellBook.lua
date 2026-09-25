@@ -257,15 +257,5 @@ function wt.CreateFrame()
     local mainFrame = CreateFrame("Frame", "WhatsTrainingFrame", UIParent)
     wt.MainFrame = mainFrame
     mainFrame:Hide()
-    function wt.Open(toWeapons)
-        if InCombatLockdown() then
-            print(wt.L.BROKER_OPEN_IN_COMBAT)
-            return
-        end
-        wt.showingWeaponSkills = toWeapons == true
-        wt.applyFilter()
-        securecallfunction(PlayerSpellsUtil.OpenToSpellBookTab)
-        if mainFrame.selectTraining then mainFrame.selectTraining(true) end
-    end
     attachForeverSpellBook(mainFrame)
 end
