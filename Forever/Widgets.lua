@@ -99,11 +99,11 @@ local function createRow(page, parent)
             if spell.formattedTrainerZones then
                 GameTooltip:AddLine(string.format(wt.L.TRAINED_IN, spell.formattedTrainerZones), 0.8, 0.8, 0.8, true)
             end
-            if not wt.isAbilityKnown(spell.id) then GameTooltip:AddLine(wt.formatSpellCost(spell)) end
+            if not wt.isAbilityKnown(spell.id) then wt.addPricingBlock(GameTooltip, spell) end
             GameTooltip:AddLine((weaponStatus(spell)), 1, 0.82, 0.3)
         else
             wt.SetSpellTooltip(GameTooltip, spell)
-            GameTooltip:AddLine(wt.formatSpellCost(spell))
+            wt.addPricingBlock(GameTooltip, spell)
             if self.category.key == wt.MISSINGREQS_KEY or self.category.key == wt.MISSINGTALENT_KEY then
                 GameTooltip:AddLine(self.category.name, 1, 0.82, 0.30)
             end

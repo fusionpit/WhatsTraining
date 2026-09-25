@@ -10,10 +10,23 @@ local sideNumber = { Alliance = 1, Horde = 2 }
 local standingPct = { [5] = 5, [6] = 10, [7] = 15, [8] = 20 } -- tbc and forever
 
 local function roleOf(spellInfo)
-    if spellInfo.altTooltipType == "weapon" then return "WEAPON" end
     if wt:IsPetAbility(spellInfo.id) then return "PET" end
     if spellInfo.tooltipType == "item" or spellInfo.taughtSpell then return "GRIMOIRE" end
     return wt.currentClass
+end
+
+-- Faction keys that train spellInfo on the player's side; may repeat a key.
+-- Weapon skills go by the masters that teach them, everything else by role.
+local function factionKeys(spellInfo)
+    if spellInfo.altTooltipType == "weapon" then
+        local keys = {}
+        for _, trainer in ipairs(wt.WeaponSkills[spellInfo.id].trainers[wt.playerFaction]) do
+            keys[#keys + 1] = wt.TrainerFactions.npcs[trainer.npc] -- an unmapped npc appends nil, i.e. is skipped
+        end
+        return keys
+    end
+    local role = wt.TrainerFactions.roles[roleOf(spellInfo)]
+    return role and role[wt.playerFaction] or {}
 end
 
 -- UnitPVPRank 7 is rank 3 (Sergeant), which gets the faction vendor discount
@@ -50,13 +63,11 @@ end
 -- A faction that doesn't train some spell's role charges base for that spell.
 function wt.priceRows(spells)
     if spells.cost then spells = { spells } end
-    local roles = wt.TrainerFactions.roles
     local base, trains, byKey = 0, {}, {}
     for i, spellInfo in ipairs(spells) do
         base = base + spellInfo.cost
         trains[i] = {}
-        local role = roles[roleOf(spellInfo)]
-        for _, key in ipairs(role and role[wt.playerFaction] or {}) do
+        for _, key in ipairs(factionKeys(spellInfo)) do
             trains[i][key] = true
             byKey[key] = byKey[key] or factionRow(key)
         end

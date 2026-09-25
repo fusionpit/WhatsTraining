@@ -66,7 +66,13 @@ local function setTooltip(spellInfo)
         tooltip:ClearLines()
     end
     if spellInfo.cost and spellInfo.cost > 0 then
-        tooltip:AddLine(wt.formatSpellCost(spellInfo))
+        if spellInfo.key == wt.AVAILABLE_KEY then
+            wt.addPricingBlock(tooltip, spellInfo, (wt.availableSpells()))
+        elseif spellInfo.isHeader then
+            tooltip:AddLine(wt.formatSpellCost(spellInfo))
+        else
+            wt.addPricingBlock(tooltip, spellInfo)
+        end
     end
     if spellInfo.tooltip then tooltip:AddLine(spellInfo.tooltip) end
     if spellInfo.formattedTrainerZones then

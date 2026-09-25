@@ -6,13 +6,6 @@ local createCategoryBanner, updateBanner = Forever.createCategoryBanner, Forever
 
 local TAB_TEXTURE_FILEID = GetFileIDFromPath("Interface\\Icons\\INV_Misc_QuestionMark")
 
-local function availableCost()
-    for _, spell in ipairs(wt.spellListData) do
-        if spell.isHeader and spell.key == wt.AVAILABLE_KEY then return spell.cost end
-    end
-    return 0
-end
-
 local function refresh(mainFrame)
     updateBanner(mainFrame)
     local expanded, weaponPage = mainFrame.expanded, mainFrame.weaponPage
@@ -32,9 +25,11 @@ local function refresh(mainFrame)
     local leftView = not expanded and wt.showingWeaponSkills and weapons or spells
     mainFrame.total:ClearAllPoints()
     mainFrame.total:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", -60, -26)
-    mainFrame.total:SetShown(leftView == spells)
-    mainFrame.total:SetText(string.format(wt.L.LEDGER_AVAILABLE_TOTAL,
-        C_CurrencyInfo.GetCoinTextureString(availableCost())))
+    mainFrame.total:GetParent():SetShown(leftView == spells)
+    local rows, base = wt.priceRows((wt.availableSpells()))
+    local coins, best = C_CurrencyInfo.GetCoinTextureString, rows[1] and rows[1].price < base and rows[1].price
+    mainFrame.total:SetText(best and string.format(wt.L.LEDGER_AVAILABLE_TOTAL_WAS, coins(best), coins(base))
+        or string.format(wt.L.LEDGER_AVAILABLE_TOTAL, coins(base)))
     if not dual then
         updatePage(mainFrame, leftView, leftView.Items())
         if expanded then updatePage(weaponPage, weapons, weapons.Items()) end
@@ -62,6 +57,22 @@ local function attachForeverSpellBook(mainFrame)
 
         createPage(mainFrame, book.PagedSpellsFrame.ViewFrames[1])
         mainFrame.total = label(mainFrame, "", "SystemFont_Med3", 0, 0)
+        local totalHover = CreateFrame("Frame", nil, mainFrame)
+        mainFrame.total:SetParent(totalHover)
+        totalHover:SetAllPoints(mainFrame.total)
+        totalHover:EnableMouse(true)
+        totalHover:SetScript("OnEnter", function(self)
+            local spells, header = wt.availableSpells()
+            if not header then return end
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            wt.addPricingBlock(GameTooltip, header, spells)
+            GameTooltip:Show()
+        end)
+        totalHover:SetScript("OnLeave", hideTooltip)
+        totalHover:SetScript("OnHide", hideTooltip)
+        -- rep standings change the discounted total; RefreshUI only redraws visible frames
+        totalHover:RegisterEvent("UPDATE_FACTION")
+        totalHover:SetScript("OnEvent", wt.RefreshUI)
         mainFrame.Refresh = refresh
         local weaponPage = CreateFrame("Frame", "$parentWeaponPage", mainFrame)
         mainFrame.weaponPage = weaponPage

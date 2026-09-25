@@ -80,7 +80,7 @@ function wt:SetPetAbilityStatus(key, learned)
     return prior ~= learned
 end
 
-function wt.formatSpellCost(spellInfo, fontHeight)
+function wt.formatSpellCost(spellInfo, fontHeight, costFormat)
     local coloredCoinString = spellInfo.formattedCost or
                                     C_CurrencyInfo.GetCoinTextureString(spellInfo.cost, fontHeight)
     if spellInfo.costColor then
@@ -88,11 +88,49 @@ function wt.formatSpellCost(spellInfo, fontHeight)
     elseif (GetMoney() < spellInfo.cost) then
         coloredCoinString = RED_FONT_COLOR_CODE .. coloredCoinString .. FONT_COLOR_CODE_CLOSE
     end
-    local formatString = spellInfo.isHeader and
+    local formatString = costFormat or (spellInfo.isHeader and
         (spellInfo.costFormat or wt.L.TOTALCOST_FORMAT) or
-        (spellInfo.costFormat or wt.L.COST_FORMAT)
+        (spellInfo.costFormat or wt.L.COST_FORMAT))
 
     return HIGHLIGHT_FONT_COLOR_CODE .. format(formatString, coloredCoinString) .. FONT_COLOR_CODE_CLOSE
+end
+
+-- the spells under the Available header in wt.spellListData (they sum to its cost), and that header
+function wt.availableSpells()
+    local spells, header = {}, nil
+    for _, entry in ipairs(wt.spellListData) do
+        if entry.isHeader then
+            if header then break end
+            if entry.key == wt.AVAILABLE_KEY then header = entry end
+        elseif header then
+            tinsert(spells, entry)
+        end
+    end
+    return spells, header
+end
+
+-- Base cost plus one line per trainer faction, cheapest first; spells defaults to spellInfo.
+-- Falls back to the plain cost line when no faction trains it.
+-- A price is red when unaffordable, else green when it's the cheapest and below base (red wins).
+function wt.addPricingBlock(tooltip, spellInfo, spells)
+    local rows, base = wt.priceRows(spells or spellInfo)
+    if #rows == 0 or base == 0 then
+        tooltip:AddLine(wt.formatSpellCost(spellInfo))
+        return
+    end
+    tooltip:AddLine(wt.formatSpellCost(spellInfo, nil, wt.L.BASE_COST_FORMAT))
+    local best = rows[1].price < base and rows[1].price
+    local money = GetMoney()
+    for _, row in ipairs(rows) do
+        local left = row.noRep and format(wt.L.NO_REP_ROW_FORMAT, row.name) or
+            format(wt.L.REP_ROW_FORMAT, row.name, row.standingLabel, row.pct)
+        local right = C_CurrencyInfo.GetCoinTextureString(row.price)
+        local rightColor = money < row.price and RED_FONT_COLOR_CODE or row.price == best and GREEN_FONT_COLOR_CODE
+        if rightColor then right = rightColor .. right .. FONT_COLOR_CODE_CLOSE end
+        if row.price == best then left = GREEN_FONT_COLOR_CODE .. left .. FONT_COLOR_CODE_CLOSE end
+        tooltip:AddDoubleLine(left, right)
+    end
+    if wt.hasPvpRankDiscount() then tooltip:AddLine(wt.L.PVP_RANK_FOOTER, 0.5, 0.5, 0.5) end
 end
 
 local BEAST_TRAINING_SPELL = 5149
