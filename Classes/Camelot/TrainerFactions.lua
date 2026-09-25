@@ -1,0 +1,73 @@
+local _, wt = ...
+
+wt.TrainerFactions = {
+	factions = {
+		[21] = { side = 0 },
+		[47] = { side = 1 },
+		[54] = { side = 1 },
+		[68] = { side = 2 },
+		[69] = { side = 1 },
+		[72] = { side = 1 },
+		[76] = { side = 2 },
+		[81] = { side = 2 },
+		[349] = { side = 0 },
+		[530] = { side = 2 },
+		[609] = { side = 0 },
+		[2740] = { side = 1 },
+		[2778] = { side = 2 },
+		[2779] = { side = 1 },
+		[2787] = { side = 2 },
+		["area:15"] = { area = 15, side = 0, noRep = true },
+		["area:16593"] = { area = 16593, side = 0, noRep = true },
+	},
+	roles = {
+		DRUID = {
+			Alliance = { 69, 72, 609, 2740, "area:16593" },
+			Horde = { 81, 609, 2787, "area:16593" },
+		},
+		GRIMOIRE = {
+			Alliance = { 54, 72 },
+			Horde = { 68, 76 },
+		},
+		HUNTER = {
+			Alliance = { 47, 69, 72, "area:16593" },
+			Horde = { 76, 81, 530, "area:16593" },
+		},
+		MAGE = {
+			Alliance = { 47, 54, 69, 72, 2740, 2779, "area:16593" },
+			Horde = { 68, 76, 530, "area:16593" },
+		},
+		PALADIN = {
+			Alliance = { 47, 72, "area:15" },
+			Horde = { 68 },
+		},
+		PET = {
+			Alliance = { 47, 69, 72, "area:16593" },
+			Horde = { 76, 81, "area:16593" },
+		},
+		PRIEST = {
+			Alliance = { 47, 54, 69, 72 },
+			Horde = { 68, 76, 530 },
+		},
+		ROGUE = {
+			Alliance = { 21, 47, 54, 69, 72, 349, "area:16593" },
+			Horde = { 21, 68, 76, 81, 349, 530, "area:16593" },
+		},
+		SHAMAN = {
+			Alliance = { 47 },
+			Horde = { 76, 81, 2778, 2787 },
+		},
+		WARLOCK = {
+			Alliance = { 47, 54, 72 },
+			Horde = { 68, 76 },
+		},
+		WARRIOR = {
+			Alliance = { 47, 54, 69, 72, "area:16593" },
+			Horde = { 68, 76, 81, "area:16593" },
+		},
+		WEAPON = {
+			Alliance = { 47, 69, 72 },
+			Horde = { 68, 76, 81, 530 },
+		},
+	},
+}
