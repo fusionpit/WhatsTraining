@@ -1,5 +1,6 @@
 local _, wt = ...
-local version = wt.gameVersion
+-- Forever shares Era's weapon masters
+local version = wt.gameVersion == "forever" and "era" or wt.gameVersion
 
 local IRONFORGE = 1537
 local STORMWIND = 1519
