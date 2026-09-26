@@ -23,10 +23,12 @@ wt.TrainerFactions = {
 			Alliance = { 69, 72, 609, 2740 },
 			Horde = { 81, 609, 2787 },
 		},
-		GRIMOIRE = {
-			Alliance = { 54, 72 },
-			Horde = { 68, 76 },
-		},
+		-- Forever's tome vendors charge full price at every standing (Era discounts them, so this is
+		-- probably a Forever bug). No GRIMOIRE role means Pricing shows only the base cost for tomes.
+		-- GRIMOIRE = {
+		-- 	Alliance = { 54, 72 },
+		-- 	Horde = { 68, 76 },
+		-- },
 		HUNTER = {
 			Alliance = { 47, 69, 72 },
 			Horde = { 76, 81, 530 },
