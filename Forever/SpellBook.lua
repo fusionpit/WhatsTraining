@@ -27,9 +27,9 @@ local function refresh(mainFrame)
     mainFrame.total:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", -60, -26)
     mainFrame.total:GetParent():SetShown(leftView == spells)
     local rows, base = wt.priceRows((wt.availableSpells()))
-    local coins, best = C_CurrencyInfo.GetCoinTextureString, rows[1] and rows[1].price < base and rows[1].price
-    mainFrame.total:SetText(best and string.format(wt.L.LEDGER_AVAILABLE_TOTAL_WAS, coins(best), coins(base))
-        or string.format(wt.L.LEDGER_AVAILABLE_TOTAL, coins(base)))
+    local coins, best = C_CurrencyInfo.GetCoinTextureString, rows[1] and rows[1].price or base
+    mainFrame.total:SetText(string.format(wt.L.LEDGER_AVAILABLE_TOTAL, coins(best)))
+    mainFrame.totalInfo:SetShown(best < base)
     if not dual then
         updatePage(mainFrame, leftView, leftView.Items())
         if expanded then updatePage(weaponPage, weapons, weapons.Items()) end
@@ -60,6 +60,12 @@ local function attachForeverSpellBook(mainFrame)
         local totalHover = CreateFrame("Frame", nil, mainFrame)
         mainFrame.total:SetParent(totalHover)
         totalHover:SetAllPoints(mainFrame.total)
+        totalHover:SetHitRectInsets(0, -12, 0, 0)
+        local totalInfo = totalHover:CreateFontString(nil, "OVERLAY", "SystemFont_Med3")
+        totalInfo:SetPoint("TOPLEFT", mainFrame.total, "TOPRIGHT", 2, 0)
+        totalInfo:SetTextColor(0.14, 0.42, 0.17)
+        totalInfo:SetText("*")
+        mainFrame.totalInfo = totalInfo
         totalHover:EnableMouse(true)
         totalHover:SetScript("OnEnter", function(self)
             local spells, header = wt.availableSpells()

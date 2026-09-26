@@ -39,7 +39,6 @@ local localeText = {
         OPEN_BEAST_IN_COMBAT = "Can't open Beast Training while in combat",
         LEVEL_FORMAT = "Level %s",
         LEDGER_AVAILABLE_TOTAL = "Available total: %s",
-        LEDGER_AVAILABLE_TOTAL_WAS = "Available total: %s (was %s)",
         LEDGER_SPELL = "Spell",
         LEDGER_RANK = "Rank",
         LEDGER_REQUIRED_LEVEL = "Required level",
