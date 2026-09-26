@@ -6,14 +6,23 @@ local function floatingFrame()
         frame = CreateFrame("Frame", "WhatsTrainingFloatingFrame", UIParent, "UIPanelDialogTemplate")
         wt.FloatingFrame = frame
         frame:SetSize(384, 512)
-        frame:SetPoint("CENTER")
+        local saved = WT_FloatingFramePoint
+        if type(saved) == "table" and type(saved[1]) == "string" then
+            frame:SetPoint(saved[1], UIParent, saved[2], tonumber(saved[3]) or 0, tonumber(saved[4]) or 0)
+        else
+            frame:SetPoint("CENTER")
+        end
         frame:SetFrameStrata("HIGH")
         frame:SetMovable(true)
         frame:SetClampedToScreen(true)
         frame:EnableMouse(true)
         frame:RegisterForDrag("LeftButton")
         frame:SetScript("OnDragStart", frame.StartMoving)
-        frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
+        frame:SetScript("OnDragStop", function(self)
+            self:StopMovingOrSizing()
+            local point, _, relativePoint, x, y = self:GetPoint()
+            WT_FloatingFramePoint = { point, relativePoint, x, y }
+        end)
         frame.Title:SetText(wt.L.TAB_TEXT)
         frame.maxRows, frame.scrollStep = 27, 16
         wt.CreateCompactFrame(frame)
