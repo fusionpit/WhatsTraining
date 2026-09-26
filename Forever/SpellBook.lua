@@ -29,6 +29,7 @@ local function refresh(mainFrame)
     local rows, base = wt.priceRows((wt.availableSpells()))
     local coins, best = C_CurrencyInfo.GetCoinTextureString, rows[1] and rows[1].price or base
     mainFrame.total:SetText(string.format(wt.L.LEDGER_AVAILABLE_TOTAL, coins(best)))
+    mainFrame.total:SetShown(best > 0)
     mainFrame.totalInfo:SetShown(best < base)
     if not dual then
         updatePage(mainFrame, leftView, leftView.Items())
