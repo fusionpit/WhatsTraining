@@ -32,6 +32,22 @@ local function groupTitle(group)
     return group.category.name or group.category.formattedName, 0.30, 0.10, 0.05
 end
 
+-- Pet abilities and tomes share one section, so their level carries the status: green now, blue soon, red later.
+local function levelColor(category, spell)
+    if category.key == wt.PET_KEY then
+        if spell.level <= wt.playerLevel then return 0.10, 0.38, 0.05 end
+        if spell.level <= wt.playerLevel + 2 then return 0.08, 0.22, 0.50 end
+        return 0.45, 0.09, 0.04
+    end
+    if category.key == wt.NOTLEVEL_KEY or category.key == wt.WEAPON_NOTLEVEL_KEY then return 0.45, 0.09, 0.04 end
+    return 0.19, 0.12, 0.06
+end
+
+local function levelText(category, spell)
+    local r, g, b = levelColor(category, spell)
+    return string.format("|cff%02x%02x%02x%s|r", r * 255 + 0.5, g * 255 + 0.5, b * 255 + 0.5, spell.formattedLevel)
+end
+
 -- lays out blocks ({group, first, last} slices of a group's spells) and returns the content height
 local function renderLevels(page, blocks)
     local levels, y = page.levels, 0
@@ -69,7 +85,7 @@ local function renderLevels(page, blocks)
             cell.name:SetText(spell.name)
             local subText = spell.subText or ""
             if not group.level and not group.category.hideLevel then
-                subText = (subText ~= "" and subText .. " • " or "") .. spell.formattedLevel
+                subText = (subText ~= "" and subText .. " • " or "") .. levelText(group.category, spell)
             end
             cell.rank:SetText(subText)
         end
@@ -77,11 +93,6 @@ local function renderLevels(page, blocks)
     end
     levels:SetHeight(math.max(1, y))
     return y
-end
-
-local function levelColor(category)
-    if category.key == wt.NOTLEVEL_KEY or category.key == wt.WEAPON_NOTLEVEL_KEY then return 0.45, 0.09, 0.04 end
-    return 0.19, 0.12, 0.06
 end
 
 local function showHeading(page, item, y, color, fromAlpha, toAlpha)
@@ -139,7 +150,7 @@ local function renderLedger(page, items)
             row.name:SetText(item.name)
             row.rank:SetText(item.subText or "")
             row.level:SetText(item.hideLevel and "—" or item.formattedLevel)
-            row.level:SetTextColor(levelColor(category))
+            row.level:SetTextColor(levelColor(category, item))
             row.separator:SetShown(items[i + 1] ~= nil and not items[i + 1].isHeader)
         end
         y = y + height
@@ -170,7 +181,7 @@ local function renderList(page, items)
             end
             row.level:SetShown(not item.hideLevel)
             row.level:SetText(item.formattedLevel)
-            row.level:SetTextColor(levelColor(category))
+            row.level:SetTextColor(levelColor(category, item))
             row.separator:SetShown(items[i + 1] ~= nil and not items[i + 1].isHeader)
             for index, city in ipairs(wt.weaponSkeleton) do
                 local icon = row.cityIcons[index]
@@ -304,5 +315,6 @@ local function updatePage(page, view, items, paged)
     scroll:SetVerticalScroll(math.min(scroll:GetVerticalScroll(), math.max(0, height - scroll:GetHeight())))
 end
 
+Forever.levelColor = levelColor
 Forever.views = views
 Forever.updatePage = updatePage
