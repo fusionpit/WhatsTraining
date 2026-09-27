@@ -6,8 +6,8 @@
 ## SavedVariables: WT_WeaponGrouping, WT_ShowKnownWeaponSkills [AllowLoadGameType classic][ExcludeLoadGameType camelot]
 ## SavedVariables: WT_WeaponGrouping, WT_ShowKnownWeaponSkills, WT_SpellDisplay, WT_SideBySide [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 ## SavedVariablesPerCharacter: WT_LearnedPetAbilities, WT_NeedsToOpenBeastTraining, WT_IgnoredSpells
-## OptionalDeps: ClassTrainerPlus, TomTom [AllowLoadGameType classic][ExcludeLoadGameType camelot]
-## OptionalDeps: ClassTrainerPlusForever, TomTom [AllowLoadGameType camelot][ExcludeLoadGameType classic]
+## OptionalDeps: ClassTrainerPlus, TomTom, EllesmereUI [AllowLoadGameType classic][ExcludeLoadGameType camelot]
+## OptionalDeps: ClassTrainerPlusForever, TomTom, EllesmereUI [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 ## X-Curse-Project-ID: 324944
 ## X-WoWI-ID: 25031
 ## X-Thanks: capitano666 on curse for Shaman SoD info
@@ -44,6 +44,7 @@ Pricing.lua
 Waypoint.lua
 WeaponGrouping.lua
 
+EllesmereSkin.lua
 WhatsTrainingUI.lua
 Forever\Forever.xml [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 Categories.lua
