@@ -255,6 +255,7 @@ local function attachForeverSpellBook(mainFrame)
             if mainFrame:IsShown() then selectTraining(true) end
         end)
         book:ResizeSearchBox()
+        wt.SkinSpellBookFrame(mainFrame)
     end)
 end
 

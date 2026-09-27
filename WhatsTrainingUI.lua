@@ -632,6 +632,7 @@ function wt.CreateCompactFrame(mainFrame)
         rawset(rows, i, row)
     end
     mainFrame.rows = rows
+    wt.SkinCompactFrame(mainFrame)
 end
 
 function wt.CreateFrame()
