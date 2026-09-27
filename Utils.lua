@@ -109,28 +109,79 @@ function wt.availableSpells()
     return spells, header
 end
 
--- Base cost plus one line per trainer faction, cheapest first; spells defaults to spellInfo.
--- Falls back to the plain cost line when no faction trains it.
--- A price is red when unaffordable, else green when it's the cheapest and below base (red wins).
+local function bestPrice(rows, base)
+    return rows[1] and rows[1].price < base and rows[1].price or nil
+end
+
+-- "Name · Standing · N% off"
+-- gold when selected, green when best
+function wt.priceRowLabel(row, best)
+    local text = row.noRep and format(wt.L.NO_REP_ROW_FORMAT, row.name) or
+        format(wt.L.REP_ROW_FORMAT, row.name, row.standingLabel, row.pct)
+    local selected, isBest = row.key == wt.selectedKey(), row.price == best
+    if selected then text = text .. " · " .. wt.L.PRICE_SELECTED end
+    if isBest then text = text .. " · " .. wt.L.PRICE_BEST end
+    local color = selected and NORMAL_FONT_COLOR_CODE or isBest and GREEN_FONT_COLOR_CODE
+    if color then text = color .. text .. FONT_COLOR_CODE_CLOSE end
+    return text, color
+end
+
+-- base cost plus one line per trainer faction, cheapest first
 function wt.addPricingBlock(tooltip, spellInfo, spells)
-    local rows, base = wt.priceRows(spells or spellInfo)
+    local rows, base = wt.priceRows(spells or spellInfo, wt.selectedKey())
     if #rows == 0 or base == 0 then
         tooltip:AddLine(wt.formatSpellCost(spellInfo))
         return
     end
     tooltip:AddLine(wt.formatSpellCost(spellInfo, nil, wt.L.BASE_COST_FORMAT))
-    local best = rows[1].price < base and rows[1].price
+    local best = bestPrice(rows, base)
     local money = GetMoney()
-    for _, row in ipairs(rows) do
-        local left = row.noRep and format(wt.L.NO_REP_ROW_FORMAT, row.name) or
-            format(wt.L.REP_ROW_FORMAT, row.name, row.standingLabel, row.pct)
+    for _, row in ipairs(wt.shownRows(rows)) do
+        local left, color = wt.priceRowLabel(row, best)
         local right = C_CurrencyInfo.GetCoinTextureString(row.price)
-        local rightColor = money < row.price and RED_FONT_COLOR_CODE or row.price == best and GREEN_FONT_COLOR_CODE
+        local rightColor = money < row.price and RED_FONT_COLOR_CODE or color
         if rightColor then right = rightColor .. right .. FONT_COLOR_CODE_CLOSE end
-        if row.price == best then left = GREEN_FONT_COLOR_CODE .. left .. FONT_COLOR_CODE_CLOSE end
         tooltip:AddDoubleLine(left, right)
     end
     if wt.hasPvpRankDiscount() then tooltip:AddLine(wt.L.PVP_RANK_FOOTER, 0.5, 0.5, 0.5) end
+end
+
+function wt.availablePriceRows()
+    local rows, base = wt.priceRows((wt.availableSpells()), wt.selectedKey())
+    return rows, base, bestPrice(rows, base)
+end
+
+local function isChoice(choice) return (WT_PriceFaction or "auto") == choice end
+local function setChoice(choice)
+    PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+    WT_PriceFaction = choice
+    wt.RefreshUI()
+end
+
+function wt.priceMenuGenerator(_, root)
+    local rows, base, best = wt.availablePriceRows()
+    root:CreateTitle(wt.L.PRICE_MENU_TITLE)
+    root:CreateTitle(format(wt.L.BASE_COST_FORMAT, C_CurrencyInfo.GetCoinTextureString(base)))
+        :AddInitializer(function(frame) frame.fontString:SetTextColor(1, 1, 1) end)
+    root:CreateDivider()
+    root:CreateTitle(wt.L.PRICE_MENU_DISCOUNT)
+    root:CreateRadio(wt.L.PRICE_AUTO, isChoice, setChoice, "auto")
+    root:CreateRadio(wt.L.PRICE_NONE, isChoice, setChoice, "none")
+    root:CreateDivider()
+    for _, row in ipairs(rows) do
+        local standing = row.noRep and wt.L.PRICE_NO_REP or
+            format(wt.L.PRICE_STANDING_FORMAT, row.standingLabel, row.pct)
+        root:CreateRadio(row.name, isChoice, setChoice, row.key):AddInitializer(function(button)
+            if row.price == best then button.fontString:SetTextColor(GREEN_FONT_COLOR:GetRGB()) end
+            local right = button:AttachFontString()
+            right:SetHeight(20)
+            right:SetPoint("RIGHT")
+            right:SetJustifyH("RIGHT")
+            right:SetText(standing)
+            -- aligned text needs an explicit width: radio dot + gap + both strings
+            return 40 + button.fontString:GetUnboundedStringWidth() + right:GetUnboundedStringWidth(), 20
+        end)
+    end
 end
 
 local BEAST_TRAINING_SPELL = 5149

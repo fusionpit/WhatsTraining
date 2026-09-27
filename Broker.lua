@@ -45,6 +45,14 @@ local function formatBlue(text)
     return '|cff82c5ff'..text..'|r'
 end
 
+local function coins(amount)
+    return wt.formatSpellCost({ cost = amount, costFormat = "%s" }, FONT_SIZE)
+end
+local factionEvents = CreateFrame("Frame")
+factionEvents:RegisterEvent("UPDATE_FACTION")
+factionEvents:RegisterEvent("PLAYER_PVP_RANK_CHANGED")
+factionEvents:SetScript("OnEvent", refreshTooltip)
+
 local OPEN_HINT = formatGreen(wt.gameVersion == "forever" and wt.L.BROKER_CLICK_OPEN_WINDOW or wt.L.BROKER_CLICK_OPEN)
 local OPEN_BEAST_TRAINING_HINT = formatGreen(wt.L.BROKER_CLICK_BEAST_TRAIN)
 local TOGGLE_SPELLS_HINT = formatGreen(wt.L.BROKER_CLICK_TOGGLE_SPELLS)
@@ -71,19 +79,19 @@ function plugin.OnTooltipShow(tt)
         tt:AddLine(OPEN_HINT)
         return
     end
+    local rows, _, best = wt.availablePriceRows()
+    local key = wt.priceKey(rows)
     for i, category in ipairs(wt.brokerData) do
+        local total, shown = wt.selectedPrice(category.spells, key), wt.selectedPrice(category.displayedSpells, key)
         local header = #category.spells == #category.displayedSpells
-            and string.format("%s — %s", category.formattedName, wt.formatSpellCost(category, FONT_SIZE))
+            and string.format("%s — %s", category.formattedName, coins(total))
             or string.format("%s — %s", category.formattedName,
-                string.format(wt.L.BROKER_HEADER_HIDDEN_FORMAT,
-                    wt.formatSpellCost(category.displayed, FONT_SIZE),
-                    wt.formatSpellCost(category, FONT_SIZE)))
+                string.format(wt.L.BROKER_HEADER_HIDDEN_FORMAT, coins(shown), coins(total)))
         tt:AddLine(header)
 
         for _, spell in ipairs(category.displayedSpells) do
             local spellText = string.format("  |T%d:0|t %s — %s", spell.icon,
-                spell.formattedFullName or spell.name,
-                wt.formatSpellCost(spell, FONT_SIZE))
+                spell.formattedFullName or spell.name, coins(wt.selectedPrice(spell, key)))
             if spell.formattedTrainerZones then
                 spellText = spellText .. " — " .. spell.formattedTrainerZones
             end
@@ -98,9 +106,13 @@ function plugin.OnTooltipShow(tt)
         if #category.spells ~= #category.displayedSpells then
             tt:AddLine(string.format("  "..wt.L.BROKER_HIDDEN_FORMAT,
                 #category.spells - #category.displayedSpells,
-                wt.formatSpellCost(category.hidden, FONT_SIZE)))
+                coins(total - shown)))
         end
         if i ~= #wt.brokerData then tt:AddLine(" ") end
+    end
+    if #rows > 0 then
+        tt:AddLine(" ")
+        for _, row in ipairs(wt.shownRows(rows, key)) do tt:AddLine((wt.priceRowLabel(row, best))) end
     end
     tt:AddLine(" ")
     if wt.needsBeastTraining() then

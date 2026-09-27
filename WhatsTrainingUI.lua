@@ -68,6 +68,7 @@ local function setTooltip(spellInfo)
     if spellInfo.cost and spellInfo.cost > 0 then
         if spellInfo.key == wt.AVAILABLE_KEY then
             wt.addPricingBlock(tooltip, spellInfo, (wt.availableSpells()))
+            tooltip:AddLine(wt.L.PRICE_MENU_HINT, 0.5, 0.5, 0.5)
         elseif spellInfo.isHeader then
             tooltip:AddLine(wt.formatSpellCost(spellInfo))
         else
@@ -170,6 +171,12 @@ local function setRowSpell(row, spell)
                 PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
                 wt.setWaypoint(spell)
             end
+        end)
+    elseif spell.key == wt.AVAILABLE_KEY then
+        row:SetScript("OnClick", function(_, button)
+            if button ~= "RightButton" then return end
+            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+            MenuUtil.CreateContextMenu(row, wt.priceMenuGenerator)
         end)
     else
         row:SetScript("OnClick", nil)

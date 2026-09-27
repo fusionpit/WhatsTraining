@@ -3,20 +3,18 @@ local _, wt = ...
 wt.TrainerFactions = {
 	factions = {
 		[21] = { side = 0 },
-		[47] = { side = 1 },
-		[54] = { side = 1 },
-		[68] = { side = 2 },
-		[69] = { side = 1 },
-		[72] = { side = 1 },
-		[76] = { side = 2 },
-		[81] = { side = 2 },
+		[47] = { side = 1, city = true },
+		[54] = { side = 1, city = true },
+		[68] = { side = 2, city = true },
+		[69] = { side = 1, city = true },
+		[72] = { side = 1, city = true },
+		[76] = { side = 2, city = true },
+		[81] = { side = 2, city = true },
 		[349] = { side = 0 },
-		[530] = { side = 2 },
+		[530] = { side = 2, city = true },
 		[609] = { side = 0 },
-		[911] = { side = 2 },
-		[930] = { side = 1 },
-		[934] = { side = 0 },
-		[935] = { side = 0 },
+		[911] = { side = 2, city = true },
+		[930] = { side = 1, city = true },
 	},
 	roles = {
 		DRUID = {
@@ -32,8 +30,8 @@ wt.TrainerFactions = {
 			Horde = { 76, 81, 530, 911 },
 		},
 		MAGE = {
-			Alliance = { 47, 54, 69, 72, 930, 934, 935 },
-			Horde = { 68, 76, 530, 911, 934, 935 },
+			Alliance = { 47, 54, 69, 72, 930 },
+			Horde = { 68, 76, 530, 911 },
 		},
 		PALADIN = {
 			Alliance = { 47, 72, 930 },

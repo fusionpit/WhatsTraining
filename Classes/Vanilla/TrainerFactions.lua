@@ -3,15 +3,15 @@ local _, wt = ...
 wt.TrainerFactions = {
 	factions = {
 		[21] = { side = 0 },
-		[47] = { side = 1 },
-		[54] = { side = 1 },
-		[68] = { side = 2 },
-		[69] = { side = 1 },
-		[72] = { side = 1 },
-		[76] = { side = 2 },
-		[81] = { side = 2 },
+		[47] = { side = 1, city = true },
+		[54] = { side = 1, city = true },
+		[68] = { side = 2, city = true },
+		[69] = { side = 1, city = true },
+		[72] = { side = 1, city = true },
+		[76] = { side = 2, city = true },
+		[81] = { side = 2, city = true },
 		[349] = { side = 0 },
-		[530] = { side = 2 },
+		[530] = { side = 2, city = true },
 		[609] = { side = 0 },
 	},
 	roles = {

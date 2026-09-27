@@ -23,14 +23,10 @@ local function refresh(mainFrame)
     weaponPage.continues:SetShown(false)
     local spells, weapons = views[WT_SpellDisplay], views[WT_WeaponGrouping]
     local leftView = not expanded and wt.showingWeaponSkills and weapons or spells
-    mainFrame.total:ClearAllPoints()
-    mainFrame.total:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", -60, -26)
     mainFrame.total:GetParent():SetShown(leftView == spells)
-    local rows, base = wt.priceRows((wt.availableSpells()))
-    local coins, best = C_CurrencyInfo.GetCoinTextureString, rows[1] and rows[1].price or base
-    mainFrame.total:SetText(string.format(wt.L.LEDGER_AVAILABLE_TOTAL, coins(best)))
-    mainFrame.total:SetShown(best > 0)
-    mainFrame.totalInfo:SetShown(best < base)
+    local rows, base = wt.availablePriceRows()
+    local price = wt.priceIn(wt.priceKey(rows), rows, base)
+    mainFrame.total:SetText(string.format(wt.L.LEDGER_AVAILABLE_TOTAL, C_CurrencyInfo.GetCoinTextureString(price)))
     if not dual then
         updatePage(mainFrame, leftView, leftView.Items())
         if expanded then updatePage(weaponPage, weapons, weapons.Items()) end
@@ -62,23 +58,38 @@ local function attachForeverSpellBook(mainFrame)
         mainFrame.total:SetParent(totalHover)
         totalHover:SetAllPoints(mainFrame.total)
         totalHover:SetHitRectInsets(0, -12, 0, 0)
-        local totalInfo = totalHover:CreateFontString(nil, "OVERLAY", "SystemFont_Med3")
-        totalInfo:SetPoint("TOPLEFT", mainFrame.total, "TOPRIGHT", 2, 0)
-        totalInfo:SetTextColor(0.14, 0.42, 0.17)
-        totalInfo:SetText("*")
-        mainFrame.totalInfo = totalInfo
         totalHover:EnableMouse(true)
-        totalHover:SetScript("OnEnter", function(self)
+        local function showBreakdown()
             local spells, header = wt.availableSpells()
             if not header then return end
-            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetOwner(totalHover, "ANCHOR_RIGHT")
             wt.addPricingBlock(GameTooltip, header, spells)
             GameTooltip:Show()
-        end)
+        end
+        totalHover:SetScript("OnEnter", showBreakdown)
         totalHover:SetScript("OnLeave", hideTooltip)
         totalHover:SetScript("OnHide", hideTooltip)
-        -- rep standings change the discounted total; RefreshUI only redraws visible frames
+        totalHover:SetScript("OnMouseUp", function(_, button)
+            if button == "RightButton" then MenuUtil.CreateContextMenu(totalHover, wt.priceMenuGenerator) end
+        end)
+        local arrow = CreateFrame("DropdownButton", nil, totalHover)
+        mainFrame.priceDropdown = arrow
+        arrow:SetSize(16, 16)
+        arrow:SetNormalTexture("Interface\\Buttons\\Arrow-Down-Up")
+        arrow:SetPushedTexture("Interface\\Buttons\\Arrow-Down-Down")
+        arrow:SetHighlightTexture("Interface\\Buttons\\Arrow-Down-Up", "ADD")
+        arrow:GetHighlightTexture():SetAlpha(0.4)
+        -- the glyph fills only the top half of the 16px texture, so the text centres 4px above the button centre
+        arrow:SetPoint("TOPRIGHT", mainFrame.header.Border, "TOPRIGHT", 0, 15)
+        mainFrame.total:ClearAllPoints()
+        mainFrame.total:SetPoint("RIGHT", arrow, "LEFT", -2, 4)
+        arrow:SetMenuAnchor(AnchorUtil.CreateAnchor("TOPRIGHT", arrow, "BOTTOMRIGHT", 0, -2))
+        arrow:SetupMenu(wt.priceMenuGenerator)
+        arrow:HookScript("OnEnter", showBreakdown)
+        arrow:HookScript("OnLeave", function() hideTooltip(totalHover) end)
+        -- rep standings and PvP rank change the discounted total
         totalHover:RegisterEvent("UPDATE_FACTION")
+        totalHover:RegisterEvent("PLAYER_PVP_RANK_CHANGED")
         totalHover:SetScript("OnEvent", wt.RefreshUI)
         mainFrame.Refresh = refresh
         local weaponPage = CreateFrame("Frame", "$parentWeaponPage", mainFrame)
