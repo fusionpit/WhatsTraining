@@ -7,7 +7,7 @@
 ## SavedVariables: WT_WeaponGrouping, WT_ShowKnownWeaponSkills, WT_SpellDisplay, WT_SideBySide, WT_FloatingFramePoint [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 ## SavedVariablesPerCharacter: WT_LearnedPetAbilities, WT_NeedsToOpenBeastTraining, WT_IgnoredSpells, WT_PriceFaction
 ## OptionalDeps: ClassTrainerPlus, TomTom [AllowLoadGameType classic][ExcludeLoadGameType camelot]
-## OptionalDeps: ClassTrainerPlusForever, TomTom [AllowLoadGameType camelot][ExcludeLoadGameType classic]
+## OptionalDeps: ClassTrainerPlusForever, EllesmereUI, EllesmereUIBlizzardSkin, TomTom [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 ## X-Curse-Project-ID: 324944
 ## X-WoWI-ID: 25031
 ## X-Thanks: capitano666 on curse for Shaman SoD info

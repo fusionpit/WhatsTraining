@@ -9,38 +9,29 @@ local label, weaponStatus, createCityIcon, setCityIcon =
 local buildGroups, wholeBlocks, ledgerSpan, paginateLedger, paginateLevels =
     Forever.buildGroups, Forever.wholeBlocks, Forever.ledgerSpan, Forever.paginateLedger, Forever.paginateLevels
 
-local sectionColors = {
-    available = {0.12, 0.24, 0.08, 0.65, 1, 0.40},
-    missingReqs = {0.32, 0.15, 0.03, 1, 0.82, 0.30},
-    nextLevel = {0.08, 0.18, 0.29, 0.55, 0.84, 1},
-    notLevel = {0.30, 0.07, 0.04, 1, 0.55, 0.45},
-    weaponAvailable = {0.12, 0.24, 0.08, 0.65, 1, 0.40},
-    weaponNextLevel = {0.08, 0.18, 0.29, 0.55, 0.84, 1},
-    weaponNotLevel = {0.30, 0.07, 0.04, 1, 0.55, 0.45},
-    weaponKnown = {0.20, 0.17, 0.12, 0.75, 0.75, 0.75},
-}
-local OTHER_SECTION = {0.20, 0.17, 0.12, 0.85, 0.80, 0.65}
-local WEAPON_GROUP = {0.20, 0.12, 0.04, 1, 0.82, 0.3}
-
 local function groupTitle(group)
     local key = group.category.key
-    if key == wt.AVAILABLE_KEY then return wt.L.AVAILABLE_HEADER, 0.10, 0.38, 0.05 end
+    if key == wt.AVAILABLE_KEY then return wt.L.AVAILABLE_HEADER, unpack(wt.Theme.available) end
     if key == wt.NEXTLEVEL_KEY then
-        return string.format(wt.L.LEVEL_FORMAT, group.level) .. " • " .. wt.L.NEXTLEVEL_HEADER, 0.08, 0.22, 0.50
+        return string.format(wt.L.LEVEL_FORMAT, group.level) .. " • " .. wt.L.NEXTLEVEL_HEADER, unpack(wt.Theme.nextLevel)
     end
-    if key == wt.NOTLEVEL_KEY then return string.format(wt.L.LEVEL_FORMAT, group.level), 0.30, 0.10, 0.05 end
-    return group.category.name or group.category.formattedName, 0.30, 0.10, 0.05
+    if key == wt.NOTLEVEL_KEY then
+        return string.format(wt.L.LEVEL_FORMAT, group.level), unpack(wt.Theme.groupUnavailable)
+    end
+    return group.category.name or group.category.formattedName, unpack(wt.Theme.groupUnavailable)
 end
 
 -- Pet abilities and tomes share one section, so their level carries the status: green now, blue soon, red later.
 local function levelColor(category, spell)
     if category.key == wt.PET_KEY then
-        if spell.level <= wt.playerLevel then return 0.10, 0.38, 0.05 end
-        if spell.level <= wt.playerLevel + 2 then return 0.08, 0.22, 0.50 end
-        return 0.45, 0.09, 0.04
+        if spell.level <= wt.playerLevel then return unpack(wt.Theme.available) end
+        if spell.level <= wt.playerLevel + 2 then return unpack(wt.Theme.nextLevel) end
+        return unpack(wt.Theme.levelUnavailable)
     end
-    if category.key == wt.NOTLEVEL_KEY or category.key == wt.WEAPON_NOTLEVEL_KEY then return 0.45, 0.09, 0.04 end
-    return 0.19, 0.12, 0.06
+    if category.key == wt.NOTLEVEL_KEY or category.key == wt.WEAPON_NOTLEVEL_KEY then
+        return unpack(wt.Theme.levelUnavailable)
+    end
+    return unpack(wt.Theme.body)
 end
 
 local function levelText(category, spell)
@@ -135,7 +126,8 @@ local function renderLedger(page, items)
         local gap, height = ledgerSpan(item, i == 1)
         y = y + gap
         if item.isHeader then
-            heading, count = showHeading(page, item, y, sectionColors[item.key] or OTHER_SECTION, 0.75, 0), 0
+            heading, count = showHeading(page, item, y,
+                wt.Theme.sectionColors[item.key] or wt.Theme.otherSection, 0.75, 0), 0
         else
             local category = heading.spell
             count = count + 1
@@ -166,7 +158,7 @@ local function renderList(page, items)
         y = y + gap
         if item.isHeader then
             category = item
-            showHeading(page, item, y, sectionColors[item.key] or OTHER_SECTION, 0.75, 0)
+            showHeading(page, item, y, wt.Theme.sectionColors[item.key] or wt.Theme.otherSection, 0.75, 0)
         else
             hasSkills = true
             local row = page.listRows:Acquire()
@@ -175,9 +167,9 @@ local function renderList(page, items)
             row.icon:SetTexture(item.useAltIcon and item.altIcon or item.icon)
             row.name:SetText(item.name)
             if category.key == wt.WEAPON_KNOWN_KEY then
-                row.name:SetTextColor(0.4, 0.4, 0.4)
+                row.name:SetTextColor(unpack(wt.Theme.dim))
             else
-                row.name:SetTextColor(0.19, 0.12, 0.06)
+                row.name:SetTextColor(unpack(wt.Theme.body))
             end
             row.level:SetShown(not item.hideLevel)
             row.level:SetText(item.formattedLevel)
@@ -233,7 +225,7 @@ local function renderByCity(page, items)
             i = i + 1
         elseif item.isHeader then
             if i > 1 then y = y + 10 end
-            showHeading(page, item, y, WEAPON_GROUP, 0.9, 0.25)
+            showHeading(page, item, y, wt.Theme.weaponGroup, 0.9, 0.25)
             y = y + ROW_HEIGHT
             i = i + 1
         else
@@ -262,7 +254,7 @@ local function renderByWeapon(page, items)
             y = y + TRAINER_ROW_HEIGHT
         elseif item.isHeader then
             if i > 1 then y = y + 10 end
-            showHeading(page, item, y, WEAPON_GROUP, 0.9, 0.25)
+            showHeading(page, item, y, wt.Theme.weaponGroup, 0.9, 0.25)
             y = y + ROW_HEIGHT + 4
         else
             if i > 1 then y = y + 6 end

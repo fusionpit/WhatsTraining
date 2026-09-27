@@ -46,6 +46,7 @@ end
 
 local function attachForeverSpellBook(mainFrame)
     EventUtil.ContinueOnAddOnLoaded("Blizzard_PlayerSpells", function()
+        wt.Theme = wt.ResolveTheme()
         local book = PlayerSpellsFrame.SpellBookFrame
         mainFrame:SetParent(book)
         mainFrame:SetPoint("TOPLEFT", book, "TOPLEFT", 65, -90)
@@ -109,7 +110,7 @@ local function attachForeverSpellBook(mainFrame)
         controls:ClearAllPoints()
         controls:SetPoint("BOTTOMRIGHT", book.PagedSpellsFrame.PagingControls, "BOTTOMRIGHT")
         controls.PageText:SetFontObject("SystemFont_Med3")
-        controls.PageText:SetTextColor(0.19, 0.12, 0.06)
+        controls.PageText:SetTextColor(unpack(wt.Theme.body))
         controls.spacing = 8
         weaponPage.continues:ClearAllPoints()
         weaponPage.continues:SetPoint("RIGHT", controls, "LEFT", -12, 0)
@@ -198,6 +199,7 @@ local function attachForeverSpellBook(mainFrame)
         local button = CreateFrame("Button", "WhatsTrainingSpellBookButton", book.CategoryTabSystem,
                                    "SpellBookCategoryTabTemplate")
         button:Init(0, nil, TAB_TEXTURE_FILEID)
+        button.tabID = nil
         button:SetPoint("LEFT", book.CategoryTabSystem, "RIGHT", 8, 0)
         local function updateLayout()
             local expanded = not book.isMinimized

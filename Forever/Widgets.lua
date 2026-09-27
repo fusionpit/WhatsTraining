@@ -11,7 +11,7 @@ local HEADER_CAP_FRACTION = 8 / 1024
 local function label(parent, text, font, x, y)
     local value = parent:CreateFontString(nil, "OVERLAY", font)
     value:SetPoint("TOPLEFT", parent, "TOPLEFT", x, y)
-    value:SetTextColor(0.19, 0.12, 0.06)
+    value:SetTextColor(unpack(wt.Theme.body))
     value:SetJustifyH("LEFT")
     value:SetText(text)
     return value
@@ -24,10 +24,10 @@ end
 local function weaponStatus(spell)
     local isKnown = spell.isKnown
     if isKnown == nil then isKnown = wt.isAbilityKnown(spell.id) end
-    if isKnown then return wt.L.LEDGER_WEAPON_KNOWN, 0.4, 0.4, 0.4 end
-    if wt.weaponIgnoredIds[spell.id] then return wt.L.IGNORED_TT, 0.4, 0.4, 0.4 end
-    if not spell.hideLevel then return spell.formattedLevel, 0.55, 0.12, 0.05 end
-    return wt.L.LEDGER_WEAPON_AVAILABLE, 0.1, 0.38, 0.05
+    if isKnown then return wt.L.LEDGER_WEAPON_KNOWN, unpack(wt.Theme.dim) end
+    if wt.weaponIgnoredIds[spell.id] then return wt.L.IGNORED_TT, unpack(wt.Theme.dim) end
+    if not spell.hideLevel then return spell.formattedLevel, unpack(wt.Theme.weaponUnavailable) end
+    return wt.L.LEDGER_WEAPON_AVAILABLE, unpack(wt.Theme.available)
 end
 
 local function createRow(page, parent)
@@ -44,7 +44,7 @@ local function createRow(page, parent)
     row.heading:SetPoint("TOPLEFT", row, "TOPLEFT", 8, 0)
     row.heading:SetPoint("BOTTOMRIGHT", row, "BOTTOMRIGHT", -8, 0)
     row.heading:SetJustifyV("MIDDLE")
-    row.heading:SetShadowColor(0, 0, 0, 1)
+    row.heading:SetShadowColor(unpack(wt.Theme.shadow))
     row.heading:SetShadowOffset(1, -1)
     row.icon = row:CreateTexture(nil, "ARTWORK")
     row.icon:SetPoint("TOPLEFT", 8, -2)
@@ -67,21 +67,21 @@ local function createRow(page, parent)
     row.separator:SetPoint("BOTTOMRIGHT", -8, 0)
     row.separator:SetHeight(2)
 
-    local clear = CreateColor(0.30, 0.19, 0.08, 0)
-    local ink = CreateColor(0.30, 0.19, 0.08, 0.18)
+    local clear = CreateColor(unpack(wt.Theme.clear))
+    local ink = CreateColor(unpack(wt.Theme.separator))
     for i = 1, 2 do
         local half = row.separator:CreateTexture(nil, "BACKGROUND")
         half:SetPoint("BOTTOMLEFT", 0, i - 1)
         half:SetPoint("BOTTOMRIGHT", 0, i - 1)
         half:SetHeight(1)
-        half:SetColorTexture(1, 1, 1, 1)
+        half:SetColorTexture(unpack(wt.Theme.white))
         half:SetGradient("VERTICAL", i == 1 and clear or ink, i == 1 and ink or clear)
         half:SetSnapToPixelGrid(false)
         half:SetTexelSnappingBias(0)
     end
     local highlight = row:CreateTexture(nil, "HIGHLIGHT")
     highlight:SetAllPoints()
-    highlight:SetColorTexture(1, 0.85, 0.50, 0.06)
+    highlight:SetColorTexture(unpack(wt.Theme.highlight))
     row:SetHighlightTexture(highlight)
     row:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     row:SetScript("OnEnter", function(self)
@@ -90,22 +90,24 @@ local function createRow(page, parent)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         if spell.npc then
             GameTooltip:SetText(spell.masterName or spell.name)
-            GameTooltip:AddLine(string.format("%s (%.1f, %.1f)", spell.zoneName, spell.x, spell.y), 0.8, 0.8, 0.8)
+            GameTooltip:AddLine(string.format("%s (%.1f, %.1f)", spell.zoneName, spell.x, spell.y),
+                unpack(wt.Theme.tooltipText))
             if wt.canSetWaypoint(spell) then
-                GameTooltip:AddLine(wt.L.CLICK_TO_WAYPOINT, GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b)
+                GameTooltip:AddLine(wt.L.CLICK_TO_WAYPOINT, unpack(wt.Theme.tooltipWaypoint))
             end
         elseif spell.altTooltipType == "weapon" then
             GameTooltip:SetText(spell.name)
             if spell.formattedTrainerZones then
-                GameTooltip:AddLine(string.format(wt.L.TRAINED_IN, spell.formattedTrainerZones), 0.8, 0.8, 0.8, true)
+                local r, g, b = unpack(wt.Theme.tooltipText)
+                GameTooltip:AddLine(string.format(wt.L.TRAINED_IN, spell.formattedTrainerZones), r, g, b, true)
             end
             if not wt.isAbilityKnown(spell.id) then wt.addPricingBlock(GameTooltip, spell) end
-            GameTooltip:AddLine((weaponStatus(spell)), 1, 0.82, 0.3)
+            GameTooltip:AddLine((weaponStatus(spell)), unpack(wt.Theme.tooltipHint))
         else
             wt.SetSpellTooltip(GameTooltip, spell)
             wt.addPricingBlock(GameTooltip, spell)
             if self.category.key == wt.MISSINGREQS_KEY or self.category.key == wt.MISSINGTALENT_KEY then
-                GameTooltip:AddLine(self.category.name, 1, 0.82, 0.30)
+                GameTooltip:AddLine(self.category.name, unpack(wt.Theme.tooltipHint))
             end
         end
         GameTooltip:Show()
@@ -199,7 +201,7 @@ local function createTrainer(page, underSkill)
     for _, region in ipairs({row.band, row.icon, row.iconBorder, row.name, row.rank, row.level,
         row.separator}) do region:Hide() end
     row:SetHeight(TRAINER_ROW_HEIGHT)
-    row.heading:SetTextColor(0.19, 0.12, 0.06)
+    row.heading:SetTextColor(unpack(wt.Theme.body))
     row.heading:SetShadowOffset(0, 0)
     if underSkill then
         -- leave the skill's icon column to the skill
@@ -237,12 +239,12 @@ local function createBlock(page)
     block.band:SetPoint("TOPLEFT", block, "TOPLEFT", 52, 0)
     block.band:SetPoint("TOPRIGHT")
     block.band:SetHeight(WEAPON_HEADING_HEIGHT)
-    block.band:SetGradient("HORIZONTAL", CreateColor(0.3, 0.19, 0.08, 0.25), CreateColor(0.3, 0.19, 0.08, 0))
+    block.band:SetGradient("HORIZONTAL", CreateColor(unpack(wt.Theme.block)), CreateColor(unpack(wt.Theme.clear)))
     block.icon:SetSize(40, 40)
     block.iconBorder:SetSize(64, 64)
     block.name:SetPoint("TOPLEFT", 56, -5)
     block.name:SetWidth(width - 200)
-    block.name:SetTextColor(0.08, 0.04, 0.02)
+    block.name:SetTextColor(unpack(wt.Theme.strong))
     block.rank:ClearAllPoints()
     block.rank:SetPoint("TOPRIGHT", -8, -5)
     block.rank:SetWidth(128)
@@ -257,7 +259,7 @@ local function createGroupHeader(parent)
     local header = CreateFrame("Frame", nil, parent)
     header:SetHeight(GROUP_HEADER)
     header.rule = header:CreateTexture(nil, "BACKGROUND")
-    header.rule:SetColorTexture(0.30, 0.19, 0.08, 0.35)
+    header.rule:SetColorTexture(unpack(wt.Theme.rule))
     header.rule:SetPoint("TOPLEFT", 8, 0)
     header.rule:SetPoint("TOPRIGHT", -8, 0)
     header.rule:SetHeight(1)
@@ -292,7 +294,7 @@ local function createCityIcon(parent)
     frame:SetSize(24, 24)
     local background = frame:CreateTexture(nil, "BACKGROUND")
     background:SetAllPoints()
-    background:SetColorTexture(0.2, 0.12, 0.04, 0.08)
+    background:SetColorTexture(unpack(wt.Theme.cityBacking))
     frame.icon = frame:CreateTexture(nil, "ARTWORK")
     frame.icon:SetAllPoints()
     frame.border = frame:CreateTexture(nil, "OVERLAY")
@@ -305,7 +307,8 @@ local function createCityIcon(parent)
         if self.spell then
             for _, trainer in ipairs(wt.WeaponSkills[self.spell.id].trainers[wt.playerFaction]) do
                 if trainer.zone == self.city.id then
-                    GameTooltip:AddLine(string.format("%s (%.1f, %.1f)", trainer.name, trainer.x, trainer.y), 0.8, 0.8, 0.8)
+                    GameTooltip:AddLine(string.format("%s (%.1f, %.1f)", trainer.name, trainer.x, trainer.y),
+                        unpack(wt.Theme.tooltipText))
                 end
             end
         end
@@ -335,6 +338,12 @@ local function createPage(page, viewFrame)
     page.title = header.Text
     page.title:SetText("What's Training?")
     page.titleBackplate = header.Backplate
+    if wt.Theme.headerText then
+        header.Text:SetTextColor(unpack(wt.Theme.headerText))
+        header.Backplate:SetAlpha(0)
+        header.Border:SetDesaturated(true)
+        header.Border:SetBlendMode("ADD")
+    end
 
     local rankX, levelX = page:GetWidth() - 260, page:GetWidth() - 155
     page.rankX, page.levelX = rankX, levelX
