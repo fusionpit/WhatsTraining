@@ -11,6 +11,29 @@ if wt.currentClass == "WARLOCK" then
     wt.SayaadTomes = {}
 end
 
+-- Not Spell/Item:ContinueOn*Load: Blizzard's SpellEventListener and ItemEventListener are shared with the
+-- spellbook and action bars and run every waiting callback in one loop, possibly tainting a whole lotta things
+local waiting = { SPELL_DATA_LOAD_RESULT = {}, ITEM_DATA_LOAD_RESULT = {} }
+local loader = CreateFrame("Frame")
+loader:RegisterEvent("SPELL_DATA_LOAD_RESULT")
+loader:RegisterEvent("ITEM_DATA_LOAD_RESULT")
+loader:SetScript("OnEvent", function(_, event, id, success)
+    local callbacks = waiting[event][id]
+    if not callbacks then return end
+    waiting[event][id] = nil
+    if success then
+        for _, callback in ipairs(callbacks) do callback() end
+    end
+end)
+local function continueOnLoad(event, id, isCached, request, callback)
+    if isCached(id) then return callback() end
+    local callbacks = waiting[event][id]
+    waiting[event][id] = callbacks or { callback }
+    if callbacks then return tinsert(callbacks, callback) end
+    -- the load event is synchronous, so register the callback first
+    request(id)
+end
+
 -- done has params cacheHit: bool, spellInfo
 function wt:CacheSpell(spell, level, done)
     if (self.spellInfoCache[spell.id] ~= nil) then
@@ -18,7 +41,7 @@ function wt:CacheSpell(spell, level, done)
         return
     end
     local si = Spell:CreateFromSpellID(spell.id)
-    si:ContinueOnSpellLoad(function()
+    continueOnLoad("SPELL_DATA_LOAD_RESULT", spell.id, C_Spell.IsSpellDataCached, C_Spell.RequestLoadSpellData, function()
         if (self.spellInfoCache[spell.id] ~= nil) then
             done(true, self.spellInfoCache[spell.id])
             return
@@ -86,7 +109,7 @@ function wt:CacheItem(item, level, done, taughtSpell)
         return
     end
     local ii = Item:CreateFromItemID(item.itemId)
-    ii:ContinueOnItemLoad(function()
+    continueOnLoad("ITEM_DATA_LOAD_RESULT", item.itemId, C_Item.IsItemDataCachedByID, C_Item.RequestLoadItemDataByID, function()
         if (self.itemInfoCache[item.id] ~= nil) then
             done(true)
             return
