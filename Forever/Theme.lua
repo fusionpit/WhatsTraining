@@ -1,6 +1,8 @@
 local _, wt = ...
 
 local parchment = {
+    backing = {0.10, 0.07, 0.035},
+    pageArt = true,
     body = {0.19, 0.12, 0.06},
     strong = {0.08, 0.04, 0.02},
     dim = {0.4, 0.4, 0.4},
@@ -35,6 +37,8 @@ local parchment = {
 }
 
 local dark = {
+    -- stand-in until the EUI skin reads S.GetPanelColor()
+    backing = {0.05, 0.05, 0.05},
     headerText = {0.95, 0.90, 0.80},
     body = {0.9, 0.9, 0.9},
     strong = {1, 1, 1},

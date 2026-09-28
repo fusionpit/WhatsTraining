@@ -329,11 +329,12 @@ local function setCityIcon(frame, city, spell, available)
     frame:Show()
 end
 
-local function createPage(page, viewFrame)
+-- headerX: where the native 680-wide spell view starts on this page
+local function createPage(page, headerX)
     local header = CreateFrame("Frame", nil, page, "SpellBookHeaderTemplate")
-    header:SetWidth(viewFrame:GetWidth())
+    header:SetWidth(680)
     header:ClearAllPoints()
-    header:SetPoint("TOPLEFT", viewFrame, "TOPLEFT")
+    header:SetPoint("TOPLEFT", page, "TOPLEFT", headerX, -5)
     page.header = header
     page.title = header.Text
     page.title:SetText("What's Training?")

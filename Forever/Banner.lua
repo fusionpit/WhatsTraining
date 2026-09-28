@@ -82,14 +82,13 @@ local function createCategoryBanner(frame, selectView)
         self.badgeBackground:SetPoint("CENTER", self, "TOP", 0, -52)
     end
     banner:SetScript("OnMouseDown", function(self, button)
-        if button == "LeftButton" and not InCombatLockdown() then
+        if button == "LeftButton" then
             self.badgeBackground:SetPoint("CENTER", self, "TOP", 0, -54)
         end
     end)
     banner:SetScript("OnMouseUp", releaseBadge)
 
     banner:SetScript("OnClick", function()
-        if InCombatLockdown() then return end
         PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
         selectView(not showingWeapons(frame))
     end)
