@@ -95,18 +95,22 @@ function wt.formatSpellCost(spellInfo, fontHeight, costFormat)
     return HIGHLIGHT_FONT_COLOR_CODE .. format(formatString, coloredCoinString) .. FONT_COLOR_CODE_CLOSE
 end
 
--- the spells under the Available header in wt.spellListData (they sum to its cost), and that header
-function wt.availableSpells()
+-- The filtered spells under a category in wt.spellListData, and its header.
+function wt.categorySpells(key)
     local spells, header = {}, nil
     for _, entry in ipairs(wt.spellListData) do
         if entry.isHeader then
             if header then break end
-            if entry.key == wt.AVAILABLE_KEY then header = entry end
+            if entry.key == key then header = entry end
         elseif header then
             tinsert(spells, entry)
         end
     end
     return spells, header
+end
+
+function wt.availableSpells()
+    return wt.categorySpells(wt.AVAILABLE_KEY)
 end
 
 local function bestPrice(rows, base)

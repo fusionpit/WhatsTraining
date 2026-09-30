@@ -14,10 +14,11 @@ local function buildGroups(data)
         else
             local level = (category.key == wt.NEXTLEVEL_KEY or category.key == wt.NOTLEVEL_KEY) and spell.level or nil
             if not group or group.level ~= level then
-                group = {category = category, level = level, spells = {}}
+                group = {category = category, level = level, spells = {}, cost = 0}
                 tinsert(groups, group)
             end
             tinsert(group.spells, spell)
+            group.cost = group.cost + spell.cost
         end
     end
     return groups

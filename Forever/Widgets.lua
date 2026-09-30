@@ -21,6 +21,24 @@ local function hideTooltip(self)
     if GameTooltip:IsOwned(self) then GameTooltip:Hide() end
 end
 
+local function categoryScripts(header)
+    header:EnableMouse(true)
+    header:RegisterForClicks("RightButtonUp")
+    header:SetScript("OnEnter", function(self)
+        local category = self.spell
+        if not category or not category.cost or category.cost <= 0 then return end
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        wt.SetTooltip(GameTooltip, category)
+    end)
+    header:SetScript("OnLeave", hideTooltip)
+    header:SetScript("OnHide", hideTooltip)
+    header:SetScript("OnClick", function(self, button)
+        if button ~= "RightButton" or not self.spell or self.spell.key ~= wt.AVAILABLE_KEY then return end
+        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+        MenuUtil.CreateContextMenu(self, wt.priceMenuGenerator)
+    end)
+end
+
 local function weaponStatus(spell)
     local isKnown = spell.isKnown
     if isKnown == nil then isKnown = wt.isAbilityKnown(spell.id) end
@@ -174,7 +192,8 @@ local function createHeading(page)
     heading.bandCap:AddMaskTexture(mask)
     for _, region in ipairs({heading.icon, heading.iconBorder, heading.name, heading.rank, heading.level,
         heading.separator}) do region:Hide() end
-    heading:EnableMouse(false)
+    heading:GetHighlightTexture():SetAlpha(0)
+    categoryScripts(heading)
     return heading
 end
 
@@ -256,7 +275,7 @@ local function createBlock(page)
 end
 
 local function createGroupHeader(parent)
-    local header = CreateFrame("Frame", nil, parent)
+    local header = CreateFrame("Button", nil, parent)
     header:SetHeight(GROUP_HEADER)
     header.rule = header:CreateTexture(nil, "BACKGROUND")
     header.rule:SetColorTexture(unpack(wt.Theme.rule))
@@ -267,6 +286,7 @@ local function createGroupHeader(parent)
     header.count = label(header, "", "SystemFont_Med3", 0, 0)
     header.count:ClearAllPoints()
     header.count:SetPoint("BOTTOMLEFT", header.title, "BOTTOMRIGHT", 0, 0)
+    categoryScripts(header)
     return header
 end
 

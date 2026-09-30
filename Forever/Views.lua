@@ -47,6 +47,8 @@ local function renderLevels(page, blocks)
     for i, block in ipairs(blocks) do
         local group, first, last = block.group, block.first, block.last
         local header = page.groupHeaders:Acquire()
+        header.spell = setmetatable({cost = group.cost, level = group.level, spells = group.spells},
+            {__index = group.category})
         local total = #group.spells
         local rows = math.ceil((last - first + 1) / COLS)
         header:SetPoint("TOPLEFT", levels, "TOPLEFT", 0, -y)

@@ -18,9 +18,6 @@ local RIGHT_BG_TEXTURE_FILEID = GetFileIDFromPath(
 local TAB_TEXTURE_FILEID = GetFileIDFromPath(
                                "Interface\\Icons\\INV_Misc_QuestionMark")
 
-local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent,
-                            "GameTooltipTemplate")
-
 -- Shared with the Forever book. A tome shows the spell it teaches, then names itself.
 function wt.SetSpellTooltip(owner, spell)
     owner:SetSpellByID(spell.tooltipId or spell.id)
@@ -36,7 +33,7 @@ function wt.InsertLink(spell)
     if window then window:Insert(link) else ChatFrame_OpenChat(link) end
 end
 
-local function setNpcTooltip(npcInfo)
+local function setNpcTooltip(tooltip, npcInfo)
     tooltip:ClearLines()
     tooltip:AddLine(npcInfo.masterName or npcInfo.name, 1, 1, 1)
     local zoneName = npcInfo.zoneName or (npcInfo.zone and C_Map.GetAreaInfo(npcInfo.zone))
@@ -52,9 +49,9 @@ local function setNpcTooltip(npcInfo)
     tooltip:Show()
 end
 
-local function setTooltip(spellInfo)
+function wt.SetTooltip(tooltip, spellInfo)
     if spellInfo.npc then
-        setNpcTooltip(spellInfo)
+        setNpcTooltip(tooltip, spellInfo)
         return
     end
     if spellInfo.altTooltipType == "weapon" then
@@ -69,6 +66,9 @@ local function setTooltip(spellInfo)
         if spellInfo.key == wt.AVAILABLE_KEY then
             wt.addPricingBlock(tooltip, spellInfo, (wt.availableSpells()))
             tooltip:AddLine(wt.L.PRICE_MENU_HINT, 0.5, 0.5, 0.5)
+        elseif spellInfo.isHeader and (spellInfo.key == wt.NEXTLEVEL_KEY or spellInfo.level) then
+            wt.addPricingBlock(tooltip, spellInfo,
+                spellInfo.level and spellInfo.spells or (wt.categorySpells(spellInfo.key)))
         elseif spellInfo.isHeader then
             tooltip:AddLine(wt.formatSpellCost(spellInfo))
         else
@@ -86,6 +86,9 @@ local function setTooltip(spellInfo)
     end
     tooltip:Show()
 end
+
+local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent,
+                            "GameTooltipTemplate")
 
 local function setRowSpell(row, spell)
     if spell == nil then
@@ -224,7 +227,7 @@ local function setRowSpell(row, spell)
     end
 
     row.currentSpell = spell
-    if (tooltip:IsOwned(row)) then setTooltip(spell) end
+    if (tooltip:IsOwned(row)) then wt.SetTooltip(tooltip, spell) end
     row:Show()
 end
 
@@ -560,7 +563,7 @@ function wt.CreateCompactFrame(mainFrame)
         row:RegisterForClicks("LeftButtonUp", "RightButtonUp")
         row:SetScript("OnEnter", function(self)
             tooltip:SetOwner(self, "ANCHOR_RIGHT")
-            setTooltip(self.currentSpell)
+            wt.SetTooltip(tooltip, self.currentSpell)
         end)
         row:SetScript("OnLeave", function() tooltip:Hide() end)
         row:SetScript("OnHide", function(self)
