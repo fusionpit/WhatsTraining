@@ -321,8 +321,10 @@ function wt.CreateCompactFrame(mainFrame)
     noticeButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:SetText(wt.L.OPEN_BEAST_TRAINING, 1, 1, 1, 1, true)
-        GameTooltip:AddLine(wt.L.CLICK_TO_OPEN,
-                            GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b, true)
+        if wt.gameVersion ~= "forever" then
+            GameTooltip:AddLine(wt.L.CLICK_TO_OPEN,
+                                GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b, true)
+        end
         GameTooltip:Show()
     end)
     local function hideNoticeTooltip(self)
@@ -330,15 +332,21 @@ function wt.CreateCompactFrame(mainFrame)
     end
     noticeButton:SetScript("OnLeave", hideNoticeTooltip)
     noticeButton:SetScript("OnHide", hideNoticeTooltip)
-    noticeButton:SetScript("OnClick", function()
-        if wt.needsBeastTraining() then
-            if InCombatLockdown() then
-                print(wt.L.OPEN_BEAST_IN_COMBAT)
-            else
-                wt.openBeastTraining()
+    if wt.gameVersion == "forever" then
+        noticeButton:RegisterForClicks()
+        noticeButton:SetScript("OnMouseDown", nil)
+        noticeButton:SetScript("OnMouseUp", nil)
+    else
+        noticeButton:SetScript("OnClick", function()
+            if wt.needsBeastTraining() then
+                if InCombatLockdown() then
+                    print(wt.L.OPEN_BEAST_IN_COMBAT)
+                else
+                    wt.openBeastTraining()
+                end
             end
-        end
-    end)
+        end)
+    end
     mainFrame.noticeButton = noticeButton
 
     local groupingButton = CreateFrame("Button", "$parentGroupingButton", mainFrame, "SquareIconButtonTemplate")

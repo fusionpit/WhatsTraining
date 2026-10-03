@@ -16,6 +16,10 @@ local function refreshTooltip()
     tt:Show()
 end
 
+local function needsBeastTraining()
+    return wt.gameVersion ~= "forever" and wt.needsBeastTraining()
+end
+
 plugin = ldb:NewDataObject(addonName, {
     type = "data source",
     text = addonTitle,
@@ -27,7 +31,7 @@ plugin = ldb:NewDataObject(addonName, {
             return
         end
         -- wt.Open handles combat itself; Forever's window can open during combat
-        if wt.needsBeastTraining() and IsShiftKeyDown() then
+        if needsBeastTraining() and IsShiftKeyDown() then
             if InCombatLockdown() then
                 print(wt.L.OPEN_BEAST_IN_COMBAT)
                 return
@@ -71,7 +75,7 @@ function plugin.OnTooltipShow(tt)
     if #wt.brokerData == 0 then
         tt:AddLine(wt.L.BROKER_NOTHING)
         tt:AddLine(" ")
-        if wt.needsBeastTraining() then
+        if needsBeastTraining() then
             tt:AddLine(OPEN_BEAST_TRAINING_HINT)
         end
         local toggleHint = wt.showingBrokerWeaponSkills and TOGGLE_SPELLS_HINT or TOGGLE_WEAPONS_HINT
@@ -115,7 +119,7 @@ function plugin.OnTooltipShow(tt)
         for _, row in ipairs(wt.shownRows(rows, key)) do tt:AddLine((wt.priceRowLabel(row, best))) end
     end
     tt:AddLine(" ")
-    if wt.needsBeastTraining() then
+    if needsBeastTraining() then
         tt:AddLine(OPEN_BEAST_TRAINING_HINT)
     end
     local toggleHint = wt.showingBrokerWeaponSkills and TOGGLE_SPELLS_HINT or TOGGLE_WEAPONS_HINT
