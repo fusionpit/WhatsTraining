@@ -4,8 +4,8 @@ local ROW_HEIGHT, COLS, CELL, GROUP_HEADER, GROUP_GAP =
     Forever.ROW_HEIGHT, Forever.COLS, Forever.CELL, Forever.GROUP_HEADER, Forever.GROUP_GAP
 local WEAPON_HEADING_HEIGHT, TRAINER_ROW_HEIGHT, SKILL_HEIGHT, CONTENT_RISE =
     Forever.WEAPON_HEADING_HEIGHT, Forever.TRAINER_ROW_HEIGHT, Forever.SKILL_HEIGHT, Forever.CONTENT_RISE
-local label, weaponStatus, createCityIcon, setCityIcon =
-    Forever.label, Forever.weaponStatus, Forever.createCityIcon, Forever.setCityIcon
+local label, createCityIcon, setCityIcon =
+    Forever.label, Forever.createCityIcon, Forever.setCityIcon
 local buildGroups, wholeBlocks, ledgerSpan, paginateLedger, paginateLevels =
     Forever.buildGroups, Forever.wholeBlocks, Forever.ledgerSpan, Forever.paginateLedger, Forever.paginateLevels
 
@@ -106,9 +106,9 @@ local function showSkill(row, skill)
     row.spell = skill
     row.icon:SetTexture(skill.icon)
     row.name:SetText(skill.name)
-    local status, r, g, b = weaponStatus(skill)
+    local status, role = wt.weaponStatus(skill)
     row.rank:SetText(status)
-    row.rank:SetTextColor(r, g, b)
+    row.rank:SetTextColor(unpack(wt.Theme[role]))
 end
 
 local function showTrainer(pool, page, trainer, y, block)

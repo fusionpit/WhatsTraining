@@ -1,14 +1,12 @@
 -- Compact list shared by the Era/TBC spellbook and Forever's floating window.
 
 local _, wt = ...
-local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
 
 local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 
 local MAX_ROWS = 22
 local ROW_HEIGHT = 14
 local INDENT_STEP = ROW_HEIGHT + 4
-local NPC_LOCATION_FORMAT = "%s (%.1f, %.1f)"
 local HIGHLIGHT_TEXTURE_FILEID = GetFileIDFromPath(
                                      "Interface\\AddOns\\WhatsTraining\\highlight")
 local LEFT_BG_TEXTURE_FILEID = GetFileIDFromPath(
@@ -17,75 +15,6 @@ local RIGHT_BG_TEXTURE_FILEID = GetFileIDFromPath(
                                     "Interface\\AddOns\\WhatsTraining\\right")
 local TAB_TEXTURE_FILEID = GetFileIDFromPath(
                                "Interface\\Icons\\INV_Misc_QuestionMark")
-
--- Shared with the Forever book. A tome shows the spell it teaches, then names itself.
-function wt.SetSpellTooltip(owner, spell)
-    owner:SetSpellByID(spell.tooltipId or spell.id)
-    if spell.tooltipType == "item" then owner:AddLine(spell.formattedFullName, 1, 1, 1) end
-end
-
--- Shift-click. A tome links itself and the spell it teaches.
-function wt.InsertLink(spell)
-    local link = spell.link
-    if not link then return end
-    if spell.taughtSpell then link = link .. " " .. spell.taughtSpell.link end
-    local window = ChatEdit_GetActiveWindow()
-    if window then window:Insert(link) else ChatFrame_OpenChat(link) end
-end
-
-local function setNpcTooltip(tooltip, npcInfo)
-    tooltip:ClearLines()
-    tooltip:AddLine(npcInfo.masterName or npcInfo.name, 1, 1, 1)
-    local zoneName = npcInfo.zoneName or (npcInfo.zone and C_Map.GetAreaInfo(npcInfo.zone))
-    if zoneName and npcInfo.x and npcInfo.y then
-        tooltip:AddLine(format(NPC_LOCATION_FORMAT, zoneName, npcInfo.x, npcInfo.y), 0.8, 0.8, 0.8)
-    elseif zoneName then
-        tooltip:AddLine(zoneName, 0.8, 0.8, 0.8)
-    end
-    if wt.canSetWaypoint(npcInfo) then
-        tooltip:AddLine(wt.L.CLICK_TO_WAYPOINT, GREEN_FONT_COLOR.r,
-                        GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b)
-    end
-    tooltip:Show()
-end
-
-function wt.SetTooltip(tooltip, spellInfo)
-    if spellInfo.npc then
-        setNpcTooltip(tooltip, spellInfo)
-        return
-    end
-    if spellInfo.altTooltipType == "weapon" then
-        tooltip:ClearLines()
-        tooltip:AddLine(spellInfo.name, 1, 1, 1)
-    elseif spellInfo.tooltipType then
-        wt.SetSpellTooltip(tooltip, spellInfo)
-    else
-        tooltip:ClearLines()
-    end
-    if spellInfo.cost and spellInfo.cost > 0 then
-        if spellInfo.key == wt.AVAILABLE_KEY then
-            wt.addPricingBlock(tooltip, spellInfo, (wt.availableSpells()))
-            tooltip:AddLine(wt.L.PRICE_MENU_HINT, 0.5, 0.5, 0.5)
-        elseif spellInfo.isHeader and (spellInfo.key == wt.NEXTLEVEL_KEY or spellInfo.level) then
-            wt.addPricingBlock(tooltip, spellInfo,
-                spellInfo.level and spellInfo.spells or (wt.categorySpells(spellInfo.key)))
-        elseif spellInfo.isHeader then
-            tooltip:AddLine(wt.formatSpellCost(spellInfo))
-        else
-            wt.addPricingBlock(tooltip, spellInfo)
-        end
-    end
-    if spellInfo.tooltip then tooltip:AddLine(spellInfo.tooltip) end
-    if spellInfo.formattedTrainerZones then
-        tooltip:AddLine(string.format(wt.L.TRAINED_IN, spellInfo.formattedTrainerZones),
-                        0.8, 0.8, 0.8)
-    end
-    if spellInfo.altTooltipType == "weapon" and wt.isAbilityKnown(spellInfo.id) then
-        tooltip:AddLine(ITEM_SPELL_KNOWN, RED_FONT_COLOR.r, RED_FONT_COLOR.g,
-                        RED_FONT_COLOR.b)
-    end
-    tooltip:Show()
-end
 
 local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent,
                             "GameTooltipTemplate")
@@ -153,38 +82,6 @@ local function setRowSpell(row, spell)
         row:SetID(spell.itemId or spell.id)
         rowSpell.icon:SetTexture(spell.useAltIcon and spell.altIcon or spell.icon)
     end
-    if spell.click then
-        row:SetScript("OnClick", spell.click)
-    elseif not spell.isHeader then
-        row:SetScript("OnClick", function(_, button)
-            if button == "LeftButton" and IsShiftKeyDown() then wt.InsertLink(spell) end
-            if not wt.ClickHook then return end
-            if button == "RightButton" then
-                wt.ClickHook(spell, function()
-                    wt:RebuildData()
-                end, row)
-            end
-        end)
-    elseif spell.npc then
-        row:SetScript("OnClick", function(_, button)
-            if not wt.canSetWaypoint(spell) then return end
-            if button == "RightButton" then
-                wt.NpcClickHook(spell, row)
-            else
-                PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-                wt.setWaypoint(spell)
-            end
-        end)
-    elseif spell.key == wt.AVAILABLE_KEY then
-        row:SetScript("OnClick", function(_, button)
-            if button ~= "RightButton" then return end
-            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-            MenuUtil.CreateContextMenu(row, wt.priceMenuGenerator)
-        end)
-    else
-        row:SetScript("OnClick", nil)
-    end
-
     if not spell.isHeader and spell.indent == nil and spell.trainerZones and #spell.trainerZones > 0 then
         local lastFrame = row
         local point = "TOPRIGHT"
@@ -227,7 +124,7 @@ local function setRowSpell(row, spell)
     end
 
     row.currentSpell = spell
-    if (tooltip:IsOwned(row)) then wt.SetTooltip(tooltip, spell) end
+    if (tooltip:IsOwned(row)) then wt.SetTooltip(tooltip, spell, wt.ClassicPalette) end
     row:Show()
 end
 
@@ -561,9 +458,10 @@ function wt.CreateCompactFrame(mainFrame)
         row:SetHeight(ROW_HEIGHT)
         row:EnableMouse(true)
         row:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+        row:SetScript("OnClick", function(self, button) wt.RowClick(self, self.currentSpell, button) end)
         row:SetScript("OnEnter", function(self)
             tooltip:SetOwner(self, "ANCHOR_RIGHT")
-            wt.SetTooltip(tooltip, self.currentSpell)
+            wt.SetTooltip(tooltip, self.currentSpell, wt.ClassicPalette)
         end)
         row:SetScript("OnLeave", function() tooltip:Hide() end)
         row:SetScript("OnHide", function(self)
@@ -681,80 +579,4 @@ function wt.CreateFrame()
 
     attachClassicSpellBook(mainFrame)
     createWeaponSkillsButton()
-end
-
-local function addIgnoreLines(rootDescription, config)
-    rootDescription:CreateTitle(config.title)
-    rootDescription:CreateCheckbox(wt.L.IGNORED_TT, function() return config.isIgnored end, function()
-        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-        ignoreStore:Flip(config.id)
-        config.afterClick()
-        return MenuResponse.Close
-    end)
-
-    local allRanks = wt:AllRanks(config.id)
-    if allRanks and #allRanks > 1 then
-        local allIgnored = true
-        for _, id in ipairs(allRanks) do
-            allIgnored = allIgnored and ignoreStore:IsIgnored(id)
-        end
-        rootDescription:CreateCheckbox(wt.L.IGNORE_ALL_TT, function() return allIgnored end, function ()
-            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-            ignoreStore:UpdateMany(allRanks, not allIgnored)
-            config.afterClick()
-            return MenuResponse.Close
-        end)
-    end
-end
-
-wt.NpcClickHook = function(spell, row)
-    if not wt.canSetWaypoint(spell) then return end
-    PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-    MenuUtil.CreateContextMenu(row, function(_, rootDescription)
-        rootDescription:CreateTitle(spell.masterName or spell.name)
-        rootDescription:CreateButton(wt.L.WAYPOINT_SET, function()
-            wt.setWaypoint(spell)
-            return MenuResponse.Close
-        end)
-    end)
-end
-
-wt.ClickHook = function(spell, afterClick, row)
-    if not wt.TomeIds or not wt.TomeIds[spell.itemId or spell.id] then
-        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-        local isIgnored = ignoreStore:IsIgnored(spell.id)
-        MenuUtil.CreateContextMenu(row, function(_, rootDescription)
-            addIgnoreLines(rootDescription, {
-                title = spell.formattedFullName,
-                isIgnored = isIgnored,
-                id = spell.id,
-                afterClick = afterClick
-            })
-        end)
-
-        return
-    end
-
-    local checked = wt:IsPetAbilityLearned(spell.id)
-    PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-    local isIgnored = ignoreStore:IsIgnored(spell.id)
-    MenuUtil.CreateContextMenu(row, function(_, rootDescription)
-        if wt.SayaadTomes[spell.itemId] then
-            rootDescription:CreateTitle(string.format("%s — %s", wt.L.TOME_HEADER, spell.localFamily))
-        else
-            rootDescription:CreateTitle(wt.L.TOME_HEADER)
-        end
-        rootDescription:CreateCheckbox(wt.L.TOME_LEARNED, function() return checked end, function()
-            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-            wt:SetPetAbilityStatus(spell.id, not checked)
-            afterClick()
-            return MenuResponse.Close
-        end)
-        addIgnoreLines(rootDescription, {
-            title = spell.formattedFullName,
-            isIgnored = isIgnored,
-            id = spell.id,
-            afterClick = afterClick
-        })
-    end)
 end

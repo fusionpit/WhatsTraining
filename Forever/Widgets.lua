@@ -21,31 +21,21 @@ local function hideTooltip(self)
     if GameTooltip:IsOwned(self) then GameTooltip:Hide() end
 end
 
+local function showTooltip(self)
+    local row = self.spell
+    if not row then return end
+    if row.isHeader and not row.npc and not (row.cost and row.cost > 0) then return end
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+    wt.SetTooltip(GameTooltip, row, wt.Theme)
+end
+
 local function categoryScripts(header)
     header:EnableMouse(true)
     header:RegisterForClicks("RightButtonUp")
-    header:SetScript("OnEnter", function(self)
-        local category = self.spell
-        if not category or not category.cost or category.cost <= 0 then return end
-        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        wt.SetTooltip(GameTooltip, category)
-    end)
+    header:SetScript("OnEnter", showTooltip)
     header:SetScript("OnLeave", hideTooltip)
     header:SetScript("OnHide", hideTooltip)
-    header:SetScript("OnClick", function(self, button)
-        if button ~= "RightButton" or not self.spell or self.spell.key ~= wt.AVAILABLE_KEY then return end
-        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-        MenuUtil.CreateContextMenu(self, wt.priceMenuGenerator)
-    end)
-end
-
-local function weaponStatus(spell)
-    local isKnown = spell.isKnown
-    if isKnown == nil then isKnown = wt.isAbilityKnown(spell.id) end
-    if isKnown then return wt.L.LEDGER_WEAPON_KNOWN, unpack(wt.Theme.dim) end
-    if wt.weaponIgnoredIds[spell.id] then return wt.L.IGNORED_TT, unpack(wt.Theme.dim) end
-    if not spell.hideLevel then return spell.formattedLevel, unpack(wt.Theme.weaponUnavailable) end
-    return wt.L.LEDGER_WEAPON_AVAILABLE, unpack(wt.Theme.available)
+    header:SetScript("OnClick", function(self, button) wt.RowClick(self, self.spell, button) end)
 end
 
 local function createRow(page, parent)
@@ -102,52 +92,16 @@ local function createRow(page, parent)
     highlight:SetColorTexture(unpack(wt.Theme.highlight))
     row:SetHighlightTexture(highlight)
     row:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-    row:SetScript("OnEnter", function(self)
-        local spell = self.spell
-        if not spell or (spell.isHeader and not spell.npc) then return end
-        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        if spell.npc then
-            GameTooltip:SetText(spell.masterName or spell.name)
-            GameTooltip:AddLine(string.format("%s (%.1f, %.1f)", spell.zoneName, spell.x, spell.y),
-                unpack(wt.Theme.tooltipText))
-            if wt.canSetWaypoint(spell) then
-                GameTooltip:AddLine(wt.L.CLICK_TO_WAYPOINT, unpack(wt.Theme.tooltipWaypoint))
-            end
-        elseif spell.altTooltipType == "weapon" then
-            GameTooltip:SetText(spell.name)
-            if spell.formattedTrainerZones then
-                local r, g, b = unpack(wt.Theme.tooltipText)
-                GameTooltip:AddLine(string.format(wt.L.TRAINED_IN, spell.formattedTrainerZones), r, g, b, true)
-            end
-            if not wt.isAbilityKnown(spell.id) then wt.addPricingBlock(GameTooltip, spell) end
-            GameTooltip:AddLine((weaponStatus(spell)), unpack(wt.Theme.tooltipHint))
-        else
-            wt.SetSpellTooltip(GameTooltip, spell)
-            wt.addPricingBlock(GameTooltip, spell)
-            if self.category.key == wt.MISSINGREQS_KEY or self.category.key == wt.MISSINGTALENT_KEY then
-                GameTooltip:AddLine(self.category.name, unpack(wt.Theme.tooltipHint))
-            end
-        end
-        GameTooltip:Show()
-    end)
+    row:SetScript("OnEnter", showTooltip)
     row:SetScript("OnLeave", hideTooltip)
     row:SetScript("OnHide", hideTooltip)
     row:SetScript("OnClick", function(self, button)
-        local trainer = self.spell
-        if button == "LeftButton" and not IsShiftKeyDown() and trainer and trainer.npc
-            and wt.canSetWaypoint(trainer) then
-            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-            wt.setWaypoint(trainer)
-            return
+        local target = self
+        local plainLeft = button == "LeftButton" and not IsShiftKeyDown()
+        if self.weaponRow and not (plainLeft and wt.canSetWaypoint(self.spell)) then
+            target = self.weaponRow
         end
-        if self.weaponRow then self = self.weaponRow end
-        local spell = self.spell
-        if not spell or spell.isHeader then return end
-        if button == "LeftButton" and IsShiftKeyDown() then
-            wt.InsertLink(spell)
-        elseif button == "RightButton" and wt.ClickHook then
-            wt.ClickHook(spell, function() wt:RebuildData() end, self)
-        end
+        wt.RowClick(target, target.spell, button)
     end)
     return row
 end
@@ -423,7 +377,6 @@ Forever.SKILL_HEIGHT = SKILL_HEIGHT
 Forever.CONTENT_RISE = CONTENT_RISE
 Forever.label = label
 Forever.hideTooltip = hideTooltip
-Forever.weaponStatus = weaponStatus
 Forever.createCityIcon = createCityIcon
 Forever.setCityIcon = setCityIcon
 Forever.createPage = createPage
