@@ -325,6 +325,7 @@ end
 local function showSpellTooltip(tt, itemId)
     local taughtSpell = wt.TomeTaughtSpells[itemId]
     if not taughtSpell then return end
+    tomeSpellTooltip:SetParent(tt)
     tomeSpellTooltip:SetOwner(tt, "ANCHOR_NONE")
     tomeSpellTooltip:SetPoint("TOPLEFT", tt, "TOPRIGHT")
     tomeSpellTooltip:ClearLines()
