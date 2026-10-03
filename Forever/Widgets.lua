@@ -18,7 +18,10 @@ local function label(parent, text, font, x, y)
 end
 
 local function hideTooltip(self)
-    if GameTooltip:IsOwned(self) then GameTooltip:Hide() end
+    if GameTooltip:IsOwned(self) then
+        GameTooltip:Hide()
+        wt.HideRankComparison()
+    end
 end
 
 local function showTooltip(self)

@@ -40,6 +40,7 @@ Classes\WeaponSkills.lua
 Classes\Camelot\WeaponSkills.lua [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 Classes\[Game]\TrainerFactions.lua
 Pricing.lua
+Compare.lua
 
 Waypoint.lua
 WeaponGrouping.lua

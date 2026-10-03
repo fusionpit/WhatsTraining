@@ -18,6 +18,7 @@ local TAB_TEXTURE_FILEID = GetFileIDFromPath(
 
 local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent,
                             "GameTooltipTemplate")
+tooltip:HookScript("OnHide", wt.HideRankComparison)
 
 local function setRowSpell(row, spell)
     if spell == nil then

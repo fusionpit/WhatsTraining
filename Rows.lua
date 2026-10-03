@@ -76,6 +76,7 @@ function wt.SetTooltip(tooltip, row, palette)
     end
     if row.tooltip then tooltip:AddLine(row.tooltip) end
     tooltip:Show()
+    wt.ShowRankComparison(tooltip, tooltip:GetOwner(), wt.knownRankFor(row))
 end
 
 function wt.RowClick(frame, row, button)

@@ -85,9 +85,22 @@ if wt.TomesByLevel then
         end
     end
 end
+
+local requestedSpellIds = {}
+local requiredSpellIds = {}
 for level, spellsByLevel in pairs(wt.SpellsByLevel) do
     for _, spell in ipairs(spellsByLevel) do
+        requestedSpellIds[spell.id] = true
         wt:CacheSpell(spell, level, rebuildIfNotCached)
+        for _, reqId in ipairs(spell.requiredIds or {}) do
+            requiredSpellIds[reqId] = true
+        end
+    end
+end
+-- Include starting ranks absent from trainer data
+for reqId in pairs(requiredSpellIds) do
+    if not requestedSpellIds[reqId] then
+        wt:CacheSpell({ id = reqId, cost = 0 }, 0, rebuildIfNotCached)
     end
 end
 
