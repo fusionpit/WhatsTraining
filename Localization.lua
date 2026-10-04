@@ -74,6 +74,7 @@ local localeText = {
         CONTINUES_RIGHT = "Continues on right »",
         CONTINUES_NEXT = "Continues on next page »",
         LEDGER_SIDE_BY_SIDE = "Show class spells and weapon skills side-by-side",
+        HIDE_WEAPON_SKILL_SWITCHER = "Hide weapon skill switcher",
         TAB_TEXT = "What can I train?",
         OPEN_BEAST_TRAINING = "Please open the Beast Training UI",
         CLICK_TO_OPEN = "Click to open Beast Training",

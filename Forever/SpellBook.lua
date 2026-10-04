@@ -319,6 +319,11 @@ local function createLedger(mainFrame)
         wt:ApplyFilter()
     end
     local function showsKnown() return WT_ShowKnownWeaponSkills end
+    local function hidesWeaponSwitcher() return WT_HideWeaponSkillSwitcher end
+    local function toggleWeaponSwitcher()
+        WT_HideWeaponSkillSwitcher = not WT_HideWeaponSkillSwitcher
+        wt.RefreshUI()
+    end
     local function toggleKnown()
         WT_ShowKnownWeaponSkills = not WT_ShowKnownWeaponSkills
         rescroll()
@@ -341,6 +346,7 @@ local function createLedger(mainFrame)
         rootDescription:CreateRadio(wt.L.GROUP_BY_WEAPON_SKILL, isGrouping, setGrouping, "weaponskill")
         rootDescription:CreateRadio(wt.L.GROUP_LIST, isGrouping, setGrouping, "list")
         rootDescription:CreateCheckbox(wt.L.LEDGER_SHOW_KNOWN, showsKnown, toggleKnown)
+        rootDescription:CreateCheckbox(wt.L.HIDE_WEAPON_SKILL_SWITCHER, hidesWeaponSwitcher, toggleWeaponSwitcher)
     end)
 
     -- sync sets search box width

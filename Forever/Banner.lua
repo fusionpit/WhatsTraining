@@ -117,6 +117,7 @@ end
 
 local function updateBanner(mainFrame)
     local banner = mainFrame.categoryBanner
+    banner.clip:SetShown(not WT_HideWeaponSkillSwitcher or showingWeapons(mainFrame))
     local page = mainFrame.expanded and mainFrame.weaponPage or mainFrame
     banner.clip:ClearAllPoints()
     banner.clip:SetPoint("TOPRIGHT", page, "TOPRIGHT", 16, CLIP_TOP)

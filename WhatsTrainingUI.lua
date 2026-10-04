@@ -155,6 +155,7 @@ local function update(frame, forceUpdate)
     frame.lastOffset = offset
 end
 local function updateToggleIcon(frame)
+    frame.weaponSkillToggleButton:SetShown(not WT_HideWeaponSkillSwitcher or wt.showingWeaponSkills)
     local icon
     if wt.showingWeaponSkills then
         icon = "Interface\\Icons\\INV_Misc_Book_09"
@@ -300,7 +301,7 @@ function wt.CreateCompactFrame(mainFrame)
     toggleButton:SetPoint("LEFT", search, "RIGHT", 0, -1)
     toggleButton:SetScript("OnClick", function(self)
         wt:ToggleWeaponSkills()
-        if GameTooltip:IsOwned(self) then
+        if self:IsShown() and GameTooltip:IsOwned(self) then
             local onEnter = self:GetScript("OnEnter")
             if onEnter ~= nil then
                 onEnter(self)
@@ -313,6 +314,9 @@ function wt.CreateCompactFrame(mainFrame)
         GameTooltip:Show()
     end)
     toggleButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
+    toggleButton:SetScript("OnHide", function(self)
+        if GameTooltip:IsOwned(self) then GameTooltip:Hide() end
+    end)
     mainFrame.weaponSkillToggleButton = toggleButton
 
     local noticeButton = CreateFrame("Button", "$parentNoticeButton", mainFrame, "UIPanelInfoButton")
