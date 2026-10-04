@@ -7,7 +7,7 @@ local tinsert = tinsert
 local sort = table.sort
 
 local sideNumber = { Alliance = 1, Horde = 2 }
-local standingPct = { [5] = 5, [6] = 10, [7] = 15, [8] = 20 } -- tbc and forever
+local standingPct = { [5] = 5, [6] = 10, [7] = 15, [8] = 20 } -- tbc
 
 local function roleOf(spellInfo)
     if wt:IsPetAbility(spellInfo.id) then return "PET" end
@@ -48,11 +48,12 @@ local function factionRow(key)
     end
     name, standing = name or ("Faction " .. key), standing or 4
     local pct
-    if wt.gameVersion == "era" then
+    if wt.gameVersion == "tbc" then
+        pct = standingPct[standing] or 0
+    else
+        -- forever (1.60.1.70205): Friendly pays full price and Honored gets 10%; Revered and Exalted are unchecked
         pct = standing >= 6 and 10 or 0
         if faction.side == sideNumber[wt.playerFaction] and wt.hasPvpRankDiscount() then pct = pct + 10 end
-    else
-        pct = standingPct[standing] or 0
     end
     return { key = key, name = name, standingLabel = _G["FACTION_STANDING_LABEL" .. standing], pct = pct,
         city = faction.city }
