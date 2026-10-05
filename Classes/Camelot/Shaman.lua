@@ -3,7 +3,6 @@ if (wt.currentClass ~= "SHAMAN") then
 	return
 end
 
-
 wt.SpellsByLevel = {
 	[1] = {{id = 8017, cost = 10}},
 	[4] = {{id = 8042, cost = 100}},

@@ -3,7 +3,6 @@ if (wt.currentClass ~= "WARLOCK") then
 	return
 end
 
-
 wt.SpellsByLevel = {
 	[1] = {{id = 348, cost = 10}},
 	[4] = {{id = 172, cost = 100}, {id = 702, cost = 100}},

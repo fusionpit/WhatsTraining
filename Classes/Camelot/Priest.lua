@@ -90,9 +90,9 @@ wt.SpellsByLevel = wt.RaceFilter({
 		{id = 1004, cost = 10000, requiredIds = {984}},
 		{id = 19262, cost = 500, requiredIds = {19261}, race = 5},
 		{id = 19282, cost = 500, requiredIds = {19281}, race = 8},
+		{id = 1277325, cost = 500, requiredIds = {1277324}, race = 5},
 		{id = 1277332, cost = 500, requiredIds = {1277331}, race = 3},
-		{id = 1277634, cost = 500, requiredIds = {1277462}, race = 7},
-		{id = 1277325, cost = 500, requiredIds = {1277324}, race = 5}
+		{id = 1277634, cost = 500, requiredIds = {1277462}, race = 7}
 	},
 	[32] = {
 		{id = 552, cost = 11000},
@@ -143,9 +143,9 @@ wt.SpellsByLevel = wt.RaceFilter({
 		{id = 1309633, cost = 18000, requiredIds = {1309595}},
 		{id = 19264, cost = 900, requiredIds = {19262}, race = 5},
 		{id = 19283, cost = 900, requiredIds = {19282}, race = 8},
+		{id = 1277326, cost = 900, requiredIds = {1277325}, race = 5},
 		{id = 1277333, cost = 900, requiredIds = {1277332}, race = 3},
-		{id = 1277638, cost = 900, requiredIds = {1277634}, race = 7},
-		{id = 1277326, cost = 900, requiredIds = {1277325}, race = 5}
+		{id = 1277638, cost = 900, requiredIds = {1277634}, race = 7}
 	},
 	[42] = {
 		{id = 1277376, cost = 1100, requiredIds = {1277374}, race = 1},
@@ -198,10 +198,9 @@ wt.SpellsByLevel = wt.RaceFilter({
 		{id = 19265, cost = 1500, requiredIds = {19264}, race = 5},
 		{id = 19284, cost = 1500, requiredIds = {19283}, race = 8},
 		{id = 19304, cost = 1500, requiredIds = {19303}, race = 4},
-		{id = 27870, cost = 1200},
+		{id = 1277327, cost = 1500, requiredIds = {1277326}, race = 5},
 		{id = 1277334, cost = 1500, requiredIds = {1277333}, race = 3},
-		{id = 1277639, cost = 1500, requiredIds = {1277638}, race = 7},
-		{id = 1277327, cost = 1500, requiredIds = {1277326}, race = 5}
+		{id = 1277639, cost = 1500, requiredIds = {1277638}, race = 7}
 	},
 	[52] = {
 		{id = 19279, cost = 1900, requiredIds = {19278}},
@@ -255,9 +254,8 @@ wt.SpellsByLevel = wt.RaceFilter({
 		{id = 19266, cost = 2300, requiredIds = {19265}, race = 5},
 		{id = 19285, cost = 2300, requiredIds = {19284}, race = 8},
 		{id = 19312, cost = 2300, requiredIds = {19311}, race = 8},
-		{id = 27871, cost = 1500, requiredIds = {27870}},
+		{id = 1277328, cost = 2300, requiredIds = {1277327}, race = 5},
 		{id = 1277335, cost = 2300, requiredIds = {1277334}, race = 3},
-		{id = 1277640, cost = 2300, requiredIds = {1277639}, race = 7},
-		{id = 1277328, cost = 2300, requiredIds = {1277327}, race = 5}
+		{id = 1277640, cost = 2300, requiredIds = {1277639}, race = 7}
 	}
 })
