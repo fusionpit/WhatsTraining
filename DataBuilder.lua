@@ -13,6 +13,7 @@ wt.weaponGroupedData = {}
 wt.weaponSkillGroupedData = {}
 wt.showingWeaponSkills = false
 wt.showingBrokerWeaponSkills = false
+wt.learnableIds = {}
 
 wt.brokerSpellData = {}
 wt.brokerWeaponData = {}
@@ -117,8 +118,21 @@ local function categorizeGroup(spellGroup, levelGroup, playerLevel)
                 wt.categories:Insert(categoryKey, spellInfo)
                 wt.brokerCategories:Insert(categoryKey, spellInfo)
             end
+            -- filter to unknown and trainable now for SPELLS_CHANGED handling
+            if categoryKey == wt.AVAILABLE_KEY or categoryKey == wt.MISSINGREQS_KEY
+                or categoryKey == wt.IGNORED_KEY then
+                tinsert(wt.learnableIds, spellInfo.id)
+            end
         end
     end
+end
+
+-- search a small subset of spells for warrior/rogue/druid override spells
+function wt.learnedTrainableSpell()
+    for _, id in ipairs(wt.learnableIds) do
+        if C_SpellBook.IsSpellKnown(id, Enum.SpellBookSpellBank.Player) then return true end
+    end
+    return false
 end
 
 local function categorizeTomes()
@@ -302,6 +316,7 @@ function wt.buildCategorizedData(playerLevel, isLevelUpEvent)
     wipe(wt.brokerSpellData)
     wipe(wt.brokerWeaponData)
     wt.weaponSkills = {}
+    wt.learnableIds = {}
 
     categorizeTomes()
 

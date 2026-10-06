@@ -177,6 +177,8 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         wt.buildCategorizedData(UnitLevel("player"))
         wt.applyFilter()
         wt.RefreshUI()
+    elseif event == "SPELLS_CHANGED" then
+        if wt.learnedTrainableSpell() then wt:RebuildData() end
     end
 end)
 eventFrame:RegisterEvent("ADDON_LOADED")
@@ -185,3 +187,5 @@ eventFrame:RegisterEvent(learnedSpellEvent)
 eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
 eventFrame:RegisterEvent("SKILL_LINES_CHANGED")
 eventFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
+-- handle warrior/rogue/druid override spells correctly
+if wt.gameVersion == "forever" then eventFrame:RegisterEvent("SPELLS_CHANGED") end
