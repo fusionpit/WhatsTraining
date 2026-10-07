@@ -87,15 +87,18 @@ function plugin.OnTooltipShow(tt)
     local key = wt.priceKey(rows)
     for i, category in ipairs(wt.brokerData) do
         local total, shown = wt.selectedPrice(category.spells, key), wt.selectedPrice(category.displayedSpells, key)
-        local header = #category.spells == #category.displayedSpells
-            and string.format("%s — %s", category.formattedName, coins(total))
-            or string.format("%s — %s", category.formattedName,
-                string.format(wt.L.BROKER_HEADER_HIDDEN_FORMAT, coins(shown), coins(total)))
+        local header = category.formattedName
+        if total > 0 then
+            header = string.format("%s — %s", header, #category.spells == #category.displayedSpells and coins(total)
+                or string.format(wt.L.BROKER_HEADER_HIDDEN_FORMAT, coins(shown), coins(total)))
+        end
         tt:AddLine(header)
 
         for _, spell in ipairs(category.displayedSpells) do
-            local spellText = string.format("  |T%d:0|t %s — %s", spell.icon,
-                spell.formattedFullName or spell.name, coins(wt.selectedPrice(spell, key)))
+            local spellText = string.format("  |T%d:0|t %s%s", spell.icon, spell.quest and wt.QUEST_MARKER or "",
+                spell.formattedFullName or spell.name)
+            local price = wt.selectedPrice(spell, key)
+            if price > 0 then spellText = spellText .. " — " .. coins(price) end
             if spell.formattedTrainerZones then
                 spellText = spellText .. " — " .. spell.formattedTrainerZones
             end

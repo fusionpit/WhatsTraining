@@ -88,6 +88,7 @@ local localeText = {
         SHOW_WEAPONS = "Show Weapon Skills",
         SHOW_SPELLS = "Show Spells",
         TRAINED_IN = "Trained in %s",
+        QUEST_STARTS_IN = "Starts in %s",
         OR = " or ",
         GROUP_BY_ZONE = "Group by Zone",
         GROUP_BY_WEAPON_SKILL = "Group by Weapon Skill",

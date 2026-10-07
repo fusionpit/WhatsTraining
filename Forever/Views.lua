@@ -75,6 +75,7 @@ local function renderLevels(page, blocks)
             cell:SetPoint("TOPLEFT", levels, "TOPLEFT", 16 + (offset % COLS) * width,
                 -y - math.floor(offset / COLS) * CELL)
             cell.icon:SetTexture(spell.useAltIcon and spell.altIcon or spell.icon)
+            cell.badge:SetShown(spell.quest ~= nil)
             cell.name:SetText(spell.name)
             local subText = spell.subText or ""
             if not group.level and not group.category.hideLevel then
@@ -141,6 +142,7 @@ local function renderLedger(page, items)
             row.spell, row.category = item, category
             row:SetPoint("TOPLEFT", page.content, "TOPLEFT", 0, -y)
             row.icon:SetTexture(item.useAltIcon and item.altIcon or item.icon)
+            row.badge:SetShown(item.quest ~= nil)
             row.name:SetText(item.name)
             row.rank:SetText(item.subText or "")
             row.level:SetText(item.hideLevel and "—" or item.formattedLevel)

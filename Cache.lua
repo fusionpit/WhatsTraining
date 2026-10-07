@@ -62,6 +62,7 @@ function wt:CacheSpell(spell, level, done)
                 formattedSubText = formattedSubText,
                 icon = C_Spell.GetSpellTexture(spell.id),
                 cost = spell.cost,
+                quest = spell.quest,
                 tooltipType = "spell",
                 tooltipId = spell.id,
                 formattedCost = C_CurrencyInfo.GetCoinTextureString(spell.cost),

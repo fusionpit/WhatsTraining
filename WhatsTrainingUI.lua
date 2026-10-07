@@ -64,7 +64,7 @@ local function setRowSpell(row, spell)
         rowSpell.label:ClearAllPoints()
         rowSpell.label:SetPoint("TOPLEFT", rowSpell, "TOPLEFT", indentPx + ROW_HEIGHT + 4, 0)
         rowSpell.label:SetPoint("BOTTOM", rowSpell)
-        rowSpell.label:SetText(spell.name)
+        rowSpell.label:SetText(spell.quest and wt.QUEST_MARKER .. spell.name or spell.name)
         if spell.isKnown then
             rowSpell.label:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
         else

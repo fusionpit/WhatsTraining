@@ -36,6 +36,7 @@ Classes\[Game]\Warlock.lua
 Classes\[Game]\WarlockTomes.lua
 Classes\WarlockTomes.lua
 Classes\[Game]\Warrior.lua
+Classes\[Game]\QuestSpells.lua
 Classes\WeaponSkills.lua
 Classes\Camelot\WeaponSkills.lua [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 Classes\[Game]\TrainerFactions.lua

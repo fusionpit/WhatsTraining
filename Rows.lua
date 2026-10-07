@@ -58,6 +58,17 @@ function wt.SetTooltip(tooltip, row, palette)
             local r, g, b = unpack(palette.tooltipText)
             tooltip:AddLine(string.format(wt.L.TRAINED_IN, row.formattedTrainerZones), r, g, b, true)
         end
+        if row.quest then
+            local zones = {}
+            for _, area in ipairs(row.quest.areas) do
+                local zone = C_Map.GetAreaInfo(area)
+                if zone and not tContains(zones, zone) then tinsert(zones, zone) end
+            end
+            if #zones > 0 then
+                local r, g, b = unpack(palette.tooltipText)
+                tooltip:AddLine(string.format(wt.L.QUEST_STARTS_IN, table.concat(zones, ", ")), r, g, b, true)
+            end
+        end
         if row.cost and row.cost > 0 then
             if row.key == wt.AVAILABLE_KEY then
                 wt.addPricingBlock(tooltip, row, (wt.availableSpells()))

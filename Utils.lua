@@ -28,6 +28,21 @@ function wt.RaceFilter(spellsByLevel)
     end)
 end
 
+wt.QUEST_MARKER = "|A:SmallQuestBang:14:14|a"
+-- see Classes/[Game]/QuestSpells.lua for table definition
+function wt.AddQuestSpells(questSpells)
+    for id, entries in pairs(questSpells[wt.currentClass]) do
+        for _, entry in ipairs(entries) do
+            if tContains(entry.races, wt.playerRace) then
+                wt.SpellsByLevel[entry.level] = wt.SpellsByLevel[entry.level] or {}
+                tinsert(wt.SpellsByLevel[entry.level],
+                    {id = id, cost = 0, quest = {areas = entry.areas or {entry.area}}})
+                break
+            end
+        end
+    end
+end
+
 --[[
     varargs is just a set of tables, where each table is a list of spell ids that
     totally overwrite a previous rank of that ability ordered by rank.
