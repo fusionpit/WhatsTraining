@@ -24,8 +24,10 @@ local function matchesFilter(spellOrItem)
 end
 
 local function byLevelThenName(a, b)
-    if a.level == b.level then return a.name < b.name end
-    return a.level < b.level
+    if a.level ~= b.level then return a.level < b.level end
+    -- quest spells after the trainer spells of their level
+    if (a.quest == nil) ~= (b.quest == nil) then return b.quest ~= nil end
+    return a.name < b.name
 end
 local function byNameThenLevel(a, b)
     if a.name == b.name then return a.level < b.level end
