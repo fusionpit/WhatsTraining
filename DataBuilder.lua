@@ -33,6 +33,10 @@ local function byNameThenLevel(a, b)
     if a.name == b.name then return a.level < b.level end
     return a.name < b.name
 end
+local function byNameWithQuestsLast(a, b)
+    if (a.quest == nil) ~= (b.quest == nil) then return b.quest ~= nil end
+    return byNameThenLevel(a, b)
+end
 local function byWeaponOrder(a, b)
     local orderA = a.weaponOrder or 999
     local orderB = b.weaponOrder or 999
@@ -44,6 +48,7 @@ end
 
 local function categorySort(category)
     local sortFunc = category.nameSort and byNameThenLevel or byLevelThenName
+    if category.key == wt.KNOWN_KEY then sortFunc = byNameWithQuestsLast end
     if category.weaponSort then sortFunc = byWeaponOrder end
     sort(category.spells, sortFunc)
 end
