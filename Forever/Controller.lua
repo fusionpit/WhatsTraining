@@ -441,6 +441,7 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
     prices:SetScript("OnHide", returnFromMenu)
     spellMenu:SetScript("OnHide", returnFromMenu)
     local held, closing, capture = {}, false, false
+    local connected, buttonKeys = false, {}
     local nativeTab, nativeButton
     local function canNavigateWithStick()
         return root:IsShown() and not InCombatLockdown() and not closing
@@ -476,7 +477,7 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
         updatePreview(nil)
     end
     root.previewTab:SetScript("OnClick", function()
-        if root.previewTab:IsVisible() and C_GamePad.GetDeviceMappedState() then enterBook(activeBook()) end
+        if root.previewTab:IsVisible() and connected then enterBook(activeBook()) end
     end)
     root:SetScript("OnGamePadButtonDown", function(_, button)
         if InCombatLockdown() or closing or held[button] then return false end
@@ -564,27 +565,43 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
     end)
     tinsert(UISpecialFrames, root:GetName())
 
-    local rbIndex = C_GamePad and C_GamePad.ButtonBindingToIndex and C_GamePad.GetDeviceMappedState
-        and C_GamePad.ButtonBindingToIndex("PADRSHOULDER")
     local wasDown, wasAtEnd = false, false
     local observer = CreateFrame("Frame", nil, UIParent)
+    local function updateDevice()
+        -- snapshot only on device changes
+        local mapped = C_GamePad and C_GamePad.GetDeviceMappedState and C_GamePad.GetDeviceMappedState()
+        connected, buttonKeys = mapped ~= nil, {}
+        if mapped then
+            for index = 0, mapped.buttonCount - 1 do
+                local key = C_GamePad.ButtonIndexToBinding(index)
+                if key then buttonKeys[#buttonKeys + 1] = key end
+            end
+        end
+        wasDown, wasAtEnd = IsKeyDown("PADRSHOULDER") == true, false
+    end
+    observer:RegisterEvent("GAME_PAD_CONNECTED")
+    observer:RegisterEvent("GAME_PAD_DISCONNECTED")
+    observer:RegisterEvent("GAME_PAD_CONFIGS_CHANGED")
+    observer:RegisterEvent("GAME_PAD_ACTIVE_CHANGED")
+    observer:SetScript("OnEvent", updateDevice)
+    updateDevice()
     -- observe entry without capturing native input
     observer:SetScript("OnUpdate", function()
-        if rbIndex == nil then return updatePreview(nil) end
-        local mapped = C_GamePad.GetDeviceMappedState()
-        local down = mapped and mapped.buttons[rbIndex + 1] == true or false
+        local down = connected and IsKeyDown("PADRSHOULDER") == true
         local book = activeBook()
         local controls = book and book.PagedSpellsFrame.PagingControls
-        local atEnd = mapped and book and not book:GetNextCategoryMixin(true)
+        local atEnd = connected and book and not book:GetNextCategoryMixin(true)
             and controls:GetCurrentPage() == controls:GetMaxPages() or false
         if root:IsShown() then
-            if InCombatLockdown() or not mapped or not book or not placeCover(book) then
+            if InCombatLockdown() or not connected or not book or not placeCover(book) then
                 root:Hide()
             elseif book:GetTab() ~= nativeTab or SmartNavigation:GetCurrentButton() ~= nativeButton then
                 root:Hide()
             elseif closing then
                 local anyDown = false
-                for _, buttonDown in pairs(mapped.buttons) do anyDown = anyDown or buttonDown end
+                for _, key in ipairs(buttonKeys) do
+                    if IsKeyDown(key) then anyDown = true; break end
+                end
                 if not anyDown then root:Hide() end
             elseif selected and (not selected:IsVisible() or (selected ~= total and not selected.spell)
                 or not selectedPage:IsVisible()) then
@@ -596,6 +613,6 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
         end
         -- may need to use button events if we miss short taps
         wasDown, wasAtEnd = down, atEnd
-        updatePreview(mapped and book, atEnd and not InCombatLockdown())
+        updatePreview(connected and book, atEnd and not InCombatLockdown())
     end)
 end
