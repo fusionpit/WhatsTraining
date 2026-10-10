@@ -14,6 +14,7 @@ local skin = {
     pageRight = "spellbook-Page-Right-C60",
 }
 local HEADER_HEIGHT = 60
+local HANGING_TAB_RISE = 4
 -- 696px columns surround Camelot's native 680px views.
 local PAGE_WIDTH, PAGE_TOP, PAGE_BOTTOM = 696, -90, 15
 
@@ -44,6 +45,27 @@ local function selectTab(button, selected)
     button.normal:SetShown(not selected)
     button.active:SetShown(selected)
     button.glow:SetShown(selected)
+end
+
+local function invertTab(button, inverted)
+    if button.inverted == inverted then return end
+    button.inverted = inverted
+    local scale = inverted and 0.8 or 1
+    button:SetSize(44 * scale, 32 * scale)
+    local edge = inverted and "TOP" or "BOTTOM"
+    button.icon:SetSize(34 * scale, 33 * scale)
+    button.icon:ClearAllPoints()
+    button.icon:SetPoint(edge, -scale, 0)
+    for _, art in ipairs({{button.normal, skin.tab, 1}, {button.active, skin.tabActive, 1},
+        {button.glow, skin.tabGlow, 0}}) do
+        local texture, atlas, offset = unpack(art)
+        texture:SetAtlas(atlas, true, nil, true)
+        local width, height = texture:GetSize()
+        texture:SetSize(width * scale, height * scale)
+        if inverted then AnchorUtil.SetMirroredTexCoordAlongVerticalAxis(texture, texture:GetTexCoord()) end
+        texture:ClearAllPoints()
+        texture:SetPoint(edge, 0, (inverted and -offset or offset) * scale)
+    end
 end
 
 local function refresh(mainFrame)
@@ -164,10 +186,11 @@ local function sync()
         launcher.bookmark = bookmark
         launcher:ClearAllPoints()
         if bookmark then
-            launcher:SetPoint("BOTTOMLEFT", book, "TOPRIGHT", 0, tabs:GetBottom() - book:GetTop())
+            launcher:SetPoint("TOPLEFT", tabs, "BOTTOMRIGHT", 8, HANGING_TAB_RISE)
         else
             launcher:SetPoint("LEFT", tabs, "RIGHT", 8, 0)
         end
+        invertTab(launcher, bookmark)
         attic:SetPoint("LEFT", bookmark and tabs or launcher, "RIGHT")
     end
 
@@ -450,22 +473,20 @@ local function controllerTabPosition(nativeBook)
     local hintRight = hint and hint:IsShown() and hint:GetRight()
     if hintRight then right = math.max(right, hintRight) end
     local searchLeft = nativeBook.SearchBox:GetLeft()
-    -- use an outside bookmark when the toolbar is full
-    if searchLeft and right + 52 > searchLeft - 38 then
-        right = nativeBook:GetLeft()
-        if not right then return end
-        right = right + nativeBook:GetWidth()
-    end
-    return right + 8, y
+    -- Hang below the toolbar when there is no room beside the search box
+    local inverted = searchLeft and right + 52 > searchLeft - 38 or false
+    if inverted then y = tabs:GetBottom() + HANGING_TAB_RISE end
+    return right + 8, y, inverted
 end
 
 local function updateControllerPreview(nativeBook, canEnter)
     if root:IsShown() or not nativeBook then return previewTab:Hide() end
-    local x, y = controllerTabPosition(nativeBook)
+    local x, y, inverted = controllerTabPosition(nativeBook)
     if not x or not y then return previewTab:Hide() end
     previewTab:SetScale(nativeBook:GetEffectiveScale() / UIParent:GetEffectiveScale())
     previewTab:ClearAllPoints()
-    previewTab:SetPoint("LEFT", UIParent, "BOTTOMLEFT", x, y)
+    previewTab:SetPoint(inverted and "TOPLEFT" or "LEFT", UIParent, "BOTTOMLEFT", x, y)
+    invertTab(previewTab, inverted)
     previewTab.rbIcon:SetShown(canEnter == true)
     previewTab:Show()
 end
@@ -474,7 +495,7 @@ local function placeControllerBook(nativeBook)
     local left, bottom = nativeBook:GetLeft(), nativeBook:GetBottom()
     local width, height = nativeBook:GetWidth(), nativeBook:GetHeight()
     if not left or not bottom or width <= 360 or height <= 140 then return false end
-    local launcherX, launcherY = controllerTabPosition(nativeBook)
+    local launcherX, launcherY, inverted = controllerTabPosition(nativeBook)
     if not launcherX or not launcherY then return false end
     root:ClearAllPoints()
     root:SetScale(nativeBook:GetEffectiveScale() / UIParent:GetEffectiveScale())
@@ -493,7 +514,8 @@ local function placeControllerBook(nativeBook)
         returnTab.icon:SetTexture(skin.icon)
     end
     launcher:ClearAllPoints()
-    launcher:SetPoint("LEFT", root, "BOTTOMLEFT", launcherX - left, launcherY - bottom)
+    launcher:SetPoint(inverted and "TOPLEFT" or "LEFT", root, "BOTTOMLEFT", launcherX - left, launcherY - bottom)
+    invertTab(launcher, inverted)
     local hint, rbIcon = nativeBook.NextCategoryIcon, root.controllerRBIcon
     local hintX, hintY, hintWidth, hintHeight
     if hint and hint:IsShown() then hintX, hintY, hintWidth, hintHeight = hint:GetRect() end
@@ -511,8 +533,7 @@ local function placeControllerBook(nativeBook)
     local mainFrame = wt.MainFrame
     local searchRight, launcherRight = mainFrame.searchBox:GetRight(), launcher:GetRight()
     if searchRight and launcherRight then
-        if launcher:GetLeft() >= root:GetRight() then
-            -- outside bookmarks need no toolbar
+        if inverted then
             launcherRight = math.max(returnTab:GetRight(), rbIcon:IsShown() and rbIcon:GetRight() or tabs:GetRight())
         end
         mainFrame.searchBox:SetWidth(math.max(1, math.min(300, searchRight - launcherRight - 39)))
