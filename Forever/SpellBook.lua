@@ -607,7 +607,7 @@ function wt.CreateFrame()
             root.previewTab = previewTab
             previewTab:Hide()
             previewTab:EnableMouse(true)
-            previewTab:SetFrameStrata("TOOLTIP")
+            previewTab:SetFrameStrata("HIGH")
             previewTab:SetFrameLevel(505)
             selectTab(previewTab, false)
             local cornerRB = CreateFrame("Frame", nil, previewTab, "InputIconTextureFrameTemplate")
