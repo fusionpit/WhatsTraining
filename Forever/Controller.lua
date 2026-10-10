@@ -150,10 +150,20 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
             or spell.id ~= old.id or spell.npc ~= old.npc or spell.key ~= old.key or spell.level ~= old.level
             or not header.navigationChildren or #header.navigationChildren == 0 then subgrid = nil end
     end
+    local pages = { mainFrame, mainFrame.weaponPage }
+    local candidates, candidateRecords, sortRows = {}, {}, {}
+    local function addButton(index, row, page)
+        local entry = candidateRecords[index]
+        if not entry then entry = {}; candidateRecords[index] = entry end
+        entry.row, entry.page = row, page
+        candidates[index] = entry
+    end
     local function buttons()
         validateGroup()
-        local result = {}
-        for _, page in ipairs({ mainFrame, mainFrame.weaponPage }) do
+        -- callers finish using these buffers before selection callbacks can refresh the book
+        for i = 1, #sortRows do sortRows[i] = nil end
+        local count = 0
+        for _, page in ipairs(pages) do
             if page:IsVisible() then
                 for _, pool in ipairs(page.pools) do
                     for _, row in ipairs(pool) do
@@ -165,14 +175,22 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
                         elseif header then eligible = row == header
                         else eligible = spell and (not spell.isHeader or spell.npc or (spell.cost or 0) > 0) end
                         if row:IsShown() and spell and eligible then
-                            result[#result + 1] = { row = row, page = page }
+                            count = count + 1
+                            addButton(count, row, page)
                         end
                     end
                 end
             end
         end
-        if total:IsVisible() and not subgrid then result[#result + 1] = { row = total, page = mainFrame } end
-        return result
+        if total:IsVisible() and not subgrid then
+            count = count + 1
+            addButton(count, total, mainFrame)
+        end
+        for i = count + 1, #candidates do
+            candidates[i].row, candidates[i].page = nil, nil
+            candidates[i] = nil
+        end
+        return candidates
     end
     local function selectButton(row, page)
         clearSelection()
@@ -233,10 +251,12 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
                     local score = math.abs(entry.row:GetTop() - scroll:GetTop() - position.top)
                         + math.abs(x - entry.page:GetLeft() - position.x) * 3
                     if not first or score < first.score then
-                        first = { row = entry.row, page = entry.page, score = score }
+                        entry.score = score
+                        first = entry
                     end
                 elseif not first or y > first.y or (y == first.y and x < first.x) then
-                    first = { row = entry.row, page = entry.page, x = x, y = y }
+                    entry.x, entry.y = x, y
+                    first = entry
                 end
                 if entry.row.spell == spell then match = entry end
             end
@@ -287,19 +307,24 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
         end
         if best then selectButton(best.row, best.page) else subgrid = previousGroup end
     end
+    local function readingOrder(a, b)
+        if a.row == total or b.row == total then return a.row == total and b.row ~= total end
+        if a.top ~= b.top then return a.top > b.top end
+        return a.left < b.left
+    end
+    local function screenOrder(a, b)
+        if a.top ~= b.top then return a.top < b.top end
+        return a.distance < b.distance
+    end
     local function moveReadingOrder(button)
-        local rows = {}
+        local rows = sortRows
         for _, entry in ipairs(buttons()) do
             if entry.page == selectedPage then
                 entry.top, entry.left = entry.row:GetTop(), entry.row:GetLeft()
                 if entry.top and entry.left then rows[#rows + 1] = entry end
             end
         end
-        table.sort(rows, function(a, b)
-            if a.row == total or b.row == total then return a.row == total and b.row ~= total end
-            if a.top ~= b.top then return a.top > b.top end
-            return a.left < b.left
-        end)
+        table.sort(rows, readingOrder)
         for i, entry in ipairs(rows) do
             if entry.row == selected then
                 local nextEntry = rows[i + (button == "PADDDOWN" and 1 or -1)]
@@ -326,22 +351,20 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
         if horizontal and not subgrid and (not mainFrame.expanded or mainFrame.sideBySide) then
             local scroll = selectedPage.scrollFrame
             local height, offset = scroll:GetHeight(), scroll:GetVerticalScroll()
-            local contentTop, rows = selectedPage.content:GetTop(), {}
+            local contentTop, rows = selectedPage.content:GetTop(), sortRows
             for _, entry in ipairs(buttons()) do
                 if entry.page == selectedPage and entry.row ~= total then
                     local nextX, nextTop = entry.row:GetCenter(), entry.row:GetTop()
                     if nextX and nextTop then
                         entry.x, entry.top = nextX, contentTop - nextTop
                         entry.bottom = entry.top + navigationHeight(entry.row)
+                        entry.distance = math.abs(nextX - x)
                         rows[#rows + 1] = entry
                     end
                 end
             end
             if #rows == 0 then return end
-            table.sort(rows, function(a, b)
-                if a.top ~= b.top then return a.top < b.top end
-                return math.abs(a.x - x) < math.abs(b.x - x)
-            end)
+            table.sort(rows, screenOrder)
             if direction > 0 then
                 -- start the next screen at the clipped row
                 best = rows[#rows]
