@@ -49,6 +49,7 @@ local function renderLevels(page, blocks)
         local header = page.groupHeaders:Acquire()
         header.spell = setmetatable({cost = group.cost, level = group.level, spells = group.spells},
             {__index = group.category})
+        header.navigationHeader, header.navigationChildren = header, {}
         local total = #group.spells
         local rows = math.ceil((last - first + 1) / COLS)
         header:SetPoint("TOPLEFT", levels, "TOPLEFT", 0, -y)
@@ -72,6 +73,8 @@ local function renderLevels(page, blocks)
             local cell = page.cells:Acquire()
             local offset = index - first
             cell.spell, cell.category = spell, group.category
+            cell.navigationHeader = header
+            tinsert(header.navigationChildren, cell)
             cell:SetPoint("TOPLEFT", levels, "TOPLEFT", 16 + (offset % COLS) * width,
                 -y - math.floor(offset / COLS) * CELL)
             cell.icon:SetTexture(spell.useAltIcon and spell.altIcon or spell.icon)
@@ -119,6 +122,7 @@ local function showTrainer(pool, page, trainer, y, block)
     row:SetFrameLevel(page.content:GetFrameLevel() + 2)
     row:SetPoint("TOPLEFT", page.content, "TOPLEFT", 0, -y)
     row.heading:SetText(trainer.name)
+    return row
 end
 
 -- A render draws one view into a page and returns the content height.
@@ -220,14 +224,17 @@ end
 
 local function renderByCity(page, items)
     local columnWidth = (page.content:GetWidth() - 24) / 2
-    local i, y = 1, 0
+    local i, y, trainer = 1, 0, nil
     while i <= #items do
         local item = items[i]
         if item.npc then
-            showTrainer(page.cityTrainers, page, item, y)
+            trainer = showTrainer(page.cityTrainers, page, item, y)
+            trainer.navigationHeader = trainer
+            trainer.navigationChildren = {}
             y = y + TRAINER_ROW_HEIGHT
             i = i + 1
         elseif item.isHeader then
+            trainer = nil
             if i > 1 then y = y + 10 end
             showHeading(page, item, y, wt.Theme.weaponGroup, 0.9, 0.25)
             y = y + ROW_HEIGHT
@@ -239,6 +246,8 @@ local function renderByCity(page, items)
             local rowsPerColumn = math.ceil((last - i + 1) / 2)
             for index = i, last do
                 local tile, offset = page.tiles:Acquire(), index - i
+                tile.navigationHeader = trainer
+                if trainer then trainer.navigationChildren[#trainer.navigationChildren + 1] = tile end
                 tile:SetPoint("TOPLEFT", page.content, "TOPLEFT", 16 + math.floor(offset / rowsPerColumn) * columnWidth,
                     -y - (offset % rowsPerColumn) * SKILL_HEIGHT)
                 showSkill(tile, items[index])
@@ -254,7 +263,9 @@ local function renderByWeapon(page, items)
     local y, block = 0, nil
     for i, item in ipairs(items) do
         if item.npc then
-            showTrainer(page.skillTrainers, page, item, y, block)
+            local trainer = showTrainer(page.skillTrainers, page, item, y, block)
+            trainer.navigationHeader = block
+            if block then tinsert(block.navigationChildren, trainer) end
             y = y + TRAINER_ROW_HEIGHT
         elseif item.isHeader then
             if i > 1 then y = y + 10 end
@@ -266,6 +277,7 @@ local function renderByWeapon(page, items)
             while items[i + trainers + 1] and items[i + trainers + 1].npc do trainers = trainers + 1 end
             local height = trainers > 0 and WEAPON_HEADING_HEIGHT or 40
             block = page.blocks:Acquire()
+            block.navigationHeader, block.navigationChildren = block, {}
             block:SetPoint("TOPLEFT", page.content, "TOPLEFT", 0, -y)
             block:SetHeight(height + trainers * TRAINER_ROW_HEIGHT)
             showSkill(block, item)

@@ -133,43 +133,44 @@ local function addIgnoreLines(rootDescription, config)
     end
 end
 
-wt.ClickHook = function(spell, afterClick, row)
+function wt.generateSpellMenu(spell, afterClick, rootDescription)
     if not wt.TomeIds or not wt.TomeIds[spell.itemId or spell.id] then
-        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
         local isIgnored = ignoreStore:IsIgnored(spell.id)
-        MenuUtil.CreateContextMenu(row, function(_, rootDescription)
-            addIgnoreLines(rootDescription, {
-                title = spell.formattedFullName,
-                isIgnored = isIgnored,
-                id = spell.id,
-                afterClick = afterClick
-            })
-        end)
-
-        return
-    end
-
-    local checked = wt:IsPetAbilityLearned(spell.id)
-    PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-    local isIgnored = ignoreStore:IsIgnored(spell.id)
-    MenuUtil.CreateContextMenu(row, function(_, rootDescription)
-        if wt.SayaadTomes[spell.itemId] then
-            rootDescription:CreateTitle(string.format("%s — %s", wt.L.TOME_HEADER, spell.localFamily))
-        else
-            rootDescription:CreateTitle(wt.L.TOME_HEADER)
-        end
-        rootDescription:CreateCheckbox(wt.L.TOME_LEARNED, function() return checked end, function()
-            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-            wt:SetPetAbilityStatus(spell.id, not checked)
-            afterClick()
-            return MenuResponse.Close
-        end)
         addIgnoreLines(rootDescription, {
             title = spell.formattedFullName,
             isIgnored = isIgnored,
             id = spell.id,
             afterClick = afterClick
         })
+
+        return
+    end
+
+    local checked = wt:IsPetAbilityLearned(spell.id)
+    local isIgnored = ignoreStore:IsIgnored(spell.id)
+    if wt.SayaadTomes[spell.itemId] then
+        rootDescription:CreateTitle(string.format("%s — %s", wt.L.TOME_HEADER, spell.localFamily))
+    else
+        rootDescription:CreateTitle(wt.L.TOME_HEADER)
+    end
+    rootDescription:CreateCheckbox(wt.L.TOME_LEARNED, function() return checked end, function()
+        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+        wt:SetPetAbilityStatus(spell.id, not checked)
+        afterClick()
+        return MenuResponse.Close
+    end)
+    addIgnoreLines(rootDescription, {
+        title = spell.formattedFullName,
+        isIgnored = isIgnored,
+        id = spell.id,
+        afterClick = afterClick
+    })
+end
+
+wt.ClickHook = function(spell, afterClick, row)
+    PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+    MenuUtil.CreateContextMenu(row, function(_, rootDescription)
+        wt.generateSpellMenu(spell, afterClick, rootDescription)
     end)
 end
 

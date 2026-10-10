@@ -3,8 +3,10 @@
     <Script file="Theme.lua"/>
     <Script file="Layout.lua"/>
     <Script file="Widgets.lua"/>
+    <Script file="Menu.lua"/>
     <Script file="Views.lua"/>
     <Script file="Banner.lua"/>
     <Script file="SpellBook.lua"/>
     <Script file="FloatingFrame.lua"/>
+    <Script file="Controller.lua"/>
 </Ui>

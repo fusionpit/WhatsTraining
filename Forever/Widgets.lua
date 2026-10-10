@@ -8,6 +8,10 @@ local SKILL_HEIGHT = 42
 local CONTENT_RISE = 16
 local HEADER_CAP_FRACTION = 8 / 1024
 
+local tooltip = CreateFrame("GameTooltip", "WhatsTrainingForeverTooltip", UIParent, "GameTooltipTemplate")
+tooltip:HookScript("OnHide", wt.HideRankComparison)
+Forever.tooltip = tooltip
+
 local function label(parent, text, font, x, y)
     local value = parent:CreateFontString(nil, "OVERLAY", font)
     value:SetPoint("TOPLEFT", parent, "TOPLEFT", x, y)
@@ -18,9 +22,8 @@ local function label(parent, text, font, x, y)
 end
 
 local function hideTooltip(self)
-    if GameTooltip:IsOwned(self) then
-        GameTooltip:Hide()
-        wt.HideRankComparison()
+    if tooltip:IsOwned(self) then
+        tooltip:Hide()
     end
 end
 
@@ -28,8 +31,8 @@ local function showTooltip(self)
     local row = self.spell
     if not row then return end
     if row.isHeader and not row.npc and not (row.cost and row.cost > 0) then return end
-    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    wt.SetTooltip(GameTooltip, row, wt.Theme)
+    tooltip:SetOwner(self, "ANCHOR_RIGHT")
+    wt.SetTooltip(tooltip, row, wt.Theme)
 end
 
 local function categoryScripts(header)
@@ -198,6 +201,7 @@ end
 
 local function createTile(page)
     local tile = createRow(page)
+    tile.largeCursor = true
     for _, region in ipairs({tile.band, tile.heading, tile.level, tile.separator}) do region:Hide() end
     local width = (page.content:GetWidth() - 24) / 2
     tile:SetSize(width, SKILL_HEIGHT)
@@ -213,6 +217,8 @@ end
 
 local function createBlock(page)
     local block = createRow(page)
+    block.largeCursor = true
+    block.navigationHeight = WEAPON_HEADING_HEIGHT
     local width = page.content:GetWidth()
     block.heading:Hide()
     block.level:Hide()
@@ -254,12 +260,17 @@ end
 
 local function createCell(page)
     local cell = createRow(page, page.levels)
+    cell.largeCursor = true
     for _, region in ipairs({cell.band, cell.heading, cell.level, cell.separator}) do region:Hide() end
     local width = (page.levels:GetWidth() - 32) / COLS
     cell:SetSize(width - 4, CELL - 4)
     cell.icon:ClearAllPoints()
     cell.icon:SetPoint("TOPLEFT", 4, -2)
     cell.icon:SetSize(36, 36)
+    local mask = cell:CreateMaskTexture()
+    mask:SetAtlas("spellbook-item-spellicon-mask", false)
+    mask:SetAllPoints(cell.icon)
+    cell.icon:AddMaskTexture(mask)
     cell.iconBorder:SetSize(58, 58)
     cell.badge:SetSize(28, 28)
     cell.badge:SetPoint("BOTTOMRIGHT", cell.icon, "BOTTOMRIGHT", 11, -6)
@@ -286,17 +297,17 @@ local function createCityIcon(parent)
     frame.border:SetPoint("CENTER")
     frame.border:SetSize(40, 40)
     frame:SetScript("OnEnter", function(self)
-        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText(self.city.name)
+        tooltip:SetOwner(self, "ANCHOR_RIGHT")
+        tooltip:SetText(self.city.name)
         if self.spell then
             for _, trainer in ipairs(wt.WeaponSkills[self.spell.id].trainers[wt.playerFaction]) do
                 if trainer.zone == self.city.id then
-                    GameTooltip:AddLine(string.format("%s (%.1f, %.1f)", trainer.name, trainer.x, trainer.y),
+                    tooltip:AddLine(string.format("%s (%.1f, %.1f)", trainer.name, trainer.x, trainer.y),
                         unpack(wt.Theme.tooltipText))
                 end
             end
         end
-        GameTooltip:Show()
+        tooltip:Show()
     end)
     frame:SetScript("OnLeave", hideTooltip)
     frame:SetScript("OnHide", hideTooltip)

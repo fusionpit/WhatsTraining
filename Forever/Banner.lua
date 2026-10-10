@@ -1,5 +1,6 @@
 local _, wt = ...
 local Forever = wt.Forever
+local tooltip = Forever.tooltip
 local BANNER_TOP, CLIP_TOP = 54, 38
 -- CharacterSelect.xml faction colors.
 local FACTION_COLORS = {
@@ -95,9 +96,9 @@ local function createCategoryBanner(frame, selectView)
     banner:SetScript("OnEnter", function(self)
         self.glowTarget = 0.25
         self:SetScript("OnUpdate", updateGlow)
-        GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-        GameTooltip:SetText(showingWeapons(frame) and wt.L.LEDGER_CLASS_SPELLS or wt.L.WEAPON_SKILLS_HEADER)
-        GameTooltip:Show()
+        tooltip:SetOwner(self, "ANCHOR_LEFT")
+        tooltip:SetText(showingWeapons(frame) and wt.L.LEDGER_CLASS_SPELLS or wt.L.WEAPON_SKILLS_HEADER)
+        tooltip:Show()
     end)
     banner:SetScript("OnLeave", function(self)
         self.glowTarget = 0
@@ -135,7 +136,7 @@ local function updateBanner(mainFrame)
         banner.icon:SetAtlas("pvptalents-warmode-swords", false, nil, true)
         banner.icon:SetSize(32 * 0.62, 32 * 0.62)
     end
-    if GameTooltip:IsOwned(banner) then banner:GetScript("OnEnter")(banner) end
+    if tooltip:IsOwned(banner) then banner:GetScript("OnEnter")(banner) end
 end
 
 Forever.createCategoryBanner = createCategoryBanner

@@ -177,11 +177,12 @@ local function setChoice(choice)
     wt.RefreshUI()
 end
 
-function wt.priceMenuGenerator(_, root)
+function wt.priceMenuGenerator(_, root, flat)
     local rows, base, best = wt.availablePriceRows()
     root:CreateTitle(wt.L.PRICE_MENU_TITLE)
-    root:CreateTitle(format(wt.L.BASE_COST_FORMAT, C_CurrencyInfo.GetCoinTextureString(base)))
-        :AddInitializer(function(frame) frame.fontString:SetTextColor(1, 1, 1) end)
+    local baseText = format(wt.L.BASE_COST_FORMAT, C_CurrencyInfo.GetCoinTextureString(base))
+    if flat then root:CreateTitle(HIGHLIGHT_FONT_COLOR_CODE .. baseText .. FONT_COLOR_CODE_CLOSE)
+    else root:CreateTitle(baseText):AddInitializer(function(frame) frame.fontString:SetTextColor(1, 1, 1) end) end
     root:CreateDivider()
     root:CreateTitle(wt.L.PRICE_MENU_DISCOUNT)
     root:CreateRadio(wt.L.PRICE_AUTO, isChoice, setChoice, "auto")
@@ -190,7 +191,9 @@ function wt.priceMenuGenerator(_, root)
     for _, row in ipairs(rows) do
         local standing = row.noRep and wt.L.PRICE_NO_REP or
             format(wt.L.PRICE_STANDING_FORMAT, row.standingLabel, row.pct)
-        root:CreateRadio(row.name, isChoice, setChoice, row.key):AddInitializer(function(button)
+        local label = flat and wt.priceRowLabel(row, best) or row.name
+        local radio = root:CreateRadio(label, isChoice, setChoice, row.key)
+        if not flat then radio:AddInitializer(function(button)
             if row.price == best then button.fontString:SetTextColor(GREEN_FONT_COLOR:GetRGB()) end
             local right = button:AttachFontString()
             right:SetHeight(20)
@@ -199,7 +202,7 @@ function wt.priceMenuGenerator(_, root)
             right:SetText(standing)
             -- aligned text needs an explicit width: radio dot + gap + both strings
             return 40 + button.fontString:GetUnboundedStringWidth() + right:GetUnboundedStringWidth(), 20
-        end)
+        end) end
     end
 end
 

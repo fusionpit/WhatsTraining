@@ -1,10 +1,9 @@
 local _, wt = ...
 local Forever = wt.Forever
+local tooltip = Forever.tooltip
 local label, hideTooltip, createPage = Forever.label, Forever.hideTooltip, Forever.createPage
 local views, updatePage, endsSplit = Forever.views, Forever.updatePage, Forever.endsSplit
 local createCategoryBanner, updateBanner = Forever.createCategoryBanner, Forever.updateBanner
-
--- All of this to avoid writing to anything Blizzard owns.
 
 local skin = {
     icon = "Interface\\Icons\\INV_Misc_QuestionMark",
@@ -14,19 +13,17 @@ local skin = {
     pageLeft = "spellbook-Page-Left-C60",
     pageRight = "spellbook-Page-Right-C60",
 }
--- the tab row, search box and settings dropdown sit in the book's top 60px
 local HEADER_HEIGHT = 60
--- Camelot's Blizzard_SpellBookTemplates.xml: the native views are 680 wide, 95 below the book's top, at
--- 85 from its left and 50 from its right. Each ledger page is a 696-wide column around one of them.
+-- 696px columns surround Camelot's native 680px views.
 local PAGE_WIDTH, PAGE_TOP, PAGE_BOTTOM = 696, -90, 15
 
-local book, root, launcher, attic, returnTab, active, shownTab, queued
+local book, root, launcher, attic, content, returnTab, previewTab, active, shownTab, queued
 local covers = {}
 
 local function makeTab(name, parent)
     local button = CreateFrame("Button", name, parent)
     button:SetSize(44, 32)
-    -- shrink to simulate native template mask
+    -- shrink the icon to mimic the native mask
     button.icon = button:CreateTexture(nil, "ARTWORK")
     button.icon:SetSize(34, 33)
     button.icon:SetPoint("BOTTOM", -1, 0)
@@ -75,7 +72,8 @@ local function refresh(mainFrame)
         if expanded then updatePage(weaponPage, weapons, weapons.Items()) end
         return
     end
-    local halves = spells.Paginate(mainFrame:GetHeight() + spells.top - (spells.reserve or 0) - 30)
+    local halves = spells.Paginate(mainFrame:GetHeight() + spells.top - (spells.reserve or 0)
+        - (wt.ControllerFrame and 45 or 30))
     local controls = mainFrame.pagingControls
     controls:SetMaxPages(math.ceil(#halves / 2))
     local page = controls:GetCurrentPage()
@@ -102,6 +100,7 @@ end
 --  mouse-eating rect
 local function cover()
     local frame = CreateFrame("Frame", nil, root)
+    frame:SetFrameLevel(root:GetFrameLevel())
     frame:SetClipsChildren(true)
     frame:EnableMouse(true)
     frame:EnableMouseWheel(true)
@@ -109,7 +108,9 @@ local function cover()
     frame.backing = frame:CreateTexture(nil, "BACKGROUND")
     frame.backing:SetAllPoints()
     frame.art = CreateFrame("Frame", nil, frame)
-    frame.art:SetAllPoints(root)
+    frame.art:SetAllPoints(frame)
+    frame.art:SetClipsChildren(true)
+    frame.art:SetFrameLevel(frame:GetFrameLevel() + 1)
     local function page(atlas, from, to)
         local texture = frame.art:CreateTexture(nil, "BACKGROUND")
         texture:SetAtlas(atlas)
@@ -126,7 +127,7 @@ end
 
 function wt.ApplyTheme()
     for _, frame in ipairs(covers) do
-        frame.backing:SetColorTexture(unpack(wt.Theme.backing))
+        frame.backing:SetColorTexture(wt.Theme.backing[1], wt.Theme.backing[2], wt.Theme.backing[3], 1)
         frame.art:SetShown(wt.Theme.pageArt == true)
     end
 end
@@ -134,7 +135,6 @@ end
 local function sync()
     local tabs = book.CategoryTabSystem
     local gamepad = InputUtil.IsGamepadUIEnabled()
-    -- compare IDs instead of trusting hooks
     if gamepad or tabs.selectedTabID ~= shownTab or book.SearchBox:HasFocus()
         or book.SearchPreviewContainer:IsShown() then
         active = false
@@ -190,7 +190,7 @@ local function sync()
         frame.left:SetShown(not book.isMinimized)
         frame.right:SetShown(not book.isMinimized)
     end
-    -- pool rebuilds can replace the selected button, so read it fresh
+    -- pool rebuilds can replace the selected button
     local native = tabs.selectedTabID and tabs:GetTabButton(tabs.selectedTabID)
     returnTab:SetShown(native ~= nil)
     if native then
@@ -200,7 +200,7 @@ local function sync()
     end
     mainFrame:Show()
     root:Show()
-    -- ResizeSearchBox's rule, measured from whatever sits left of the search box
+    -- ,atch the native ResizeSearchBox rule
     local search = mainFrame.searchBox
     local left, right = (launcher.bookmark and tabs or launcher):GetRight(), search:GetRight()
     if left and right then search:SetWidth(math.max(1, math.min(300, right - left - 10))) end
@@ -219,11 +219,14 @@ local function request()
     RunNextFrame(deferredSync)
 end
 
--- built once the theme resolves
 local function createLedger(mainFrame)
     createPage(mainFrame, 20)
     mainFrame.total = label(mainFrame, "", "SystemFont_Med3", 0, 0)
-    local totalHover = CreateFrame("Frame", nil, mainFrame)
+    local totalHover = CreateFrame("Button", nil, mainFrame)
+    local highlight = totalHover:CreateTexture(nil, "HIGHLIGHT")
+    highlight:SetAllPoints()
+    highlight:SetColorTexture(wt.Theme.highlight[1], wt.Theme.highlight[2], wt.Theme.highlight[3], 0.25)
+    totalHover:SetHighlightTexture(highlight, "BLEND")
     mainFrame.total:SetParent(totalHover)
     totalHover:SetAllPoints(mainFrame.total)
     totalHover:SetHitRectInsets(0, -12, 0, 0)
@@ -231,9 +234,9 @@ local function createLedger(mainFrame)
     local function showBreakdown()
         local spells, header = wt.availableSpells()
         if not header then return end
-        GameTooltip:SetOwner(totalHover, "ANCHOR_RIGHT")
-        wt.addPricingBlock(GameTooltip, header, spells)
-        GameTooltip:Show()
+        tooltip:SetOwner(totalHover, "ANCHOR_RIGHT")
+        wt.addPricingBlock(tooltip, header, spells)
+        tooltip:Show()
     end
     totalHover:SetScript("OnEnter", showBreakdown)
     totalHover:SetScript("OnLeave", hideTooltip)
@@ -248,7 +251,7 @@ local function createLedger(mainFrame)
     arrow:SetPushedTexture("Interface\\Buttons\\Arrow-Down-Down")
     arrow:SetHighlightTexture("Interface\\Buttons\\Arrow-Down-Up", "ADD")
     arrow:GetHighlightTexture():SetAlpha(0.4)
-    -- the glyph fills only the top half of the 16px texture, so the text centres 4px above the button centre
+    -- the 16px glyph occupies its top half
     arrow:SetPoint("TOPRIGHT", mainFrame.header.Border, "TOPRIGHT", 0, 15)
     mainFrame.total:ClearAllPoints()
     mainFrame.total:SetPoint("RIGHT", arrow, "LEFT", -2, 4)
@@ -256,7 +259,6 @@ local function createLedger(mainFrame)
     arrow:SetupMenu(wt.priceMenuGenerator)
     arrow:HookScript("OnEnter", showBreakdown)
     arrow:HookScript("OnLeave", function() hideTooltip(totalHover) end)
-    -- rep standings and PvP rank change the discounted total
     totalHover:RegisterEvent("UPDATE_FACTION")
     totalHover:RegisterEvent("PLAYER_PVP_RANK_CHANGED")
     totalHover:SetScript("OnEvent", wt.RefreshUI)
@@ -335,7 +337,7 @@ local function createLedger(mainFrame)
         mainFrame.sideBySide = WT_SideBySide
         mainFrame:Refresh()
     end
-    dropdown:SetupMenu(function(_, rootDescription)
+    local function generateSettings(_, rootDescription)
         rootDescription:CreateTitle(wt.L.LEDGER_OPT_CLASS_HEADER)
         rootDescription:CreateRadio(wt.L.DISPLAY_LEVELS, isStyle, setStyle, "levels")
         rootDescription:CreateRadio(wt.L.GROUP_LIST, isStyle, setStyle, "ledger")
@@ -347,9 +349,10 @@ local function createLedger(mainFrame)
         rootDescription:CreateRadio(wt.L.GROUP_LIST, isGrouping, setGrouping, "list")
         rootDescription:CreateCheckbox(wt.L.LEDGER_SHOW_KNOWN, showsKnown, toggleKnown)
         rootDescription:CreateCheckbox(wt.L.HIDE_WEAPON_SKILL_SWITCHER, hidesWeaponSwitcher, toggleWeaponSwitcher)
-    end)
+    end
+    mainFrame.generateSettings = generateSettings
+    dropdown:SetupMenu(generateSettings)
 
-    -- sync sets search box width
     local search = CreateFrame("EditBox", "$parentSearchBox", mainFrame, "SearchBoxTemplate")
     mainFrame.searchBox = search
     search:SetSize(300, 30)
@@ -368,7 +371,9 @@ local function createLedger(mainFrame)
 end
 
 local function attachForeverSpellBook()
+    if InputUtil.IsGamepadUIEnabled() then return end
     EventUtil.ContinueOnAddOnLoaded("Blizzard_PlayerSpells", function()
+        if InputUtil.IsGamepadUIEnabled() then return end
         book = PlayerSpellsFrame.SpellBookFrame
         root:SetParent(PlayerSpellsFrame)
         launcher:SetParent(PlayerSpellsFrame)
@@ -376,16 +381,14 @@ local function attachForeverSpellBook()
         wt.Theme = wt.ResolveTheme()
         wt.ApplyTheme()
         createLedger(wt.MainFrame)
-        -- hooksecurefunc misbehaves while taintLog > 0 in the current client build
-        -- Tab clicks, SelectNextTab and UpdateAllSpellData all end in OnPagedSpellsUpdate, which fires DisplayedSpellsChanged
-        -- SetMinimized resizes the book.
+        -- use events: hooksecurefunc misbehaves with taintLog enabled
         for _, event in ipairs({"SpellBookFrame.Show", "SpellBookFrame.Hide", "SpellBookFrame.DisplayedSpellsChanged"}) do
             EventRegistry:RegisterCallback("PlayerSpellsFrame." .. event, request, root)
         end
         EventRegistry:RegisterCallback("SpellSearchBox.FocusedGained", request, root)
         EventRegistry:RegisterCallback("SpellSearchPreview.FocusedGained", request, root)
         book:HookScript("OnSizeChanged", request)
-        -- minimize hides and re-shows the panel in one stack
+        -- minimize hides and re-shows the panel synchronously
         book:HookScript("OnShow", function()
             sync()
             request()
@@ -397,11 +400,143 @@ local function attachForeverSpellBook()
     end)
 end
 
+local borderPieces = { "TopLeftCorner", "TopRightCorner", "BottomLeftCorner", "BottomRightCorner",
+    "TopEdge", "BottomEdge", "LeftEdge", "RightEdge" }
+
+local function copyControllerBorder(left, bottom)
+    local border = PlayerSpellsFrame.NineSlice
+    if not border then return end
+    for _, frame in ipairs(covers) do
+        if not frame.trim then
+            frame.trim = CreateFrame("Frame", nil, frame)
+            frame.trim:SetAllPoints(frame)
+            frame.trim:SetFrameLevel(frame.art:GetFrameLevel())
+            frame.trim.pieces = {}
+            for _, name in ipairs(borderPieces) do
+                frame.trim.pieces[name] = frame.trim:CreateTexture(nil, "OVERLAY")
+            end
+        end
+        -- Border padding must not shrink opaque masks
+        for _, name in ipairs(borderPieces) do
+            local native, texture = border[name], frame.trim.pieces[name]
+            local x, y, width, height
+            if native and native:IsShown() then x, y, width, height = native:GetRect() end
+            texture:SetShown(x ~= nil and y ~= nil and width ~= nil and height ~= nil)
+            if x and y and width and height then
+                local atlas = native:GetAtlas()
+                if atlas then texture:SetAtlas(atlas) else texture:SetTexture(native:GetTexture()) end
+                texture:SetTexCoord(native:GetTexCoord())
+                texture:SetHorizTile(native:GetHorizTile())
+                texture:SetVertTile(native:GetVertTile())
+                texture:SetVertexColor(native:GetVertexColor())
+                texture:SetAlpha(native:GetAlpha())
+                texture:SetTexelSnappingBias(0)
+                texture:SetSnapToPixelGrid(false)
+                texture:ClearAllPoints()
+                texture:SetPoint("BOTTOMLEFT", root, "BOTTOMLEFT", x - left, y - bottom)
+                texture:SetSize(width, height)
+            end
+        end
+    end
+end
+
+local function controllerTabPosition(nativeBook)
+    local tabs = nativeBook.CategoryTabSystem
+    local right = tabs and tabs:GetRight()
+    local _, y
+    if tabs then _, y = tabs:GetCenter() end
+    if not right or not y then return end
+    local hint = nativeBook.NextCategoryIcon
+    local hintRight = hint and hint:IsShown() and hint:GetRight()
+    if hintRight then right = math.max(right, hintRight) end
+    local searchLeft = nativeBook.SearchBox:GetLeft()
+    -- use an outside bookmark when the toolbar is full
+    if searchLeft and right + 52 > searchLeft - 38 then
+        right = nativeBook:GetLeft()
+        if not right then return end
+        right = right + nativeBook:GetWidth()
+    end
+    return right + 8, y
+end
+
+local function updateControllerPreview(nativeBook, canEnter)
+    if root:IsShown() or not nativeBook then return previewTab:Hide() end
+    local x, y = controllerTabPosition(nativeBook)
+    if not x or not y then return previewTab:Hide() end
+    previewTab:SetScale(nativeBook:GetEffectiveScale() / UIParent:GetEffectiveScale())
+    previewTab:ClearAllPoints()
+    previewTab:SetPoint("LEFT", UIParent, "BOTTOMLEFT", x, y)
+    previewTab.rbIcon:SetShown(canEnter == true)
+    previewTab:Show()
+end
+
+local function placeControllerBook(nativeBook)
+    local left, bottom = nativeBook:GetLeft(), nativeBook:GetBottom()
+    local width, height = nativeBook:GetWidth(), nativeBook:GetHeight()
+    if not left or not bottom or width <= 360 or height <= 140 then return false end
+    local launcherX, launcherY = controllerTabPosition(nativeBook)
+    if not launcherX or not launcherY then return false end
+    root:ClearAllPoints()
+    root:SetScale(nativeBook:GetEffectiveScale() / UIParent:GetEffectiveScale())
+    root:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", left, bottom)
+    root:SetSize(width, height)
+    local tabs = nativeBook.CategoryTabSystem
+    local nativeTab = tabs and tabs.selectedTabID and tabs:GetTabButton(tabs.selectedTabID)
+    local tabX, tabY
+    if nativeTab then tabX, tabY = nativeTab:GetCenter() end
+    returnTab:ClearAllPoints()
+    if tabX and tabY then
+        returnTab:SetPoint("CENTER", root, "BOTTOMLEFT", tabX - left, tabY - bottom)
+        returnTab.icon:SetTexture(nativeTab.Icon:GetTexture())
+    else
+        returnTab:SetPoint("TOPLEFT", root, "TOPLEFT", 70, -26)
+        returnTab.icon:SetTexture(skin.icon)
+    end
+    launcher:ClearAllPoints()
+    launcher:SetPoint("LEFT", root, "BOTTOMLEFT", launcherX - left, launcherY - bottom)
+    local hint, rbIcon = nativeBook.NextCategoryIcon, root.controllerRBIcon
+    local hintX, hintY, hintWidth, hintHeight
+    if hint and hint:IsShown() then hintX, hintY, hintWidth, hintHeight = hint:GetRect() end
+    rbIcon:SetShown(hintX ~= nil and hintY ~= nil and hintWidth ~= nil and hintHeight ~= nil)
+    if hintX and hintY and hintWidth and hintHeight then
+        rbIcon:ClearAllPoints()
+        rbIcon:SetPoint("BOTTOMLEFT", root, "BOTTOMLEFT", hintX - left, hintY - bottom)
+        rbIcon:SetSize(hintWidth, hintHeight)
+    end
+    attic:SetPoint("LEFT", root, "BOTTOMLEFT", tabs:GetRight() - left + 3, 0)
+    local title = PlayerSpellsFrame.TitleContainer
+    local titleBottom = title and title:GetBottom()
+    local top = titleBottom and math.min(-8, titleBottom - bottom - height - 1) or -8
+    attic:SetPoint("TOP", root, "TOP", 0, top)
+    local mainFrame = wt.MainFrame
+    local searchRight, launcherRight = mainFrame.searchBox:GetRight(), launcher:GetRight()
+    if searchRight and launcherRight then
+        if launcher:GetLeft() >= root:GetRight() then
+            -- outside bookmarks need no toolbar
+            launcherRight = math.max(returnTab:GetRight(), rbIcon:IsShown() and rbIcon:GetRight() or tabs:GetRight())
+        end
+        mainFrame.searchBox:SetWidth(math.max(1, math.min(300, searchRight - launcherRight - 39)))
+    end
+    local expanded = not nativeBook.isMinimized
+    local relayout = mainFrame.expanded ~= expanded or mainFrame.controllerHeight ~= height
+    if mainFrame.expanded ~= expanded then mainFrame.sideBySide = wt.showingWeaponSkills or WT_SideBySide end
+    mainFrame.expanded, mainFrame.controllerHeight = expanded, height
+    for _, frame in ipairs(covers) do
+        frame.whole:SetShown(not expanded)
+        frame.left:SetShown(expanded)
+        frame.right:SetShown(expanded)
+    end
+    copyControllerBorder(left, bottom)
+    if relayout and root:IsShown() then mainFrame:Refresh() end
+    return true
+end
+
 function wt.CreateFrame()
     if wt.MainFrame then return end
+    local controller = InputUtil.IsGamepadUIEnabled()
     root = CreateFrame("Frame", "WhatsTrainingOverlay", UIParent)
     root:Hide()
-    local content = cover()
+    content = cover()
     content:SetPoint("TOPLEFT", root, "TOPLEFT", 0, -HEADER_HEIGHT)
     content:SetPoint("BOTTOMRIGHT", root, "BOTTOMRIGHT")
 
@@ -416,20 +551,20 @@ function wt.CreateFrame()
         sync()
     end)
     launcher:SetScript("OnEnter", function(self)
-        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText(wt.L.TAB_TEXT)
-        GameTooltip:Show()
+        tooltip:SetOwner(self, "ANCHOR_RIGHT")
+        tooltip:SetText(wt.L.TAB_TEXT)
+        tooltip:Show()
     end)
     launcher:SetScript("OnLeave", hideTooltip)
     launcher:SetScript("OnHide", hideTooltip)
 
-    -- covers the search box, settings dropdown and gamepad glyphs, left anchorned by sync
+    -- cover the toolbar, having sync set the left edge
     attic = cover()
     attic:SetPoint("TOP", root, "TOP")
     attic:SetPoint("BOTTOM", content, "TOP")
     attic:SetPoint("RIGHT", root, "RIGHT")
 
-    -- sits over the native selected tab, which still glows underneath, on a parchment slice
+    -- cover the native selected tab's glow
     returnTab = makeTab(nil, root)
     root.returnTab = returnTab
     selectTab(returnTab, false)
@@ -446,5 +581,48 @@ function wt.CreateFrame()
     mainFrame:SetPoint("BOTTOMLEFT", root, "BOTTOMLEFT", 65, PAGE_BOTTOM)
     mainFrame:SetWidth(PAGE_WIDTH)
 
-    attachForeverSpellBook()
+    if controller then
+        wt.Theme = wt.ResolveTheme()
+        wt.ApplyTheme()
+        root:SetFrameStrata("TOOLTIP")
+        root:SetFrameLevel(500)
+        mainFrame:SetFrameLevel(502)
+        EventUtil.ContinueOnAddOnLoaded("Blizzard_PlayerSpells", function()
+            createLedger(mainFrame)
+            launcher:SetParent(root)
+            launcher:SetFrameLevel(505)
+            selectTab(launcher, true)
+            launcher:Show()
+            returnTab:SetFrameLevel(505)
+            launcher:SetScript("OnClick", function() root:Hide() end)
+            returnTab:SetScript("OnClick", function() root:Hide() end)
+            local rbIcon = CreateFrame("Frame", nil, root, "InputIconTextureFrameTemplate")
+            root.controllerRBIcon = rbIcon
+            rbIcon.useDropShadow = true
+            rbIcon:SetInputKey(GAMEPAD_SHOULDER_RIGHT)
+            rbIcon:SetPressable()
+            rbIcon:EnableMouse(false)
+            rbIcon:SetFrameLevel(505)
+            previewTab = makeTab("WhatsTrainingControllerPreview", UIParent)
+            root.previewTab = previewTab
+            previewTab:Hide()
+            previewTab:EnableMouse(true)
+            previewTab:SetFrameStrata("TOOLTIP")
+            previewTab:SetFrameLevel(505)
+            selectTab(previewTab, false)
+            local cornerRB = CreateFrame("Frame", nil, previewTab, "InputIconTextureFrameTemplate")
+            previewTab.rbIcon = cornerRB
+            cornerRB.useDropShadow = true
+            cornerRB:SetInputKey(GAMEPAD_SHOULDER_RIGHT)
+            cornerRB:SetPressable()
+            cornerRB:SetSize(22, 22)
+            cornerRB:SetPoint("TOPRIGHT", previewTab.icon, "TOPRIGHT", 7, 7)
+            cornerRB:EnableMouse(false)
+            cornerRB:Hide()
+            mainFrame:Show()
+            wt.EnableControllerBook(root, mainFrame, placeControllerBook, updateControllerPreview)
+        end)
+    else
+        attachForeverSpellBook()
+    end
 end
