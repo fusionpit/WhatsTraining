@@ -97,9 +97,11 @@ local function refresh(mainFrame)
     local halves = spells.Paginate(mainFrame:GetHeight() + spells.top - (spells.reserve or 0)
         - (wt.ControllerFrame and 45 or 30))
     local controls = mainFrame.pagingControls
-    controls:SetMaxPages(math.ceil(#halves / 2))
+    local twoPages = WT_ScrollTwoPages ~= false
+    controls:SetMaxPages(twoPages and math.ceil(#halves / 2) or math.max(1, #halves - 1))
     local page = controls:GetCurrentPage()
-    local left, right = halves[page * 2 - 1] or {}, halves[page * 2] or {}
+    local offset = twoPages and page * 2 - 1 or page
+    local left, right = halves[offset] or {}, halves[offset + 1] or {}
     updatePage(mainFrame, spells, left, true)
     updatePage(weaponPage, spells, right, true)
     weaponPage.empty:Hide()
@@ -110,7 +112,12 @@ end
 local function wheel(_, delta)
     local mainFrame = wt.MainFrame
     if mainFrame.expanded and not mainFrame.sideBySide then
-        return mainFrame.pagingControls:OnMouseWheel(delta)
+        local controls = mainFrame.pagingControls
+        if WT_ScrollTwoPages ~= false then return controls:OnMouseWheel(delta) end
+        if controls:SetCurrentPage(controls:GetCurrentPage() + (delta > 0 and -1 or 1)) then
+            PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN)
+        end
+        return
     end
     local x = GetCursorPosition() / root:GetEffectiveScale()
     local page = mainFrame.expanded and x > root:GetCenter() and mainFrame.weaponPage or mainFrame
@@ -309,6 +316,7 @@ local function createLedger(mainFrame)
     weaponPage.continues:ClearAllPoints()
     weaponPage.continues:SetPoint("RIGHT", controls, "LEFT", -12, 0)
     controls.prevPageSound, controls.nextPageSound = SOUNDKIT.IG_ABILITY_PAGE_TURN, SOUNDKIT.IG_ABILITY_PAGE_TURN
+    function controls:GetPageDelta() return WT_ScrollTwoPages ~= false and 1 or 2 end
     function weaponPage:OnPageChanged() mainFrame:Refresh() end
 
     local function selectView(weapons)
@@ -360,11 +368,17 @@ local function createLedger(mainFrame)
         mainFrame.sideBySide = WT_SideBySide
         mainFrame:Refresh()
     end
+    local function scrollsTwoPages() return WT_ScrollTwoPages ~= false end
+    local function toggleScrollTwoPages()
+        local page = controls:GetCurrentPage()
+        WT_ScrollTwoPages = not scrollsTwoPages()
+        mainFrame:Refresh()
+        controls:SetCurrentPage(WT_ScrollTwoPages and math.ceil(page / 2) or page * 2 - 1)
+    end
     local function generateSettings(_, rootDescription)
         rootDescription:CreateTitle(wt.L.LEDGER_OPT_CLASS_HEADER)
         rootDescription:CreateRadio(wt.L.DISPLAY_LEVELS, isStyle, setStyle, "levels")
         rootDescription:CreateRadio(wt.L.GROUP_LIST, isStyle, setStyle, "ledger")
-        rootDescription:CreateCheckbox(wt.L.LEDGER_SIDE_BY_SIDE, isSideBySide, toggleSideBySide)
         rootDescription:CreateDivider()
         rootDescription:CreateTitle(wt.L.GROUPING_OPTIONS_TITLE)
         rootDescription:CreateRadio(wt.L.GROUP_BY_ZONE, isGrouping, setGrouping, "zone")
@@ -372,6 +386,10 @@ local function createLedger(mainFrame)
         rootDescription:CreateRadio(wt.L.GROUP_LIST, isGrouping, setGrouping, "list")
         rootDescription:CreateCheckbox(wt.L.LEDGER_SHOW_KNOWN, showsKnown, toggleKnown)
         rootDescription:CreateCheckbox(wt.L.HIDE_WEAPON_SKILL_SWITCHER, hidesWeaponSwitcher, toggleWeaponSwitcher)
+        rootDescription:CreateDivider()
+        rootDescription:CreateTitle(wt.L.EXPANDED_SPELLBOOK_SETTINGS_HEADER)
+        rootDescription:CreateCheckbox(wt.L.LEDGER_SIDE_BY_SIDE, isSideBySide, toggleSideBySide)
+        rootDescription:CreateCheckbox(wt.L.SCROLL_TWO_PAGES, scrollsTwoPages, toggleScrollTwoPages)
     end
     mainFrame.generateSettings = generateSettings
     dropdown:SetupMenu(generateSettings)

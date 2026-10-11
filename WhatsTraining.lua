@@ -126,6 +126,9 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         if type(WT_SideBySide) ~= "boolean" then
             WT_SideBySide = false
         end
+        if type(WT_ScrollTwoPages) ~= "boolean" then
+            WT_ScrollTwoPages = true
+        end
         if type(WT_HideWeaponSkillSwitcher) ~= "boolean" then
             WT_HideWeaponSkillSwitcher = false
         end
