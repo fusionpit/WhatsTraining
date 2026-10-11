@@ -111,7 +111,6 @@ local QuestSpells = {
     },
     PRIEST = {
         [13908] = { -- Desperate Prayer
-            { races = {1}, level = 10, areas = {12, 1, 1519, 1537, 1657}, quests = {5635, 5637, 5638, 5639, 5640} },
             { races = {3}, level = 10, areas = {12, 1, 1519, 1537, 1657, 141}, quests = {5635, 5637, 5638, 5639, 5640, 5634, 5636} },
         },
         [13896] = { -- Feedback
