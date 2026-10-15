@@ -378,39 +378,50 @@ function wt.CreateCompactFrame(mainFrame)
     title:SetPoint("TOPLEFT", popup, "TOPLEFT", 16, -14)
     title:SetText(wt.L.GROUPING_OPTIONS_TITLE)
 
+    local function addRadio(group, name, groupTitle, onSelect)
+        local radio = CreateFrame("CheckButton", name, popup, "UIRadioButtonTemplate")
+        local prev = group[#group]
+        if prev then
+            radio:SetPoint("TOPLEFT", prev, "BOTTOMLEFT", 0, -6)
+        else
+            radio:SetPoint("TOPLEFT", groupTitle, "BOTTOMLEFT", 0, -8)
+        end
+        radio:SetScript("OnClick", function(self)
+            for _, r in ipairs(group) do
+                r:SetChecked(r == self)
+            end
+            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+            onSelect(self.value)
+        end)
+        tinsert(group, radio)
+        return radio
+    end
+    local function labelRadio(radio, label)
+        local text = radio.text or radio.Text or _G[radio:GetName() .. "Text"]
+        if text then
+            text:SetFontObject("GameFontNormalSmall")
+            text:SetText(label)
+            text:SetPoint("LEFT", radio, "RIGHT", 2, 0)
+            radio:SetHitRectInsets(0, -(text:GetStringWidth() + 2), 0, 0)
+        end
+    end
+
     local radioDefs = {
         { mode = "zone",        label = wt.L.GROUP_BY_ZONE },
         { mode = "weaponskill", label = wt.L.GROUP_BY_WEAPON_SKILL },
         { mode = "list",        label = wt.L.GROUP_LIST },
     }
-    popup.radios = {}
-    local prev
-    for i, def in ipairs(radioDefs) do
-        local radio = CreateFrame("CheckButton", "$parentRadio" .. i, popup, "UIRadioButtonTemplate")
-        if prev then
-            radio:SetPoint("TOPLEFT", prev, "BOTTOMLEFT", 0, -6)
-        else
-            radio:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -8)
-        end
-        local text = radio.text or radio.Text or _G[radio:GetName() .. "Text"]
-        if text then
-            text:SetFontObject("GameFontNormalSmall")
-            text:SetText(def.label)
-            text:SetPoint("LEFT", radio, "RIGHT", 2, 0)
-            radio:SetHitRectInsets(0, -(text:GetStringWidth() + 2), 0, 0)
-        end
-        radio.mode = def.mode
-        radio:SetScript("OnClick", function(self)
-            WT_WeaponGrouping = self.mode
-            for _, r in ipairs(popup.radios) do
-                r:SetChecked(r.mode == self.mode)
-            end
-            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-            wt:ApplyFilter()
-        end)
-        tinsert(popup.radios, radio)
-        prev = radio
+    local function setGrouping(mode)
+        WT_WeaponGrouping = mode
+        wt:ApplyFilter()
     end
+    popup.radios = {}
+    for i, def in ipairs(radioDefs) do
+        local radio = addRadio(popup.radios, "$parentRadio" .. i, title, setGrouping)
+        radio.value = def.mode
+        labelRadio(radio, def.label)
+    end
+    local prev = popup.radios[#popup.radios]
 
     local showKnown = CreateFrame("CheckButton", "$parentShowKnown", popup, "UICheckButtonTemplate")
     showKnown:SetSize(22, 22)
@@ -427,6 +438,11 @@ function wt.CreateCompactFrame(mainFrame)
         wt:ApplyFilter()
     end)
 
+    local providerTitle = popup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    providerTitle:SetPoint("TOPLEFT", showKnown, "BOTTOMLEFT", 3, -8)
+    providerTitle:SetText(wt.L.WAYPOINT_PROVIDER_TITLE)
+    popup.providerRadios = {}
+
     local doneButton = CreateFrame("Button", "$parentDone", popup, "UIPanelButtonTemplate")
     doneButton:SetSize(80, 22)
     doneButton:SetPoint("BOTTOMRIGHT", popup, "BOTTOMRIGHT", -12, 10)
@@ -436,9 +452,27 @@ function wt.CreateCompactFrame(mainFrame)
     popup:SetScript("OnShow", function(self)
         local mode = WT_WeaponGrouping
         for _, r in ipairs(self.radios) do
-            r:SetChecked(r.mode == mode)
+            r:SetChecked(r.value == mode)
         end
         showKnown:SetChecked(WT_ShowKnownWeaponSkills)
+
+        -- plugins can register providers after this popup was built, so refresh on every show
+        local providers = wt.waypointProviders()
+        local count = #providers > 1 and #providers or 0
+        local active = wt.activeWaypointProvider()
+        for i = 1, count do
+            local radio = self.providerRadios[i]
+                or addRadio(self.providerRadios, "$parentProviderRadio" .. i, providerTitle, wt.setWaypointProvider)
+            radio.value = providers[i].id
+            labelRadio(radio, providers[i].name)
+            radio:SetChecked(providers[i] == active)
+        end
+        for i, radio in ipairs(self.providerRadios) do
+            radio:SetShown(i <= count)
+        end
+        providerTitle:SetShown(count > 0)
+        -- 24 for the title, 22 per radio, keeping the done button below the last one
+        self:SetHeight(count > 0 and 156 + 24 + 22 * count or 156)
     end)
 
     groupingButton:SetScript("OnClick", function()

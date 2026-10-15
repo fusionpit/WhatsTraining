@@ -375,6 +375,10 @@ local function createLedger(mainFrame)
         mainFrame:Refresh()
         controls:SetCurrentPage(WT_ScrollTwoPages and math.ceil(page / 2) or page * 2 - 1)
     end
+    local function isProvider(id)
+        local active = wt.activeWaypointProvider()
+        return active ~= nil and active.id == id
+    end
     local function generateSettings(_, rootDescription)
         rootDescription:CreateTitle(wt.L.LEDGER_OPT_CLASS_HEADER)
         rootDescription:CreateRadio(wt.L.DISPLAY_LEVELS, isStyle, setStyle, "levels")
@@ -390,6 +394,14 @@ local function createLedger(mainFrame)
         rootDescription:CreateTitle(wt.L.EXPANDED_SPELLBOOK_SETTINGS_HEADER)
         rootDescription:CreateCheckbox(wt.L.LEDGER_SIDE_BY_SIDE, isSideBySide, toggleSideBySide)
         rootDescription:CreateCheckbox(wt.L.SCROLL_TWO_PAGES, scrollsTwoPages, toggleScrollTwoPages)
+        local providers = wt.waypointProviders()
+        if #providers > 1 then
+            rootDescription:CreateDivider()
+            rootDescription:CreateTitle(wt.L.WAYPOINT_PROVIDER_TITLE)
+            for _, provider in ipairs(providers) do
+                rootDescription:CreateRadio(provider.name, isProvider, wt.setWaypointProvider, provider.id)
+            end
+        end
     end
     mainFrame.generateSettings = generateSettings
     dropdown:SetupMenu(generateSettings)

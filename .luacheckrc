@@ -75,6 +75,7 @@ read_globals = {
     "ShowAllSpellRanksCheckbox",
     "ToggleSpellBook",
     "GetInventoryItemTexture",
+    "geterrorhandler",
     -- function aliases
     "tinsert",
     "tContains",
@@ -170,5 +171,7 @@ globals = {
     "WT_HideWeaponSkillSwitcher",
     "WT_FloatingFramePoint",
     "WT_IgnoredSpells",
-    "WT_PriceFaction"
+    "WT_PriceFaction",
+    "WT_WaypointProvider",
+    "WT_API"
 }

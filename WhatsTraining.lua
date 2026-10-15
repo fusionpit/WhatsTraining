@@ -138,6 +138,10 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         if type(WT_ShowKnownWeaponSkills) ~= "boolean" then
             WT_ShowKnownWeaponSkills = false
         end
+        -- plugins load after this addon, so we can't validate
+        if type(WT_WaypointProvider) ~= "string" then
+            WT_WaypointProvider = nil
+        end
         if WT_IgnoredSpells == nil then
             WT_IgnoredSpells = {}
         end

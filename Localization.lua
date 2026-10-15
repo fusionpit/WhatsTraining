@@ -103,6 +103,7 @@ local localeText = {
         GROUPING_OPTIONS = "Display Options",
         GROUPING_OPTIONS_TITLE = "Weapon Skills display:",
         WAYPOINT_SET = "Set Waypoint",
+        WAYPOINT_PROVIDER_TITLE = "Waypoints:",
         CLICK_TO_WAYPOINT = "Click to set a waypoint",
     },
     frFR = {
