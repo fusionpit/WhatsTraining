@@ -36,7 +36,9 @@ function wt.AddQuestSpells(questSpells)
             if tContains(entry.races, wt.playerRace) then
                 wt.SpellsByLevel[entry.level] = wt.SpellsByLevel[entry.level] or {}
                 tinsert(wt.SpellsByLevel[entry.level],
-                    {id = id, cost = 0, quest = {areas = entry.areas or {entry.area}}})
+                    {id = id, cost = 0, quest = {
+                        areas = entry.areas or {entry.area}, quests = entry.quests, level = entry.level,
+                    }})
                 break
             end
         end

@@ -5,6 +5,24 @@ wt.petAbilities = {}
 wt.spellInfoCache = {}
 wt.allRanksCache = {}
 wt.idToRanks = {}
+local pending = 0
+
+function wt.cacheRequestsPending() return pending end
+
+local function trackRequest(done)
+    pending = pending + 1
+    local finished = false
+    local function complete(callback, ...)
+        if finished then return end
+        finished = true
+        -- complete chained requests and rebuilds before announcing idle
+        if callback then callback(...) end
+        pending = pending - 1
+        if pending == 0 and wt.onCacheIdle then wt.onCacheIdle() end
+    end
+    return function(...) complete(done, ...) end, function() complete() end
+end
+
 if wt.currentClass == "WARLOCK" then
     wt.TomeIds = {}
     -- Succubus and Incubus share tomes, but you need to buy them twice to train both
@@ -21,21 +39,24 @@ loader:SetScript("OnEvent", function(_, event, id, success)
     local callbacks = waiting[event][id]
     if not callbacks then return end
     waiting[event][id] = nil
-    if success then
-        for _, callback in ipairs(callbacks) do callback() end
-    end
+    for _, callback in ipairs(callbacks) do callback(success) end
 end)
-local function continueOnLoad(event, id, isCached, request, callback)
+local function continueOnLoad(event, id, isCached, request, callback, failed)
     if isCached(id) then return callback() end
+    local onLoad = function(success)
+        if success then callback() else failed() end
+    end
     local callbacks = waiting[event][id]
-    waiting[event][id] = callbacks or { callback }
-    if callbacks then return tinsert(callbacks, callback) end
+    waiting[event][id] = callbacks or { onLoad }
+    if callbacks then return tinsert(callbacks, onLoad) end
     -- the load event is synchronous, so register the callback first
     request(id)
 end
 
 -- done has params cacheHit: bool, spellInfo
 function wt:CacheSpell(spell, level, done)
+    local failed
+    done, failed = trackRequest(done)
     if (self.spellInfoCache[spell.id] ~= nil) then
         done(true, self.spellInfoCache[spell.id])
         return
@@ -89,7 +110,7 @@ function wt:CacheSpell(spell, level, done)
             end
             done(false, self.spellInfoCache[spell.id])
         end)
-    end)
+    end, failed)
 end
 
 function wt:SpellInfo(spellId) return self.spellInfoCache[spellId] end
@@ -105,6 +126,8 @@ wt.itemInfoCache = {}
 -- instead, strip the rank text out of the name and put it as the subText
 local parensPattern = " (%(.+%))"
 function wt:CacheItem(item, level, done, taughtSpell)
+    local failed
+    done, failed = trackRequest(done)
     if (self.itemInfoCache[item.id] ~= nil) then
         done(true)
         return
@@ -148,7 +171,7 @@ function wt:CacheItem(item, level, done, taughtSpell)
         tinsert(self.allRanksCache[rankCacheKey], item.id)
         self.idToRanks[item.id] = self.allRanksCache[rankCacheKey]
         done(false)
-    end)
+    end, failed)
 end
 
 function wt:ItemInfo(itemId) return self.itemInfoCache[itemId] end

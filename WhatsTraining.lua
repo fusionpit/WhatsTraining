@@ -110,10 +110,6 @@ for weaponSpellId, weaponData in pairs(wt.WeaponSkills) do
     wt:CacheSpell(spellInfo, reqLevel, rebuildIfNotCached)
 end
 
-ignoreStore:AddSubscription(function()
-    wt:RebuildData()
-end)
-
 local eventFrame = CreateFrame("Frame")
 eventFrame:SetScript("OnEvent", function(self, event, ...)
     if event == "ADDON_LOADED" and ... == addonName then

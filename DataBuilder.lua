@@ -14,6 +14,7 @@ wt.weaponSkillGroupedData = {}
 wt.showingWeaponSkills = false
 wt.showingBrokerWeaponSkills = false
 wt.learnableIds = {}
+wt.spellStatus = {}
 
 wt.brokerSpellData = {}
 wt.brokerWeaponData = {}
@@ -123,6 +124,7 @@ local function categorizeGroup(spellGroup, levelGroup, playerLevel)
 
             if categoryKey ~= nil then
                 wt.categories:Insert(categoryKey, spellInfo)
+                wt.spellStatus[spellInfo.id] = categoryKey
                 wt.brokerCategories:Insert(categoryKey, spellInfo)
             end
             -- filter to unknown and trainable now for SPELLS_CHANGED handling
@@ -155,6 +157,7 @@ local function categorizeTomes()
                     key = wt.IGNORED_PET_KEY
                 end
                 wt.categories:Insert(key, itemInfo)
+                wt.spellStatus[itemInfo.id] = key
                 wt.brokerCategories:Insert(key, itemInfo)
             end
         end
@@ -191,6 +194,7 @@ local function categorizeWeaponSkills(playerLevel)
                     end
 
                     wt.categories:Insert(categoryKey, spellInfo)
+                    wt.spellStatus[spellInfo.id] = categoryKey
                     wt.brokerCategories:Insert(categoryKey, spellInfo)
                     tinsert(wt.weaponSkills, spellInfo)
                 end
@@ -318,6 +322,7 @@ function wt.buildCategorizedData(playerLevel, isLevelUpEvent)
     wt.playerLevel = playerLevel
     wt.categories:ClearSpells()
     wt.brokerCategories:ClearSpells()
+    wipe(wt.spellStatus)
     wipe(wt.spellCategoryData)
     wipe(wt.weaponCategoryData)
     wipe(wt.brokerSpellData)
@@ -351,6 +356,7 @@ function wt.buildCategorizedData(playerLevel, isLevelUpEvent)
     end
 
     if wt.updateBroker ~= nil then wt.updateBroker(brokerAvailable, brokerComing, wt.showingBrokerWeaponSkills) end
+    if wt.afterRebuild then wt.afterRebuild(isLevelUpEvent, playerLevel) end
 end
 
 local function filterCategoryData(categoryData, resultsList)
