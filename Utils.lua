@@ -249,3 +249,34 @@ function wt.isAbilityKnown(spellId)
 
     return wt.learnedPetAbilityMap[info.name][info.subText]
 end
+
+-- Icon shown on the spellbook tab, the launcher tab and the broker
+wt.ADDON_ICONS = {
+    { texture = "Interface\\Icons\\INV_Misc_QuestionMark", label = "ADDON_ICON_QUESTION_MARK" },
+    { texture = "Interface\\Icons\\INV_Misc_Book_11", label = "ADDON_ICON_TOME" },
+    { texture = "Interface\\Icons\\INV_Misc_Book_09", label = "ADDON_ICON_SPELLBOOK" },
+    { texture = "Interface\\Icons\\INV_Scroll_03", label = "ADDON_ICON_SCROLL" },
+}
+local addonIconListeners = {}
+function wt.isValidAddonIcon(texture)
+    for _, icon in ipairs(wt.ADDON_ICONS) do
+        if icon.texture == texture then return true end
+    end
+    return false
+end
+function wt.addonIcon()
+    return WT_AddonIcon or wt.ADDON_ICONS[1].texture
+end
+function wt.isAddonIcon(texture)
+    return wt.addonIcon() == texture
+end
+function wt.addonIconLabel(icon)
+    return string.format("|T%s:16|t %s", icon.texture, wt.L[icon.label])
+end
+function wt.onAddonIconChanged(callback)
+    tinsert(addonIconListeners, callback)
+end
+function wt.setAddonIcon(texture)
+    WT_AddonIcon = texture
+    for _, callback in ipairs(addonIconListeners) do callback(wt.addonIcon()) end
+end

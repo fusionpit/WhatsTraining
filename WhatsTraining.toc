@@ -4,8 +4,8 @@
 ## Author: Sveng
 ## Notes: Shows you what spells are available at your class trainer
 ## Notes-ruRU: Показывает, какие заклинания доступны у вашего классового наставника.
-## SavedVariables: WT_WeaponGrouping, WT_ShowKnownWeaponSkills, WT_WaypointProvider [AllowLoadGameType classic][ExcludeLoadGameType camelot]
-## SavedVariables: WT_WeaponGrouping, WT_ShowKnownWeaponSkills, WT_SpellDisplay, WT_SideBySide, WT_ScrollTwoPages, WT_FloatingFramePoint, WT_WaypointProvider [AllowLoadGameType camelot][ExcludeLoadGameType classic]
+## SavedVariables: WT_WeaponGrouping, WT_ShowKnownWeaponSkills, WT_WaypointProvider, WT_AddonIcon [AllowLoadGameType classic][ExcludeLoadGameType camelot]
+## SavedVariables: WT_WeaponGrouping, WT_ShowKnownWeaponSkills, WT_SpellDisplay, WT_SideBySide, WT_ScrollTwoPages, WT_FloatingFramePoint, WT_WaypointProvider, WT_AddonIcon [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 ## SavedVariablesPerCharacter: WT_LearnedPetAbilities, WT_NeedsToOpenBeastTraining, WT_IgnoredSpells, WT_PriceFaction, WT_HideWeaponSkillSwitcher
 ## OptionalDeps: ClassTrainerPlus, TomTom [AllowLoadGameType classic][ExcludeLoadGameType camelot]
 ## OptionalDeps: ClassTrainerPlusForever, EllesmereUI, EllesmereUIBlizzardSkin, TomTom [AllowLoadGameType camelot][ExcludeLoadGameType classic]

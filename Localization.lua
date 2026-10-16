@@ -105,6 +105,11 @@ local localeText = {
         WAYPOINT_SET = "Set Waypoint",
         WAYPOINT_PROVIDER_TITLE = "Waypoints:",
         CLICK_TO_WAYPOINT = "Click to set a waypoint",
+        ADDON_ICON_TITLE = "Addon icon:",
+        ADDON_ICON_QUESTION_MARK = "Question Mark",
+        ADDON_ICON_TOME = "Tome",
+        ADDON_ICON_SPELLBOOK = "Spellbook",
+        ADDON_ICON_SCROLL = "Scroll",
     },
     frFR = {
         WEAPON_SKILLS_HEADER = isTBC and "Compétences d'armes" or "Compétences d’armes",
@@ -120,7 +125,12 @@ local localeText = {
         TOTALCOST_FORMAT = "Coût total : %s",
         TOTALSAVINGS_FORMAT = "Coût économisé : %s",
         LEVEL_FORMAT = "Niveau %s",
-        TAB_TEXT = "Que puis-je apprendre ?"
+        TAB_TEXT = "Que puis-je apprendre ?",
+        ADDON_ICON_TITLE = "Icône de l'addon :",
+        ADDON_ICON_QUESTION_MARK = "Point d'interrogation",
+        ADDON_ICON_TOME = "Tome",
+        ADDON_ICON_SPELLBOOK = "Grimoire",
+        ADDON_ICON_SCROLL = "Parchemin",
     },
     ruRU = {
         AVAILABLE_HEADER = "Доступно сейчас",
