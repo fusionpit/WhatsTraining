@@ -13,8 +13,6 @@ local LEFT_BG_TEXTURE_FILEID = GetFileIDFromPath(
                                    "Interface\\AddOns\\WhatsTraining\\left")
 local RIGHT_BG_TEXTURE_FILEID = GetFileIDFromPath(
                                     "Interface\\AddOns\\WhatsTraining\\right")
-local TAB_TEXTURE_FILEID = GetFileIDFromPath(
-                               "Interface\\Icons\\INV_Misc_QuestionMark")
 
 local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent,
                             "GameTooltipTemplate")
@@ -186,7 +184,8 @@ local function createWeaponSkillsButton()
     local button = CreateFrame("Button", "WhatsTrainingSkillsButton", SkillFrame, "SquareIconButtonTemplate")
     button:SetSize(18, 18)
     button.Icon:SetSize(12, 12)
-    button:SetIcon(TAB_TEXTURE_FILEID)
+    button:SetIcon(wt.addonIcon())
+    wt.onAddonIconChanged(function(texture) button:SetIcon(texture) end)
     button:SetScript("OnClick", function()
         if InCombatLockdown() then
             print(wt.L.BROKER_OPEN_IN_COMBAT)
@@ -254,8 +253,9 @@ local function attachClassicSpellBook(mainFrame)
         end
     end)
     local skillLineTab = _G["SpellBookSkillLineTab" .. SKILL_LINE_TAB]
+    wt.onAddonIconChanged(function(texture) skillLineTab:SetNormalTexture(texture) end)
     hooksecurefunc(SpellBookFrame, "UpdateSkillLineTabs", function()
-        skillLineTab:SetNormalTexture(TAB_TEXTURE_FILEID)
+        skillLineTab:SetNormalTexture(wt.addonIcon())
         skillLineTab.tooltip = wt.L.TAB_TEXT
         skillLineTab:Show()
         if SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB then
@@ -438,8 +438,18 @@ function wt.CreateCompactFrame(mainFrame)
         wt:ApplyFilter()
     end)
 
+    local iconTitle = popup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    iconTitle:SetPoint("TOPLEFT", showKnown, "BOTTOMLEFT", 3, -8)
+    iconTitle:SetText(wt.L.ADDON_ICON_TITLE)
+    popup.iconRadios = {}
+    for i, icon in ipairs(wt.ADDON_ICONS) do
+        local radio = addRadio(popup.iconRadios, "$parentIconRadio" .. i, iconTitle, wt.setAddonIcon)
+        radio.value = icon.texture
+        labelRadio(radio, wt.addonIconLabel(icon))
+    end
+
     local providerTitle = popup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    providerTitle:SetPoint("TOPLEFT", showKnown, "BOTTOMLEFT", 3, -8)
+    providerTitle:SetPoint("TOPLEFT", popup.iconRadios[#popup.iconRadios], "BOTTOMLEFT", 0, -8)
     providerTitle:SetText(wt.L.WAYPOINT_PROVIDER_TITLE)
     popup.providerRadios = {}
 
@@ -455,6 +465,9 @@ function wt.CreateCompactFrame(mainFrame)
             r:SetChecked(r.value == mode)
         end
         showKnown:SetChecked(WT_ShowKnownWeaponSkills)
+        for _, r in ipairs(self.iconRadios) do
+            r:SetChecked(wt.isAddonIcon(r.value))
+        end
 
         -- plugins can register providers after this popup was built, so refresh on every show
         local providers = wt.waypointProviders()
@@ -471,8 +484,9 @@ function wt.CreateCompactFrame(mainFrame)
             radio:SetShown(i <= count)
         end
         providerTitle:SetShown(count > 0)
-        -- 24 for the title, 22 per radio, keeping the done button below the last one
-        self:SetHeight(count > 0 and 156 + 24 + 22 * count or 156)
+        -- 24 for a title, 22 per radio, keeping the done button below the last one
+        local height = 156 + 24 + 22 * #self.iconRadios
+        self:SetHeight(count > 0 and height + 24 + 22 * count or height)
     end)
 
     groupingButton:SetScript("OnClick", function()

@@ -138,6 +138,10 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         if type(WT_WaypointProvider) ~= "string" then
             WT_WaypointProvider = nil
         end
+        if not wt.isValidAddonIcon(WT_AddonIcon) then
+            WT_AddonIcon = nil
+        end
+        wt.setAddonIcon(WT_AddonIcon)
         if WT_IgnoredSpells == nil then
             WT_IgnoredSpells = {}
         end
