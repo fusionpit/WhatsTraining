@@ -1,10 +1,11 @@
-local lib = LibStub:NewLibrary("FusionIgnoreStore-1.0", 1)
+local lib = LibStub:NewLibrary("FusionIgnoreStore-1.0", 2)
 if not lib then return end
 
-lib.subs = {}
-local function notifySubs()
+lib.subs = lib.subs or {}
+local function notifySubs(ids, ignored)
+    if #ids == 0 then return end
     for _, sub in ipairs(lib.subs) do
-        sub()
+        sub(ids, ignored)
     end
 end
 
@@ -35,8 +36,12 @@ function lib:MaybeMigrate(addonTable)
 end
 
 function lib:Clear()
+    local ids = {}
+    for id, ignored in pairs(self.ignored) do
+        if ignored == true then tinsert(ids, id) end
+    end
     wipe(self.ignored)
-    notifySubs()
+    notifySubs(ids, false)
 end
 
 function lib:IsIgnored(id)
@@ -49,29 +54,36 @@ end
 
 function lib:Flip(id)
     self.ignored[id] = not self.ignored[id]
-    notifySubs()
+    notifySubs({id}, self.ignored[id])
 end
 
 function lib:Update(id, ignored)
+    ignored = ignored == true
+    if (self.ignored[id] == true) == ignored then return end
     self.ignored[id] = ignored
-    notifySubs()
+    notifySubs({id}, ignored)
 end
 
 function lib:UpdateMany(ids, ignored)
+    ignored = ignored == true
+    local changed = {}
     for _, id in ipairs(ids) do
-        self.ignored[id] = ignored
+        if (self.ignored[id] == true) ~= ignored then
+            self.ignored[id] = ignored
+            tinsert(changed, id)
+        end
     end
-    notifySubs()
+    notifySubs(changed, ignored)
 end
 
 function lib:Import(ids)
-    local imported = 0
+    local imported = {}
     for _, id in ipairs(ids) do
         if self.ignored[id] ~= true then
             self.ignored[id] = true
-            imported = imported + 1
+            tinsert(imported, id)
         end
     end
-    notifySubs()
-    return imported
+    notifySubs(imported, true)
+    return #imported
 end
