@@ -60,6 +60,7 @@ wt.SpellsByLevel = wt.FactionFilter({
 		{id = 8450, cost = 4000, requiredIds = {604}},
 		{id = 8400, cost = 4000, requiredIds = {3140}},
 		{id = 2121, cost = 4000, requiredIds = {2120}},
+		{id = 1326053, cost = 4300},
 		{id = 12505, cost = 200, requiredIds = {11366}, requiredTalentId = 11366}
 	},
 	[26] = {
@@ -102,10 +103,12 @@ wt.SpellsByLevel = wt.FactionFilter({
 		{id = 8445, cost = 12000, requiredIds = {8444}}
 	},
 	[36] = {
+		{id = 1326080, cost = 11000, requiredIds = {1326079}, requiredTalentId = 1326079},
 		{id = 13018, cost = 650, requiredIds = {11113}, requiredTalentId = 11113},
 		{id = 8427, cost = 13000, requiredIds = {6141}},
 		{id = 8451, cost = 13000, requiredIds = {8450}},
 		{id = 8402, cost = 13000, requiredIds = {8401}},
+		{id = 1326054, cost = 11000, requiredIds = {1326053}},
 		{id = 8495, cost = 13000, requiredIds = {8494}},
 		{id = 12523, cost = 650, requiredIds = {12522}, requiredTalentId = 11366}
 	},
@@ -156,10 +159,12 @@ wt.SpellsByLevel = wt.FactionFilter({
 	},
 	[48] = {
 		{id = 10211, cost = 28000, requiredIds = {8417}},
+		{id = 1326081, cost = 22000, requiredIds = {1326080}, requiredTalentId = 1326079},
 		{id = 10053, cost = 28000, requiredIds = {3552}},
 		{id = 10173, cost = 28000, requiredIds = {8451}},
 		{id = 10149, cost = 28000, requiredIds = {10148}},
 		{id = 10215, cost = 28000, requiredIds = {8423}},
+		{id = 1326055, cost = 22000, requiredIds = {1326054}},
 		{id = 1240046, cost = 32000, requiredIds = {1240045}, requiredTalentId = 1312002},
 		{id = 12525, cost = 1400, requiredIds = {12524}, requiredTalentId = 11366}
 	},
@@ -207,6 +212,7 @@ wt.SpellsByLevel = wt.FactionFilter({
 	},
 	[60] = {
 		{id = 1239700, cost = 42000, requiredIds = {1239699}, requiredTalentId = 400574},
+		{id = 1326082, cost = 31000, requiredIds = {1326081}, requiredTalentId = 1326079},
 		{id = 13021, cost = 2100, requiredIds = {13020}, requiredTalentId = 11113},
 		{id = 10187, cost = 42000, requiredIds = {10186}},
 		{id = 10174, cost = 42000, requiredIds = {10173}},
