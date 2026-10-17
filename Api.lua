@@ -35,14 +35,15 @@ local status = readOnly({
     WEAPON_IGNORED = wt.WEAPON_IGNORED_KEY,
 })
 
----@alias WT_API.Event "Ready"|"SpellsChanged"|"LevelChanged"|"IgnoredChanged"
----@alias WT_API.Callback fun(event: WT_API.Event, payload?: (number|string)[]|number, ignored?: boolean)
+---@alias WT_API.Event "Ready"|"SpellsChanged"|"LevelChanged"|"IgnoredChanged"|"ClassReady"
+---@alias WT_API.Callback fun(event: WT_API.Event, payload?: (number|string)[]|number|string, ignored?: boolean)
 
 local events = readOnly({
     READY = "Ready",
     SPELLS_CHANGED = "SpellsChanged",
     LEVEL_CHANGED = "LevelChanged",
     IGNORED_CHANGED = "IgnoredChanged",
+    CLASS_READY = "ClassReady",
 })
 
 local ready, enteredWorld, readyScheduled = false, false, false
@@ -109,6 +110,14 @@ end
 ---@field x number Map coordinate (0-100).
 ---@field y number Map coordinate (0-100).
 
+---@return WT_API.Trainer
+local function toTrainerRecord(trainer)
+    return {
+        npc = trainer.npc, name = trainer.name, zoneId = trainer.zone,
+        uiMapId = wt.zoneUiMapIds[trainer.zone], x = trainer.x, y = trainer.y,
+    }
+end
+
 ---@class WT_API.Source
 ---@field kind "quest"|"weaponMaster"|"item"|"trainer"
 ---@field cost number Selected price in copper; quests always cost zero.
@@ -133,10 +142,7 @@ local function buildSource(info)
         source.kind = "weaponMaster"
         source.trainers = {}
         for _, trainer in ipairs(weapon.trainers[wt.playerFaction] or {}) do
-            tinsert(source.trainers, {
-                npc = trainer.npc, name = trainer.name, zoneId = trainer.zone,
-                uiMapId = wt.zoneUiMapIds[trainer.zone], x = trainer.x, y = trainer.y,
-            })
+            tinsert(source.trainers, toTrainerRecord(trainer))
         end
     elseif info.tooltipType == "item" then
         source.kind, source.itemId = "item", info.itemId
@@ -144,6 +150,174 @@ local function buildSource(info)
         source.kind = "trainer"
     end
     return source
+end
+
+---@class WT_API.CatalogQuest
+---@field races number[]
+---@field level number
+---@field areas number[]
+---@field quests number[]
+
+---@class WT_API.CatalogEntry
+---@field id number|string Spell id, item id, or separate Succubus/Incubus tome key.
+---@field kind "trainer"|"quest"|"item"|"weaponMaster"
+---@field name? string Set once LoadClass has resolved the class; nil if the client failed to load it.
+---@field subText? string Rank text, when present. For tomes, the taught spell's rank.
+---@field icon? number
+---@field link? string
+---@field level number Lowest variant level for quests without a race filter.
+---@field cost number Data-file base cost in copper; quests always zero.
+---@field requiredIds? number[]
+---@field requiredTalentId? number
+---@field faction? string The entry's own faction tag.
+---@field races? number[] Normalized race tags.
+---@field petAbility boolean Always true for tomes.
+---@field itemId? number
+---@field family? string English pet family for tomes.
+---@field taughtSpellId? number
+---@field quest? WT_API.CatalogQuest[] All variants, or the first matching race variant.
+---@field trainers? { Alliance?: WT_API.Trainer[], Horde?: WT_API.Trainer[] }
+
+local function withSpellNames(entry, spellId)
+    local resolved = wt.resolvedSpells[spellId or entry.id]
+    if resolved then
+        entry.name, entry.subText, entry.icon, entry.link = resolved.name, resolved.subText, resolved.icon, resolved.link
+    end
+    return entry
+end
+
+local function withItemNames(entry, taughtSpellId)
+    local resolved = wt.resolvedItems[entry.itemId]
+    if resolved then entry.name, entry.icon, entry.link = resolved.name, resolved.icon, resolved.link end
+    local taught = taughtSpellId and wt.resolvedSpells[taughtSpellId]
+    if taught then entry.subText = taught.subText end
+    return entry
+end
+
+---@return WT_API.CatalogEntry[]
+local function buildCatalog(class, token, filter)
+    local result = {}
+    local petAbilityIds = class.petAbilityIds or {}
+    local spellsByLevel = class.spellsByLevel
+    if filter.faction then spellsByLevel = wt.FactionFilter(spellsByLevel, filter.faction) end
+    if filter.race then spellsByLevel = wt.RaceFilter(spellsByLevel, filter.race) end
+    for level, spells in pairs(spellsByLevel) do
+        for _, spell in ipairs(spells) do
+            tinsert(result, withSpellNames({
+                id = spell.id, kind = "trainer", level = level, cost = spell.cost,
+                requiredIds = copy(spell.requiredIds), requiredTalentId = spell.requiredTalentId,
+                faction = spell.faction, races = copy(spell.races) or (spell.race and {spell.race}),
+                petAbility = petAbilityIds[spell.id] == true,
+            }))
+        end
+    end
+    local quests = wt.QuestSpells[token] or {}
+    if filter.race then
+        local matched = {}
+        for _, entry in ipairs(wt.questSpellsFor(quests, filter.race)) do matched[entry.id] = {entry} end
+        quests = matched
+    end
+    for id, variants in pairs(quests) do
+        local entry = { id = id, kind = "quest", cost = 0, petAbility = petAbilityIds[id] == true, quest = {} }
+        for _, variant in ipairs(variants) do
+            entry.level = math.min(entry.level or variant.level, variant.level)
+            tinsert(entry.quest, {
+                races = copy(variant.races), level = variant.level,
+                areas = copy(variant.areas) or {variant.area}, quests = copy(variant.quests),
+            })
+        end
+        tinsert(result, withSpellNames(entry))
+    end
+    for level, tomes in pairs(class.tomesByLevel or {}) do
+        for _, tome in ipairs(tomes) do
+            local taughtSpellId = class.tomeTaughtSpells[tome.itemId]
+            tinsert(result, withItemNames({
+                id = type(tome.id) == "string" and tome.id or tome.itemId,
+                kind = "item", level = level, cost = tome.cost, petAbility = true,
+                itemId = tome.itemId, family = tome.family, taughtSpellId = taughtSpellId,
+            }, taughtSpellId))
+        end
+    end
+    for id, weapon in pairs(wt.WeaponSkills) do
+        if weapon.classes[token] then
+            local entry = {
+                id = id, kind = "weaponMaster", level = weapon.level or 1, cost = weapon.cost or 1000,
+                petAbility = petAbilityIds[id] == true, trainers = {},
+            }
+            for _, faction in ipairs({ "Alliance", "Horde" }) do
+                if not filter.faction or filter.faction == faction then
+                    entry.trainers[faction] = {}
+                    for _, trainer in ipairs(weapon.trainers[faction] or {}) do
+                        tinsert(entry.trainers[faction], toTrainerRecord(trainer))
+                    end
+                end
+            end
+            tinsert(result, withSpellNames(entry))
+        end
+    end
+    table.sort(result, function(a, b)
+        if a.level ~= b.level then return a.level < b.level end
+        if a.kind ~= b.kind then return a.kind < b.kind end
+        return tostring(a.id) < tostring(b.id)
+    end)
+    return result
+end
+
+-- Every spell id and item id a class's catalog can show, before any filter.
+local function catalogIds(class, token)
+    local spellIds, itemIds = {}, {}
+    for _, spells in pairs(class.spellsByLevel) do
+        for _, spell in ipairs(spells) do spellIds[spell.id] = true end
+    end
+    for id in pairs((wt.QuestSpells or {})[token] or {}) do spellIds[id] = true end
+    for _, tomes in pairs(class.tomesByLevel or {}) do
+        for _, tome in ipairs(tomes) do
+            itemIds[tome.itemId] = true
+            local taughtSpellId = class.tomeTaughtSpells[tome.itemId]
+            if taughtSpellId then spellIds[taughtSpellId] = true end
+        end
+    end
+    for id, weapon in pairs(wt.WeaponSkills or {}) do
+        if weapon.classes[token] then spellIds[id] = true end
+    end
+    return spellIds, itemIds
+end
+
+local classReady, classLoading = {}, {}
+local fireClassReady -- set after the callback registry exists
+
+-- Returns true when every id is already resolved. Otherwise returns false and ClassReady fires on
+-- a later frame, once, after the last resolution (including failures) completes.
+local function loadClass(class, token)
+    if classReady[token] then return true end
+    if classLoading[token] then return false end
+    local spellIds, itemIds = catalogIds(class, token)
+    local pending, collecting = 0, true
+    local function step()
+        pending = pending - 1
+        if pending > 0 or collecting then return end
+        RunNextFrame(function()
+            classLoading[token] = nil
+            if classReady[token] then return end
+            classReady[token] = true
+            fireClassReady(token)
+        end)
+    end
+    for id in pairs(spellIds) do
+        pending = pending + 1
+        wt.ResolveSpell(id, step)
+    end
+    for id in pairs(itemIds) do
+        pending = pending + 1
+        wt.ResolveItem(id, step)
+    end
+    collecting = false
+    if pending == 0 then
+        classReady[token] = true
+        return true
+    end
+    classLoading[token] = true
+    return false
 end
 
 ---A waypoint service, such as TomTom or Blizzard's map pin. What's Training calls each function
@@ -161,7 +335,10 @@ end
 ---SpellsChanged(changedIds) reports unique added, removed and status-changed numeric ids or tome keys.
 ---The changedIds array has no defined order. Removed entries are absent from GetSpells().
 ---LevelChanged(level) and IgnoredChanged(ids, ignored) imply status changes without SpellsChanged.
----All callbacks are suppressed before Ready. Registering after Ready does not replay it.
+---Player callbacks are suppressed before Ready. Registering after Ready does not replay it.
+---GetCatalog is synchronous for every class, independent of Ready, with no status or cache loads.
+---LoadClass resolves a class's names, rank text, icons and links; ClassReady(classToken) fires
+---once per class when that completes, independent of Ready, and never during the LoadClass call.
 ---@class WT_API
 ---@field RegisterCallback fun(owner: table|string|thread, event: WT_API.Event, fn: WT_API.Callback)
 ---@field UnregisterCallback fun(owner: table|string|thread, event: WT_API.Event)
@@ -201,6 +378,40 @@ local api = {
         return result
     end,
 
+    ---Static class data, sorted by level, kind, then stringified id. Returns fresh copies.
+    ---No status or discounted prices. Names, rank text, icons and links are present once
+    ---LoadClass has resolved the class (see IsClassReady), and nil before that.
+    ---@param classToken string Upper-case English token, as returned by UnitClass("player").
+    ---@param filter? { race?: number, faction?: "Alliance"|"Horde" }
+    ---@return WT_API.CatalogEntry[]? nil when the class has no data.
+    GetCatalog = function(classToken, filter)
+        if type(classToken) ~= "string" then
+            error("WT_API.GetCatalog: classToken must be a string", 2)
+        end
+        if filter ~= nil and type(filter) ~= "table" then
+            error("WT_API.GetCatalog: filter must be a table or nil", 2)
+        end
+        local class = wt.ClassData[classToken]
+        return class and buildCatalog(class, classToken, filter or {}) or nil
+    end,
+
+    ---Requests names, rank text, icons and links for every entry in a class's catalog. Returns
+    ---true when they are already available. Otherwise returns false and ClassReady(classToken)
+    ---fires once they are, on a later frame, including after failed loads (those entries keep a
+    ---nil name). These loads never delay Ready. Raises an error for a class without data.
+    ---@param classToken string
+    ---@return boolean ready
+    LoadClass = function(classToken)
+        local class = type(classToken) == "string" and wt.ClassData[classToken]
+        if not class then error("WT_API.LoadClass: no data for class " .. tostring(classToken), 2) end
+        return loadClass(class, classToken)
+    end,
+
+    ---Whether LoadClass has completed for the class. False for a class without data.
+    ---@param classToken string
+    ---@return boolean
+    IsClassReady = function(classToken) return classReady[classToken] == true end,
+
     ---The cached source of a spell, or nil for an unknown id. Returns fresh copies.
     ---@param spellId number|string Numeric id or an existing Succubus/Incubus tome key.
     ---@return WT_API.Source?
@@ -224,6 +435,7 @@ local api = {
 }
 
 local registry = CallbackHandler:New(api)
+fireClassReady = function(token) registry:Fire(events.CLASS_READY, token) end
 
 wt.afterRebuild = function(isLevelUp, level)
     if not ready then return end
