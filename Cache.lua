@@ -175,3 +175,42 @@ function wt:CacheItem(item, level, done, taughtSpell)
 end
 
 function wt:ItemInfo(itemId) return self.itemInfoCache[itemId] end
+
+-- separate cache for catalog
+wt.resolvedSpells = {}
+wt.resolvedItems = {}
+function wt.ResolveSpell(spellId, done)
+    if wt.resolvedSpells[spellId] then return done(wt.resolvedSpells[spellId]) end
+    local si = Spell:CreateFromSpellID(spellId)
+    continueOnLoad("SPELL_DATA_LOAD_RESULT", spellId, C_Spell.IsSpellDataCached, C_Spell.RequestLoadSpellData, function()
+        -- subText can be nil in the load continuation (see CacheSpell)
+        RunNextFrame(function()
+            if not wt.resolvedSpells[spellId] then
+                local subText = si:GetSpellSubtext()
+                local spellName = si:GetSpellName()
+                wt.resolvedSpells[spellId] = {
+                    name = wt.stripRankNumeral(spellName, subText),
+                    subText = (subText and subText ~= "") and subText or nil,
+                    icon = C_Spell.GetSpellTexture(spellId),
+                    link = format("|cff71d5ff|Hspell:%d:0|h[%s]|h|r", spellId, spellName),
+                }
+            end
+            done(wt.resolvedSpells[spellId])
+        end)
+    end, function() done(nil) end)
+end
+
+function wt.ResolveItem(itemId, done)
+    if wt.resolvedItems[itemId] then return done(wt.resolvedItems[itemId]) end
+    local ii = Item:CreateFromItemID(itemId)
+    continueOnLoad("ITEM_DATA_LOAD_RESULT", itemId, C_Item.IsItemDataCachedByID, C_Item.RequestLoadItemDataByID, function()
+        if not wt.resolvedItems[itemId] then
+            wt.resolvedItems[itemId] = {
+                name = (string.gsub(ii:GetItemName(), parensPattern, "")),
+                icon = ii:GetItemIcon(),
+                link = ii:GetItemLink(),
+            }
+        end
+        done(wt.resolvedItems[itemId])
+    end, function() done(nil) end)
+end

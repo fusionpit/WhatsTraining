@@ -1,7 +1,5 @@
 local _, wt = ...
-if (wt.currentClass ~= "DRUID") then
-	return
-end
+local class = wt.forClass("DRUID")
 
 local faerieFireFeral = {16857 --[[Rank 1]], 17390 --[[Rank 2]], 17391 --[[Rank 3]], 17392 --[[Rank 4]]}
 local ravage = {6785 --[[Rank 1]], 6787 --[[Rank 2]], 9866 --[[Rank 3]], 9867 --[[Rank 4]]}
@@ -35,7 +33,7 @@ local rip = {1079 --[[Rank 1]], 9492 --[[Rank 2]], 9493 --[[Rank 3]], 9752 --[[R
 local bash = {5211, 6798, 8983}
 local dash = {1850, 9821}
 
-wt:AddOverriddenSpells(
+class.overriddenGroups = {
 	faerieFireFeral,
 	ravage,
 	maul,
@@ -53,9 +51,9 @@ wt:AddOverriddenSpells(
 	rip,
 	bash,
 	dash
-)
+}
 
-wt.SpellsByLevel = {
+class.spellsByLevel = {
 	[1] = {{id = 1126, cost = 10}},
 	[4] = {{id = 8921, cost = 100}, {id = 774, cost = 100}},
 	[6] = {{id = 467, cost = 100}, {id = 5177, cost = 100, requiredIds = {5176}}},

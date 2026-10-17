@@ -1,7 +1,5 @@
 local _, wt = ...
-if (wt.currentClass ~= "PALADIN") then
-	return
-end
+local class = wt.forClass("PALADIN")
 
 -- Paladin Auras are special in that you never have multiple ranks in the spellbook, only the latest one is usable
 -- Even so, IsSpellKnown will only return true for your current rank
@@ -14,7 +12,7 @@ local shadowResistanceAura = {19876,19895,19896,27151}
 local frostResistanceAura = {19888,19897,19898,27152}
 local fireResistanceAura = {19891,19899,19900,27153}
 local spiritualAttunement = {31785,33776}
-wt:AddOverriddenSpells(
+class.overriddenGroups = {
 	devotionAura,
 	layonHands,
 	retributionAura,
@@ -22,8 +20,8 @@ wt:AddOverriddenSpells(
 	frostResistanceAura,
 	fireResistanceAura,
 	spiritualAttunement
-)
-wt.SpellsByLevel = wt.FactionFilter({
+}
+class.spellsByLevel = {
 	[1] = {{id = 465, cost = 10},},
 	[4] = {{id = 19740, cost = 100},{id = 20271, cost = 100},},
 	[6] = {{id = 639, cost = 100, requiredIds = {635}},{id = 498, cost = 100},{id = 21082, cost = 100},},
@@ -253,4 +251,4 @@ wt.SpellsByLevel = wt.FactionFilter({
 		{id = 348700, cost = 67000, faction = "Alliance"},
 		{id = 348704, cost = 67000, faction = "Horde"},
 	},
-})
+}

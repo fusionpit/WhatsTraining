@@ -1,6 +1,6 @@
 local _, wt = ...
-if (wt.currentClass ~= "PRIEST") then return end
-wt.SpellsByLevel = wt.RaceFilter({
+local class = wt.forClass("PRIEST")
+class.spellsByLevel = {
 	[1] = {{id = 1243, cost = 10},},
 	[4] = {{id = 2052, cost = 100, requiredIds = {2050}},{id = 589, cost = 100},},
 	[6] = {{id = 17, cost = 100},{id = 591, cost = 100, requiredIds = {585}},},
@@ -303,4 +303,4 @@ wt.SpellsByLevel = wt.RaceFilter({
 		{id = 25470, cost = 6500, requiredIds = {19285}, race = 8},
 		{id = 25441, cost = 6500, requiredIds = {19275}, race = 1},
 	},
-})
+}

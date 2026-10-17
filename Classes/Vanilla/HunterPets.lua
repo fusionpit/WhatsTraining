@@ -1,7 +1,7 @@
 local _, wt = ...
-if wt.currentClass ~= "HUNTER" then return end
+local class = wt.forClass("HUNTER")
 
-wt.PetAbilityIds = {
+class.petAbilityIds = {
     [24493] = true,
     [24497] = true,
     [24500] = true,

@@ -1,7 +1,5 @@
 local _, wt = ...
-if (wt.currentClass ~= "WARRIOR") then
-	return
-end
+local class = wt.forClass("WARRIOR")
 
 -- ordered by rank
 local shieldBash = {72,1671,1672,29704}
@@ -26,7 +24,7 @@ local devastate = {20243,30016,30022}
 local bloodthirst = {23881,23892,23893,23894,25251,30335}
 local shieldSlam = {23922,23923,23924,23925,25258,30356}
 local rampage = {29801,30030,30033}
-wt:AddOverriddenSpells(
+class.overriddenGroups = {
 	shieldBash,
 	heroicStrike,
 	charge,
@@ -49,8 +47,8 @@ wt:AddOverriddenSpells(
 	bloodthirst,
 	shieldSlam,
 	rampage
-)
-wt.SpellsByLevel = {
+}
+class.spellsByLevel = {
 	[1] = {{id = 6673, cost = 10},},
 	[4] = {{id = 100, cost = 100},{id = 772, cost = 100},},
 	[6] = {{id = 6343, cost = 100},{id = 3127, cost = 100},},

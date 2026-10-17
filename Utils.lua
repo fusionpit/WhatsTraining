@@ -3,6 +3,12 @@ local _, wt = ...
 local tinsert = tinsert
 local ipairs = ipairs
 
+wt.ClassData = {}
+function wt.forClass(token)
+    wt.ClassData[token] = wt.ClassData[token] or {}
+    return wt.ClassData[token]
+end
+
 local function filter(spellsByLevel, pred)
     local output = {}
     for level, spells in pairs(spellsByLevel) do
@@ -15,33 +21,45 @@ local function filter(spellsByLevel, pred)
     end
     return output
 end
-function wt.FactionFilter(spellsByLevel)
+function wt.FactionFilter(spellsByLevel, faction)
+    faction = faction or wt.playerFaction
     return filter(spellsByLevel, function(spell)
-        return spell.faction == nil or spell.faction == wt.playerFaction
+        return spell.faction == nil or spell.faction == faction
     end)
 end
-function wt.RaceFilter(spellsByLevel)
+function wt.RaceFilter(spellsByLevel, race)
+    race = race or wt.playerRace
     return filter(spellsByLevel, function(spell)
         if (spell.race == nil and spell.races == nil) then return true end
-        if (spell.races == nil) then return spell.race == wt.playerRace end
-        return spell.races[1] == wt.playerRace or spell.races[2] == wt.playerRace
+        if (spell.races == nil) then return spell.race == race end
+        return spell.races[1] == race or spell.races[2] == race
     end)
 end
 
 wt.QUEST_MARKER = "|A:SmallQuestBang:14:14|a"
--- see Classes/[Game]/QuestSpells.lua for table definition
-function wt.AddQuestSpells(questSpells)
-    for id, entries in pairs(questSpells[wt.currentClass]) do
+-- see wt.QuestSpells in Classes/[Game]/QuestSpells.lua for table definition
+function wt.questSpellsFor(entriesById, race)
+    local result = {}
+    for id, entries in pairs(entriesById or {}) do
         for _, entry in ipairs(entries) do
-            if tContains(entry.races, wt.playerRace) then
-                wt.SpellsByLevel[entry.level] = wt.SpellsByLevel[entry.level] or {}
-                tinsert(wt.SpellsByLevel[entry.level],
-                    {id = id, cost = 0, quest = {
-                        areas = entry.areas or {entry.area}, quests = entry.quests, level = entry.level,
-                    }})
+            if tContains(entry.races, race) then
+                tinsert(result, {
+                    id = id, level = entry.level, races = entry.races,
+                    areas = entry.areas or {entry.area}, quests = entry.quests,
+                })
                 break
             end
         end
+    end
+    return result
+end
+
+function wt.AddQuestSpells(questSpells)
+    for _, entry in ipairs(wt.questSpellsFor(questSpells[wt.currentClass], wt.playerRace)) do
+        wt.SpellsByLevel[entry.level] = wt.SpellsByLevel[entry.level] or {}
+        tinsert(wt.SpellsByLevel[entry.level], {id = entry.id, cost = 0, quest = {
+            areas = entry.areas, quests = entry.quests, level = entry.level,
+        }})
     end
 end
 

@@ -1,7 +1,7 @@
 local _, wt = ...
-if wt.currentClass ~= "WARLOCK" then return end
+local class = wt.forClass("WARLOCK")
 
-wt.SpellsByLevel = {
+class.spellsByLevel = {
     [1] = {{id = 348, cost = 10}},
     [4] = {{id = 172, cost = 100}, {id = 702, cost = 100}},
     [6] = {{id = 1454, cost = 100}, {id = 695, cost = 100, requiredIds = {686}}},

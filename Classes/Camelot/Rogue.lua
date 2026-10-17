@@ -1,7 +1,5 @@
 local _, wt = ...
-if (wt.currentClass ~= "ROGUE") then
-	return
-end
+local class = wt.forClass("ROGUE")
 
 local stealth = {1784, 1785, 1786, 1787}
 local backstab = {53, 2589, 2590, 2591, 8721, 11279, 11280, 11281}
@@ -26,7 +24,7 @@ local kidneyShot = {408, 8643}
 local woundPoison = {13220, 13228, 13229, 13230}
 local mutilate = {1310706, 399956, 1241582, 1241584}
 
-wt:AddOverriddenSpells(
+class.overriddenGroups = {
 	stealth,
 	backstab,
 	gouge,
@@ -49,9 +47,9 @@ wt:AddOverriddenSpells(
 	kidneyShot,
 	woundPoison,
 	mutilate
-)
+}
 
-wt.SpellsByLevel = {
+class.spellsByLevel = {
 	[1] = {{id = 1784, cost = 10}},
 	[4] = {{id = 53, cost = 100}, {id = 921, cost = 100}},
 	[6] = {{id = 1776, cost = 100}, {id = 1757, cost = 100, requiredIds = {1752}}},

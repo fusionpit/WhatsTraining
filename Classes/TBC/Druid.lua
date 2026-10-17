@@ -1,7 +1,5 @@
 local _, wt = ...
-if (wt.currentClass ~= "DRUID") then
-	return
-end
+local class = wt.forClass("DRUID")
 
 local demoralizingRoar = {99,1735,9490,9747,9898,26998}
 local swipe = {779,780,769,9754,9908,26997}
@@ -22,7 +20,7 @@ local frenziedRegeneration = {22842,22895,22896,26999}
 local mangleCat = {33876,33982,33983}
 local mangleBear = {33878,33986,33987}
 local faerieFireFeral = {16857,17390,17391,17392,27011}
-wt:AddOverriddenSpells(
+class.overriddenGroups = {
 	demoralizingRoar,
 	swipe,
 	rip,
@@ -42,8 +40,8 @@ wt:AddOverriddenSpells(
 	mangleCat,
 	mangleBear,
 	faerieFireFeral
-)
-wt.SpellsByLevel = {
+}
+class.spellsByLevel = {
 	[1] = {{id = 1126, cost = 10},},
 	[4] = {{id = 8921, cost = 100},{id = 774, cost = 100},},
 	[6] = {{id = 467, cost = 100},{id = 5177, cost = 100, requiredIds = {5176}},},

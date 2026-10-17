@@ -1,9 +1,7 @@
 local _, wt = ...
-if (wt.currentClass ~= "SHAMAN") then
-	return
-end
+local class = wt.forClass("SHAMAN")
 
-wt.SpellsByLevel = wt.FactionFilter({
+class.spellsByLevel = {
 	[1] = {{id = 8017, cost = 10},},
 	[4] = {{id = 8042, cost = 100},},
 	[6] = {{id = 2484, cost = 100},{id = 332, cost = 100, requiredIds = {331}},},
@@ -276,4 +274,4 @@ wt.SpellsByLevel = wt.FactionFilter({
 		{id = 32594, cost = 2500, requiredIds = {32593}, requiredTalentId = 974},
 		{id = 25396, cost = 88000, requiredIds = {25391}},
 	},
-})
+}

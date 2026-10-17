@@ -237,4 +237,4 @@ local QuestSpells = {
     },
 }
 
-wt.AddQuestSpells(QuestSpells)
+wt.QuestSpells = QuestSpells

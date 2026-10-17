@@ -1,7 +1,5 @@
 local _, wt = ...
-if (wt.currentClass ~= "WARRIOR") then
-	return
-end
+local class = wt.forClass("WARRIOR")
 
 -- ordered by rank
 local rend = {772, 6546, 6547, 6548, 11572, 11573, 11574}
@@ -53,7 +51,7 @@ local battleShout = {
 	25289 --[[Rank 7]]
 }
 
-wt:AddOverriddenSpells(
+class.overriddenGroups = {
 	rend,
 	heroicStrike,
 	bloodthirst,
@@ -74,9 +72,9 @@ wt:AddOverriddenSpells(
 	shieldBash,
 	charge,
 	battleShout
-)
+}
 
-wt.SpellsByLevel = {
+class.spellsByLevel = {
 	[1] = {{id = 6673, cost = 10}},
 	[4] = {{id = 100, cost = 100}, {id = 772, cost = 100}},
 	[6] = {{id = 3127, cost = 100}, {id = 6343, cost = 100}},

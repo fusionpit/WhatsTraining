@@ -1,7 +1,5 @@
 local _, wt = ...
-if (wt.currentClass ~= "WARLOCK") then
-	return
-end
+local class = wt.forClass("WARLOCK")
 
 wt.WarlockAltIcons = {
 	["Succubus"] = 136220,
@@ -37,7 +35,7 @@ wt.WarlockTomeMerchantIds = {
 	[6328] = true
 }
 
-wt.TomesByLevel = {
+class.tomesByLevel = {
 	[4] = {{itemId = 16321, cost = 100, family = "Imp"}},
 	[8] = {{itemId = 16302, cost = 100, family = "Imp"}},
 	[12] = {{itemId = 16331, cost = 600, family = "Imp"}},
@@ -142,7 +140,7 @@ wt.TomesByLevel = {
 		{id = "INC:16374", itemId = 16374, cost = 26000, family = "Incubus"},
 	},
 }
-wt.TomeTaughtSpells = {
+class.tomeTaughtSpells = {
 	[16321] = 6307,
 	[16302] = 7799,
 	[16331] = 4511,

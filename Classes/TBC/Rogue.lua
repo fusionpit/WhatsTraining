@@ -1,7 +1,5 @@
 local _, wt = ...
-if (wt.currentClass ~= "ROGUE") then
-	return
-end
+local class = wt.forClass("ROGUE")
 
 -- ordered by rank
 local backstab = {53,2589,2590,2591,8721,11279,11280,11281,25300,26863}
@@ -27,7 +25,7 @@ local ambush = {8676,8724,8725,11267,11268,11269,27441}
 local instantPoison = {8681}
 local envenom = {32645,32684}
 local mutilate = {1329,34411,34412,34413}
-wt:AddOverriddenSpells(
+class.overriddenGroups = {
 	backstab,
 	kidneyShot,
 	garrote,
@@ -51,8 +49,8 @@ wt:AddOverriddenSpells(
 	instantPoison,
 	envenom,
 	mutilate
-)
-wt.SpellsByLevel = {
+}
+class.spellsByLevel = {
 	[1] = {{id = 1784, cost = 10},},
 	[4] = {{id = 53, cost = 100},{id = 921, cost = 100},},
 	[6] = {{id = 1776, cost = 100},{id = 1757, cost = 100},},

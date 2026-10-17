@@ -1,7 +1,5 @@
 local _, wt = ...
-if (wt.currentClass ~= "PALADIN") then
-	return
-end
+local class = wt.forClass("PALADIN")
 
 local devotionAura = {465, 10290, 643, 10291, 1032, 10292, 10293}
 local layOnHands = {633, 2800, 10310}
@@ -10,16 +8,16 @@ local shadowResistanceAura = {19876, 19895, 19896}
 local frostResistanceAura = {19888, 19897, 19898}
 local fireResistanceAura = {19891, 19899, 19900}
 
-wt:AddOverriddenSpells(
+class.overriddenGroups = {
 	devotionAura,
 	layOnHands,
 	retributionAura,
 	shadowResistanceAura,
 	frostResistanceAura,
 	fireResistanceAura
-)
+}
 
-wt.SpellsByLevel = {
+class.spellsByLevel = {
 	[1] = {{id = 465, cost = 10}},
 	[4] = {{id = 19740, cost = 100}, {id = 20271, cost = 100}},
 	[6] = {

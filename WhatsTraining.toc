@@ -27,7 +27,6 @@ Cache.lua
 Classes\[Game]\Druid.lua
 Classes\[Game]\Hunter.lua
 Classes\[Game]\HunterPets.lua
-Classes\HunterPets.lua
 Classes\[Game]\Mage.lua
 Classes\[Game]\Paladin.lua
 Classes\[Game]\Priest.lua
@@ -35,9 +34,11 @@ Classes\[Game]\Rogue.lua
 Classes\[Game]\Shaman.lua
 Classes\[Game]\Warlock.lua
 Classes\[Game]\WarlockTomes.lua
-Classes\WarlockTomes.lua
 Classes\[Game]\Warrior.lua
 Classes\[Game]\QuestSpells.lua
+Classes\Player.lua
+Classes\HunterPets.lua
+Classes\WarlockTomes.lua
 Classes\WeaponSkills.lua
 Classes\Camelot\WeaponSkills.lua [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 Classes\[Game]\TrainerFactions.lua
