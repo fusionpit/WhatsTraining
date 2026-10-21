@@ -76,6 +76,10 @@ read_globals = {
     "ToggleSpellBook",
     "GetInventoryItemTexture",
     "geterrorhandler",
+    "GetAppropriateTooltip",
+    "IsControlKeyDown",
+    "CreateScrollBoxListTreeListView",
+    "CreateTreeDataProvider",
     -- function aliases
     "tinsert",
     "tContains",
@@ -92,6 +96,8 @@ read_globals = {
     "MenuUtil",
     "AnchorUtil",
     "EventUtil",
+    "ScrollUtil",
+    "TooltipDataProcessor",
     -- blizzard frames
     "UIParent",
     "MerchantFrame",
@@ -99,6 +105,7 @@ read_globals = {
     "SkillFrame",
     "PlayerSpellsFrame",
     "SmartNavigation",
+    "ProfessionsFrame",
     -- frame methods
     "SearchBoxTemplate_OnTextChanged",
     "ChatEdit_GetActiveWindow",
@@ -115,6 +122,7 @@ read_globals = {
     "C_SpellBook",
     "C_TooltipInfo",
     "C_Trainer",
+    "C_SkillInfo",
     -- enums
     "MenuResponse",
     "Enum",
@@ -152,6 +160,8 @@ read_globals = {
     "RAID_CLASS_COLORS",
     "WOW_PROJECT_ID",
     "WOW_PROJECT_BURNING_CRUSADE_CLASSIC",
+    "CHECK_ALL",
+    "UNCHECK_ALL",
 
     -- libs
     "LibStub",
@@ -173,5 +183,16 @@ globals = {
     "WT_IgnoredSpells",
     "WT_PriceFaction",
     "WT_WaypointProvider",
+    "WT_Crafting",
+    "WhatsTrainingCraftingPage",
+    "WhatsTrainingCraftingTitle",
+    "WhatsTrainingCraftingPortrait",
+    "WhatsTrainingCraftingTab",
+    "WhatsTrainingCraftingReturnTab",
+    "WhatsTrainingCraftingRecipeList",
+    "WhatsTrainingCraftingSearchBox",
+    "WhatsTrainingCraftingFilterDropdown",
+    "WhatsTrainingCraftingScrollBox",
+    "WhatsTrainingCraftingScrollBar",
     "WT_API"
 }

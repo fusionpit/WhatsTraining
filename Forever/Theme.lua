@@ -62,30 +62,32 @@ local dark = {
     weaponGroup = parchment.weaponGroup,
 }
 
-local style = "off"
-function wt.ResolveTheme()
+local function windowStyle(key)
     -- EllesmereUI v9.6.1: use this window's style, not the third-party majority.
     local eui = _G.EllesmereUI
     if type(eui) == "table" and type(eui.GetBlizzWindowStyle) == "function" then
-        style = eui.GetBlizzWindowStyle("playerspells")
-    else
-        style = C_AddOns.IsAddOnLoaded("EllesmereUIBlizzardSkin") and "eui" or "off"
+        return eui.GetBlizzWindowStyle(key)
     end
+    return C_AddOns.IsAddOnLoaded("EllesmereUIBlizzardSkin") and "eui" or "off"
+end
+
+local style = "off"
+function wt.ResolveTheme()
+    style = windowStyle("playerspells")
     if style == "off" then return parchment end
-    local db = _G.EllesmereUIDB
-    local color = style == "modern" and db and db.blizzWindowModernDefault or {}
-    dark.backing[1], dark.backing[2], dark.backing[3] = color.r or 0.067, color.g or 0.067, color.b or 0.067
     return dark
 end
 
--- window supplies the full background's geometry
-function wt.PaintBackground(frame, window)
-    local skinned = wt.Theme == dark and window ~= nil
+-- the caller's cover clips this full-window background to its own rectangle
+local function paintWindow(frame, window, style)
+    local skinned = style ~= "off" and window ~= nil
     local textured = skinned and style ~= "modern"
-    local r, g, b = unpack(wt.Theme.backing)
-    frame.backing:SetColorTexture(r, g, b, 1)
+    if skinned then
+        local db = _G.EllesmereUIDB
+        local color = style == "modern" and db and db.blizzWindowModernDefault or {}
+        frame.backing:SetColorTexture(color.r or 0.067, color.g or 0.067, color.b or 0.067, 1)
+    end
     frame.art:Show()
-    for _, page in ipairs({frame.whole, frame.left, frame.right}) do page:SetAlpha(skinned and 0.1 or 1) end
     if skinned and not frame.shell then
         frame.shell = frame.art:CreateTexture(nil, "BACKGROUND", nil, -8)
         frame.shell:SetTexture("Interface\\AddOns\\EllesmereUI\\media\\modern_blizz.png")
@@ -120,6 +122,26 @@ function wt.PaintBackground(frame, window)
         end
         frame.shell:SetTexCoord(left, right, top, bottom)
     end
+end
+
+function wt.PaintBackground(frame, window)
+    local r, g, b = unpack(wt.Theme.backing)
+    frame.backing:SetColorTexture(r, g, b, 1)
+    for _, page in ipairs({frame.whole, frame.left, frame.right}) do page:SetAlpha(wt.Theme == dark and 0.1 or 1) end
+    paintWindow(frame, window, wt.Theme == dark and style or "off")
+end
+
+function wt.PaintCraftingHeader(title, portrait, window)
+    title.backing:SetAtlas(window.NineSlice.TopEdge:GetAtlas())
+    paintWindow(title, window, windowStyle("professions"))
+    local native = window.TitleContainer.TitleText
+    title.Text:SetFontObject(native:GetFontObject())
+    title.Text:SetFont(native:GetFont())
+    title.Text:SetTextColor(native:GetTextColor())
+    title.Text:ClearAllPoints()
+    title.Text:SetPoint("CENTER", native)
+    title.Text:SetSize(window.TitleContainer:GetWidth(), native:GetHeight())
+    portrait:SetAlpha(window.PortraitContainer:GetAlpha() * window.PortraitContainer.portrait:GetAlpha())
 end
 
 wt.Theme = parchment

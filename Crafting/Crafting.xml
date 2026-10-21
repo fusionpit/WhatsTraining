@@ -1,0 +1,51 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+    <Button name="WhatsTrainingCraftingSectionHeaderTemplate" virtual="true">
+        <Size y="28"/>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="bandCap" file="Interface\AchievementFrame\UI-Achievement-Parchment-Horizontal-Desaturated">
+                    <Size y="28"/>
+                    <Anchors><Anchor point="BOTTOMLEFT"/></Anchors>
+                    <TexCoords left="0" right="0.0078125" top="0" bottom="1"/>
+                </Texture>
+                <Texture parentKey="band" file="Interface\AchievementFrame\UI-Achievement-Parchment-Horizontal-Desaturated">
+                    <Size y="28"/>
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT"/>
+                        <Anchor point="BOTTOMRIGHT"/>
+                    </Anchors>
+                    <TexCoords left="0.0078125" right="1" top="0" bottom="1"/>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY">
+                <FontString parentKey="heading" inherits="SystemFont_Med3" justifyH="LEFT" justifyV="MIDDLE" wordwrap="false">
+                    <Size y="28"/>
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT" x="8"/>
+                        <Anchor point="BOTTOMRIGHT" x="-8"/>
+                    </Anchors>
+                    <Shadow>
+                        <Offset x="1" y="-1"/>
+                        <Color r="0" g="0" b="0" a="1"/>
+                    </Shadow>
+                </FontString>
+            </Layer>
+        </Layers>
+    </Button>
+    <Script file="Recipes/FirstAid.lua"/>
+    <Script file="Recipes/Mining.lua"/>
+    <Script file="Recipes/Cooking.lua"/>
+    <Script file="Recipes/Skinning.lua"/>
+    <Script file="Recipes/Herbalism.lua"/>
+    <Script file="Recipes/Blacksmithing.lua"/>
+    <Script file="Recipes/Fishing.lua"/>
+    <Script file="Recipes/Alchemy.lua"/>
+    <Script file="Recipes/Leatherworking.lua"/>
+    <Script file="Recipes/Tailoring.lua"/>
+    <Script file="Recipes/Enchanting.lua"/>
+    <Script file="Recipes/Engineering.lua"/>
+    <Script file="RecipeModel.lua"/>
+    <Script file="RecipeList.lua"/>
+    <Script file="Crafting.lua"/>
+</Ui>

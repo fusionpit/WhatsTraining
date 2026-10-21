@@ -142,6 +142,18 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
             WT_IgnoredSpells = {}
         end
         ignoreStore:MigrateOrUse(WT_IgnoredSpells)
+        if wt.gameVersion == "forever" then
+            if WT_Crafting == nil then
+                WT_Crafting = {
+                    selectedProfessions = {},
+                    selectedSources = {trainer = true, vendor = true, quest = true, drop = false, crafted = false,
+                        world_object = false},
+                    settings = {showReputationRecipes = false, showMerchantsFavorRecipes = false},
+                    expandedProfessions = {{}, {}, {}, {}, {}},
+                }
+            end
+            if wt.AttachCrafting then wt.AttachCrafting() end
+        end
         if WT_LearnedPetAbilities == nil then
             WT_LearnedPetAbilities = {}
             WT_NeedsToOpenBeastTraining = wt.currentClass == "HUNTER"
