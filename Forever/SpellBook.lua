@@ -72,7 +72,7 @@ local function refresh(mainFrame)
     updateBanner(mainFrame)
     local expanded, weaponPage = mainFrame.expanded, mainFrame.weaponPage
     local dual = expanded and not mainFrame.sideBySide
-    mainFrame.title:SetText(expanded and wt.L.LEDGER_CLASS_SPELLS or "What's Training?")
+    mainFrame.title:SetText(expanded and wt.L.LEDGER_CLASS_SPELLS or wt.L.TITLE)
     weaponPage.title:SetText(dual and wt.L.LEDGER_MORE_SPELLS or wt.L.WEAPON_SKILLS_HEADER)
     mainFrame.titleBackplate:SetWidth(math.min(mainFrame.header:GetWidth() + 85,
         math.max(416, mainFrame.title:GetStringWidth() * 2.5)))
@@ -156,8 +156,8 @@ end
 
 function wt.ApplyTheme()
     wt.Theme = wt.ResolveTheme()
+    for _, frame in ipairs(covers) do
         wt.PaintBackground(frame, PlayerSpellsFrame)
-        frame.art:SetShown(wt.Theme.pageArt == true)
     end
 end
 

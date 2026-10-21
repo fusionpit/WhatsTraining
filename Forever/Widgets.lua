@@ -332,7 +332,7 @@ local function createPage(page, headerX)
     header:SetPoint("TOPLEFT", page, "TOPLEFT", headerX, -5)
     page.header = header
     page.title = header.Text
-    page.title:SetText("What's Training?")
+    page.title:SetText(wt.L.TITLE)
     page.titleBackplate = header.Backplate
     if wt.Theme.headerText then
         header.Text:SetTextColor(unpack(wt.Theme.headerText))

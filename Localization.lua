@@ -83,6 +83,7 @@ local localeText = {
         SCROLL_TWO_PAGES = "Mouse Wheel scrolls two pages at a time",
         HIDE_WEAPON_SKILL_SWITCHER = "Hide weapon skill switcher",
         TAB_TEXT = "What can I train?",
+        TITLE = "What's Training?",
         OPEN_BEAST_TRAINING = "Please open the Beast Training UI",
         CLICK_TO_OPEN = "Click to open Beast Training",
         TOME_HEADER = "Has this been learned?",
