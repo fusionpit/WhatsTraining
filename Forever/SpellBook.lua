@@ -155,8 +155,8 @@ local function cover()
 end
 
 function wt.ApplyTheme()
-    for _, frame in ipairs(covers) do
-        frame.backing:SetColorTexture(wt.Theme.backing[1], wt.Theme.backing[2], wt.Theme.backing[3], 1)
+    wt.Theme = wt.ResolveTheme()
+        wt.PaintBackground(frame, PlayerSpellsFrame)
         frame.art:SetShown(wt.Theme.pageArt == true)
     end
 end
@@ -215,6 +215,7 @@ local function sync()
     end
     local opening = not root:IsShown() or not mainFrame:IsShown()
 
+    wt.ApplyTheme()
     for _, frame in ipairs(covers) do
         frame.whole:SetShown(book.isMinimized)
         frame.left:SetShown(not book.isMinimized)
@@ -431,7 +432,6 @@ local function attachForeverSpellBook()
         root:SetParent(PlayerSpellsFrame)
         launcher:SetParent(PlayerSpellsFrame)
         root:SetAllPoints(book)
-        wt.Theme = wt.ResolveTheme()
         wt.ApplyTheme()
         createLedger(wt.MainFrame)
         -- use events: hooksecurefunc misbehaves with taintLog enabled
@@ -631,9 +631,9 @@ function wt.CreateFrame()
     mainFrame:SetPoint("TOPLEFT", root, "TOPLEFT", 65, PAGE_TOP)
     mainFrame:SetPoint("BOTTOMLEFT", root, "BOTTOMLEFT", 65, PAGE_BOTTOM)
     mainFrame:SetWidth(PAGE_WIDTH)
+    root:SetScript("OnSizeChanged", wt.ApplyTheme)
 
     if controller then
-        wt.Theme = wt.ResolveTheme()
         wt.ApplyTheme()
         root:SetFrameStrata("TOOLTIP")
         root:SetFrameLevel(500)
