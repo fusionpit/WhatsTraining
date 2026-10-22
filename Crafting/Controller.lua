@@ -20,7 +20,9 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
     local options = Forever.createMenu(view, function(_, menu)
         if menuNode then view:GenerateRowMenu(menuNode, menu) end
     end)
-    local function menuShown() return settings:IsShown() or options:IsShown() end
+    local positions = Forever.createMenu(view, wt.GenerateProfessionTabMenu, launcher)
+    local function menuShown() return settings:IsShown() or options:IsShown() or positions:IsShown() end
+    local function hideMenus() settings:Hide(); options:Hide(); positions:Hide() end
     local function icon(parent, key)
         local frame = CreateFrame("Frame", nil, parent, "InputIconTextureFrameTemplate")
         frame.useDropShadow = true
@@ -30,8 +32,17 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         frame:EnableMouse(false)
         return frame
     end
-    local rb = icon(launcher, GAMEPAD_SHOULDER_RIGHT)
-    rb:SetPoint("TOPRIGHT", launcher.Icon, "TOPRIGHT", 7, 7)
+    local function entryButton()
+        return WT_ProfessionTabPosition == "top" and GAMEPAD_SHOULDER_LEFT or GAMEPAD_SHOULDER_RIGHT
+    end
+    local function returnButton()
+        return WT_ProfessionTabPosition == "top" and GAMEPAD_SHOULDER_RIGHT or GAMEPAD_SHOULDER_LEFT
+    end
+    local shoulderKey = entryButton()
+    local shoulder = icon(launcher, shoulderKey)
+    shoulder:SetPoint("TOPRIGHT", launcher.Icon, "TOPRIGHT", 7, 7)
+    local positionIcon = icon(launcher, GAMEPAD_FACE_TOP)
+    positionIcon:SetPoint("BOTTOMRIGHT", launcher.Icon, "BOTTOMRIGHT", 7, -7)
     local searchIcon = icon(view, GAMEPAD_MENU_LEFT)
     searchIcon:SetPoint("RIGHT", search, "LEFT", -7, 0)
     local settingsIcon = icon(view, GAMEPAD_MENU_RIGHT)
@@ -59,6 +70,8 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         { "StandardOneIcon", { GAMEPAD_FACE_RIGHT }, FRAME_ACTION_CLOSE },
     })
     footer:SetPoint("TOPLEFT", book, "BOTTOMLEFT", 0, -9)
+    positions:SetFrameLevel(footer:GetFrameLevel() + 10)
+    positions:SetPoint("BOTTOMRIGHT", footer, "TOPRIGHT", -10, positions.footer:GetHeight() + 10)
 
     local function clearSelection()
         if selectedRow then
@@ -115,7 +128,7 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
     local function toggleMenu(menu)
         stickDirection = nil
         local show = not menu:IsShown()
-        settings:Hide(); options:Hide(); search:ClearFocus()
+        hideMenus(); search:ClearFocus()
         menu:SetShown(show)
         if show then clearSelection() else restoreSelection() end
     end
@@ -136,7 +149,7 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
     search:HookScript("OnEditFocusGained", function()
         if not root:IsShown() then return end
         stickDirection = nil
-        settings:Hide(); options:Hide(); clearSelection()
+        hideMenus(); clearSelection()
     end)
     local function returnFromMenu()
         if root:IsShown() and not menuShown() and not search:HasFocus() then restoreSelection() end
@@ -144,15 +157,17 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
     search:HookScript("OnEditFocusLost", returnFromMenu)
     settings:SetScript("OnHide", returnFromMenu)
     options:SetScript("OnHide", returnFromMenu)
+    positions:SetScript("OnHide", returnFromMenu)
 
     local function activeBook()
         return book:IsVisible() and InputUtil.IsGamepadUIEnabled() and SmartNavigation and SmartNavigation:IsShown()
             and SmartNavigation:GetActiveFrame() == book and not book.CraftingPage.RecipeList.SearchBox:HasFocus()
     end
-    local function atEnd()
+    local function atEdge()
         local tabs = book.TabIndicators
         if not tabs or tabs.isLocked or not tabs.visibleTabs or not tabs.visibleTabs[tabs.currentIndex] then return false end
-        for i = tabs.currentIndex + 1, #tabs.visibleTabs do
+        local step = entryButton() == GAMEPAD_SHOULDER_LEFT and -1 or 1
+        for i = tabs.currentIndex + step, step == -1 and 1 or #tabs.visibleTabs, step do
             if not tabs.visibleTabs[i].isDisabled then return false end
         end
         return true
@@ -168,7 +183,7 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         stickDirection, selectedNode, selectedData, selectedIndex = nil, nil, nil, nil
         clearSelection()
         search:ClearFocus()
-        settings:Hide(); options:Hide()
+        hideMenus()
         page:Hide(); returnTab:Hide()
         held, closing = {}, false
         releaseCapture()
@@ -191,18 +206,21 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         launcher:SetFrameLevel(view:GetFrameLevel() + 3)
         returnTab:SetFrameLevel(view:GetFrameLevel() + 3)
         launcher:SetScale(root:GetScale())
-        launcher:ClearAllPoints()
-        launcher:SetPoint("BOTTOMLEFT", book, "BOTTOMRIGHT", 0, 10)
+        wt.PositionCraftingTab()
         launcher:Show()
-        launcher:SetChecked(self:IsShown())
-        rb:SetShown(atEnd() and not self:IsShown())
-        page:SetShown(self:IsShown())
-        returnTab:SetShown(self:IsShown() and nativeTab ~= nil)
+        local active = self:IsShown()
+        launcher:SetChecked(active)
+        local key = entryButton()
+        if key ~= shoulderKey then shoulder:SetInputKey(key); shoulderKey = key end
+        shoulder:SetShown(atEdge() and not self:IsShown())
+        positionIcon:SetShown(active and not positions:IsShown())
+        page:SetShown(active)
+        returnTab:SetShown(active and nativeTab ~= nil)
         searchIcon:Show(); settingsIcon:Show()
         search:SetWidth(410)
         view.filterDropdown:SetPoint("LEFT", search, "RIGHT", 34, 0)
         view.footer:SetShown(not self:IsShown())
-        if self:IsShown() then
+        if active then
             returnTab:ClearAllPoints()
             if nativeTab then
                 returnTab:SetPoint("CENTER", nativeTab)
@@ -229,6 +247,12 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         self:Sync()
         restoreSelection()
     end
+    function root:OpenPositionMenu()
+        if not self:IsShown() or InCombatLockdown() or not connected or not activeBook() then return end
+        positions.index = nil
+        toggleMenu(positions)
+        self:Sync()
+    end
     function root:Deactivate()
         self:Hide()
         releaseCapture()
@@ -236,7 +260,7 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         view:SetFrameStrata("HIGH")
         launcher:SetFrameStrata(book:GetFrameStrata())
         launcher:SetScale(1)
-        searchIcon:Hide(); settingsIcon:Hide(); rb:Hide()
+        searchIcon:Hide(); settingsIcon:Hide(); shoulder:Hide(); positionIcon:Hide()
         search:SetWidth(440)
         view.filterDropdown:SetPoint("LEFT", search, "RIGHT", 4, 0)
         view.footer:Show()
@@ -247,18 +271,20 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
     root:SetScript("OnGamePadButtonDown", function(_, button)
         if InCombatLockdown() or closing or held[button] then return false end
         held[button] = true
-        if (button == "PAD2" or button == "PADLSHOULDER") and (menuShown() or search:HasFocus()) then
+        if (button == "PAD2" or button == returnButton()) and (menuShown() or search:HasFocus()) then
             held[button] = "panel"
-            local menu = settings:IsShown() and settings or options:IsShown() and options
+            local menu = settings:IsShown() and settings or options:IsShown() and options or positions:IsShown() and positions
             if button == "PAD2" and menu then menu:HandleButton(button)
-            else settings:Hide(); options:Hide(); search:ClearFocus() end
+            else hideMenus(); search:ClearFocus() end
+        elseif button == "PAD4" then root:OpenPositionMenu()
+        elseif positions:IsShown() then positions:HandleButton(button)
         elseif button == "PADRSTICK" then
             local disable = not GetCVarBool("GamepadDisableTooltips")
             SetCVar("GamepadDisableTooltips", disable)
             if disable then GameTooltip:Hide() else showTooltip() end
         elseif button == "PADFORWARD" then toggleMenu(settings)
         elseif button == "PADBACK" then
-            settings:Hide(); options:Hide()
+            hideMenus()
             if search:HasFocus() then search:ClearFocus() else search:SetFocus() end
         elseif settings:IsShown() then settings:HandleButton(button)
         elseif options:IsShown() then options:HandleButton(button)
@@ -274,7 +300,7 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         return false
     end)
     root:SetScript("OnGamePadButtonUp", function(_, button)
-        if held[button] == true and (button == "PAD2" or button == "PADLSHOULDER") then closing = true end
+        if held[button] == true and (button == "PAD2" or button == returnButton()) then closing = true end
         held[button] = nil
         return false
     end)
@@ -292,7 +318,7 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
     tinsert(UISpecialFrames, root:GetName())
 
     local observer = CreateFrame("Frame", nil, UIParent)
-    local wasDown, wasAtEnd = false, false
+    local wasDown, wasAtEdge, previousButton = false, false, entryButton()
     local function updateDevice()
         local mapped = C_GamePad and C_GamePad.GetDeviceMappedState and C_GamePad.GetDeviceMappedState()
         connected, buttonKeys = mapped ~= nil, {}
@@ -302,7 +328,8 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
                 if key then buttonKeys[#buttonKeys + 1] = key end
             end
         end
-        wasDown, wasAtEnd = IsKeyDown("PADRSHOULDER") == true, false
+        previousButton = entryButton()
+        wasDown, wasAtEdge = IsKeyDown(previousButton) == true, false
     end
     for _, event in ipairs({"GAME_PAD_CONNECTED", "GAME_PAD_DISCONNECTED", "GAME_PAD_CONFIGS_CHANGED", "GAME_PAD_ACTIVE_CHANGED"}) do
         observer:RegisterEvent(event)
@@ -311,7 +338,11 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
     updateDevice()
     observer:SetScript("OnUpdate", function(_, elapsed)
         if not InputUtil.IsGamepadUIEnabled() then releaseCapture(); return end
-        local down, last = connected and IsKeyDown("PADRSHOULDER") == true, atEnd()
+        local button = entryButton()
+        local down, edge = connected and IsKeyDown(button) == true, atEdge()
+        if button ~= previousButton then
+            wasDown, wasAtEdge, previousButton = down, false, button
+        end
         if root:IsShown() then
             if not activeBook() or not connected or InCombatLockdown() or selectedNativeTab() ~= nativeTab
                 or SmartNavigation:GetCurrentButton() ~= nativeButton then root:Hide()
@@ -329,10 +360,10 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
             end
         else
             releaseCapture()
-            if down and not wasDown and wasAtEnd and last then root:Toggle() end
+            if down and not wasDown and wasAtEdge and edge then root:Toggle() end
         end
         if not canNavigate() then stickDirection = nil end
-        wasDown, wasAtEnd = down, last
+        wasDown, wasAtEdge = down, edge
         root:Sync()
     end)
     return root

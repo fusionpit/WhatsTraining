@@ -45,7 +45,12 @@ local function floatingFrame()
 end
 
 SLASH_WHATSTRAINING1 = "/wt"
-SlashCmdList.WHATSTRAINING = function()
+SlashCmdList.WHATSTRAINING = function(message)
+    local command, direction = (message or ""):lower():match("^%s*(%S+)%s*(.-)%s*$")
+    if command == "professionstab" then
+        wt.MoveProfessionTab(direction)
+        return
+    end
     local frame = floatingFrame()
     frame:SetShown(not frame:IsShown())
 end

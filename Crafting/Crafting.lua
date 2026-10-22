@@ -1,5 +1,40 @@
 local _, wt = ...
 
+local function professionTabPosition()
+    if WT_ProfessionTabPosition == "top" or WT_ProfessionTabPosition == "bottom" then return WT_ProfessionTabPosition end
+    return "right"
+end
+
+local function setProfessionTabPosition(position)
+    WT_ProfessionTabPosition = position
+    if wt.PositionCraftingTab then wt.PositionCraftingTab() end
+end
+
+function wt.GenerateProfessionTabMenu(_, menu)
+    for _, option in ipairs({
+        {wt.L.PROFESSION_TAB_TOP, "top"},
+        {wt.L.PROFESSION_TAB_RIGHT, "right"},
+        {wt.L.PROFESSION_TAB_BOTTOM, "bottom"},
+    }) do
+        menu:CreateRadio(option[1], function(position) return professionTabPosition() == position end,
+            setProfessionTabPosition, option[2])
+    end
+end
+
+function wt.MoveProfessionTab(direction)
+    local position = professionTabPosition()
+    if direction == "up" then
+        position = position == "bottom" and "right" or "top"
+    elseif direction == "down" then
+        position = position == "top" and "right" or "bottom"
+    elseif direction == "reset" then
+        position = "right"
+    else
+        return
+    end
+    setProfessionTabPosition(position)
+end
+
 -- covers the native profession page
 local function attach()
     local book = ProfessionsFrame
@@ -101,6 +136,30 @@ local function attach()
     local launcher = makeTab("WhatsTrainingCraftingTab")
     launcher.Icon:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
     launcher.tooltipText = wt.L.TAB_TEXT
+    local width, height = launcher:GetSize()
+    local iconOffsets = launcher.GetFinalIconAnchorOffsets
+    local bottom
+    function launcher:GetFinalIconAnchorOffsets()
+        local x, y = iconOffsets(self)
+        if bottom then return y, -x end
+        return x, y
+    end
+    local chrome = {launcher.Background, launcher.Mask, launcher.SelectedTexture, launcher.TabGlow, launcher.HighlightTexture}
+    function wt.PositionCraftingTab()
+        local position = professionTabPosition()
+        bottom = position == "bottom"
+        launcher:SetSize(bottom and height or width, bottom and width or height)
+        for _, texture in ipairs(chrome) do texture:SetRotation(bottom and -math.pi / 2 or 0) end
+        launcher:InitializeIconAnchoring()
+        launcher:ClearAllPoints()
+        if position == "top" then
+            launcher:SetPoint("BOTTOMLEFT", book.ProfessionsOverviewTab, "TOPLEFT", 0, 2)
+        elseif bottom then
+            launcher:SetPoint("TOPRIGHT", book, "BOTTOMRIGHT", -10, 0)
+        else
+            launcher:SetPoint("BOTTOMLEFT", book, "BOTTOMRIGHT", 0, 10)
+        end
+    end
     local returnTab = makeTab("WhatsTrainingCraftingReturnTab")
     local recipeList = wt.CreateRecipeList(page)
 
@@ -152,8 +211,7 @@ local function attach()
         portrait:SetFrameLevel(book.PortraitContainer:GetFrameLevel() + 1)
         launcher:SetFrameLevel(level + 1)
         returnTab:SetFrameLevel(level + 1)
-        launcher:ClearAllPoints()
-        launcher:SetPoint("BOTTOMLEFT", book, "BOTTOMRIGHT", 0, 10)
+        wt.PositionCraftingTab()
         launcher:SetChecked(active)
         launcher:Show()
         page:SetShown(active)
@@ -183,7 +241,16 @@ local function attach()
     end
 
     launcher:SetCustomOnMouseUpHandler(function(_, button, upInside)
-        if button ~= "LeftButton" or not upInside then return end
+        if not upInside then return end
+        if button == "RightButton" then
+            if InputUtil.IsGamepadUIEnabled() then
+                if controller then controller:OpenPositionMenu() end
+            else
+                MenuUtil.CreateContextMenu(launcher, wt.GenerateProfessionTabMenu)
+            end
+            return
+        end
+        if button ~= "LeftButton" then return end
         if InputUtil.IsGamepadUIEnabled() then
             if controller then controller:Toggle() end
             return

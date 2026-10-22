@@ -108,6 +108,10 @@ local localeText = {
         CLICK_TO_WAYPOINT = "Click to set a waypoint",
 
         -- crafting tab
+        PROFESSION_TAB_TOP = "Above Professions tab",
+        PROFESSION_TAB_RIGHT = "Right edge, near bottom",
+        PROFESSION_TAB_BOTTOM = "Bottom edge, near right corner",
+        GAMEPAD_TAB_POSITION = "Tab position",
         TRAINER = "Trainer",
         VENDOR = "Vendor",
         SOLD_IN = "Sold in %s",
