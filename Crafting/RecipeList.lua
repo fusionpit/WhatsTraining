@@ -89,6 +89,7 @@ local function buildFilterMenu(view, menu)
     menu:CreateCheckbox(wt.L.SHOW_REPUTATION_RECIPES, selected, toggle, "showReputationRecipes")
     menu:CreateCheckbox(string.format(wt.L.SHOW_MERCHANTS_FAVOR_RECIPES, wt.L.MERCHANTS_FAVOR),
         selected, toggle, "showMerchantsFavorRecipes")
+    menu:CreateCheckbox(wt.L.SHOW_OTHER_FACTION_RECIPES, selected, toggle, "showOtherFactionRecipes")
 end
 
 local function setupFilterDropdown(view, dropdown)
@@ -100,6 +101,7 @@ local function setupFilterDropdown(view, dropdown)
             if view.selectedSources[source] ~= (defaultSources[source] or false) then return false end
         end
         return not view.settings.showReputationRecipes and not view.settings.showMerchantsFavorRecipes
+            and not view.settings.showOtherFactionRecipes
     end)
     dropdown:SetDefaultCallback(function()
         for _, id in ipairs(professions) do
@@ -108,6 +110,7 @@ local function setupFilterDropdown(view, dropdown)
         for _, source in ipairs(sourceTypes) do view.selectedSources[source] = defaultSources[source] or false end
         view.settings.showReputationRecipes = false
         view.settings.showMerchantsFavorRecipes = false
+        view.settings.showOtherFactionRecipes = false
         view:Filter(true)
         dropdown:GenerateMenu()
     end)
@@ -143,6 +146,9 @@ local function addRecipeTooltip(view, tooltip, tooltipData)
     tooltip:AddLine(string.format(wt.L.PROFESSION_SKILL, data.profession, data.requiredSkill or wt.L.UNKNOWN_SKILL),
         1, 0.82, 0)
     tooltip:AddLine(string.format(wt.L.SOURCE, data.source), 1, 1, 1)
+    if data.otherFactionSource then
+        tooltip:AddLine(string.format(wt.L.OBTAINED_FROM, wt.L[data.otherFactionSource]), 0.8, 0.8, 0.8, true)
+    end
     addSourceZones(tooltip, data.recipe.quests, wt.L.QUEST_STARTS_IN)
     addSourceZones(tooltip, data.recipe.vendors, wt.L.SOLD_IN)
     if data.requirement then tooltip:AddLine(data.requirement, 1, 0, 0) end
@@ -515,6 +521,7 @@ local function rebuildModel(view)
 end
 
 local function matches(view, data, query)
+    if not view.settings.showOtherFactionRecipes and data.otherFactionSource then return false end
     if view.settings.showReputationRecipes == false and data.reputationRequirement then return false end
     if view.settings.showMerchantsFavorRecipes == false and (data.recipe.merchantFavor or 0) > 0 then return false end
     return wt.RowMatches(data, query, view.selectedSources)
@@ -603,6 +610,7 @@ function wt.CreateRecipeList(page)
     view.selectedProfessions = WT_Crafting.selectedProfessions
     view.selectedSources = WT_Crafting.selectedSources
     view.settings = WT_Crafting.settings
+    if view.settings.showOtherFactionRecipes == nil then view.settings.showOtherFactionRecipes = false end
     view.UpdateProfessionSelections, view.Filter, view.Refresh = updateProfessionSelections, filter, refresh
     view:UpdateProfessionSelections()
     view:SetAllPoints()

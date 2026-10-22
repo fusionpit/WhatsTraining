@@ -148,7 +148,8 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
                     selectedProfessions = {},
                     selectedSources = {trainer = true, vendor = true, quest = true, drop = false, crafted = false,
                         world_object = false},
-                    settings = {showReputationRecipes = false, showMerchantsFavorRecipes = false},
+                    settings = {showReputationRecipes = false, showMerchantsFavorRecipes = false,
+                        showOtherFactionRecipes = false},
                     expandedProfessions = {{}, {}, {}, {}, {}},
                 }
             end

@@ -96,6 +96,23 @@ local function categoryFor(recipe, required, skill, level, reputationMet)
     return Category.LATER
 end
 
+local function sourceFaction(recipe, sources)
+    local faction = recipe.side
+    for _, source in ipairs(sources) do
+        if source ~= "quest" and source ~= "vendor" then return end
+        local locations = recipe[source == "quest" and "quests" or "vendors"]
+        if not locations or #locations == 0 then
+            if not recipe.side then return end
+        else
+            for _, location in ipairs(locations) do
+                if not location.faction or (faction and faction ~= location.faction) then return end
+                faction = location.faction
+            end
+        end
+    end
+    return faction
+end
+
 -- returns the row and its category, or nil when the recipe is hidden
 local function rowFor(recipe, skill, id)
     local info = C_Spell.GetSpellInfo(recipe.spell)
@@ -116,6 +133,8 @@ local function rowFor(recipe, skill, id)
         recipe = recipe, name = name, profession = skill.name, professionID = id, rankName = rank,
         searchName = strlower(name), searchProfession = strlower(skill.name), sources = sources,
     }
+    local faction = sourceFaction(recipe, sources)
+    row.otherFactionSource = faction ~= UnitFactionGroup("player") and faction or nil
 
     local required = recipe.skill
     local level = recipe.level
