@@ -281,30 +281,28 @@ local function setAllCollapsed(view, categoryNode, isCollapsed)
     return MenuResponse.Close
 end
 
-local function openMenu(view, row, data)
-    MenuUtil.CreateContextMenu(row, function(_, menu)
-        menu:CreateTitle(data.name or data.profession or categories[data.category].label)
-        if data.recipe then
-            menu:CreateCheckbox(wt.L.IGNORED_HEADER, function() return ignoreStore:IsIgnored(data.recipe.spell) end,
-                function()
-                    PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-                    ignoreStore:Flip(data.recipe.spell)
-                    return MenuResponse.Close
-                end)
-            return
-        end
-        if not data.profession then
-            local categoryNode = row:GetElementData()
-            menu:CreateButton(wt.L.COLLAPSE_ALL, function() return setAllCollapsed(view, categoryNode, true) end)
-            menu:CreateButton(wt.L.EXPAND_ALL, function() return setAllCollapsed(view, categoryNode, false) end)
-        end
-        menu:CreateButton(data.category == Category.IGNORED and wt.L.UNIGNORE_ALL or wt.L.IGNORE_ALL, function()
-            local ids = {}
-            for _, item in ipairs(data.items) do tinsert(ids, item.recipe.spell) end
-            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-            ignoreStore:UpdateMany(ids, data.category ~= Category.IGNORED)
-            return MenuResponse.Close
-        end)
+local function buildRowMenu(view, node, menu)
+    local data = node:GetData()
+    menu:CreateTitle(data.name or data.profession or categories[data.category].label)
+    if data.recipe then
+        menu:CreateCheckbox(wt.L.IGNORED_HEADER, function() return ignoreStore:IsIgnored(data.recipe.spell) end,
+            function()
+                PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+                ignoreStore:Flip(data.recipe.spell)
+                return MenuResponse.Close
+            end)
+        return
+    end
+    if not data.profession then
+        menu:CreateButton(wt.L.COLLAPSE_ALL, function() return setAllCollapsed(view, node, true) end)
+        menu:CreateButton(wt.L.EXPAND_ALL, function() return setAllCollapsed(view, node, false) end)
+    end
+    menu:CreateButton(data.category == Category.IGNORED and wt.L.UNIGNORE_ALL or wt.L.IGNORE_ALL, function()
+        local ids = {}
+        for _, item in ipairs(data.items) do tinsert(ids, item.recipe.spell) end
+        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+        ignoreStore:UpdateMany(ids, data.category ~= Category.IGNORED)
+        return MenuResponse.Close
     end)
 end
 
@@ -322,7 +320,10 @@ local function rowClick(view, row, button)
     local data = row.data
     if not data then return end
     if button == "RightButton" then
-        openMenu(view, row, data)
+        if view.openControllerMenu and InputUtil.IsGamepadUIEnabled() then
+            view.openControllerMenu(row:GetElementData()); return
+        end
+        MenuUtil.CreateContextMenu(row, function(_, menu) buildRowMenu(view, row:GetElementData(), menu) end)
     elseif button == "LeftButton" and data.recipe then
         local recipe, itemID = data.recipe
         if IsControlKeyDown() then
@@ -612,6 +613,8 @@ function wt.CreateRecipeList(page)
     view.settings = WT_Crafting.settings
     if view.settings.showOtherFactionRecipes == nil then view.settings.showOtherFactionRecipes = false end
     view.UpdateProfessionSelections, view.Filter, view.Refresh = updateProfessionSelections, filter, refresh
+    view.GenerateFilterMenu = buildFilterMenu
+    view.GenerateRowMenu = buildRowMenu
     view:UpdateProfessionSelections()
     view:SetAllPoints()
     view:SetFrameStrata("HIGH")

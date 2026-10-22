@@ -47,5 +47,6 @@
     <Script file="Recipes/Engineering.lua"/>
     <Script file="RecipeModel.lua"/>
     <Script file="RecipeList.lua"/>
+    <Script file="Controller.lua"/>
     <Script file="Crafting.lua"/>
 </Ui>

@@ -1,6 +1,23 @@
 local _, wt = ...
 local Forever = wt.Forever
 
+local Description = {}
+Description.__index = Description
+local function description() return setmetatable({}, Description) end
+function Description:CreateTitle(text) self[#self + 1] = { kind = "title", text = text } end
+function Description:CreateDivider() self[#self + 1] = { kind = "divider" } end
+function Description:CreateButton(text, action, value)
+    local children = not action and description() or nil
+    self[#self + 1] = { text = text, action = action, value = value, children = children }
+    return children
+end
+function Description:CreateCheckbox(text, isSelected, action, value)
+    self[#self + 1] = { text = text, radio = false, isSelected = isSelected, action = action, value = value }
+end
+function Description:CreateRadio(text, isSelected, action, value)
+    self[#self + 1] = { text = text, radio = true, isSelected = isSelected, action = action, value = value }
+end
+
 local function createLegend(parent, prompts)
     local legend = InputPromptLegends.CreateInputLegend(parent, "inputLegend")
     legend:SetPoint("TOPLEFT")
@@ -44,18 +61,16 @@ function Forever.createMenu(parent, generator, owner)
         { "StandardOneIcon", { GAMEPAD_FACE_RIGHT }, FRAME_ACTION_CLOSE },
     })
     footer:SetSize(legend:GetWidth(), legend:GetHeight())
+    local backPrompt = legend:GetOrCreatePromptFrameUsingTemplateAndInputs("StandardOneIcon",
+        { GAMEPAD_FACE_RIGHT }, GAMEPAD_PROMPT_DIVIDER_SLASH)
     local width = 50 + 16
     local pointer = CreateFrame("Frame", nil, menu, "SmartNavigationPointerTemplate")
     pointer.IntroAnim:Stop()
     pointer.Icon:SetFrameStrata("TOOLTIP")
     pointer.Icon:SetFrameLevel(menu:GetFrameLevel() + 2)
     local arrow = pointer.Icon.Cursor
-    arrow:SetSize(18, 30)
-    arrow:SetScale(1)
-    arrow:ClearAllPoints()
-    arrow:SetPoint("RIGHT", pointer.Icon, "CENTER")
     menu.arrow = arrow
-    menu.items = {}
+    menu.items, menu.path = {}, {}
     local y = -8
     function menu:Select(index)
         if self.index then
@@ -67,8 +82,8 @@ function Forever.createMenu(parent, generator, owner)
         local item = self.items[self.index]
         item.focus:Show()
         pointer:ClearAllPoints()
-        local insetPlusCursorGap = 12;
-        pointer:SetPoint("CENTER", item, "LEFT", -insetPlusCursorGap, 0)
+        -- zero offset from SmartNavigation's 32px frame
+        pointer:SetPoint("LEFT", item, "LEFT", -32, 0)
         arrow:Show()
         pointer:Show()
     end
@@ -80,18 +95,29 @@ function Forever.createMenu(parent, generator, owner)
     function menu:Activate()
         local item = self.items[self.index]
         if not item then return end
-        if item.action(item.value) == MenuResponse.Close then self:Hide() else self:Rebuild() end
+        if item.submenuIndex then
+            self.path[#self.path + 1] = { entry = item.submenuIndex, index = self.index }
+            return self:Rebuild(1)
+        end
+        if item.action and item.action(item.value) == MenuResponse.Close then self:Hide() else self:Rebuild() end
+    end
+    function menu:Back()
+        local previous = table.remove(self.path)
+        if previous then self:Rebuild(previous.index) else self:Hide() end
     end
     function menu:HandleButton(button)
         if not self:IsShown() then return false end
         if button == "PADDUP" then self:Select((self.index or 1) - 1)
         elseif button == "PADDDOWN" then self:Select((self.index or 1) + 1)
         elseif button == "PAD1" then self:Activate()
-        elseif button == "PAD2" then self:Hide()
+        elseif button == "PAD2" or button == "PADDLEFT" then self:Back()
+        elseif button == "PADDRIGHT" then
+            local item = self.items[self.index]
+            if item and item.submenuIndex then self:Activate() end
         else return false end
         return true
     end
-    local description, pools, used = {}, {}, {}
+    local pools, used = {}, {}
     local function acquire(kind, create)
         local pool = pools[kind] or {}; pools[kind] = pool
         used[kind] = (used[kind] or 0) + 1
@@ -100,7 +126,7 @@ function Forever.createMenu(parent, generator, owner)
         pool[index]:Show()
         return pool[index]
     end
-    function description:CreateTitle(text)
+    local function title(text)
         local title = acquire("title", function() return menu:CreateFontString(nil, "OVERLAY", "GameFontNormal") end)
         title:SetPoint("TOPLEFT", 8, y)
         title:SetPoint("TOPRIGHT", -8, y)
@@ -111,7 +137,7 @@ function Forever.createMenu(parent, generator, owner)
         width = math.max(width, title:GetUnboundedStringWidth() + 36)
         y = y - 20
     end
-    function description:CreateDivider()
+    local function divider()
         local divider = acquire("divider", function() return menu:CreateTexture(nil, "ARTWORK") end)
         divider:SetPoint("TOPLEFT", 8, y)
         divider:SetPoint("TOPRIGHT", -8, y)
@@ -121,6 +147,8 @@ function Forever.createMenu(parent, generator, owner)
     end
     local function option(radio, text, isSelected, action, value)
         local item = acquire("option", function() return CreateFrame("Button", nil, menu) end)
+        item.submenuIndex = nil
+        if item.submenuArrow then item.submenuArrow:Hide() end
         item:SetPoint("TOPLEFT", 8, y)
         item:SetPoint("TOPRIGHT", -8, y)
         item.focus = item.focus or item:CreateTexture(nil, "BACKGROUND")
@@ -160,19 +188,47 @@ function Forever.createMenu(parent, generator, owner)
         item:SetScript("OnEnter", function() menu:Select(index) end)
         item:SetScript("OnClick", function() menu:Select(index); menu:Activate() end)
         y = y - 20
+        return item
     end
-    function description:CreateRadio(...) option(true, ...) end
-    function description:CreateCheckbox(...) option(false, ...) end
-    function description:CreateButton(text, action, value) option(nil, text, nil, action, value) end
-    function menu:Rebuild()
-        local index = self.index or 1
-        local value = self.items[index] and self.items[index].value
+    function menu:Rebuild(selection)
+        local index = selection or self.index or 1
+        local value
+        if not selection then value = self.items[index] and self.items[index].value end
         for kind, pool in pairs(pools) do
             used[kind] = 0
             for _, element in ipairs(pool) do element:Hide() end
         end
         self.items, self.index, y, width = {}, nil, -8, 50 + 16
-        generator(owner, description)
+        local entries = description()
+        generator(owner, entries)
+        for depth, step in ipairs(self.path) do
+            local entry = entries[step.entry]
+            if not entry or not entry.children then
+                index, value = step.index, nil
+                for i = #self.path, depth, -1 do self.path[i] = nil end
+                break
+            end
+            entries = entry.children
+        end
+        for entryIndex, entry in ipairs(entries) do
+            if entry.kind == "title" then title(entry.text)
+            elseif entry.kind == "divider" then divider()
+            else
+                local item = option(entry.radio, entry.text, entry.isSelected, entry.action, entry.value)
+                if entry.children then
+                    item.submenuIndex = entryIndex
+                    item.submenuArrow = item.submenuArrow or item:CreateTexture(nil, "ARTWORK")
+                    item.submenuArrow:SetTexture("Interface\\ChatFrame\\ChatFrameExpandArrow")
+                    item.submenuArrow:SetPoint("RIGHT")
+                    item.submenuArrow:SetSize(16, 16)
+                    item.submenuArrow:Show()
+                    width = math.max(width, item.text:GetUnboundedStringWidth() + 52)
+                end
+            end
+        end
+        backPrompt:SetPromptText(#self.path > 0 and BACK or FRAME_ACTION_CLOSE)
+        legend:InitializePrompts()
+        footer:SetSize(legend:GetWidth(), legend:GetHeight())
         self:SetWidth(width)
         self:SetHeight(-y + 15)
         if value ~= nil then
@@ -182,7 +238,11 @@ function Forever.createMenu(parent, generator, owner)
         self:Select(index)
     end
     menu:Rebuild()
-    menu:SetScript("OnShow", function() menu:Rebuild() end)
+    menu:SetScript("OnShow", function()
+        local selection = menu.path[1] and menu.path[1].index
+        menu.path = {}
+        menu:Rebuild(selection)
+    end)
     return menu
 end
 

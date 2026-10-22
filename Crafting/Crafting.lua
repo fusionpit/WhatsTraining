@@ -5,7 +5,7 @@ local function attach()
     local book = ProfessionsFrame
     if not book.ProfessionsOverviewTab then return end
 
-    local active, selectedTab, queued
+    local active, selectedTab, queued, controller
     local nativeTabs = {book.ProfessionsOverviewTab}
     for _, tab in ipairs(book.rightProfessionTabs) do
         tinsert(nativeTabs, tab)
@@ -112,9 +112,29 @@ local function attach()
         return selected
     end
 
+    local function refreshPage()
+        if InputUtil.IsGamepadUIEnabled() then
+            title:SetFrameLevel(recipeList:GetFrameLevel() + 1)
+            portrait:SetFrameLevel(recipeList:GetFrameLevel() + 1)
+        end
+        wt.PaintCraftingHeader(title, portrait, book)
+        if recipeList.needsRefresh then recipeList:Refresh()
+        elseif recipeList.needsIgnoreUpdate then recipeList:Filter() end
+    end
+
     local function sync()
         queued = false
-        if not book:IsVisible() or InputUtil.IsGamepadUIEnabled() then
+        if InputUtil.IsGamepadUIEnabled() then
+            active = false
+            if not controller then
+                controller = wt.EnableCraftingController(book, page, recipeList, launcher, returnTab,
+                    selectedNativeTab, refreshPage)
+            end
+            controller:Sync()
+            return
+        end
+        if controller then controller:Deactivate() end
+        if not book:IsVisible() then
             active = false
             page:Hide()
             launcher:Hide()
@@ -138,12 +158,7 @@ local function attach()
         launcher:Show()
         page:SetShown(active)
         if active then
-            wt.PaintCraftingHeader(title, portrait, book)
-            if recipeList.needsRefresh then
-                recipeList:Refresh()
-            elseif recipeList.needsIgnoreUpdate then
-                recipeList:Filter()
-            end
+            refreshPage()
         end
 
         returnTab:SetShown(active and selected ~= nil)
@@ -163,17 +178,23 @@ local function attach()
 
     local function deactivate()
         active = false
+        if controller then controller:Hide() end
         request()
     end
 
     launcher:SetCustomOnMouseUpHandler(function(_, button, upInside)
         if button ~= "LeftButton" or not upInside then return end
+        if InputUtil.IsGamepadUIEnabled() then
+            if controller then controller:Toggle() end
+            return
+        end
         selectedTab = selectedNativeTab()
         active = not active
         sync()
     end)
     local function returnToNative(_, button, upInside)
         if button ~= "LeftButton" or not upInside then return end
+        if controller then controller:Hide() end
         active = false
         sync()
     end

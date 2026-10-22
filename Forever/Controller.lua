@@ -507,10 +507,14 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
         held[button] = true
         if (button == "PAD2" or button == "PADLSHOULDER") and (menuShown() or search:HasFocus()) then
             held[button] = "panel" -- keep the book open on release
-            settings:Hide()
-            prices:Hide()
-            spellMenu:Hide()
-            search:ClearFocus()
+            local menu = settings:IsShown() and settings or prices:IsShown() and prices or spellMenu:IsShown() and spellMenu
+            if button == "PAD2" and menu then menu:HandleButton(button)
+            else
+                settings:Hide()
+                prices:Hide()
+                spellMenu:Hide()
+                search:ClearFocus()
+            end
         elseif button == "PADRSTICK" then
             local disable = not GetCVarBool("GamepadDisableTooltips")
             SetCVar("GamepadDisableTooltips", disable)
