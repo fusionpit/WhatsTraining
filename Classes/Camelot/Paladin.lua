@@ -31,6 +31,7 @@ class.spellsByLevel = {
 		{id = 1022, cost = 300},
 		{id = 10290, cost = 300, requiredIds = {465}},
 		{id = 633, cost = 300},
+		{id = 25780, cost = 300},
 		{id = 1311649, cost = 300},
 		{id = 20287, cost = 300, requiredIds = {20154}}
 	},
@@ -40,7 +41,7 @@ class.spellsByLevel = {
 		{id = 20162, cost = 1000, requiredIds = {21082}}
 	},
 	[14] = {{id = 19742, cost = 2000}, {id = 647, cost = 2000, requiredIds = {639}}},
-	[16] = {{id = 7294, cost = 3000}, {id = 25780, cost = 3000}},
+	[16] = {{id = 7294, cost = 1500}},
 	[18] = {
 		{id = 1044, cost = 3500},
 		{id = 5573, cost = 3500, requiredIds = {498}},

@@ -37,7 +37,7 @@ class.spellsByLevel = {
 		{id = 8143, cost = 2000}
 	},
 	[20] = {
-		{id = 66842, cost = 7000},
+		{id = 66842, cost = 2200},
 		{id = 8056, cost = 2200},
 		{id = 8033, cost = 2200},
 		{id = 2645, cost = 2200},
@@ -124,13 +124,13 @@ class.spellsByLevel = {
 		{id = 8161, cost = 11000, requiredIds = {8160}}
 	},
 	[40] = {
-		{id = 66844, cost = 7000, requiredIds = {66843}},
+		{id = 66844, cost = 12000, requiredIds = {66843}},
 		{id = 1064, cost = 12000},
 		{id = 930, cost = 12000, requiredIds = {421}},
 		{id = 10447, cost = 12000, requiredIds = {8053}},
 		{id = 6377, cost = 12000, requiredIds = {6375}},
 		{id = 8005, cost = 12000, requiredIds = {959}},
-		{id = 1238299, cost = 24000, requiredIds = {408490}, requiredTalentId = 408490},
+		{id = 1238299, cost = 12000, requiredIds = {408490}, requiredTalentId = 408490},
 		{id = 8134, cost = 12000, requiredIds = {945}},
 		{id = 8737, cost = 12000},
 		{id = 6365, cost = 12000, requiredIds = {6364}},
@@ -170,6 +170,7 @@ class.spellsByLevel = {
 	},
 	[50] = {
 		{id = 10462, cost = 24000, requiredIds = {6377}},
+		{id = 1238300, cost = 24000, requiredIds = {1238299}, requiredTalentId = 408490},
 		{id = 15207, cost = 24000, requiredIds = {10392}},
 		{id = 1239242, cost = 800, requiredIds = {408521}, requiredTalentId = 408521},
 		{id = 10437, cost = 24000, requiredIds = {6365}},
