@@ -36,6 +36,7 @@ ns.Recipes[202] = {
     { spell = 3939, skill = 120, creates = 4372, teach = 13309, source = { "vendor" }, bound = true, vendors = { { npc = 2682, area = 11, faction = "Alliance" }, { npc = 6730, area = 400 } } }, -- Lovingly Crafted Boomstick
     { spell = 3940, skill = 120, creates = 4373, teach = 4410, source = { "drop" }, bound = false }, -- Shadow Goggles
     { spell = 3941, skill = 120, creates = 4374, count = { 1, 3 }, source = { "trainer" }, cost = 500 }, -- Small Bronze Bomb
+    { spell = 1249634, skill = 120, creates = 249432, source = { "trainer" }, cost = 500 }, -- Sandpaper
     { spell = 3942, skill = 125, creates = 4375, source = { "trainer" }, cost = 500 }, -- Whirring Bronze Gizmo
     { spell = 3944, skill = 125, creates = 4376, teach = 4411, source = { "drop" }, bound = false }, -- Flame Deflector
     { spell = 3945, skill = 125, creates = 4377, source = { "trainer" }, cost = 500 }, -- Heavy Blasting Powder
@@ -51,8 +52,6 @@ ns.Recipes[202] = {
     { spell = 1319155, skill = 125, creates = 21561, count = 5, teach = 286077, bound = true }, -- Small White Rocket
     { spell = 1319156, skill = 125, creates = 21562, count = 5, teach = 286078, bound = true }, -- Small Yellow Rocket
     { spell = 3949, skill = 130, creates = 4379, source = { "trainer" }, cost = 550 }, -- Silver-plated Shotgun
-    { spell = 8895, skill = 225, creates = 7189, teach = 7192, source = { "drop", "trainer" }, cost = 2200, bound = false }, -- Goblin Rocket Boots
-    { spell = 1249634, skill = 120, creates = 249432, source = { "trainer" }, cost = 500 }, -- Sandpaper
     { spell = 1266908, skill = 130, creates = 260795, teach = 264205, source = { "vendor" }, merchantFavor = 45, bound = false, vendors = { { npc = 248200, area = 17, faction = "Horde" }, { npc = 256733, area = 44, faction = "Alliance" } } }, -- EZ-Thro Copper Bomb XL
     { spell = 6458, skill = 135, creates = 5507, source = { "trainer" }, cost = 400 }, -- Ornate Spyglass
     { spell = 424641, skill = 135, creates = 210147, teach = 210178, source = { "drop" }, bound = false }, -- Shredder Autosalvage Unit
@@ -125,6 +124,7 @@ ns.Recipes[202] = {
     { spell = 12595, skill = 205, creates = 10508, source = { "trainer" }, cost = 1600 }, -- Mithril Blunderbuss
     { spell = 12715, skill = 205, creates = 10644, source = { "trainer" }, cost = 1000 }, -- Goblin Rocket Fuel Recipe
     { spell = 12717, skill = 205, creates = 10542, teach = 221336, source = { "vendor", "trainer" }, cost = 1500, bound = true, vendors = { { npc = 222261, area = 400 } } }, -- Goblin Mining Helmet
+    { spell = 12718, skill = 205, creates = 10543, source = { "trainer" }, cost = 1500 }, -- Goblin Construction Helmet
     { spell = 12760, skill = 205, creates = 10646, source = { "trainer" }, cost = 1500 }, -- Goblin Sapper Charge
     { spell = 12895, skill = 205, creates = 10713, cost = 1500, source = { "trainer" } }, -- Inlaid Mithril Cylinder Plans
     { spell = 12899, skill = 205, creates = 10716, cost = 1500, source = { "trainer" } }, -- Gnomish Shrink Ray
@@ -143,10 +143,10 @@ ns.Recipes[202] = {
     { spell = 1266918, skill = 215, creates = 260805, teach = 264215, bound = false }, -- SAF-T Bomb
     { spell = 12607, skill = 220, creates = 10501, teach = 10603, source = { "drop" }, bound = false }, -- Catseye Ultra Goggles
     { spell = 12614, skill = 220, creates = 10510, teach = 10604, source = { "drop" }, bound = false }, -- Mithril Heavy-bore Rifle
+    { spell = 8895, skill = 225, creates = 7189, teach = 7192, source = { "drop", "trainer" }, cost = 2200, bound = false }, -- Goblin Rocket Boots
     { spell = 12615, skill = 225, creates = 10502, teach = 10605, source = { "drop" }, bound = false }, -- Spellpower Goggles Xtreme
     { spell = 12616, skill = 225, creates = 10518, teach = 10606, source = { "drop" }, bound = false }, -- Parachute Cloak
     { spell = 12716, skill = 225, creates = 10577 }, -- Goblin Mortar
-    { spell = 12718, skill = 205, creates = 10543, source = { "trainer" }, cost = 1500 }, -- Goblin Construction Helmet
     { spell = 12905, skill = 225, creates = 10724, cost = 2200, source = { "trainer" } }, -- Gnomish Rocket Boots
     { spell = 26423, skill = 225, creates = 21571, count = 5, teach = 21730, bound = true }, -- Blue Rocket Cluster
     { spell = 26424, skill = 225, creates = 21574, count = 5, teach = 21731, bound = true }, -- Green Rocket Cluster
@@ -171,10 +171,12 @@ ns.Recipes[202] = {
     { spell = 12907, skill = 235, creates = 10726, cost = 2600, source = { "trainer" } }, -- Gnomish Mind Control Cap
     { spell = 12620, skill = 240, creates = 10548, teach = 10608, source = { "drop" }, bound = false }, -- Sniper Scope
     { spell = 12759, skill = 240, creates = 10645, cost = 2800, source = { "trainer" } }, -- Gnomish Death Ray
+    { spell = 12908, skill = 240, creates = 10727, source = { "trainer" }, cost = 2800 }, -- Goblin Dragon Gun
     { spell = 1266921, skill = 240, creates = 260808, teach = 264218, bound = false }, -- EZ-Thro Tru-Trigger
     { spell = 1266922, skill = 240, creates = 260809, teach = 264219, bound = false }, -- Tru-Trigger Frag Bomb
     { spell = 12621, skill = 245, creates = 10513, count = 200, source = { "trainer" }, cost = 2800 }, -- Mithril Gyro-Shot
     { spell = 12622, skill = 245, creates = 10504, source = { "trainer" }, cost = 2800 }, -- Green Lens
+    { spell = 12758, skill = 245, creates = 10588, source = { "trainer" }, cost = 3000 }, -- Goblin Rocket Helmet
     { spell = 12624, skill = 250, creates = 10576, teach = 10609, source = { "vendor" }, bound = false, vendors = { { npc = 2688, area = 47 } } }, -- Mithril Mechanical Dragonling
     { spell = 19567, skill = 250, creates = 15846, source = { "trainer" }, cost = 4000 }, -- Salt Shaker
     { spell = 19788, skill = 250, creates = 15992, source = { "trainer" }, cost = 4000 }, -- Dense Blasting Powder
@@ -189,7 +191,6 @@ ns.Recipes[202] = {
     { spell = 1228088, skill = 250, creates = 237023, teach = 239222, bound = true }, -- Pop-Up Shrub
     { spell = 1266923, skill = 250, creates = 260810, teach = 264220, source = { "vendor" }, reputation = { 2586, 6, ns.L.FACTION_2586, 2587, 6, ns.L.FACTION_2587 }, merchantFavor = 270, bound = true, vendors = { { npc = 248200, area = 17, faction = "Horde" }, { npc = 256733, area = 44, faction = "Alliance" } } }, -- SAF-T Disposable Parachute
     { spell = 1266924, skill = 250, creates = 260811, teach = 264221, source = { "vendor" }, reputation = { 2586, 6, ns.L.FACTION_2586, 2587, 6, ns.L.FACTION_2587 }, merchantFavor = 270, bound = true, vendors = { { npc = 248200, area = 17, faction = "Horde" }, { npc = 256733, area = 44, faction = "Alliance" } } }, -- Gnomish Army Knife
-    { spell = 12908, skill = 240, creates = 10727, source = { "trainer" }, cost = 2800 }, -- Goblin Dragon Gun
     { spell = 19790, skill = 260, creates = 15993, count = 3, teach = 16041, source = { "vendor" }, bound = false, vendors = { { npc = 3413, area = 1637, faction = "Horde" }, { npc = 5175, area = 1537, faction = "Alliance" } } }, -- Thorium Grenade
     { spell = 19791, skill = 260, creates = 15994, teach = 16042, source = { "vendor" }, bound = false, vendors = { { npc = 3413, area = 1637, faction = "Horde" }, { npc = 5175, area = 1537, faction = "Alliance" } } }, -- Thorium Widget
     { spell = 19792, skill = 260, creates = 15995, teach = 16043, source = { "drop" }, bound = false }, -- Thorium Rifle
@@ -200,7 +201,6 @@ ns.Recipes[202] = {
     { spell = 1226208, skill = 260, creates = 238735, teach = 238784, bound = true }, -- Tinkerbox: Nitro Boosts
     { spell = 1226209, skill = 260, creates = 238736, teach = 238785, bound = true }, -- Tinkerbox: Magnetic Displacement
     { spell = 1317270, skill = 260, creates = 284869, count = 3, teach = 284870, source = { "drop" }, bound = false }, -- Unsanctified Grenade
-    { spell = 12758, skill = 245, creates = 10588, source = { "trainer" }, cost = 3000 }, -- Goblin Rocket Helmet
     { spell = 19793, skill = 265, creates = 15996, teach = 16044, source = { "drop" }, bound = false }, -- Lifelike Mechanical Toad
     { spell = 23078, skill = 265, creates = 18587, teach = 18653, source = { "drop" }, bound = false }, -- Goblin Jumper Cables XL
     { spell = 23096, skill = 265, creates = 18645, teach = 18654, source = { "drop" }, bound = false }, -- Alarm-O-Bot

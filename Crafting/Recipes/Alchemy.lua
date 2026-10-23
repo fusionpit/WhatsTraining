@@ -1,10 +1,10 @@
 local _, ns = ...
 ns.Recipes = ns.Recipes or {}
 ns.Recipes[171] = {
-    { spell = 2329, skill = 15, creates = 2454, source = { "trainer" }, cost = 50 }, -- Elixir of Minor Strength
     { spell = 7183, skill = 1, creates = 5997 }, -- Elixir of Minor Defense
     { spell = 1245246, skill = 10, creates = 247754 }, -- Minor Arcane Elixir
     { spell = 1245250, skill = 10, creates = 247755 }, -- Elixir of Minor Force
+    { spell = 2329, skill = 15, creates = 2454, source = { "trainer" }, cost = 50 }, -- Elixir of Minor Strength
     { spell = 3170, skill = 15, creates = 3382, source = { "trainer" }, cost = 50 }, -- Minor Troll's Blood Elixir
     { spell = 1250793, skill = 15, creates = 250344, teach = 250380, source = { "drop" }, bound = false }, -- Elixir of Minor Spirit
     { spell = 1230564, skill = 20, creates = 279956, source = { "quest", "trainer" }, cost = 100, quests = { { id = 96045, area = 1537, faction = "Alliance", level = 4 }, { id = 97899, area = 14, faction = "Horde", level = 4 }, { id = 97915, area = 12, faction = "Alliance", level = 4 }, { id = 97927, area = 215, faction = "Horde", level = 4 }, { id = 97938, area = 141, faction = "Alliance", level = 4 }, { id = 97951, area = 85, faction = "Horde", level = 4 }, { id = 97963, area = 16593, level = 4 } } }, -- Mana Well
@@ -13,14 +13,14 @@ ns.Recipes[171] = {
     { spell = 1251741, skill = 30, creates = 250944, teach = 250988, source = { "drop" }, bound = false }, -- Minor Mender's Potion
     { spell = 1251729, skill = 35, creates = 250932, teach = 250976, source = { "drop" }, bound = false }, -- Minor Spellblasting Potion
     { spell = 2332, skill = 40, creates = 2456, source = { "trainer" }, cost = 150 }, -- Minor Rejuvenation Potion
+    { spell = 1249630, skill = 40, creates = 249409, source = { "trainer" }, cost = 150 }, -- Cerulean Dye
+    { spell = 1249633, skill = 40, creates = 249410, source = { "trainer" }, cost = 150 }, -- Sulfuric Acid
     { spell = 1251735, skill = 40, creates = 250938, teach = 250982, source = { "drop" }, bound = false }, -- Minor Frenzy Potion
     { spell = 1250779, skill = 45, creates = 250330, teach = 250366, source = { "drop" }, bound = false }, -- Minor Cleric's Elixir
     { spell = 2334, skill = 50, creates = 2458, source = { "trainer" }, cost = 250 }, -- Elixir of Minor Fortitude
     { spell = 3101, skill = 50, rank = "Journeyman", source = { "trainer" }, cost = 500, level = 10 }, -- Alchemy (Journeyman)
     { spell = 3230, skill = 50, creates = 2457, teach = 2553, source = { "drop" }, bound = false }, -- Elixir of Minor Agility
     { spell = 4508, skill = 50, creates = 4596, teach = 4597, source = { "quest", "trainer" }, cost = 10, bound = true, quests = { { id = 91920, area = 130, faction = "Horde", level = 10 }, { id = 92110, area = 40, faction = "Alliance", level = 10 } } }, -- Minor Discolored Healing Potion
-    { spell = 1249630, skill = 40, creates = 249409, source = { "trainer" }, cost = 150 }, -- Cerulean Dye
-    { spell = 1249633, skill = 40, creates = 249410, source = { "trainer" }, cost = 150 }, -- Sulfuric Acid
     { spell = 2335, skill = 60, creates = 2459, teach = 2555, source = { "drop" }, bound = false }, -- Swiftness Potion
     { spell = 6617, skill = 60, creates = 5631, teach = 5640, source = { "vendor" }, bound = false, vendors = { { npc = 1669, area = 40 }, { npc = 1685, area = 38, faction = "Alliance" }, { npc = 3335, area = 1637, faction = "Horde" }, { npc = 3499, area = 17 } } }, -- Rage Potion
     { spell = 1250794, skill = 65, creates = 250345, teach = 250381, source = { "vendor" }, merchantFavor = 45, bound = true, vendors = { { npc = 248196, area = 17, faction = "Horde" }, { npc = 256729, area = 44, faction = "Alliance" } } }, -- Elixir of Lesser Spirit
@@ -43,12 +43,12 @@ ns.Recipes[171] = {
     { spell = 1250795, skill = 115, creates = 250346, teach = 250382, source = { "drop" }, bound = false }, -- Elixir of Spirit
     { spell = 3173, skill = 120, creates = 3385, source = { "trainer" }, cost = 1500 }, -- Lesser Mana Potion
     { spell = 3174, skill = 120, creates = 3386, teach = 3394, source = { "drop" }, bound = false }, -- Potion of Poison Cleansing
+    { spell = 1249631, skill = 120, creates = 249430, source = { "trainer" }, cost = 1500 }, -- Magenta Dye
     { spell = 1250791, skill = 120, creates = 250342, teach = 250378, source = { "vendor" }, merchantFavor = 45, bound = true, vendors = { { npc = 248196, area = 17, faction = "Horde" }, { npc = 256729, area = 44, faction = "Alliance" } } }, -- Lesser Arcane Elixir
     { spell = 3176, skill = 125, creates = 3388, source = { "trainer" }, cost = 1500 }, -- Lesser Troll's Blood Elixir
     { spell = 3464, skill = 125, rank = "Expert", source = { "trainer" }, cost = 5000, level = 20 }, -- Alchemy (Expert)
     { spell = 3177, skill = 130, creates = 3389, source = { "trainer" }, cost = 2000 }, -- Elixir of Lesser Defense
     { spell = 7837, skill = 130, creates = 6371, count = 2, source = { "trainer" }, cost = 1000 }, -- Fire Oil
-    { spell = 1249631, skill = 120, creates = 249430, source = { "trainer" }, cost = 1500 }, -- Magenta Dye
     { spell = 1251743, skill = 130, creates = 250946, teach = 250990, source = { "vendor" }, merchantFavor = 45, bound = true, vendors = { { npc = 248196, area = 17, faction = "Horde" }, { npc = 256729, area = 44, faction = "Alliance" } } }, -- Mender's Potion
     { spell = 7256, skill = 135, creates = 6048, teach = 6054, source = { "vendor" }, bound = true, vendors = { { npc = 2393, area = 267, faction = "Horde" }, { npc = 3956, area = 331, faction = "Alliance" } } }, -- Shadow Protection Potion
     { spell = 1244646, skill = 135, creates = 247240, source = { "trainer" }, cost = 500 }, -- Discolored Healing Potion
@@ -73,10 +73,10 @@ ns.Recipes[171] = {
     { spell = 1244647, skill = 175, creates = 247241, source = { "trainer" }, cost = 1500 }, -- Greater Discolored Healing Potion
     { spell = 1250790, skill = 175, creates = 250341, teach = 250377, source = { "vendor" }, reputation = { 2586, 5, ns.L.FACTION_2586, 2587, 5, ns.L.FACTION_2587 }, merchantFavor = 120, bound = true, vendors = { { npc = 248196, area = 17, faction = "Horde" }, { npc = 256729, area = 44, faction = "Alliance" } } }, -- Greater Mageblood Elixir
     { spell = 3451, skill = 180, creates = 3826, teach = 3831, source = { "drop" }, bound = false }, -- Troll's Blood Elixir
+    { spell = 1251744, skill = 180, creates = 250947 }, -- Greater Mender's Potion
     { spell = 1251750, skill = 180, creates = 250952, teach = 250996, source = { "vendor" }, reputation = { 2586, 5, ns.L.FACTION_2586, 2587, 5, ns.L.FACTION_2587 }, merchantFavor = 120, bound = true, vendors = { { npc = 248196, area = 17, faction = "Horde" }, { npc = 256729, area = 44, faction = "Alliance" } } }, -- Disorienting Smog Potion
     { spell = 11449, skill = 185, creates = 8949, source = { "trainer" }, cost = 6500 }, -- Elixir of Agility
     { spell = 1251732, skill = 185, creates = 250935, teach = 250979, source = { "quest", "vendor" }, reputation = { 93, 6, ns.L.FACTION_93, 92, 8, ns.L.FACTION_92 }, bound = true, quests = { { id = 92754, area = 405, level = 30 } }, vendors = { { npc = 253139, area = 405 }, { npc = 253140, area = 405 } } }, -- Greater Spellblasting Potion
-    { spell = 1251744, skill = 180, creates = 250947 }, -- Greater Mender's Potion
     { spell = 7258, skill = 190, creates = 6050, teach = 6056, source = { "vendor" }, bound = true, vendors = { { npc = 2812, area = 45, faction = "Alliance" }, { npc = 2848, area = 33 } } }, -- Frost Protection Potion
     { spell = 7259, skill = 190, creates = 6052, teach = 6057, source = { "vendor" }, bound = true, vendors = { { npc = 2848, area = 33 }, { npc = 5594, area = 440 }, { npc = 8157, area = 357, faction = "Alliance" }, { npc = 8158, area = 357, faction = "Horde" } } }, -- Nature Protection Potion
     { spell = 21923, skill = 190, creates = 17708, teach = 17709, source = { "drop" }, bound = false }, -- Elixir of Frost Power
@@ -99,6 +99,7 @@ ns.Recipes[171] = {
     { spell = 4942, skill = 215, creates = 4623, teach = 4624, source = { "quest" }, bound = false, quests = { { id = 715, area = 3, level = 35 } } }, -- Lesser Stoneshield Potion
     { spell = 11452, skill = 215, creates = 9030 }, -- Restorative Potion
     { spell = 22808, skill = 215, creates = 18294, source = { "trainer" }, cost = 10000 }, -- Draught of Greater Water Breathing
+    { spell = 1249632, skill = 215, creates = 249431, source = { "trainer" }, cost = 10000 }, -- Viridian Dye
     { spell = 11458, skill = 225, creates = 9144, teach = 9294, source = { "drop" }, bound = false }, -- Wildvine Potion
     { spell = 11459, skill = 225, creates = 9149, teach = 9303, source = { "vendor" }, bound = false, vendors = { { npc = 5594, area = 440 } } }, -- Philosopher's Stone
     { spell = 11479, skill = 225, creates = 3577, teach = 9304, source = { "vendor", "trainer" }, cost = 2500, bound = false, vendors = { { npc = 5594, area = 440 } } }, -- Transmute: Iron to Gold
@@ -107,7 +108,6 @@ ns.Recipes[171] = {
     { spell = 11460, skill = 230, creates = 9154, source = { "trainer" }, cost = 5000 }, -- Draught of Detect Undead
     { spell = 15833, skill = 230, creates = 12190, source = { "trainer" }, cost = 10000 }, -- Dreamless Sleep Potion
     { spell = 1244648, skill = 230, creates = 247242, source = { "trainer" }, cost = 5000 }, -- Superior Discolored Healing Potion
-    { spell = 1249632, skill = 215, creates = 249431, source = { "trainer" }, cost = 10000 }, -- Viridian Dye
     { spell = 1251745, skill = 230, creates = 250948, teach = 250992, bound = false }, -- Superior Mender's Potion
     { spell = 11461, skill = 235, creates = 9155, source = { "trainer" }, cost = 10000 }, -- Arcane Elixir
     { spell = 11464, skill = 235, creates = 9172, teach = 9295, source = { "drop" }, bound = false }, -- Invisibility Potion

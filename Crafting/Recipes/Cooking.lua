@@ -84,6 +84,7 @@ ns.Recipes[185] = {
     { spell = 1250155, skill = 175, creates = 250078, teach = 250186, bound = true }, -- Giant Scrambled Eggs
     { spell = 1249960, skill = 180, creates = 249868, teach = 249882, bound = true }, -- Triage Tea
     { spell = 1249966, skill = 180, creates = 249874, teach = 249888, source = { "vendor" }, reputation = { 2586, 5, ns.L.FACTION_2586, 2587, 5, ns.L.FACTION_2587 }, merchantFavor = 60, bound = true, vendors = { { npc = 248198, area = 17, faction = "Horde" }, { npc = 256731, area = 44, faction = "Alliance" } } }, -- Calcified Smoothie
+    { spell = 1250150, skill = 180, creates = 250073, teach = 250181, bound = true }, -- Raging Raptor Ribs
     { spell = 1295834, skill = 185, creates = 274976, teach = 274977, source = { "vendor" }, bound = true, vendors = { { npc = 259860, area = 16591, faction = "Alliance" } } }, -- Plain Ol' Paletusk
     { spell = 15906, skill = 200, creates = 12217, teach = 12239, source = { "vendor" }, bound = false, vendors = { { npc = 4879, area = 15, faction = "Horde" }, { npc = 4897, area = 15, faction = "Alliance" }, { npc = 12246, area = 405 } } }, -- Dragonbreath Chili
     { spell = 15910, skill = 200, creates = 12215, count = 2, teach = 12240, source = { "vendor" }, bound = true, vendors = { { npc = 8150, area = 405, faction = "Alliance" }, { npc = 9636, area = 405, faction = "Horde" }, { npc = 12245, area = 405 } } }, -- Heavy Kodo Stew
@@ -124,7 +125,6 @@ ns.Recipes[185] = {
     { spell = 1250147, skill = 275, creates = 250070, teach = 250178, bound = true }, -- Bear Bruscitti
     { spell = 1250148, skill = 275, creates = 250071, teach = 250179, bound = true }, -- Steaming Stag Steak
     { spell = 1250149, skill = 275, creates = 250072, teach = 250180, bound = true }, -- Swiftstrike Steak
-    { spell = 1250150, skill = 180, creates = 250073, teach = 250181, bound = true }, -- Raging Raptor Ribs
     { spell = 1250152, skill = 275, creates = 250075, teach = 250183, bound = true }, -- Prehistoric Pulled Raptor
     { spell = 1250158, skill = 275, creates = 250081, teach = 250189, bound = true }, -- Clam Linguine
     { spell = 1294014, skill = 275, creates = 267341, teach = 274415, source = { "vendor" }, reputation = { 2747, 5, ns.L.FACTION_2747 }, bound = true, vendors = { { npc = 256629, area = 616 } } }, -- Sweetpaw Jam

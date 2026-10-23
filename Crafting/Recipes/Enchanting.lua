@@ -2,6 +2,7 @@ local _, ns = ...
 ns.Recipes = ns.Recipes or {}
 ns.Recipes[333] = {
     { spell = 7421, skill = 1, creates = 6218 }, -- Runed Copper Rod
+    { spell = 25124, skill = 5, creates = 20744, teach = 20758, source = { "vendor" }, bound = false, vendors = { { npc = 1318, area = 1519, faction = "Alliance" }, { npc = 3012, area = 1638, faction = "Horde" }, { npc = 3346, area = 1637, faction = "Horde" }, { npc = 4228, area = 1657, faction = "Alliance" }, { npc = 4617, area = 1497, faction = "Horde" }, { npc = 5158, area = 1537, faction = "Alliance" }, { npc = 5757, area = 130, faction = "Horde" }, { npc = 5758, area = 130, faction = "Horde" }, { npc = 15419, area = 1377 }, { npc = 257020, area = 16593 } } }, -- Minor Wizard Oil
     { spell = 14293, skill = 10, creates = 11287, source = { "trainer" }, cost = 50 }, -- Lesser Magic Wand
     { spell = 1245320, skill = 10, creates = 247786, count = 3 }, -- Dust to Motes
     { spell = 1245321, skill = 10, creates = 247789 }, -- Novice's Practice Wand
@@ -11,7 +12,6 @@ ns.Recipes[333] = {
     { spell = 1230643, skill = 20, creates = 279976, source = { "quest", "trainer" }, cost = 100, quests = { { id = 96059, area = 1537, faction = "Alliance", level = 4 }, { id = 97901, area = 14, faction = "Horde", level = 4 }, { id = 97917, area = 12, faction = "Alliance", level = 4 }, { id = 97929, area = 215, faction = "Horde", level = 4 }, { id = 97940, area = 141, faction = "Alliance", level = 4 }, { id = 97953, area = 85, faction = "Horde", level = 4 }, { id = 98284, area = 16593, faction = "Horde", level = 4 }, { id = 98286, area = 16593, faction = "Alliance", level = 4 } } }, -- Enchanted Lute
     { spell = 7426, skill = 40, source = { "trainer" }, cost = 100 }, -- Enchant Chest - Minor Absorption
     { spell = 7454, skill = 45, source = { "trainer" }, cost = 100 }, -- Enchant Cloak - Minor Resistance
-    { spell = 25124, skill = 45, creates = 20744, teach = 20758, source = { "vendor" }, bound = false, vendors = { { npc = 1318, area = 1519, faction = "Alliance" }, { npc = 3012, area = 1638, faction = "Horde" }, { npc = 3346, area = 1637, faction = "Horde" }, { npc = 4228, area = 1657, faction = "Alliance" }, { npc = 4617, area = 1497, faction = "Horde" }, { npc = 5158, area = 1537, faction = "Alliance" }, { npc = 5757, area = 130, faction = "Horde" }, { npc = 5758, area = 130, faction = "Horde" }, { npc = 15419, area = 1377 }, { npc = 257020, area = 16593 } } }, -- Minor Wizard Oil
     { spell = 7412, skill = 50, rank = "Journeyman", source = { "trainer" }, cost = 500, level = 10 }, -- Enchanting (Journeyman)
     { spell = 7457, skill = 50, source = { "trainer" }, cost = 250 }, -- Enchant Bracer - Minor Stamina
     { spell = 7748, skill = 60, source = { "trainer" }, cost = 250 }, -- Enchant Chest - Lesser Stamina
