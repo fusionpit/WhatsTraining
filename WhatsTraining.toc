@@ -51,6 +51,7 @@ WeaponGrouping.lua
 Rows.lua
 WhatsTrainingUI.lua
 Forever\Forever.xml [AllowLoadGameType camelot][ExcludeLoadGameType classic]
+Crafting\Recipes\[Game]\Recipes.xml
 Crafting\Crafting.xml [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 Categories.lua
 DataBuilder.lua

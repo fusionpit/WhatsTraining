@@ -23,7 +23,7 @@ local secondaryProfessions = {
 }
 local requested = {}
 local sourceNames = {trainer = wt.L.TRAINER, vendor = wt.L.VENDOR, drop = wt.L.DROP, quest = wt.L.QUEST,
-    crafted = wt.L.CRAFTED, world_object = wt.L.WORLD_OBJECT}
+    crafted = wt.L.CRAFTED, world_object = wt.L.WORLD_OBJECT, discovery = wt.L.DISCOVERY}
 wt.RecipeSourceNames = sourceNames
 local Category = {AVAILABLE = 1, MISSING = 2, SOON = 3, LATER = 4, IGNORED = 5}
 wt.RecipeCategory = Category

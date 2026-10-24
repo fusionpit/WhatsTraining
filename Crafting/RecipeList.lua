@@ -6,7 +6,7 @@ local hasSelection, professionLess, Category = wt.HasSelection, wt.ProfessionLes
 local HEADER_CAP_FRACTION = 8 / 1024
 local MERCHANTS_FAVOR_CURRENCY = 3402
 
-local sourceTypes = {"trainer", "vendor", "quest", "drop", "crafted", "world_object"}
+local sourceTypes = {"trainer", "vendor", "quest", "drop", "crafted", "world_object", "discovery"}
 local defaultSources = {trainer = true, vendor = true, quest = true}
 local columns = {0, 0.46, 0.75, 1}
 local gradients = {}
