@@ -21,6 +21,7 @@ libs\FusionIgnoreStore\IgnoreStore.lua
 
 Game.lua
 Localization.lua
+LocalizationFallbacks.lua
 Utils.lua
 Cache.lua
 
