@@ -6,7 +6,15 @@ local hasSelection, professionLess, Category = wt.HasSelection, wt.ProfessionLes
 local HEADER_CAP_FRACTION = 8 / 1024
 local MERCHANTS_FAVOR_CURRENCY = 3402
 
-local sourceTypes = {"trainer", "vendor", "quest", "drop", "crafted", "world_object", "discovery"}
+local sourceTypes, usedSources = {}, {}
+for _, recipes in pairs(wt.Recipes) do
+    for _, recipe in ipairs(recipes) do
+        for _, source in ipairs(wt.GetRecipeSources(recipe)) do usedSources[source] = true end
+    end
+end
+for _, source in ipairs({"trainer", "vendor", "quest", "drop", "crafted", "world_object", "discovery"}) do
+    if usedSources[source] then tinsert(sourceTypes, source) end
+end
 local defaultSources = {trainer = true, vendor = true, quest = true}
 local columns = {0, 0.46, 0.75, 1}
 local gradients = {}
@@ -98,7 +106,7 @@ local function setupFilterDropdown(view, dropdown)
             if C_SkillInfo.GetSkillLineInfoByID(id) and not view.selectedProfessions[id] then return false end
         end
         for _, source in ipairs(sourceTypes) do
-            if view.selectedSources[source] ~= (defaultSources[source] or false) then return false end
+            if (view.selectedSources[source] or false) ~= (defaultSources[source] or false) then return false end
         end
         return not view.settings.showReputationRecipes and not view.settings.showMerchantsFavorRecipes
             and not view.settings.showOtherFactionRecipes
