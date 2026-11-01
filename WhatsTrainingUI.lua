@@ -1,4 +1,4 @@
--- Compact list shared by the Era/TBC spellbook and Forever's floating window.
+-- Compact list shared by the Era/TBC spellbook and the floating /wt window.
 
 local _, wt = ...
 

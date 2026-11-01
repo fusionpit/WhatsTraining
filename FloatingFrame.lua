@@ -24,6 +24,11 @@ local function floatingFrame()
             WT_FloatingFramePoint = { point, relativePoint, x, y }
         end)
         frame.Title:SetText(wt.L.TAB_TEXT)
+        if wt.gameVersion ~= "forever" then
+            -- era/anni and forever have differently sized close buttons
+            -- blizzard nudges it the same way for GearManagerDialog
+            _G[frame:GetName() .. "Close"]:SetPoint("TOPRIGHT", 2.2, 0)
+        end
         frame.maxRows, frame.scrollStep = 27, 16
         wt.CreateCompactFrame(frame)
         frame.searchBox:ClearAllPoints()
@@ -47,7 +52,7 @@ end
 SLASH_WHATSTRAINING1 = "/wt"
 SlashCmdList.WHATSTRAINING = function(message)
     local command, direction = (message or ""):lower():match("^%s*(%S+)%s*(.-)%s*$")
-    if command == "professionstab" then
+    if command == "professionstab" and wt.MoveProfessionTab then
         wt.MoveProfessionTab(direction)
         return
     end
@@ -55,9 +60,12 @@ SlashCmdList.WHATSTRAINING = function(message)
     frame:SetShown(not frame:IsShown())
 end
 
--- Broker opens this window, not the spellbook as that taints a whoooole lotta things
-function wt.Open(toWeapons)
-    wt.showingWeaponSkills = toWeapons == true
-    local frame = floatingFrame()
-    if frame:IsShown() then wt:ApplyFilter() else frame:Show() end
+-- Forever's broker opens this window, not the spellbook as that taints a whoooole lotta things
+-- Era/Anni opens the spellbook tab
+if wt.gameVersion == "forever" then
+    function wt.Open(toWeapons)
+        wt.showingWeaponSkills = toWeapons == true
+        local frame = floatingFrame()
+        if frame:IsShown() then wt:ApplyFilter() else frame:Show() end
+    end
 end

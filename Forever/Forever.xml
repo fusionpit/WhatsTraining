@@ -7,6 +7,5 @@
     <Script file="Views.lua"/>
     <Script file="Banner.lua"/>
     <Script file="SpellBook.lua"/>
-    <Script file="FloatingFrame.lua"/>
     <Script file="Controller.lua"/>
 </Ui>
