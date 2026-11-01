@@ -120,6 +120,21 @@ local function sourceFaction(recipe, sources)
     return faction
 end
 
+-- drops quest/vendor sources if every location belongs to another faction
+local function usableSources(recipe, sources, playerFaction)
+    local usable = {}
+    for _, source in ipairs(sources) do
+        local locations = (source == "quest" or source == "vendor")
+            and recipe[source == "quest" and "quests" or "vendors"]
+        local keep = not locations or #locations == 0
+        for _, location in ipairs(locations or {}) do
+            if not location.faction or location.faction == playerFaction then keep = true end
+        end
+        if keep then tinsert(usable, source) end
+    end
+    return (#usable == #sources or #usable == 0) and sources or usable
+end
+
 -- returns the row and its category, or nil when the recipe is hidden
 local function rowFor(recipe, skill, id)
     local info = C_Spell.GetSpellInfo(recipe.spell)
@@ -131,7 +146,9 @@ local function rowFor(recipe, skill, id)
     local rank = recipe.rank and C_Spell.GetSpellSubtext(recipe.spell)
     if recipe.rank and (not rank or rank == "") then rank = wt.L[recipe.rank] or recipe.rank end
     if rank and rank ~= "" then name = string.format(wt.L.NAME_WITH_RANK, name, rank) end
-    local sources, labels = wt.GetRecipeSources(recipe), {}
+    local playerFaction = UnitFactionGroup("player")
+    local allSources, labels = wt.GetRecipeSources(recipe), {}
+    local sources = usableSources(recipe, allSources, playerFaction)
     for _, source in ipairs(sources) do
         tinsert(labels, sourceNames[source] or source)
     end
@@ -140,8 +157,8 @@ local function rowFor(recipe, skill, id)
         recipe = recipe, name = name, profession = skill.name, professionID = id, rankName = rank,
         searchName = strlower(name), searchProfession = strlower(skill.name), sources = sources,
     }
-    local faction = sourceFaction(recipe, sources)
-    row.otherFactionSource = faction ~= UnitFactionGroup("player") and faction or nil
+    local faction = sourceFaction(recipe, allSources)
+    row.otherFactionSource = faction ~= playerFaction and faction or nil
 
     local required = recipe.skill
     local level = recipe.level
