@@ -1,21 +1,11 @@
 local _, wt = ...
 local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
-local professions, sourceNames, categories = wt.Professions, wt.RecipeSourceNames, wt.RecipeCategories
+local categories = wt.RecipeCategories
 local hasSelection, professionLess, Category = wt.HasSelection, wt.ProfessionLess, wt.RecipeCategory
 
 local HEADER_CAP_FRACTION = 8 / 1024
 local MERCHANTS_FAVOR_CURRENCY = 3402
 
-local sourceTypes, usedSources = {}, {}
-for _, recipes in pairs(wt.Recipes) do
-    for _, recipe in ipairs(recipes) do
-        for _, source in ipairs(wt.GetRecipeSources(recipe)) do usedSources[source] = true end
-    end
-end
-for _, source in ipairs({"trainer", "vendor", "quest", "drop", "crafted", "world_object", "discovery"}) do
-    if usedSources[source] then tinsert(sourceTypes, source) end
-end
-local defaultSources = {trainer = true, vendor = true, quest = true}
 local columns = {0, 0.46, 0.75, 1}
 local gradients = {}
 for i, category in ipairs(categories) do
@@ -29,100 +19,6 @@ local function label(parent, font)
     text:SetJustifyH("LEFT")
     text:SetWordWrap(false)
     return text
-end
-
-local function updateProfessionSelections(self)
-    self.hasProfession = false
-    for _, id in ipairs(professions) do
-        if C_SkillInfo.GetSkillLineInfoByID(id) then
-            self.hasProfession = true
-            if self.selectedProfessions[id] == nil then self.selectedProfessions[id] = true end
-        else
-            self.selectedProfessions[id] = nil
-        end
-    end
-end
-
-local function buildFilterMenu(view, menu)
-    local professionMenu = menu:CreateButton(wt.L.PROFESSIONS)
-    local function setProfessions(checked)
-        for _, id in ipairs(professions) do
-            if C_SkillInfo.GetSkillLineInfoByID(id) then view.selectedProfessions[id] = checked end
-        end
-        view:Filter(true)
-        return MenuResponse.Refresh
-    end
-    professionMenu:CreateButton(CHECK_ALL, setProfessions, true)
-    professionMenu:CreateButton(UNCHECK_ALL, setProfessions, false)
-    local function professionSelected(id) return view.selectedProfessions[id] end
-    local function toggleProfession(id)
-        view.selectedProfessions[id] = not professionSelected(id)
-        view:Filter(true)
-        return MenuResponse.Refresh
-    end
-    local choices = {}
-    for _, id in ipairs(professions) do
-        local skill = C_SkillInfo.GetSkillLineInfoByID(id)
-        if skill then tinsert(choices, {id = id, profession = skill.name}) end
-    end
-    table.sort(choices, professionLess)
-    for _, choice in ipairs(choices) do
-        professionMenu:CreateCheckbox(choice.profession, professionSelected, toggleProfession, choice.id)
-    end
-
-    local sourceMenu = menu:CreateButton(wt.L.SOURCES)
-    local function setSources(checked)
-        for _, source in ipairs(sourceTypes) do view.selectedSources[source] = checked end
-        view:Filter(true)
-        return MenuResponse.Refresh
-    end
-    sourceMenu:CreateButton(CHECK_ALL, setSources, true)
-    sourceMenu:CreateButton(UNCHECK_ALL, setSources, false)
-    local function sourceSelected(source) return view.selectedSources[source] end
-    local function toggleSource(source)
-        view.selectedSources[source] = not sourceSelected(source)
-        view:Filter(true)
-        return MenuResponse.Refresh
-    end
-    for _, source in ipairs(sourceTypes) do
-        sourceMenu:CreateCheckbox(sourceNames[source], sourceSelected, toggleSource, source)
-    end
-
-    local function selected(key) return view.settings[key] ~= false end
-    local function toggle(key)
-        view.settings[key] = not selected(key)
-        view:Filter(true)
-        return MenuResponse.Refresh
-    end
-    menu:CreateCheckbox(wt.L.SHOW_REPUTATION_RECIPES, selected, toggle, "showReputationRecipes")
-    menu:CreateCheckbox(string.format(wt.L.SHOW_MERCHANTS_FAVOR_RECIPES, wt.L.MERCHANTS_FAVOR),
-        selected, toggle, "showMerchantsFavorRecipes")
-    menu:CreateCheckbox(wt.L.SHOW_OTHER_FACTION_RECIPES, selected, toggle, "showOtherFactionRecipes")
-end
-
-local function setupFilterDropdown(view, dropdown)
-    dropdown:SetIsDefaultCallback(function()
-        for _, id in ipairs(professions) do
-            if C_SkillInfo.GetSkillLineInfoByID(id) and not view.selectedProfessions[id] then return false end
-        end
-        for _, source in ipairs(sourceTypes) do
-            if (view.selectedSources[source] or false) ~= (defaultSources[source] or false) then return false end
-        end
-        return not view.settings.showReputationRecipes and not view.settings.showMerchantsFavorRecipes
-            and not view.settings.showOtherFactionRecipes
-    end)
-    dropdown:SetDefaultCallback(function()
-        for _, id in ipairs(professions) do
-            if C_SkillInfo.GetSkillLineInfoByID(id) then view.selectedProfessions[id] = true end
-        end
-        for _, source in ipairs(sourceTypes) do view.selectedSources[source] = defaultSources[source] or false end
-        view.settings.showReputationRecipes = false
-        view.settings.showMerchantsFavorRecipes = false
-        view.settings.showOtherFactionRecipes = false
-        view:Filter(true)
-        dropdown:GenerateMenu()
-    end)
-    dropdown:SetupMenu(function(_, menu) buildFilterMenu(view, menu) end)
 end
 
 local function addSourceZones(tooltip, locations, format)
@@ -159,7 +55,7 @@ local function addRecipeTooltip(view, tooltip, tooltipData)
     end
     addSourceZones(tooltip, data.recipe.quests, wt.L.QUEST_STARTS_IN)
     addSourceZones(tooltip, data.recipe.vendors, wt.L.SOLD_IN)
-    if data.requirement then tooltip:AddLine(data.requirement, 1, 0, 0) end
+    if data.category == Category.MISSING and data.requirement then tooltip:AddLine(data.requirement, 1, 0, 0) end
     if data.reputationRequirement then
         if data.reputationMet then
             tooltip:AddLine(data.reputationRequirement, 0, 1, 0, true)
@@ -290,38 +186,9 @@ local function setAllCollapsed(view, categoryNode, isCollapsed)
 end
 
 local function buildRowMenu(view, node, menu)
-    local data = node:GetData()
-    menu:CreateTitle(data.name or data.profession or categories[data.category].label)
-    if data.recipe then
-        menu:CreateCheckbox(wt.L.IGNORED_HEADER, function() return ignoreStore:IsIgnored(data.recipe.spell) end,
-            function()
-                PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-                ignoreStore:Flip(data.recipe.spell)
-                return MenuResponse.Close
-            end)
-        return
-    end
-    if not data.profession then
-        menu:CreateButton(wt.L.COLLAPSE_ALL, function() return setAllCollapsed(view, node, true) end)
-        menu:CreateButton(wt.L.EXPAND_ALL, function() return setAllCollapsed(view, node, false) end)
-    end
-    menu:CreateButton(data.category == Category.IGNORED and wt.L.UNIGNORE_ALL or wt.L.IGNORE_ALL, function()
-        local ids = {}
-        for _, item in ipairs(data.items) do tinsert(ids, item.recipe.spell) end
-        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-        ignoreStore:UpdateMany(ids, data.category ~= Category.IGNORED)
-        return MenuResponse.Close
+    wt.GenerateRecipeRowMenu(node:GetData(), menu, function(isCollapsed)
+        return setAllCollapsed(view, node, isCollapsed)
     end)
-end
-
-local function insertLink(link)
-    if not link then return end
-    local window = ChatEdit_GetActiveWindow()
-    if window then
-        window:Insert(link)
-    else
-        ChatFrame_OpenChat(link)
-    end
 end
 
 local function rowClick(view, row, button)
@@ -333,20 +200,7 @@ local function rowClick(view, row, button)
         end
         MenuUtil.CreateContextMenu(row, function(_, menu) buildRowMenu(view, row:GetElementData(), menu) end)
     elseif button == "LeftButton" and data.recipe then
-        local recipe, itemID = data.recipe
-        if IsControlKeyDown() then
-            itemID = recipe.teach
-            if not itemID then
-                insertLink(C_Spell.GetSpellLink(recipe.spell))
-                return
-            end
-        elseif IsShiftKeyDown() then
-            itemID = recipe.creates
-        end
-        if itemID then
-            local item = Item:CreateFromItemID(itemID)
-            item:ContinueOnItemLoad(function() insertLink(item:GetItemLink()) end)
-        end
+        wt.LinkRecipe(data.recipe)
     elseif button == "LeftButton" and data.professionID and not data.recipe then
         toggleNode(view, row)
     end
@@ -529,13 +383,6 @@ local function rebuildModel(view)
     regroup(view)
 end
 
-local function matches(view, data, query)
-    if not view.settings.showOtherFactionRecipes and data.otherFactionSource then return false end
-    if view.settings.showReputationRecipes == false and data.reputationRequirement then return false end
-    if view.settings.showMerchantsFavorRecipes == false and (data.recipe.merchantFavor or 0) > 0 then return false end
-    return wt.RowMatches(data, query, view.selectedSources)
-end
-
 local function filter(self, resetScroll)
     self.filterDropdown:ValidateResetState()
     local selected = hasSelection(self.selectedProfessions) and hasSelection(self.selectedSources)
@@ -566,7 +413,7 @@ local function filter(self, resetScroll)
                 if self.selectedProfessions[subgroup.id] then
                     for _, recipeNode in ipairs(subgroup.nodes) do
                         local data = recipeNode:GetData()
-                        if matches(self, data, query) then
+                        if wt.RecipeMatchesFilters(self, data, query) then
                             tinsert(recipesShown, recipeNode)
                             tinsert(subgroup.items, data)
                             tinsert(category.items, data)
@@ -620,8 +467,8 @@ function wt.CreateRecipeList(page)
     view.selectedSources = WT_Crafting.selectedSources
     view.settings = WT_Crafting.settings
     if view.settings.showOtherFactionRecipes == nil then view.settings.showOtherFactionRecipes = false end
-    view.UpdateProfessionSelections, view.Filter, view.Refresh = updateProfessionSelections, filter, refresh
-    view.GenerateFilterMenu = buildFilterMenu
+    view.UpdateProfessionSelections, view.Filter, view.Refresh = wt.UpdateRecipeProfessionSelections, filter, refresh
+    view.GenerateFilterMenu = wt.GenerateRecipeFilterMenu
     view.GenerateRowMenu = buildRowMenu
     view:UpdateProfessionSelections()
     view:SetAllPoints()
@@ -641,7 +488,7 @@ function wt.CreateRecipeList(page)
     dropdown.resizeToText = false
     dropdown:SetSize(108, 18)
     dropdown:SetPoint("LEFT", search, "RIGHT", 4, 0)
-    setupFilterDropdown(view, dropdown)
+    wt.SetupRecipeFilter(view, dropdown)
 
     local scroll = CreateFrame("Frame", "WhatsTrainingCraftingScrollBox", view, "WowScrollBoxList")
     view.scrollBox = scroll

@@ -15,6 +15,7 @@ local professions = {
     333, -- Enchanting
     202, -- Engineering
 }
+if wt.gameVersion == "tbc" then tinsert(professions, 755) end -- Jewelcrafting
 wt.Professions = professions
 local secondaryProfessions = {
     [129] = true, -- First Aid
@@ -77,10 +78,16 @@ local function reputationRequirement(recipe)
     if not rep then return nil, true end
     local alternatives, met = {}, false
     for i = 1, #rep, 3 do
-        local faction = C_Reputation.GetFactionDataByID(rep[i])
-        met = met or (faction and faction.reaction and faction.reaction >= rep[i + 1]) or false
+        local name, standing
+        if wt.gameVersion == "forever" then
+            local faction = C_Reputation.GetFactionDataByID(rep[i])
+            if faction then name, standing = faction.name, faction.reaction end
+        else
+            name, _, standing = GetFactionInfoByID(rep[i])
+        end
+        met = met or (standing and standing >= rep[i + 1]) or false
         tinsert(alternatives, string.format(wt.L.REPUTATION_STANDING,
-            faction and faction.name or rep[i + 2],
+            name or rep[i + 2],
             _G["FACTION_STANDING_LABEL" .. rep[i + 1]]))
     end
     return string.format(wt.L.REQUIRES_REPUTATION, table.concat(alternatives, wt.L.REPUTATION_OR)), met
@@ -154,7 +161,7 @@ local function rowFor(recipe, skill, id)
         or (info and info.iconID) or "Interface\\Icons\\INV_Misc_QuestionMark"
     row.source = table.concat(labels, wt.L.SOURCE_SEPARATOR)
     row.requirement = not required and wt.L.SKILL_REQUIREMENT_UNKNOWN
-        or (level and level > 0 and string.format(wt.L.REQUIRES_LEVEL, level))
+        or (level and level > UnitLevel("player") and string.format(wt.L.REQUIRES_LEVEL, level))
         or (recipe.rank and not level and wt.L.CHECK_TRAINER_REQUIREMENTS) or nil
     return row, category
 end

@@ -34,6 +34,7 @@
         </Layers>
     </Button>
     <Script file="RecipeModel.lua"/>
+    <Script file="RecipeFilters.lua"/>
     <Script file="RecipeList.lua"/>
     <Script file="Controller.lua"/>
     <Script file="Crafting.lua"/>

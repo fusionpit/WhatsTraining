@@ -54,6 +54,11 @@ WhatsTrainingUI.lua
 Forever\Forever.xml [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 Crafting\Recipes\[Game]\Recipes.xml
 Crafting\SkillLines.lua [AllowLoadGameType classic][ExcludeLoadGameType camelot]
+Crafting\RecipeModel.lua [AllowLoadGameType classic][ExcludeLoadGameType camelot]
+Crafting\RecipeFilters.lua [AllowLoadGameType classic][ExcludeLoadGameType camelot]
+Crafting\SkillsRecipeList.lua [AllowLoadGameType classic][ExcludeLoadGameType camelot]
+Crafting\SkillsTab.lua [AllowLoadGameType classic][ExcludeLoadGameType camelot]
+Crafting\ProfessionTabs.lua [AllowLoadGameType classic][ExcludeLoadGameType camelot]
 Crafting\Crafting.xml [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 Categories.lua
 DataBuilder.lua
