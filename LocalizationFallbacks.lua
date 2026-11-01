@@ -3,6 +3,8 @@ local isTBC = wt.gameVersion == "tbc"
 
 local fallbacks = {
     enUS = {
+        Alliance = "Alliance",
+        Horde = "Horde",
         WEAPON_SKILLS_HEADER = "Weapon Skills",
         MERCHANTS_FAVOR = "Merchant's Favor",
         Journeyman = "Journeyman",
@@ -41,6 +43,8 @@ local fallbacks = {
         FACTION_2787 = "Earthen Ring",
     },
     frFR = {
+        Alliance = "Alliance",
+        Horde = "Horde",
         WEAPON_SKILLS_HEADER = isTBC and "Compétences d'armes" or "Compétences d’armes",
         MERCHANTS_FAVOR = "Faveur marchande",
         Journeyman = "Compagnon",
@@ -79,6 +83,8 @@ local fallbacks = {
         FACTION_2787 = "Cercle terrestre",
     },
     ruRU = {
+        Alliance = "Альянс",
+        Horde = "Орда",
         WEAPON_SKILLS_HEADER = "Оружейные навыки",
         MERCHANTS_FAVOR = "Торговое обязательство",
         Journeyman = "Подмастерье",
@@ -117,6 +123,8 @@ local fallbacks = {
         FACTION_2787 = "Служители Земли",
     },
     zhCN = {
+        Alliance = "联盟",
+        Horde = "部落",
         WEAPON_SKILLS_HEADER = "武器技能",
         MERCHANTS_FAVOR = "商人青睐",
         Journeyman = "中级",
@@ -155,6 +163,8 @@ local fallbacks = {
         FACTION_2787 = "大地之环",
     },
     zhTW = {
+        Alliance = "聯盟",
+        Horde = "部落",
         WEAPON_SKILLS_HEADER = "武器技能",
         MERCHANTS_FAVOR = "商人貢獻點",
         Journeyman = "中級",
@@ -193,6 +203,8 @@ local fallbacks = {
         FACTION_2787 = "陶土議會",
     },
     deDE = {
+        Alliance = "Allianz",
+        Horde = "Horde",
         WEAPON_SKILLS_HEADER = "Waffenfertigkeiten",
         MERCHANTS_FAVOR = "Händlergunst",
         Journeyman = "Geselle",
@@ -231,6 +243,8 @@ local fallbacks = {
         FACTION_2787 = "Der Irdene Ring",
     },
     koKR = {
+        Alliance = "얼라이언스",
+        Horde = "호드",
         WEAPON_SKILLS_HEADER = "무기 기술",
         MERCHANTS_FAVOR = "상인의 호의",
         Journeyman = "수습",
@@ -269,6 +283,8 @@ local fallbacks = {
         FACTION_2787 = "대지 고리회",
     },
     esES = {
+        Alliance = "Alianza",
+        Horde = "Horda",
         WEAPON_SKILLS_HEADER = isTBC and "Armas disponibles" or "Habilidad con las armas",
         MERCHANTS_FAVOR = "Favor de mercader",
         Journeyman = "Oficial",
@@ -307,6 +323,8 @@ local fallbacks = {
         FACTION_2787 = "Anillo de la Tierra",
     },
     esMX = {
+        Alliance = "Alianza",
+        Horde = "Horda",
         WEAPON_SKILLS_HEADER = "Habilidades con armas",
         MERCHANTS_FAVOR = "Favor del mercader",
         Journeyman = "Oficial",
@@ -345,6 +363,8 @@ local fallbacks = {
         FACTION_2787 = "Anillo de la Tierra",
     },
     ptBR = {
+        Alliance = "Aliança",
+        Horde = "Horda",
         WEAPON_SKILLS_HEADER = "Perícias com Armas",
         MERCHANTS_FAVOR = "Favor Mercantil",
         Journeyman = "Profissional",
