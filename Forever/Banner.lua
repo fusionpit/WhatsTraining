@@ -1,7 +1,8 @@
 local _, wt = ...
 local Forever = wt.Forever
 local tooltip = Forever.tooltip
-local BANNER_TOP, CLIP_TOP = 54, 38
+local BANNER_TOP, CLIP_TOP = 52, 34
+local CONTROLLER_BANNER_TOP, CONTROLLER_CLIP_TOP = 54, 38
 -- CharacterSelect.xml faction colors.
 local FACTION_COLORS = {
     Alliance = {0.29, 0.33, 0.91},
@@ -120,10 +121,12 @@ local function updateBanner(mainFrame)
     local banner = mainFrame.categoryBanner
     banner.clip:SetShown(not WT_HideWeaponSkillSwitcher or showingWeapons(mainFrame))
     local page = mainFrame.expanded and mainFrame.weaponPage or mainFrame
+    local bannerTop, clipTop = BANNER_TOP, CLIP_TOP
+    if InputUtil.IsGamepadUIEnabled() then bannerTop, clipTop = CONTROLLER_BANNER_TOP, CONTROLLER_CLIP_TOP end
     banner.clip:ClearAllPoints()
-    banner.clip:SetPoint("TOPRIGHT", page, "TOPRIGHT", 16, CLIP_TOP)
+    banner.clip:SetPoint("TOPRIGHT", page, "TOPRIGHT", 16, clipTop)
     banner:ClearAllPoints()
-    banner:SetPoint("TOPRIGHT", banner.clip, "TOPRIGHT", 0, BANNER_TOP - CLIP_TOP)
+    banner:SetPoint("TOPRIGHT", banner.clip, "TOPRIGHT", 0, bannerTop - clipTop)
     if showingWeapons(mainFrame) then
         local color = RAID_CLASS_COLORS[wt.currentClass]
         if color then banner.art:SetVertexColor(color.r, color.g, color.b) end

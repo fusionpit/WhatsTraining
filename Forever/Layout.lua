@@ -70,21 +70,22 @@ end
 -- level halves are block lists for renderLevels. a group that does not fit moves whole to the
 -- next half unless that would leave more than MAX_WASTE of this half empty. then it splits.
 local MAX_WASTE = 0.4
-local function paginateLevels(groups, height)
+local function paginateLevels(groups, height, columns)
+    columns = columns or COLS
     local halves, half, y = {}, {}, 0
     local maxRows = math.floor((height - GROUP_HEADER) / CELL)
     for _, group in ipairs(groups) do
         local first, total = 1, #group.spells
         while first <= total do
             local rowsLeft = math.floor((height - y - GROUP_HEADER) / CELL)
-            local rowsNeeded = math.ceil((total - first + 1) / COLS)
+            local rowsNeeded = math.ceil((total - first + 1) / columns)
             if #half > 0 and rowsNeeded > rowsLeft and (rowsLeft < 1
                 or (rowsNeeded <= maxRows and (height - y) / height <= MAX_WASTE)) then
                 tinsert(halves, half)
                 half, y, rowsLeft = {}, 0, maxRows
             end
             local rows = math.max(1, math.min(rowsNeeded, rowsLeft))
-            local last = math.min(total, first + rows * COLS - 1)
+            local last = math.min(total, first + rows * columns - 1)
             tinsert(half, {group = group, first = first, last = last})
             y = y + GROUP_HEADER + rows * CELL + GROUP_GAP
             first = last + 1

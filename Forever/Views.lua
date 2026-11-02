@@ -42,7 +42,8 @@ end
 -- lays out blocks ({group, first, last} slices of a group's spells) and returns the content height
 local function renderLevels(page, blocks)
     local levels, y = page.levels, 0
-    local width = (levels:GetWidth() - 32) / COLS
+    local columns = page.numColumns or COLS
+    local width = (levels:GetWidth() - 32) / columns
     levels:Show()
     for i, block in ipairs(blocks) do
         local group, first, last = block.group, block.first, block.last
@@ -51,7 +52,7 @@ local function renderLevels(page, blocks)
             {__index = group.category})
         header.navigationHeader, header.navigationChildren = header, {}
         local total = #group.spells
-        local rows = math.ceil((last - first + 1) / COLS)
+        local rows = math.ceil((last - first + 1) / columns)
         header:SetPoint("TOPLEFT", levels, "TOPLEFT", 0, -y)
         header:SetPoint("TOPRIGHT", levels, "TOPRIGHT", 0, -y)
         header.rule:SetShown(i > 1)
@@ -75,8 +76,8 @@ local function renderLevels(page, blocks)
             cell.spell, cell.category = spell, group.category
             cell.navigationHeader = header
             tinsert(header.navigationChildren, cell)
-            cell:SetPoint("TOPLEFT", levels, "TOPLEFT", 16 + (offset % COLS) * width,
-                -y - math.floor(offset / COLS) * CELL)
+            cell:SetPoint("TOPLEFT", levels, "TOPLEFT", 16 + (offset % columns) * width,
+                -y - math.floor(offset / columns) * CELL)
             cell.icon:SetTexture(spell.useAltIcon and spell.altIcon or spell.icon)
             cell.badge:SetShown(spell.quest ~= nil)
             cell.name:SetText(spell.name)
@@ -187,9 +188,9 @@ local function renderList(page, items)
                 local icon = row.cityIcons[index]
                 if not icon then
                     icon = createCityIcon(row)
-                    icon:SetPoint("TOPLEFT", page.cityX + (index - 1) * 34, -4)
                     row.cityIcons[index] = icon
                 end
+                icon:SetPoint("TOPLEFT", page.cityX + (index - 1) * 34, -4)
                 local available = false
                 for _, zone in ipairs(item.trainerZones or {}) do
                     if zone.id == city.id then available = true; break end
@@ -208,12 +209,12 @@ local function renderList(page, items)
             local entry = legend.entries[index]
             if not entry then
                 entry = createCityIcon(legend)
-                entry:SetPoint("TOPLEFT", (index - 1) * entryWidth, 0)
                 entry.name = label(entry, "", "SystemFont_Med3", 32, -5)
-                entry.name:SetWidth(entryWidth - 36)
                 entry.name:SetWordWrap(false)
                 legend.entries[index] = entry
             end
+            entry:SetPoint("TOPLEFT", (index - 1) * entryWidth, 0)
+            entry.name:SetWidth(entryWidth - 36)
             entry.name:SetText(city.name)
             setCityIcon(entry, city, nil, true)
         end
@@ -296,7 +297,7 @@ local views = {
     levels = {top = -72, reserve = 12, footer = wt.L.LEDGER_HINT, empty = wt.L.LEDGER_EMPTY,
         Render = renderLevels,
         Items = function() return wholeBlocks(buildGroups(wt.spellListData)) end,
-        Paginate = function(height) return paginateLevels(buildGroups(wt.spellListData), height) end},
+        Paginate = function(height, columns) return paginateLevels(buildGroups(wt.spellListData), height, columns) end},
     zone = {top = -84, footer = wt.L.LEDGER_WEAPON_HINT, empty = wt.L.LEDGER_WEAPON_EMPTY,
         Render = renderByCity, Items = function() return wt.weaponGroupedData end},
     weaponskill = {top = -84, footer = wt.L.LEDGER_WEAPON_HINT, empty = wt.L.LEDGER_WEAPON_EMPTY,

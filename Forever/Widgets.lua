@@ -79,6 +79,14 @@ local function createRow(page, parent)
     row.level = label(row, "", "SystemFont_Med3", levelX, -5)
     row.level:SetWidth(parent:GetWidth() - levelX - 8)
     row.level:SetWordWrap(false)
+    function row:Resize()
+        self:SetWidth(parent:GetWidth())
+        self.name:SetWidth(page.rankX - 46)
+        self.rank:SetPoint("TOPLEFT", self, "TOPLEFT", page.rankX, -5)
+        self.rank:SetWidth(page.levelX - page.rankX - 8)
+        self.level:SetPoint("TOPLEFT", self, "TOPLEFT", page.levelX, -5)
+        self.level:SetWidth(parent:GetWidth() - page.levelX - 8)
+    end
     row.separator = CreateFrame("Frame", nil, row)
     row.separator:SetPoint("BOTTOMLEFT", 38, 0)
     row.separator:SetPoint("BOTTOMRIGHT", -8, 0)
@@ -122,6 +130,7 @@ local function framePool(page, create)
         used = used + 1
         local frame = self[used] or create()
         self[used] = frame
+        if frame.Resize then frame:Resize() end
         frame:Show()
         return frame
     end
@@ -153,6 +162,13 @@ local function createHeading(page)
     mask:SetTexture("Interface\\AddOns\\WhatsTraining\\Forever\\header-mask", "CLAMPTOBLACKADDITIVE",
         "CLAMPTOBLACKADDITIVE")
     heading.bandCap:AddMaskTexture(mask)
+    local resizeRow = heading.Resize
+    function heading:Resize()
+        resizeRow(self)
+        local width = self:GetWidth() * HEADER_CAP_FRACTION
+        self.band:SetPoint("TOPLEFT", self, "TOPLEFT", width, 0)
+        self.bandCap:SetWidth(width)
+    end
     for _, region in ipairs({heading.icon, heading.iconBorder, heading.name, heading.rank, heading.level,
         heading.separator}) do region:Hide() end
     heading:GetHighlightTexture():SetAlpha(0)
@@ -177,6 +193,11 @@ local function createListRow(page)
     row.name:SetPoint("TOPLEFT", 38, -8)
     row.name:SetWidth(page.cityX - 46)
     row.cityIcons = {}
+    local resizeRow = row.Resize
+    function row:Resize()
+        resizeRow(self)
+        self.name:SetWidth(page.cityX - 46)
+    end
     return row
 end
 
@@ -212,6 +233,12 @@ local function createTile(page)
     tile.name:SetWidth(width - 56)
     tile.rank:SetPoint("TOPLEFT", 48, -21)
     tile.rank:SetWidth(width - 56)
+    function tile:Resize()
+        local width = (page.content:GetWidth() - 24) / 2
+        self:SetWidth(width)
+        self.name:SetWidth(width - 56)
+        self.rank:SetWidth(width - 56)
+    end
     return tile
 end
 
@@ -239,6 +266,10 @@ local function createBlock(page)
     block.separator:ClearAllPoints()
     block.separator:SetPoint("TOPLEFT", 8, 0)
     block.separator:SetPoint("TOPRIGHT", -8, 0)
+    function block:Resize()
+        self:SetWidth(page.content:GetWidth())
+        self.name:SetWidth(self:GetWidth() - 200)
+    end
     return block
 end
 
@@ -262,7 +293,7 @@ local function createCell(page)
     local cell = createRow(page, page.levels)
     cell.largeCursor = true
     for _, region in ipairs({cell.band, cell.heading, cell.level, cell.separator}) do region:Hide() end
-    local width = (page.levels:GetWidth() - 32) / COLS
+    local width = (page.levels:GetWidth() - 32) / (page.numColumns or COLS)
     cell:SetSize(width - 4, CELL - 4)
     cell.icon:ClearAllPoints()
     cell.icon:SetPoint("TOPLEFT", 4, -2)
@@ -281,6 +312,12 @@ local function createCell(page)
     cell.rank:SetPoint("TOPLEFT", 48, -21)
     cell.rank:SetWidth(width - 56)
     cell.rank:SetFontObject("SystemFont_Med1")
+    function cell:Resize()
+        local width = (page.levels:GetWidth() - 32) / (page.numColumns or COLS)
+        self:SetWidth(width - 4)
+        self.name:SetWidth(width - 56)
+        self.rank:SetWidth(width - 56)
+    end
     return cell
 end
 
@@ -324,7 +361,7 @@ local function setCityIcon(frame, city, spell, available)
     frame:Show()
 end
 
--- headerX: where the native 680-wide spell view starts on this page
+-- headerX: where the native spell view starts on this page
 local function createPage(page, headerX)
     local header = CreateFrame("Frame", nil, page, "SpellBookHeaderTemplate")
     header:SetWidth(680)
@@ -341,13 +378,14 @@ local function createPage(page, headerX)
         header.Border:SetBlendMode("ADD")
     end
 
-    local rankX, levelX = page:GetWidth() - 260, page:GetWidth() - 155
+    local rankX = page:GetWidth() - (InputUtil.IsGamepadUIEnabled() and 236 or 218)
+    local levelX = page:GetWidth() - 139
     page.rankX, page.levelX = rankX, levelX
     page.columns = CreateFrame("Frame", nil, page)
     page.columns:SetAllPoints()
     label(page.columns, wt.L.LEDGER_SPELL, "SystemFont_Med3", 38, -78 + CONTENT_RISE)
-    label(page.columns, wt.L.LEDGER_RANK, "SystemFont_Med3", rankX, -78 + CONTENT_RISE)
-    label(page.columns, wt.L.LEDGER_REQUIRED_LEVEL, "SystemFont_Med3", levelX, -78 + CONTENT_RISE)
+    page.rankLabel = label(page.columns, wt.L.LEDGER_RANK, "SystemFont_Med3", rankX, -78 + CONTENT_RISE)
+    page.levelLabel = label(page.columns, wt.L.LEDGER_REQUIRED_LEVEL, "SystemFont_Med3", levelX, -78 + CONTENT_RISE)
     local footer = label(page, wt.L.LEDGER_HINT, "GameFontNormal", 0, 0)
     page.footer = footer
     footer:ClearAllPoints()
@@ -372,7 +410,7 @@ local function createPage(page, headerX)
     page.listColumns = CreateFrame("Frame", nil, page)
     page.listColumns:SetAllPoints()
     label(page.listColumns, wt.L.LEDGER_WEAPON_SKILL, "SystemFont_Med3", 8, -78 + CONTENT_RISE)
-    label(page.listColumns, wt.L.LEDGER_TRAINED_IN, "SystemFont_Med3", page.cityX, -78 + CONTENT_RISE)
+    page.cityLabel = label(page.listColumns, wt.L.LEDGER_TRAINED_IN, "SystemFont_Med3", page.cityX, -78 + CONTENT_RISE)
     page.cityLegend = CreateFrame("Frame", nil, content)
     page.cityLegend:SetSize(content:GetWidth() - 16, 24)
     page.cityLegend.entries = {}
@@ -392,6 +430,24 @@ local function createPage(page, headerX)
     page.groupHeaders = framePool(page, function() return createGroupHeader(page.levels) end)
 end
 
+local function resizePage(page, viewWidth, columns)
+    page:SetWidth(viewWidth + 16)
+    page.numColumns = columns
+    page.header:SetWidth(viewWidth)
+    page.rankX = page:GetWidth() - (InputUtil.IsGamepadUIEnabled() and 236 or 218)
+    page.levelX = page:GetWidth() - 139
+    page.rankLabel:SetPoint("TOPLEFT", page.columns, "TOPLEFT", page.rankX, -78 + CONTENT_RISE)
+    page.levelLabel:SetPoint("TOPLEFT", page.columns, "TOPLEFT", page.levelX, -78 + CONTENT_RISE)
+    page.levelLabel:SetWidth(page:GetWidth() - page.levelX - 20)
+    page.footer:SetWidth(page:GetWidth() - 28)
+    page.content:SetWidth(page:GetWidth() - 20)
+    page.levels:SetWidth(page.content:GetWidth())
+    page.cityX = math.min(math.floor(page.content:GetWidth() * 0.56),
+        page.levelX - #(wt.weaponSkeleton or {}) * 34 - 8)
+    page.cityLabel:SetPoint("TOPLEFT", page.listColumns, "TOPLEFT", page.cityX, -78 + CONTENT_RISE)
+    page.cityLegend:SetWidth(page.content:GetWidth() - 16)
+end
+
 Forever.WEAPON_HEADING_HEIGHT = WEAPON_HEADING_HEIGHT
 Forever.TRAINER_ROW_HEIGHT = TRAINER_ROW_HEIGHT
 Forever.SKILL_HEIGHT = SKILL_HEIGHT
@@ -401,3 +457,4 @@ Forever.hideTooltip = hideTooltip
 Forever.createCityIcon = createCityIcon
 Forever.setCityIcon = setCityIcon
 Forever.createPage = createPage
+Forever.resizePage = resizePage

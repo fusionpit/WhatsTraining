@@ -51,8 +51,6 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
     end
     mainFrame.settingsIcon = headerIcon(GAMEPAD_MENU_RIGHT)
     mainFrame.settingsIcon:SetPoint("RIGHT", mainFrame.displayDropdown, "LEFT", -5, 4)
-    search:ClearAllPoints()
-    search:SetPoint("RIGHT", mainFrame.settingsIcon, "LEFT", -15, 0)
     mainFrame.searchIcon = headerIcon(GAMEPAD_MENU_LEFT)
     mainFrame.searchIcon:SetPoint("RIGHT", search, "LEFT", -7, 0)
     local cursor = CreateFrame("Frame", nil, root)

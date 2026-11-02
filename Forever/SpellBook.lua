@@ -15,11 +15,38 @@ local skin = {
 }
 local HEADER_HEIGHT = 60
 local HANGING_TAB_RISE = 4
--- 696px columns surround Camelot's native 680px views.
+-- fallback until the native spellbook has loaded; each page adds 16px around its view.
 local PAGE_WIDTH, PAGE_TOP, PAGE_BOTTOM = 696, -90, 15
+local PAGE_LEFT, PAGE_RIGHT = 65, 45
 
 local book, root, launcher, attic, content, returnTab, previewTab, active, shownTab, queued
 local covers = {}
+
+local function sizePages(nativeBook)
+    local paged = nativeBook.PagedSpellsFrame
+    local view = paged and paged.ViewFrames and paged.ViewFrames[1]
+    if not view or view:GetWidth() <= 0 then return false end
+    local mainFrame = wt.MainFrame
+    local width, columns = view:GetWidth(), paged.columnsPerRow or Forever.COLS
+    if InputUtil.IsGamepadUIEnabled() then
+        -- Controller windows leave extra space around the native spell grid.
+        local pages = nativeBook.isMinimized and 1 or 2
+        width = nativeBook:GetWidth() / pages - PAGE_LEFT - PAGE_RIGHT - 16
+    end
+    if mainFrame:GetWidth() == width + 16 and mainFrame.numColumns == columns then return false end
+    for _, page in ipairs({mainFrame, mainFrame.weaponPage}) do
+        Forever.resizePage(page, width, columns)
+    end
+    return true
+end
+
+local function placeToolbar(nativeBook)
+    local mainFrame = wt.MainFrame
+    mainFrame.displayDropdown:ClearAllPoints()
+    mainFrame.displayDropdown:SetAllPoints(nativeBook.SettingsDropdown)
+    mainFrame.searchBox:ClearAllPoints()
+    mainFrame.searchBox:SetAllPoints(nativeBook.SearchBox)
+end
 
 local function makeTab(name, parent)
     local button = CreateFrame("Button", name, parent)
@@ -95,7 +122,7 @@ local function refresh(mainFrame)
         return
     end
     local halves = spells.Paginate(mainFrame:GetHeight() + spells.top - (spells.reserve or 0)
-        - (wt.ControllerFrame and 45 or 30))
+        - (wt.ControllerFrame and 45 or 30), mainFrame.numColumns)
     local controls = mainFrame.pagingControls
     local twoPages = WT_ScrollTwoPages ~= false
     controls:SetMaxPages(twoPages and math.ceil(#halves / 2) or math.max(1, #halves - 1))
@@ -206,7 +233,8 @@ local function sync()
     if not active then return root:Hide() end
 
     local expanded = not book.isMinimized
-    local relayout = mainFrame.expanded ~= expanded
+    local resized = sizePages(book)
+    local relayout = mainFrame.expanded ~= expanded or resized
     if relayout then
         if expanded then mainFrame.sideBySide = wt.showingWeaponSkills or WT_SideBySide end
         mainFrame.expanded = expanded
@@ -231,10 +259,7 @@ local function sync()
     end
     mainFrame:Show()
     root:Show()
-    -- ,atch the native ResizeSearchBox rule
-    local search = mainFrame.searchBox
-    local left, right = (launcher.bookmark and tabs or launcher):GetRight(), search:GetRight()
-    if left and right then search:SetWidth(math.max(1, math.min(300, right - left - 10))) end
+    placeToolbar(book)
     if relayout or opening then wt.RefreshUI() end
 end
 
@@ -297,8 +322,8 @@ local function createLedger(mainFrame)
 
     local weaponPage = CreateFrame("Frame", "$parentWeaponPage", mainFrame)
     mainFrame.weaponPage = weaponPage
-    weaponPage:SetPoint("TOPRIGHT", root, "TOPRIGHT", -45, PAGE_TOP)
-    weaponPage:SetPoint("BOTTOMRIGHT", root, "BOTTOMRIGHT", -45, PAGE_BOTTOM)
+    weaponPage:SetPoint("TOPRIGHT", root, "TOPRIGHT", -PAGE_RIGHT, PAGE_TOP)
+    weaponPage:SetPoint("BOTTOMRIGHT", root, "BOTTOMRIGHT", -PAGE_RIGHT, PAGE_BOTTOM)
     weaponPage:SetWidth(PAGE_WIDTH)
     createPage(weaponPage, 11)
     weaponPage.footer:SetWidth(weaponPage:GetWidth() - 28)
@@ -561,15 +586,10 @@ local function placeControllerBook(nativeBook)
     local top = titleBottom and math.min(-8, titleBottom - bottom - height - 1) or -8
     attic:SetPoint("TOP", root, "TOP", 0, top)
     local mainFrame = wt.MainFrame
-    local searchRight, launcherRight = mainFrame.searchBox:GetRight(), launcher:GetRight()
-    if searchRight and launcherRight then
-        if inverted then
-            launcherRight = math.max(returnTab:GetRight(), rbIcon:IsShown() and rbIcon:GetRight() or tabs:GetRight())
-        end
-        mainFrame.searchBox:SetWidth(math.max(1, math.min(300, searchRight - launcherRight - 39)))
-    end
+    placeToolbar(nativeBook)
     local expanded = not nativeBook.isMinimized
-    local relayout = mainFrame.expanded ~= expanded or mainFrame.controllerHeight ~= height
+    local resized = sizePages(nativeBook)
+    local relayout = mainFrame.expanded ~= expanded or mainFrame.controllerHeight ~= height or resized
     if mainFrame.expanded ~= expanded then mainFrame.sideBySide = wt.showingWeaponSkills or WT_SideBySide end
     mainFrame.expanded, mainFrame.controllerHeight = expanded, height
     for _, frame in ipairs(covers) do
@@ -628,8 +648,8 @@ function wt.CreateFrame()
     local mainFrame = CreateFrame("Frame", "WhatsTrainingFrame", root)
     wt.MainFrame = mainFrame
     mainFrame:Hide()
-    mainFrame:SetPoint("TOPLEFT", root, "TOPLEFT", 65, PAGE_TOP)
-    mainFrame:SetPoint("BOTTOMLEFT", root, "BOTTOMLEFT", 65, PAGE_BOTTOM)
+    mainFrame:SetPoint("TOPLEFT", root, "TOPLEFT", PAGE_LEFT, PAGE_TOP)
+    mainFrame:SetPoint("BOTTOMLEFT", root, "BOTTOMLEFT", PAGE_LEFT, PAGE_BOTTOM)
     mainFrame:SetWidth(PAGE_WIDTH)
     root:SetScript("OnSizeChanged", wt.ApplyTheme)
 
