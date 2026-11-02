@@ -530,6 +530,13 @@ local localeText = {
         RANK_SOON = "%s demnächst",
         NO_MATCHING_RECIPES = "Keine passenden ungelernten Rezepte.",
         LEARN_PROFESSION = "Erlerne einen Beruf, um seine Rezepte zu sehen.",
+        PROFESSION_TAB_TOP = "Über dem Berufe-Tab",
+        PROFESSION_TAB_RIGHT = "Rechter Rand, nahe unten",
+        PROFESSION_TAB_BOTTOM = "Unterer Rand, nahe rechter Ecke",
+        GAMEPAD_TAB_POSITION = "Tab-Position",
+        OBTAINED_FROM = "Bezugsquelle: %s",
+        DISCOVERY = "Entdeckung",
+        SHOW_OTHER_FACTION_RECIPES = "Rezepte aus Quellen der anderen Fraktion anzeigen",
     },
     koKR = {
         AVAILABLE_HEADER = "지금 사용 가능",
