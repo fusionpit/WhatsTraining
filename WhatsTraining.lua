@@ -114,7 +114,7 @@ local eventFrame = CreateFrame("Frame")
 eventFrame:SetScript("OnEvent", function(self, event, ...)
     if event == "ADDON_LOADED" and ... == addonName then
         if WT_WeaponGrouping ~= "zone" and WT_WeaponGrouping ~= "weaponskill" and WT_WeaponGrouping ~= "list" then
-            WT_WeaponGrouping = "zone"
+            WT_WeaponGrouping = "weaponskill"
         end
         if WT_SpellDisplay ~= "ledger" and WT_SpellDisplay ~= "levels" then
             WT_SpellDisplay = "ledger"
