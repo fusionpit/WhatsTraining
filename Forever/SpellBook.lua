@@ -298,20 +298,23 @@ local function createLedger(mainFrame)
     totalHover:SetScript("OnLeave", hideTooltip)
     totalHover:SetScript("OnHide", hideTooltip)
     totalHover:SetScript("OnMouseUp", function(_, button)
-        if button == "RightButton" then MenuUtil.CreateContextMenu(totalHover, wt.priceMenuGenerator) end
+        if button == "RightButton" then Forever.openContextMenu(totalHover, wt.priceMenuGenerator) end
     end)
-    local arrow = CreateFrame("DropdownButton", nil, totalHover)
+    local arrow = Forever.createDropdown(totalHover)
     mainFrame.priceDropdown = arrow
     arrow:SetSize(16, 16)
     arrow:SetNormalTexture("Interface\\Buttons\\Arrow-Down-Up")
     arrow:SetPushedTexture("Interface\\Buttons\\Arrow-Down-Down")
     arrow:SetHighlightTexture("Interface\\Buttons\\Arrow-Down-Up", "ADD")
+    for _, texture in ipairs({arrow:GetNormalTexture(), arrow:GetPushedTexture(), arrow:GetHighlightTexture()}) do
+        texture:ClearAllPoints()
+        texture:SetAllPoints(arrow)
+    end
     arrow:GetHighlightTexture():SetAlpha(0.4)
     -- the 16px glyph occupies its top half
     arrow:SetPoint("TOPRIGHT", mainFrame.header.Border, "TOPRIGHT", 0, 15)
     mainFrame.total:ClearAllPoints()
     mainFrame.total:SetPoint("RIGHT", arrow, "LEFT", -2, 4)
-    arrow:SetMenuAnchor(AnchorUtil.CreateAnchor("TOPRIGHT", arrow, "BOTTOMRIGHT", 0, -2))
     arrow:SetupMenu(wt.priceMenuGenerator)
     arrow:HookScript("OnEnter", showBreakdown)
     arrow:HookScript("OnLeave", function() hideTooltip(totalHover) end)
@@ -358,7 +361,7 @@ local function createLedger(mainFrame)
     end
     mainFrame.categoryBanner = createCategoryBanner(mainFrame, selectView)
 
-    local dropdown = CreateFrame("DropdownButton", nil, mainFrame, "SpellBookSettingsDropdownTemplate")
+    local dropdown = Forever.createDropdown(mainFrame)
     mainFrame.displayDropdown = dropdown
     dropdown:ClearAllPoints()
     dropdown:SetPoint("TOPRIGHT", root, "TOPRIGHT", -30, -27)

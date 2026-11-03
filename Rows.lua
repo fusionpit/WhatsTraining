@@ -90,6 +90,11 @@ function wt.SetTooltip(tooltip, row, palette)
     wt.ShowRankComparison(tooltip, tooltip:GetOwner(), wt.knownRankFor(row))
 end
 
+local function openContextMenu(owner, generator)
+    if wt.gameVersion == "forever" then return wt.Forever.openContextMenu(owner, generator) end
+    return MenuUtil.CreateContextMenu(owner, generator)
+end
+
 function wt.RowClick(frame, row, button)
     if not row then return end
     if row.npc then
@@ -100,7 +105,8 @@ function wt.RowClick(frame, row, button)
     elseif row.isHeader then
         if button == "RightButton" and row.key == wt.AVAILABLE_KEY then
             PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-            MenuUtil.CreateContextMenu(frame, wt.priceMenuGenerator)
+            if wt.OpenControllerPrices and wt.OpenControllerPrices(frame) then return end
+            openContextMenu(frame, wt.priceMenuGenerator)
         end
     elseif button == "LeftButton" and IsShiftKeyDown() then
         wt.InsertLink(row)
@@ -169,7 +175,8 @@ end
 
 wt.ClickHook = function(spell, afterClick, row)
     PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-    MenuUtil.CreateContextMenu(row, function(_, rootDescription)
+    if wt.OpenControllerSpellMenu and wt.OpenControllerSpellMenu(row) then return end
+    openContextMenu(row, function(_, rootDescription)
         wt.generateSpellMenu(spell, afterClick, rootDescription)
     end)
 end

@@ -198,7 +198,7 @@ local function rowClick(view, row, button)
         if view.openControllerMenu and InputUtil.IsGamepadUIEnabled() then
             view.openControllerMenu(row:GetElementData()); return
         end
-        MenuUtil.CreateContextMenu(row, function(_, menu) buildRowMenu(view, row:GetElementData(), menu) end)
+        wt.Forever.openContextMenu(row, function(_, menu) buildRowMenu(view, row:GetElementData(), menu) end)
     elseif button == "LeftButton" and data.recipe then
         wt.LinkRecipe(data.recipe)
     elseif button == "LeftButton" and data.professionID and not data.recipe then
@@ -482,8 +482,7 @@ function wt.CreateRecipeList(page)
     search:SetSize(440, 20)
     search:SetPoint("TOPLEFT", filters, "TOPLEFT")
     search:HookScript("OnHide", function(self) self:ClearFocus() end)
-    local dropdown = CreateFrame("DropdownButton", "WhatsTrainingCraftingFilterDropdown", view,
-        "WowStyle1FilterDropdownTemplate")
+    local dropdown = wt.Forever.createDropdown(view, "WhatsTrainingCraftingFilterDropdown", true)
     view.filterDropdown = dropdown
     dropdown.resizeToText = false
     dropdown:SetSize(108, 18)

@@ -246,7 +246,7 @@ local function attach()
             if InputUtil.IsGamepadUIEnabled() then
                 if controller then controller:OpenPositionMenu() end
             else
-                MenuUtil.CreateContextMenu(launcher, wt.GenerateProfessionTabMenu)
+                wt.Forever.openContextMenu(launcher, wt.GenerateProfessionTabMenu)
             end
             return
         end

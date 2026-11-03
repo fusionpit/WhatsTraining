@@ -10,19 +10,27 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
     root:SetFrameLevel(500)
     local scroll, search = view.scrollBox, view.searchBox
     local selectedNode, selectedData, selectedIndex, selectedRow
-    local nativeTab, nativeButton, menuNode
+    local nativeTab, nativeButton
     local held, closing, capture = {}, false, false
     local connected, buttonKeys = false, {}
     local stickDirection, stickDelay, stickInterval
 
-    local settings = Forever.createMenu(view, view.GenerateFilterMenu, view)
+    local settings = view.filterDropdown:GetMenu()
     settings:SetPoint("TOPRIGHT", view.filterDropdown, "BOTTOMRIGHT", 0, -4)
-    local options = Forever.createMenu(view, function(_, menu)
-        if menuNode then view:GenerateRowMenu(menuNode, menu) end
-    end)
-    local positions = Forever.createMenu(view, wt.GenerateProfessionTabMenu, launcher)
-    local function menuShown() return settings:IsShown() or options:IsShown() or positions:IsShown() end
-    local function hideMenus() settings:Hide(); options:Hide(); positions:Hide() end
+    settings.forwardedInput = true
+    -- row options and tab positions share Forever's context menu
+    -- contextKind says which one this controller has open
+    local contextKind
+    local function contextMenu() return contextKind and Forever.contextMenu() end
+    local function menuShown() return settings:IsShown() or contextKind ~= nil end
+    -- returns whether kind was the open menu
+    local function hideMenus(kind)
+        local wasOpen = kind ~= nil and (kind == settings and settings:IsShown() or kind == contextKind)
+        settings:Hide()
+        local menu = contextMenu()
+        if menu then menu:Hide() end
+        return wasOpen
+    end
     local function icon(parent, key)
         local frame = CreateFrame("Frame", nil, parent, "InputIconTextureFrameTemplate")
         frame.useDropShadow = true
@@ -70,8 +78,6 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         { "StandardOneIcon", { GAMEPAD_FACE_RIGHT }, FRAME_ACTION_CLOSE },
     })
     footer:SetPoint("TOPLEFT", book, "BOTTOMLEFT", 0, -9)
-    positions:SetFrameLevel(footer:GetFrameLevel() + 10)
-    positions:SetPoint("BOTTOMRIGHT", footer, "TOPRIGHT", -10, positions.footer:GetHeight() + 10)
 
     local function clearSelection()
         if selectedRow then
@@ -125,39 +131,47 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         local node = scroll:FindElementData(index)
         if node then selectNode(node, index) end
     end
-    local function toggleMenu(menu)
+    local function returnFromMenu()
+        contextKind = nil
+        if root:IsShown() and not menuShown() and not search:HasFocus() then restoreSelection() end
+    end
+    local contextInput = { forwardedInput = true, onHide = returnFromMenu }
+    -- toggling the open menu just closes it
+    local function toggleMenu(kind, open)
         stickDirection = nil
-        local show = not menu:IsShown()
-        hideMenus(); search:ClearFocus()
-        menu:SetShown(show)
-        if show then clearSelection() else restoreSelection() end
+        local show = not hideMenus(kind)
+        search:ClearFocus()
+        if show then open(); clearSelection() else restoreSelection() end
     end
     view.openControllerMenu = function(node)
         if not root:IsShown() then return end
-        menuNode = node
-        options:ClearAllPoints()
-        local row = scroll:FindFrame(node)
-        options:SetPoint("TOPLEFT", row or view.filterDropdown, "BOTTOMLEFT", 32, -2)
-        options.index = nil
-        toggleMenu(options)
+        toggleMenu("options", function()
+            local owner = scroll:FindFrame(node) or view.filterDropdown
+            local menu = Forever.openContextMenu(owner, function(_, menu) view:GenerateRowMenu(node, menu) end, contextInput)
+            contextKind = "options"
+            menu:ClearAllPoints()
+            menu:SetPoint("TOPLEFT", owner, "BOTTOMLEFT", 32, -2)
+        end)
     end
-    local mouseDown = view.filterDropdown:GetScript("OnMouseDown")
-    view.filterDropdown:SetScript("OnMouseDown", function(...)
-        if root:IsShown() then toggleMenu(settings)
-        elseif mouseDown then mouseDown(...) end
+    local function openPositions()
+        local menu = Forever.openContextMenu(launcher, wt.GenerateProfessionTabMenu, contextInput)
+        contextKind = "positions"
+        menu:SetFrameLevel(footer:GetFrameLevel() + 10)
+        menu:ClearAllPoints()
+        menu:SetPoint("BOTTOMRIGHT", footer, "TOPRIGHT", -10, menu.footer:GetHeight() + 10)
+    end
+    local click = view.filterDropdown:GetScript("OnClick")
+    view.filterDropdown:SetScript("OnClick", function(...)
+        if root:IsShown() then toggleMenu(settings, function() settings:Show() end)
+        elseif click then click(...) end
     end)
     search:HookScript("OnEditFocusGained", function()
         if not root:IsShown() then return end
         stickDirection = nil
         hideMenus(); clearSelection()
     end)
-    local function returnFromMenu()
-        if root:IsShown() and not menuShown() and not search:HasFocus() then restoreSelection() end
-    end
     search:HookScript("OnEditFocusLost", returnFromMenu)
-    settings:SetScript("OnHide", returnFromMenu)
-    options:SetScript("OnHide", returnFromMenu)
-    positions:SetScript("OnHide", returnFromMenu)
+    settings:HookScript("OnHide", returnFromMenu)
 
     local function activeBook()
         return book:IsVisible() and InputUtil.IsGamepadUIEnabled() and SmartNavigation and SmartNavigation:IsShown()
@@ -213,7 +227,7 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         local key = entryButton()
         if key ~= shoulderKey then shoulder:SetInputKey(key); shoulderKey = key end
         shoulder:SetShown(atEdge() and not self:IsShown())
-        positionIcon:SetShown(active and not positions:IsShown())
+        positionIcon:SetShown(active and contextKind ~= "positions")
         page:SetShown(active)
         returnTab:SetShown(active and nativeTab ~= nil)
         searchIcon:Show(); settingsIcon:Show()
@@ -249,8 +263,7 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
     end
     function root:OpenPositionMenu()
         if not self:IsShown() or InCombatLockdown() or not connected or not activeBook() then return end
-        positions.index = nil
-        toggleMenu(positions)
+        toggleMenu("positions", openPositions)
         self:Sync()
     end
     function root:Deactivate()
@@ -273,21 +286,21 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         held[button] = true
         if (button == "PAD2" or button == returnButton()) and (menuShown() or search:HasFocus()) then
             held[button] = "panel"
-            local menu = settings:IsShown() and settings or options:IsShown() and options or positions:IsShown() and positions
+            local menu = settings:IsShown() and settings or contextMenu()
             if button == "PAD2" and menu then menu:HandleButton(button)
             else hideMenus(); search:ClearFocus() end
         elseif button == "PAD4" then root:OpenPositionMenu()
-        elseif positions:IsShown() then positions:HandleButton(button)
+        elseif contextKind == "positions" then contextMenu():HandleButton(button)
         elseif button == "PADRSTICK" then
             local disable = not GetCVarBool("GamepadDisableTooltips")
             SetCVar("GamepadDisableTooltips", disable)
             if disable then GameTooltip:Hide() else showTooltip() end
-        elseif button == "PADFORWARD" then toggleMenu(settings)
+        elseif button == "PADFORWARD" then toggleMenu(settings, function() settings:Show() end)
         elseif button == "PADBACK" then
             hideMenus()
             if search:HasFocus() then search:ClearFocus() else search:SetFocus() end
         elseif settings:IsShown() then settings:HandleButton(button)
-        elseif options:IsShown() then options:HandleButton(button)
+        elseif contextKind == "options" then contextMenu():HandleButton(button)
         elseif search:HasFocus() then
             if button == "PAD1" then search:ClearFocus()
             elseif button == "PAD3" then search:SetText("") end

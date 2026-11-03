@@ -25,21 +25,25 @@ end
 function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
     wt.ControllerFrame = root
     mainFrame.continues:SetPoint("BOTTOMRIGHT", mainFrame, "BOTTOMRIGHT", -24, Forever.CONTENT_RISE)
-    local settings = Forever.createMenu(root, mainFrame.generateSettings, mainFrame.displayDropdown)
+    local settings = mainFrame.displayDropdown:GetMenu()
     mainFrame.controllerSettings = settings
     settings:SetPoint("TOPRIGHT", mainFrame.displayDropdown, "BOTTOMRIGHT", 0, -4)
     local total = mainFrame.total:GetParent()
-    local prices = Forever.createMenu(root, function(owner, description)
-        wt.priceMenuGenerator(owner, description, true)
-    end, total)
+    local prices = mainFrame.priceDropdown:GetMenu()
     mainFrame.controllerPrices = prices
     prices:SetPoint("TOPRIGHT", mainFrame.priceDropdown, "BOTTOMRIGHT", 0, -4)
-    local menuSpell
-    local spellMenu = Forever.createMenu(root, function(_, description)
-        if menuSpell then wt.generateSpellMenu(menuSpell, function() wt:RebuildData() end, description) end
-    end)
-    mainFrame.controllerSpellMenu = spellMenu
-    local function menuShown() return settings:IsShown() or prices:IsShown() or spellMenu:IsShown() end
+    settings.forwardedInput, prices.forwardedInput = true, true
+    -- the spell row menu is Forever's shared context menu
+    -- spellMenuOpen says this controller has it open
+    local spellMenuOpen = false
+    local function spellMenu() return spellMenuOpen and Forever.contextMenu() end
+    local function menuShown() return settings:IsShown() or prices:IsShown() or spellMenuOpen end
+    local function hideMenus()
+        settings:Hide()
+        prices:Hide()
+        local menu = spellMenu()
+        if menu then menu:Hide() end
+    end
     local search = mainFrame.searchBox
     local function headerIcon(key)
         local icon = CreateFrame("Frame", nil, mainFrame, "InputIconTextureFrameTemplate")
@@ -410,57 +414,82 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
 
     local stickDirection, stickDelay, stickInterval
     local menuReturn, spellMenuPosition
-    local function toggleMenu(menu)
+    -- returns whether to open the toggled menu
+    local function beginToggle(shown)
         stickDirection = nil
-        local show = not menu:IsShown()
         local origin = selected == total and total or selected and selected.spell or menuReturn
-        settings:Hide()
-        prices:Hide()
-        spellMenu:Hide()
+        hideMenus()
         search:ClearFocus()
         menuReturn = origin
-        menu:SetShown(show)
-        if show then clearSelection() end
+        return not shown
     end
-    mainFrame.displayDropdown:SetScript("OnMouseDown", function() toggleMenu(settings) end)
+    local function toggleMenu(menu)
+        if beginToggle(menu:IsShown()) then menu:Show(); clearSelection() end
+    end
+    mainFrame.displayDropdown:SetScript("OnClick", function() toggleMenu(settings) end)
     local function togglePrices()
         if not prices:IsShown() then selectButton(total, mainFrame) end
         toggleMenu(prices)
     end
+    local spellMenuInput
     local function openSpellMenu(row)
         spellMenuPosition = { page = selectedPage, x = row:GetCenter() - selectedPage:GetLeft(),
             top = row:GetTop() - selectedPage.scrollFrame:GetTop() }
-        menuSpell = row.weaponRow and row.weaponRow.spell or row.spell
-        spellMenu:ClearAllPoints()
-        spellMenu:SetPoint("TOPLEFT", root, "BOTTOMLEFT", row:GetLeft() - root:GetLeft() + 32,
-            row:GetTop() - navigationHeight(row) - root:GetBottom() - 2)
-        spellMenu.index = nil
         PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
-        toggleMenu(spellMenu)
+        if not beginToggle(spellMenuOpen) then return end
+        local spell = row.weaponRow and row.weaponRow.spell or row.spell
+        local menu = Forever.openContextMenu(row, function(_, description)
+            wt.generateSpellMenu(spell, function() wt:RebuildData() end, description)
+        end, spellMenuInput)
+        spellMenuOpen = true
+        menu:ClearAllPoints()
+        menu:SetPoint("TOPLEFT", row, "TOPLEFT", 32, -navigationHeight(row) - 2)
+        clearSelection()
     end
-    mainFrame.priceDropdown:SetScript("OnMouseDown", togglePrices)
+    local function pageFor(row)
+        local page = row
+        while page and page ~= mainFrame and page ~= mainFrame.weaponPage do page = page:GetParent() end
+        return page
+    end
+    function wt.OpenControllerSpellMenu(row)
+        local page = row and pageFor(row)
+        if not root:IsShown() or not page then return false end
+        selectButton(row, page)
+        openSpellMenu(row)
+        return true
+    end
+    function wt.OpenControllerPrices(row)
+        if not root:IsShown() or not pageFor(row) then return false end
+        togglePrices()
+        return true
+    end
+    mainFrame.priceDropdown:SetScript("OnClick", togglePrices)
     total:SetScript("OnClick", togglePrices)
     total:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-    total:SetScript("OnMouseUp", nil) -- disable the native menu handler
+    total:SetScript("OnMouseUp", nil)
     local searchReturn
     search:HookScript("OnEditFocusGained", function()
         searchReturn = selected and selected.spell
         stickDirection = nil
-        settings:Hide(); prices:Hide(); spellMenu:Hide(); clearSelection()
+        hideMenus(); clearSelection()
     end)
     search:HookScript("OnEditFocusLost", function()
         if root:IsShown() and not menuShown() then restoreSelection(searchReturn) end
     end)
-    local function returnFromMenu(menu)
+    local function returnFromMenu(position)
         if root:IsShown() and not menuShown() and not search:HasFocus() then
             -- preserve selection if spell was moved
-            restoreSelection(menuReturn, menu == spellMenu and spellMenuPosition or nil)
+            restoreSelection(menuReturn, position)
         end
-        if menu == spellMenu then spellMenuPosition = nil end
     end
-    settings:SetScript("OnHide", returnFromMenu)
-    prices:SetScript("OnHide", returnFromMenu)
-    spellMenu:SetScript("OnHide", returnFromMenu)
+    settings:HookScript("OnHide", function() returnFromMenu() end)
+    prices:HookScript("OnHide", function() returnFromMenu() end)
+    spellMenuInput = { forwardedInput = true, onHide = function()
+        spellMenuOpen = false
+        local position = spellMenuPosition
+        spellMenuPosition = nil
+        returnFromMenu(position)
+    end }
     local held, closing, capture = {}, false, false
     local connected, buttonKeys = false, {}
     local nativeTab, nativeButton
@@ -480,9 +509,7 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
         subgrid, paneSelections = nil, {}
         clearSelection()
         search:ClearFocus()
-        settings:Hide()
-        prices:Hide()
-        spellMenu:Hide()
+        hideMenus()
         held, closing = {}, false
         releaseCapture()
     end)
@@ -505,12 +532,10 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
         held[button] = true
         if (button == "PAD2" or button == "PADLSHOULDER") and (menuShown() or search:HasFocus()) then
             held[button] = "panel" -- keep the book open on release
-            local menu = settings:IsShown() and settings or prices:IsShown() and prices or spellMenu:IsShown() and spellMenu
+            local menu = settings:IsShown() and settings or prices:IsShown() and prices or spellMenu()
             if button == "PAD2" and menu then menu:HandleButton(button)
             else
-                settings:Hide()
-                prices:Hide()
-                spellMenu:Hide()
+                hideMenus()
                 search:ClearFocus()
             end
         elseif button == "PADRSTICK" then
@@ -524,16 +549,14 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
         elseif button == "PADFORWARD" then
             toggleMenu(settings)
         elseif button == "PADBACK" then
-            settings:Hide()
-            prices:Hide()
-            spellMenu:Hide()
+            hideMenus()
             if search:HasFocus() then search:ClearFocus() else search:SetFocus() end
         elseif settings:IsShown() then
             settings:HandleButton(button)
         elseif prices:IsShown() then
             prices:HandleButton(button)
-        elseif spellMenu:IsShown() then
-            spellMenu:HandleButton(button)
+        elseif spellMenuOpen then
+            spellMenu():HandleButton(button)
         elseif search:HasFocus() then
             if button == "PAD1" then search:ClearFocus()
             elseif button == "PAD3" then search:SetText("") end
