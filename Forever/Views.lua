@@ -128,7 +128,6 @@ end
 
 -- A render draws one view into a page and returns the content height.
 local function renderLedger(page, items)
-    page.columns:Show()
     local y, heading, count = 0, nil, 0
     for i, item in ipairs(items) do
         local gap, height = ledgerSpan(item, i == 1)
@@ -150,7 +149,7 @@ local function renderLedger(page, items)
             row.badge:SetShown(item.quest ~= nil)
             row.name:SetText(item.name)
             row.rank:SetText(item.subText or "")
-            row.level:SetText(item.hideLevel and "—" or item.formattedLevel)
+            row.level:SetText(item.hideLevel and "" or item.formattedLevel)
             row.level:SetTextColor(levelColor(category, item))
             row.separator:SetShown(items[i + 1] ~= nil and not items[i + 1].isHeader)
         end
@@ -160,7 +159,6 @@ local function renderLedger(page, items)
 end
 
 local function renderList(page, items)
-    page.listColumns:Show()
     local y, category, hasSkills = 0, nil, false
     for i, item in ipairs(items) do
         local gap, height = ledgerSpan(item, i == 1, 32)
@@ -291,7 +289,7 @@ end
 -- One entry per display style. top: where the scroll area starts. reserve: room a paged half keeps
 -- free for the "Continues on ..." note. Items: what the view shows when it isn't paged.
 local views = {
-    ledger = {top = -103, footer = wt.L.LEDGER_HINT, empty = wt.L.LEDGER_EMPTY, Render = renderLedger,
+    ledger = {top = -84, footer = wt.L.LEDGER_HINT, empty = wt.L.LEDGER_EMPTY, Render = renderLedger,
         Items = function() return wt.spellListData end,
         Paginate = function(height) return paginateLedger(wt.spellListData, height) end},
     levels = {top = -72, reserve = 12, footer = wt.L.LEDGER_HINT, empty = wt.L.LEDGER_EMPTY,
@@ -302,13 +300,13 @@ local views = {
         Render = renderByCity, Items = function() return wt.weaponGroupedData end},
     weaponskill = {top = -84, footer = wt.L.LEDGER_WEAPON_HINT, empty = wt.L.LEDGER_WEAPON_EMPTY,
         Render = renderByWeapon, Items = function() return wt.weaponSkillGroupedData end},
-    list = {top = -103, footer = wt.L.LEDGER_WEAPON_LIST_HINT, empty = wt.L.LEDGER_WEAPON_EMPTY,
+    list = {top = -84, footer = wt.L.LEDGER_WEAPON_LIST_HINT, empty = wt.L.LEDGER_WEAPON_EMPTY,
         Render = renderList, Items = function() return wt.weaponListData end},
 }
 
 -- items: the view's whole list, or one paged half
 local function updatePage(page, view, items, paged)
-    for _, chrome in ipairs({page.columns, page.listColumns, page.cityLegend, page.levels}) do chrome:Hide() end
+    for _, chrome in ipairs({page.cityLegend, page.levels}) do chrome:Hide() end
     for _, pool in ipairs(page.pools) do pool:ReleaseAll() end
     local scroll = page.scrollFrame
     scroll:SetPoint("TOPLEFT", page, "TOPLEFT", 0, view.top + CONTENT_RISE)

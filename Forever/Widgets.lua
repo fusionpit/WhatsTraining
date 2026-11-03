@@ -378,14 +378,9 @@ local function createPage(page, headerX)
         header.Border:SetBlendMode("ADD")
     end
 
-    local rankX = page:GetWidth() - (InputUtil.IsGamepadUIEnabled() and 236 or 218)
-    local levelX = page:GetWidth() - 139
+    local rankX = page:GetWidth() - (InputUtil.IsGamepadUIEnabled() and 217 or 199)
+    local levelX = page:GetWidth() - 120
     page.rankX, page.levelX = rankX, levelX
-    page.columns = CreateFrame("Frame", nil, page)
-    page.columns:SetAllPoints()
-    label(page.columns, wt.L.LEDGER_SPELL, "SystemFont_Med3", 38, -78 + CONTENT_RISE)
-    page.rankLabel = label(page.columns, wt.L.LEDGER_RANK, "SystemFont_Med3", rankX, -78 + CONTENT_RISE)
-    page.levelLabel = label(page.columns, wt.L.LEDGER_REQUIRED_LEVEL, "SystemFont_Med3", levelX, -78 + CONTENT_RISE)
     local footer = label(page, wt.L.LEDGER_HINT, "GameFontNormal", 0, 0)
     page.footer = footer
     footer:ClearAllPoints()
@@ -397,7 +392,7 @@ local function createPage(page, headerX)
     page.continues:SetJustifyH("RIGHT")
 
     local scroll = CreateFrame("ScrollFrame", "$parentScrollFrame", page, "ScrollFrameTemplate")
-    scroll:SetPoint("TOPLEFT", page, "TOPLEFT", 0, -103 + CONTENT_RISE)
+    scroll:SetPoint("TOPLEFT", page, "TOPLEFT", 0, -84 + CONTENT_RISE)
     scroll:SetPoint("BOTTOMRIGHT", page, "BOTTOMRIGHT", -20, 30 + CONTENT_RISE)
     local content = CreateFrame("Frame", nil, scroll)
     content:SetWidth(page:GetWidth() - 20)
@@ -407,10 +402,6 @@ local function createPage(page, headerX)
     page.empty:ClearAllPoints()
     page.empty:SetPoint("TOPLEFT", scroll, "TOPLEFT", 8, -8)
     page.cityX = math.floor(content:GetWidth() * 0.56)
-    page.listColumns = CreateFrame("Frame", nil, page)
-    page.listColumns:SetAllPoints()
-    label(page.listColumns, wt.L.LEDGER_WEAPON_SKILL, "SystemFont_Med3", 8, -78 + CONTENT_RISE)
-    page.cityLabel = label(page.listColumns, wt.L.LEDGER_TRAINED_IN, "SystemFont_Med3", page.cityX, -78 + CONTENT_RISE)
     page.cityLegend = CreateFrame("Frame", nil, content)
     page.cityLegend:SetSize(content:GetWidth() - 16, 24)
     page.cityLegend.entries = {}
@@ -434,17 +425,13 @@ local function resizePage(page, viewWidth, columns)
     page:SetWidth(viewWidth + 16)
     page.numColumns = columns
     page.header:SetWidth(viewWidth)
-    page.rankX = page:GetWidth() - (InputUtil.IsGamepadUIEnabled() and 236 or 218)
-    page.levelX = page:GetWidth() - 139
-    page.rankLabel:SetPoint("TOPLEFT", page.columns, "TOPLEFT", page.rankX, -78 + CONTENT_RISE)
-    page.levelLabel:SetPoint("TOPLEFT", page.columns, "TOPLEFT", page.levelX, -78 + CONTENT_RISE)
-    page.levelLabel:SetWidth(page:GetWidth() - page.levelX - 20)
+    page.rankX = page:GetWidth() - (InputUtil.IsGamepadUIEnabled() and 217 or 199)
+    page.levelX = page:GetWidth() - 120
     page.footer:SetWidth(page:GetWidth() - 28)
     page.content:SetWidth(page:GetWidth() - 20)
     page.levels:SetWidth(page.content:GetWidth())
     page.cityX = math.min(math.floor(page.content:GetWidth() * 0.56),
         page.levelX - #(wt.weaponSkeleton or {}) * 34 - 8)
-    page.cityLabel:SetPoint("TOPLEFT", page.listColumns, "TOPLEFT", page.cityX, -78 + CONTENT_RISE)
     page.cityLegend:SetWidth(page.content:GetWidth() - 16)
 end
 
