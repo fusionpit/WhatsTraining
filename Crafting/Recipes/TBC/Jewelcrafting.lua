@@ -1,267 +1,267 @@
 local _, ns = ...
 ns.Recipes = ns.Recipes or {}
 ns.Recipes[755] = {
-    { spell = 25255, skill = 1, autoLearned = true, creates = 20816 }, -- Delicate Copper Wire
-    { spell = 25493, skill = 1, autoLearned = true, creates = 20906 }, -- Braided Copper Ring
-    { spell = 26925, skill = 1, autoLearned = true, creates = 21931 }, -- Woven Copper Ring
-    { spell = 32259, skill = 1, autoLearned = true, creates = 25498 }, -- Rough Stone Statue
-    { spell = 26926, skill = 5, creates = 21932, source = { "trainer" }, cost = 50 }, -- Heavy Copper Ring
-    { spell = 32178, skill = 20, creates = 25438, source = { "trainer" }, cost = 100 }, -- Malachite Pendant
-    { spell = 32179, skill = 20, creates = 25439, source = { "trainer" }, cost = 100 }, -- Tigerseye Band
-    { spell = 25283, skill = 30, creates = 20821, source = { "trainer" }, cost = 100 }, -- Inlaid Malachite Ring
-    { spell = 26928, skill = 30, creates = 21934, source = { "trainer" }, cost = 100 }, -- Ornate Tigerseye Necklace
-    { spell = 25230, skill = 50, rank = "Journeyman", level = 10, source = { "trainer" }, cost = 500 }, -- Jewelcrafting (Journeyman)
-    { spell = 25278, skill = 50, creates = 20817, source = { "trainer" }, cost = 200 }, -- Bronze Setting
-    { spell = 25280, skill = 50, creates = 20818, source = { "trainer" }, cost = 200 }, -- Elegant Silver Ring
-    { spell = 25490, skill = 50, creates = 20907, source = { "trainer" }, cost = 300 }, -- Solid Bronze Ring
-    { spell = 26927, skill = 50, creates = 21933, source = { "trainer" }, cost = 300 }, -- Thick Bronze Necklace
-    { spell = 32801, skill = 50, creates = 25880, source = { "trainer" }, cost = 200 }, -- Coarse Stone Statue
-    { spell = 25284, skill = 60, creates = 20820, source = { "trainer" }, cost = 400 }, -- Simple Pearl Ring
-    { spell = 37818, skill = 65, creates = 30804, source = { "trainer" }, cost = 500 }, -- Bronze Band of Force
-    { spell = 25287, skill = 70, creates = 20823, source = { "trainer" }, cost = 400 }, -- Gloom Band
-    { spell = 36523, skill = 75, creates = 30419, source = { "trainer" }, cost = 600 }, -- Brilliant Necklace
-    { spell = 25317, skill = 80, creates = 20827, source = { "trainer" }, cost = 600 }, -- Ring of Silver Might
-    { spell = 38175, skill = 80, creates = 31154, source = { "trainer" }, cost = 650 }, -- Bronze Torc
-    { spell = 25305, skill = 90, creates = 20826, source = { "trainer" }, cost = 1000 }, -- Heavy Silver Ring
-    { spell = 25318, skill = 100, creates = 20828, source = { "trainer" }, cost = 800 }, -- Ring of Twilight Shadows
-    { spell = 36524, skill = 105, creates = 30420, source = { "trainer" }, cost = 800 }, -- Heavy Jade Ring
-    { spell = 25339, skill = 110, creates = 20830, teach = 20854, source = { "vendor" }, bound = false, vendors = { { npc = 4229, area = 1657, faction = "Alliance" }, { npc = 4561, area = 1497, faction = "Horde" }, { npc = 16624, area = 3487, faction = "Horde" }, { npc = 17512, area = 3557, faction = "Alliance" } } }, -- Amulet of the Moon
-    { spell = 25498, skill = 110, creates = 20909, source = { "trainer" }, cost = 600 }, -- Barbaric Iron Collar
-    { spell = 32807, skill = 110, creates = 25881, source = { "trainer" }, cost = 600 }, -- Heavy Stone Statue
-    { spell = 25321, skill = 120, creates = 20832, source = { "trainer" }, cost = 1500 }, -- Moonsoul Crown
-    { spell = 25610, skill = 120, creates = 20950, teach = 20970, source = { "vendor" }, bound = false, vendors = { { npc = 1448, area = 11, faction = "Alliance" }, { npc = 4877, area = 400, faction = "Horde" } } }, -- Pendant of the Agate Shield
-    { spell = 25323, skill = 125, creates = 20833, teach = 20855, source = { "vendor" }, bound = false, vendors = { { npc = 3499, area = 17 }, { npc = 3954, area = 331, faction = "Alliance" } } }, -- Wicked Moonstone Ring
-    { spell = 25612, skill = 125, creates = 20954, teach = 20971, source = { "vendor" }, bound = false, vendors = { { npc = 2381, area = 267, faction = "Alliance" }, { npc = 2393, area = 267, faction = "Horde" } } }, -- Heavy Iron Knuckles
-    { spell = 28894, skill = 125, rank = "Expert", level = 20, source = { "trainer" }, cost = 5000 }, -- Jewelcrafting (Expert)
-    { spell = 25613, skill = 135, creates = 20955, source = { "trainer" }, cost = 1200 }, -- Golden Dragon Ring
-    { spell = 25320, skill = 150, creates = 20831, teach = 20856, source = { "vendor" }, bound = false, vendors = { { npc = 1286, area = 1519, faction = "Alliance" }, { npc = 3367, area = 1637, faction = "Horde" }, { npc = 16624, area = 3487, faction = "Horde" }, { npc = 17512, area = 3557, faction = "Alliance" } } }, -- Heavy Golden Necklace of Battle
-    { spell = 25615, skill = 150, creates = 20963, source = { "trainer" }, cost = 1500 }, -- Mithril Filigree
-    { spell = 25617, skill = 150, creates = 20958, teach = 20973, source = { "vendor" }, bound = false, vendors = { { npc = 2381, area = 267, faction = "Alliance" }, { npc = 9636, area = 405, faction = "Horde" } } }, -- Blazing Citrine Ring
-    { spell = 25618, skill = 160, creates = 20966, teach = 20974, source = { "drop" }, bound = false }, -- Jade Pendant of Blasting
-    { spell = 25619, skill = 170, creates = 20959, teach = 20975, source = { "vendor" }, bound = false, vendors = { { npc = 4775, area = 1497, faction = "Horde" }, { npc = 5163, area = 1537, faction = "Alliance" }, { npc = 16624, area = 3487, faction = "Horde" }, { npc = 17512, area = 3557, faction = "Alliance" } } }, -- The Jade Eye
-    { spell = 25620, skill = 170, creates = 20960, source = { "trainer" }, cost = 2000 }, -- Engraved Truesilver Ring
-    { spell = 32808, skill = 175, creates = 25882, source = { "trainer" }, cost = 2000 }, -- Solid Stone Statue
-    { spell = 25621, skill = 180, creates = 20961, source = { "trainer" }, cost = 2000 }, -- Citrine Ring of Rapid Healing
-    { spell = 34955, skill = 180, creates = 29157, source = { "trainer" }, cost = 2500 }, -- Golden Ring of Power
-    { spell = 25622, skill = 190, creates = 20967, teach = 20976, source = { "drop" }, bound = true }, -- Citrine Pendant of Golden Healing
-    { spell = 26872, skill = 200, creates = 21748, source = { "trainer" }, cost = 2500 }, -- Figurine - Jade Owl
-    { spell = 26873, skill = 200, creates = 21756, teach = 21940, source = { "drop" }, bound = false }, -- Figurine - Golden Hare
-    { spell = 28895, skill = 200, rank = "Artisan", level = 35, source = { "trainer" }, cost = 50000 }, -- Jewelcrafting (Artisan)
-    { spell = 34959, skill = 200, creates = 29158, source = { "trainer" }, cost = 3000 }, -- Truesilver Commander's Ring
-    { spell = 26874, skill = 210, creates = 20964, source = { "trainer" }, cost = 5000 }, -- Aquamarine Signet
-    { spell = 26875, skill = 215, creates = 21758, teach = 21941, source = { "vendor" }, bound = false, vendors = { { npc = 989, area = 8, faction = "Horde" }, { npc = 4897, area = 15, faction = "Alliance" } } }, -- Figurine - Black Pearl Panther
-    { spell = 26876, skill = 220, creates = 21755, source = { "trainer" }, cost = 3000 }, -- Aquamarine Pendant of the Warrior
-    { spell = 26878, skill = 225, creates = 20969, teach = 21942, source = { "vendor" }, bound = false, vendors = { { npc = 2810, area = 45, faction = "Alliance" }, { npc = 2821, area = 45, faction = "Horde" } } }, -- Ruby Crown of Restoration
-    { spell = 26880, skill = 225, creates = 21752, source = { "trainer" }, cost = 3500 }, -- Thorium Setting
-    { spell = 26881, skill = 225, creates = 21760, teach = 21943, source = { "vendor" }, bound = false, vendors = { { npc = 1148, area = 33, faction = "Horde" }, { npc = 4897, area = 15, faction = "Alliance" } } }, -- Figurine - Truesilver Crab
-    { spell = 32809, skill = 225, creates = 25883, source = { "trainer" }, cost = 3500 }, -- Dense Stone Statue
-    { spell = 36525, skill = 230, creates = 30421, source = { "trainer" }, cost = 4000 }, -- Red Ring of Destruction
-    { spell = 26882, skill = 235, creates = 21763, teach = 21944, source = { "drop" }, bound = false }, -- Figurine - Truesilver Boar
-    { spell = 26883, skill = 235, creates = 21764, source = { "trainer" }, cost = 4000 }, -- Ruby Pendant of Fire
-    { spell = 26885, skill = 240, creates = 21765, source = { "trainer" }, cost = 5000 }, -- Truesilver Healing Ring
-    { spell = 26887, skill = 245, creates = 21754, teach = 21945, source = { "drop" }, bound = false }, -- The Aquamarine Ward
-    { spell = 26896, skill = 250, creates = 21753, teach = 21947, source = { "drop" }, bound = false }, -- Gem Studded Band
-    { spell = 26897, skill = 250, creates = 21766, teach = 21948, source = { "vendor" }, bound = false, vendors = { { npc = 5163, area = 1537, faction = "Alliance" }, { npc = 8363, area = 1638, faction = "Horde" }, { npc = 16624, area = 3487, faction = "Horde" }, { npc = 17512, area = 3557, faction = "Alliance" } } }, -- Opal Necklace of Impact
-    { spell = 26900, skill = 260, creates = 21769, teach = 21949, source = { "drop" }, bound = false }, -- Figurine - Ruby Serpent
-    { spell = 26902, skill = 260, creates = 21767, source = { "trainer" }, cost = 10000 }, -- Simple Opal Ring
-    { spell = 36526, skill = 265, creates = 30422, source = { "trainer" }, cost = 10000 }, -- Diamond Focus Ring
-    { spell = 26903, skill = 275, creates = 21768, source = { "trainer" }, cost = 10000 }, -- Sapphire Signet
-    { spell = 26906, skill = 275, creates = 21774, teach = 21952, source = { "vendor" }, bound = false, vendors = { { npc = 15179, area = 1377 } } }, -- Emerald Crown of Destruction
-    { spell = 28897, skill = 275, rank = "Master", level = 50, source = { "trainer" }, cost = 100000 }, -- Jewelcrafting (Master)
-    { spell = 26907, skill = 280, creates = 21775, source = { "trainer" }, cost = 10000 }, -- Onslaught Ring
-    { spell = 26908, skill = 280, creates = 21790, source = { "trainer" }, cost = 12000 }, -- Sapphire Pendant of Winter Night
-    { spell = 34960, skill = 280, creates = 29159, source = { "trainer" }, cost = 10000 }, -- Glowing Thorium Band
-    { spell = 26909, skill = 285, creates = 21777, teach = 21953, source = { "drop" }, bound = false }, -- Figurine - Emerald Owl
-    { spell = 26910, skill = 285, creates = 21778, teach = 21954, source = { "vendor" }, bound = false, vendors = { { npc = 12941, area = 139 } } }, -- Ring of Bitter Shadows
-    { spell = 26911, skill = 290, creates = 21791, source = { "trainer" }, cost = 15000 }, -- Living Emerald Pendant
-    { spell = 34961, skill = 290, creates = 29160, source = { "trainer" }, cost = 10000 }, -- Emerald Lion Ring
-    { spell = 26912, skill = 300, creates = 21784, teach = 21955, source = { "drop" }, bound = true }, -- Figurine - Black Diamond Crab
-    { spell = 26914, skill = 300, creates = 21789, teach = 21956, source = { "drop" }, bound = true }, -- Figurine - Dark Iron Scorpid
-    { spell = 28903, skill = 300, creates = 23094, teach = 23130, source = { "vendor" }, bound = true, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } }, -- Teardrop Blood Garnet
-    { spell = 28910, skill = 300, creates = 23098, teach = 23135, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } }, -- Inscribed Flame Spessarite
-    { spell = 28916, skill = 300, creates = 23103, teach = 23140, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } }, -- Radiant Deep Peridot
-    { spell = 28925, skill = 300, creates = 23108, teach = 23144, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } }, -- Glowing Shadow Draenite
-    { spell = 28938, skill = 300, creates = 23113, teach = 23148, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } }, -- Brilliant Golden Draenite
-    { spell = 28950, skill = 300, creates = 23118, teach = 23152, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } }, -- Solid Azure Moonstone
-    { spell = 26915, skill = 305, creates = 21792, teach = 21957, source = { "vendor" }, bound = false, vendors = { { npc = 11189, area = 618 } } }, -- Necklace of the Diamond Tower
-    { spell = 28905, skill = 305, creates = 23095, teach = 23131, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } }, -- Bold Blood Garnet
-    { spell = 28912, skill = 305, creates = 23099, teach = 23136, reputation = { 933, 5, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } }, -- Luminous Flame Spessarite
-    { spell = 28917, skill = 305, creates = 23104, teach = 23141, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } }, -- Jagged Deep Peridot
-    { spell = 28927, skill = 305, creates = 23109, teach = 23145, reputation = { 932, 6, ns.L.FACTION_932 }, source = { "vendor" }, bound = true, vendors = { { npc = 19321, area = 3703 } } }, -- Royal Shadow Draenite
-    { spell = 28944, skill = 305, creates = 23114, teach = 23149, reputation = { 932, 5, ns.L.FACTION_932 }, source = { "vendor" }, bound = true, vendors = { { npc = 19321, area = 3703 } } }, -- Gleaming Golden Draenite
-    { spell = 28953, skill = 305, creates = 23119, teach = 23153, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } }, -- Sparkling Azure Moonstone
-    { spell = 34590, skill = 305, creates = 28595, teach = 28596, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } }, -- Bright Blood Garnet
-    { spell = 26916, skill = 310, creates = 21779, source = { "trainer" }, cost = 20000 }, -- Band of Natural Fire
-    { spell = 31048, skill = 310, creates = 24074, source = { "trainer" }, cost = 20000 }, -- Fel Iron Blood Ring
-    { spell = 31049, skill = 310, creates = 24075, source = { "trainer" }, cost = 20000 }, -- Golden Draenite Ring
-    { spell = 26918, skill = 315, creates = 21793, teach = 21958, bound = false }, -- Arcanite Sword Pendant
-    { spell = 28906, skill = 315, creates = 23096, teach = 23133, reputation = { 934, 5, ns.L.FACTION_934 }, source = { "vendor" }, bound = true, vendors = { { npc = 19331, area = 3703 } } }, -- Runed Blood Garnet
-    { spell = 28914, skill = 315, creates = 23100, teach = 23137, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } }, -- Glinting Flame Spessarite
-    { spell = 28918, skill = 315, creates = 23105, teach = 23142, reputation = { 946, 5, ns.L.FACTION_946, 947, 5, ns.L.FACTION_947 }, source = { "vendor" }, bound = true, vendors = { { npc = 17657, area = 3483, faction = "Alliance" }, { npc = 17585, area = 3483 } } }, -- Enduring Deep Peridot
-    { spell = 28933, skill = 315, creates = 23110, teach = 23146, reputation = { 933, 5, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } }, -- Shifting Shadow Draenite
-    { spell = 28947, skill = 315, creates = 23115, teach = 23150, reputation = { 933, 6, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } }, -- Thick Golden Draenite
-    { spell = 28955, skill = 315, creates = 23120, teach = 23154, source = { "drop" }, bound = false }, -- Stormy Azure Moonstone
-    { spell = 31050, skill = 320, creates = 24076, source = { "trainer" }, cost = 25000 }, -- Azure Moonstone Ring
-    { spell = 26920, skill = 325, creates = 21780, teach = 21959, bound = false }, -- Blood Crown
-    { spell = 28907, skill = 325, creates = 23097, teach = 23134, reputation = { 933, 6, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } }, -- Delicate Blood Garnet
-    { spell = 28915, skill = 325, creates = 23101, teach = 23138, reputation = { 1011, 5, ns.L.FACTION_1011 }, source = { "vendor" }, bound = true, vendors = { { npc = 21655, area = 3703 } } }, -- Potent Flame Spessarite
-    { spell = 28924, skill = 325, creates = 23106, teach = 23143, reputation = { 934, 6, ns.L.FACTION_934 }, source = { "vendor" }, bound = true, vendors = { { npc = 19331, area = 3703 } } }, -- Dazzling Deep Peridot
-    { spell = 28936, skill = 325, creates = 23111, teach = 23147, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } }, -- Sovereign Shadow Draenite
-    { spell = 28948, skill = 325, creates = 23116, teach = 23151, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } }, -- Rigid Golden Draenite
-    { spell = 28957, skill = 325, creates = 23121, teach = 23155, reputation = { 933, 6, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } }, -- Lustrous Azure Moonstone
-    { spell = 34069, skill = 325, creates = 28290, teach = 28291, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } }, -- Smooth Golden Draenite
-    { spell = 38068, skill = 325, creates = 31079, source = { "trainer" }, cost = 20000 }, -- Mercurial Adamantite
-    { spell = 39451, skill = 325, creates = 31860, teach = 31870, source = { "drop" }, bound = false }, -- Great Golden Draenite
-    { spell = 39455, skill = 325, creates = 31862, teach = 31871, source = { "drop" }, bound = false }, -- Balanced Shadow Draenite
-    { spell = 39458, skill = 325, creates = 31864, teach = 31872, source = { "drop" }, bound = false }, -- Infused Shadow Draenite
-    { spell = 39466, skill = 325, creates = 31866, teach = 31873, source = { "drop" }, bound = false }, -- Veiled Flame Spessarite
-    { spell = 39467, skill = 325, creates = 31869, teach = 31874, source = { "drop" }, bound = false }, -- Wicked Flame Spessarite
-    { spell = 41414, skill = 325, creates = 32772, source = { "trainer" }, cost = 10000 }, -- Brilliant Pearl Band
-    { spell = 41420, skill = 325, creates = 32833, source = { "trainer" }, cost = 8500 }, -- Purified Jaggal Pearl
-    { spell = 41415, skill = 330, creates = 32774, source = { "trainer" }, cost = 10000 }, -- The Black Pearl
-    { spell = 31051, skill = 335, creates = 24077, source = { "trainer" }, cost = 30000 }, -- Thick Adamantite Necklace
-    { spell = 31052, skill = 335, creates = 24078, source = { "trainer" }, cost = 30000 }, -- Heavy Adamantite Ring
-    { spell = 40514, skill = 340, creates = 32508, source = { "trainer" }, cost = 8500 }, -- Necklace of the Deep
-    { spell = 31058, skill = 345, creates = 24087, teach = 24163, source = { "drop" }, bound = false }, -- Heavy Felsteel Ring
-    { spell = 31053, skill = 350, creates = 24079, teach = 24158, source = { "drop" }, bound = true }, -- Khorium Band of Shadows
-    { spell = 31084, skill = 350, creates = 24027, teach = 24193, source = { "drop" }, bound = false }, -- Bold Living Ruby
-    { spell = 31085, skill = 350, creates = 24028, teach = 24194, source = { "drop" }, bound = false }, -- Delicate Living Ruby
-    { spell = 31087, skill = 350, creates = 24029, teach = 24195, source = { "drop" }, bound = false }, -- Teardrop Living Ruby
-    { spell = 31088, skill = 350, creates = 24030, teach = 24196, source = { "drop" }, bound = false }, -- Runed Living Ruby
-    { spell = 31089, skill = 350, creates = 24031, teach = 24192, source = { "drop" }, bound = false }, -- Bright Living Ruby
-    { spell = 31090, skill = 350, creates = 24032, teach = 24197, source = { "drop" }, bound = false }, -- Subtle Living Ruby
-    { spell = 31091, skill = 350, creates = 24036, teach = 24198, source = { "drop" }, bound = false }, -- Flashing Living Ruby
-    { spell = 31092, skill = 350, creates = 24033, teach = 24199, source = { "drop" }, bound = false }, -- Solid Star of Elune
-    { spell = 31094, skill = 350, creates = 24037, teach = 24201, source = { "drop" }, bound = false }, -- Lustrous Star of Elune
-    { spell = 31095, skill = 350, creates = 24039, teach = 24202, source = { "drop" }, bound = false }, -- Stormy Star of Elune
-    { spell = 31096, skill = 350, creates = 24047, teach = 24203, source = { "drop" }, bound = false }, -- Brilliant Dawnstone
-    { spell = 31097, skill = 350, creates = 24048, teach = 24204, source = { "drop" }, bound = false }, -- Smooth Dawnstone
-    { spell = 31098, skill = 350, creates = 24051, teach = 24205, source = { "drop" }, bound = false }, -- Rigid Dawnstone
-    { spell = 31099, skill = 350, creates = 24050, teach = 24206, source = { "drop" }, bound = false }, -- Gleaming Dawnstone
-    { spell = 31100, skill = 350, creates = 24052, teach = 24207, source = { "drop" }, bound = false }, -- Thick Dawnstone
-    { spell = 31101, skill = 350, creates = 24053, teach = 24208, source = { "vendor" }, bound = true, vendors = { { npc = 21474, area = 3518, faction = "Horde" }, { npc = 21485, area = 3518, faction = "Alliance" } } }, -- Mystic Dawnstone
-    { spell = 31102, skill = 350, creates = 24054, teach = 24209, source = { "drop" }, bound = false }, -- Sovereign Nightseye
-    { spell = 31103, skill = 350, creates = 24055, teach = 24210, source = { "drop" }, bound = false }, -- Shifting Nightseye
-    { spell = 31104, skill = 350, creates = 24056, teach = 24211, source = { "drop" }, bound = false }, -- Glowing Nightseye
-    { spell = 31105, skill = 350, creates = 24057, teach = 24212, source = { "drop" }, bound = false }, -- Royal Nightseye
-    { spell = 31106, skill = 350, creates = 24058, teach = 24213, source = { "drop" }, bound = false }, -- Inscribed Noble Topaz
-    { spell = 31107, skill = 350, creates = 24059, teach = 24214, source = { "drop" }, bound = false }, -- Potent Noble Topaz
-    { spell = 31108, skill = 350, creates = 24060, teach = 24215, source = { "drop" }, bound = false }, -- Luminous Noble Topaz
-    { spell = 31109, skill = 350, creates = 24061, teach = 24216, source = { "drop" }, bound = false }, -- Glinting Noble Topaz
-    { spell = 31110, skill = 350, creates = 24062, teach = 24217, source = { "drop" }, bound = false }, -- Enduring Talasite
-    { spell = 31111, skill = 350, creates = 24066, teach = 24218, source = { "drop" }, bound = false }, -- Radiant Talasite
-    { spell = 31112, skill = 350, creates = 24065, teach = 24219, source = { "drop" }, bound = false }, -- Dazzling Talasite
-    { spell = 31113, skill = 350, creates = 24067, teach = 24220, source = { "drop" }, bound = false }, -- Jagged Talasite
-    { spell = 31149, skill = 350, creates = 24035, teach = 24200, source = { "drop" }, bound = false }, -- Sparkling Star of Elune
-    { spell = 39452, skill = 350, creates = 31861, teach = 31875, source = { "drop" }, bound = false }, -- Great Dawnstone
-    { spell = 39462, skill = 350, creates = 31865, teach = 31877, source = { "drop" }, bound = false }, -- Infused Nightseye
-    { spell = 39463, skill = 350, creates = 31863, teach = 31876, source = { "drop" }, bound = false }, -- Balanced Nightseye
-    { spell = 39470, skill = 350, creates = 31867, teach = 31878, source = { "drop" }, bound = false }, -- Veiled Noble Topaz
-    { spell = 39471, skill = 350, creates = 31868, teach = 31879, source = { "drop" }, bound = false }, -- Wicked Noble Topaz
-    { spell = 41429, skill = 350, creates = 32836, source = { "trainer" }, cost = 10000 }, -- Purified Shadow Pearl
-    { spell = 43493, skill = 350, creates = 33782, teach = 33783, source = { "vendor" }, bound = true, vendors = { { npc = 18821, area = 3518, faction = "Horde" }, { npc = 18822, area = 3518, faction = "Alliance" } } }, -- Steady Talasite
-    { spell = 46403, skill = 350, creates = 35315, teach = 35322, reputation = { 1077, 8, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25950, area = 4080 }, { npc = 27666, area = 3703 } } }, -- Quick Dawnstone
-    { spell = 46404, skill = 350, creates = 35316, teach = 35323, reputation = { 1077, 8, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25950, area = 4080 }, { npc = 27666, area = 3703 } } }, -- Reckless Noble Topaz
-    { spell = 46405, skill = 350, creates = 35318, teach = 35325, reputation = { 1077, 8, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25950, area = 4080 }, { npc = 27666, area = 3703 } } }, -- Forceful Talasite
-    { spell = 46803, skill = 350, creates = 35707, teach = 35708, reputation = { 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25032, area = 4080 } } }, -- Regal Nightseye
-    { spell = 47280, skill = 350, creates = 35945, source = { "trainer" }, cost = 30000 }, -- Brilliant Glass
-    { spell = 31054, skill = 355, creates = 24080, teach = 24159, source = { "drop" }, bound = true }, -- Khorium Band of Frost
-    { spell = 31055, skill = 355, creates = 24082, teach = 24160, source = { "drop" }, bound = true }, -- Khorium Inferno Band
-    { spell = 31060, skill = 355, creates = 24088, teach = 24164, source = { "drop" }, bound = false }, -- Delicate Eternium Ring
-    { spell = 31067, skill = 355, creates = 24106, teach = 24166, source = { "drop" }, bound = false }, -- Thick Felsteel Necklace
-    { spell = 31068, skill = 355, creates = 24110, teach = 24167, source = { "drop" }, bound = false }, -- Living Ruby Pendant
-    { spell = 31056, skill = 360, creates = 24085, teach = 24161, source = { "drop" }, bound = true }, -- Khorium Band of Leaves
-    { spell = 31062, skill = 360, creates = 24092, teach = 24174, reputation = { 989, 7, ns.L.FACTION_989 }, source = { "vendor" }, bound = true, vendors = { { npc = 21643, area = 440 } } }, -- Pendant of Frozen Flame
-    { spell = 31063, skill = 360, creates = 24093, teach = 24175, reputation = { 1011, 7, ns.L.FACTION_1011 }, source = { "vendor" }, bound = true, vendors = { { npc = 21655, area = 3703 } } }, -- Pendant of Thawing
-    { spell = 31064, skill = 360, creates = 24095, teach = 24176, reputation = { 934, 7, ns.L.FACTION_934 }, source = { "vendor" }, bound = true, vendors = { { npc = 19331, area = 3703 } } }, -- Pendant of Withering
-    { spell = 31065, skill = 360, creates = 24097, teach = 24177, reputation = { 932, 7, ns.L.FACTION_932 }, source = { "vendor" }, bound = true, vendors = { { npc = 19321, area = 3703 } } }, -- Pendant of Shadow's End
-    { spell = 31066, skill = 360, creates = 24098, teach = 24178, reputation = { 933, 7, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } }, -- Pendant of the Null Rune
-    { spell = 31070, skill = 360, creates = 24114, teach = 24168, source = { "drop" }, bound = false }, -- Braided Eternium Chain
-    { spell = 31071, skill = 360, creates = 24116, teach = 24169, source = { "drop" }, bound = false }, -- Eye of the Night
-    { spell = 37855, skill = 360, creates = 30825, teach = 30826, reputation = { 935, 6, ns.L.FACTION_935 }, source = { "vendor" }, bound = true, vendors = { { npc = 21432, area = 3703 } } }, -- Ring of Arcane Shielding
-    { spell = 42558, skill = 360, creates = 33133, teach = 33305, reputation = { 933, 7, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } }, -- Don Julio's Heart
-    { spell = 42588, skill = 360, creates = 33134, teach = 33155, reputation = { 935, 6, ns.L.FACTION_935 }, source = { "vendor" }, bound = true, vendors = { { npc = 21432, area = 3703 } } }, -- Kailee's Rose
-    { spell = 42589, skill = 360, creates = 33131, teach = 33156, reputation = { 933, 7, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } }, -- Crimson Sun
-    { spell = 42590, skill = 360, creates = 33135, teach = 33157, reputation = { 1011, 7, ns.L.FACTION_1011 }, source = { "vendor" }, bound = true, vendors = { { npc = 21655, area = 3703 } } }, -- Falling Star
-    { spell = 42591, skill = 360, creates = 33143, teach = 33158, reputation = { 989, 7, ns.L.FACTION_989 }, source = { "vendor" }, bound = true, vendors = { { npc = 21643, area = 440 } } }, -- Stone of Blades
-    { spell = 42592, skill = 360, creates = 33140, teach = 33159, reputation = { 935, 7, ns.L.FACTION_935 }, source = { "vendor" }, bound = true, vendors = { { npc = 21432, area = 3703 } } }, -- Blood of Amber
-    { spell = 42593, skill = 360, creates = 33144, teach = 33160, reputation = { 989, 6, ns.L.FACTION_989 }, source = { "vendor" }, bound = true, vendors = { { npc = 21643, area = 440 } } }, -- Facet of Eternity
-    { spell = 31057, skill = 365, creates = 24086, teach = 24162, source = { "drop" }, bound = true }, -- Arcane Khorium Band
-    { spell = 31061, skill = 365, creates = 24089, teach = 24165, source = { "drop" }, bound = false }, -- Blazing Eternium Band
-    { spell = 31072, skill = 365, creates = 24117, teach = 24170, source = { "drop" }, bound = false }, -- Embrace of the Dawn
-    { spell = 31076, skill = 365, creates = 24121, teach = 24171, source = { "drop" }, bound = false }, -- Chain of the Twilight Owl
-    { spell = 32866, skill = 365, creates = 25896, teach = 25902, reputation = { 933, 6, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 17518, area = 3457 } } }, -- Powerful Earthstorm Diamond
-    { spell = 32867, skill = 365, creates = 25897, teach = 25903, reputation = { 933, 7, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 17518, area = 3457 } } }, -- Bracing Earthstorm Diamond
-    { spell = 32868, skill = 365, creates = 25898, teach = 25905, source = { "drop" }, bound = false }, -- Tenacious Earthstorm Diamond
-    { spell = 32869, skill = 365, creates = 25899, teach = 25906, source = { "drop" }, bound = false }, -- Brutal Earthstorm Diamond
-    { spell = 32870, skill = 365, creates = 25901, teach = 25904, reputation = { 935, 5, ns.L.FACTION_935 }, source = { "vendor" }, bound = true, vendors = { { npc = 21432, area = 3703 } } }, -- Insightful Earthstorm Diamond
-    { spell = 32871, skill = 365, creates = 25890, teach = 25907, source = { "drop" }, bound = false }, -- Destructive Skyfire Diamond
-    { spell = 32872, skill = 365, creates = 25893, teach = 25909, source = { "drop" }, bound = false }, -- Mystical Skyfire Diamond
-    { spell = 32873, skill = 365, creates = 25894, teach = 25908, reputation = { 933, 6, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } }, -- Swift Skyfire Diamond
-    { spell = 32874, skill = 365, creates = 25895, teach = 25910, reputation = { 989, 6, ns.L.FACTION_989 }, source = { "vendor" }, bound = true, vendors = { { npc = 21643, area = 440 } } }, -- Enigmatic Skyfire Diamond
-    { spell = 39961, skill = 365, creates = 32409, teach = 32412, reputation = { 933, 8, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } }, -- Relentless Earthstorm Diamond
-    { spell = 39963, skill = 365, creates = 32410, teach = 32411, source = { "drop" }, bound = false }, -- Thundering Skyfire Diamond
-    { spell = 41418, skill = 365, creates = 32776, source = { "trainer" }, cost = 30000 }, -- Crown of the Sea Witch
-    { spell = 44794, skill = 365, creates = 34220, teach = 34221, source = { "drop" }, bound = false }, -- Chaotic Skyfire Diamond
-    { spell = 46122, skill = 365, creates = 34362, teach = 35198, source = { "drop" }, bound = true }, -- Loop of Forged Power
-    { spell = 46123, skill = 365, creates = 34363, teach = 35199, source = { "drop" }, bound = true }, -- Ring of Flowing Life
-    { spell = 46124, skill = 365, creates = 34361, teach = 35200, source = { "drop" }, bound = true }, -- Hard Khorium Band
-    { spell = 46125, skill = 365, creates = 34359, teach = 35201, source = { "drop" }, bound = false }, -- Pendant of Sunfire
-    { spell = 46126, skill = 365, creates = 34360, teach = 35202, source = { "drop" }, bound = false }, -- Amulet of Flowing Life
-    { spell = 46127, skill = 365, creates = 34358, teach = 35203, source = { "drop" }, bound = false }, -- Hard Khorium Choker
-    { spell = 31077, skill = 370, creates = 24122, teach = 24172, source = { "drop" }, bound = true }, -- Coronet of the Verdant Flame
-    { spell = 31078, skill = 370, creates = 24123, teach = 24173, source = { "drop" }, bound = true }, -- Circlet of Arcane Might
-    { spell = 31079, skill = 370, creates = 24124, teach = 24179, reputation = { 1011, 7, ns.L.FACTION_1011 }, source = { "vendor" }, bound = true, vendors = { { npc = 21655, area = 3703 } } }, -- Figurine - Felsteel Boar
-    { spell = 31080, skill = 370, creates = 24125, teach = 24180, reputation = { 946, 7, ns.L.FACTION_946, 947, 7, ns.L.FACTION_947 }, source = { "vendor" }, bound = true, vendors = { { npc = 17657, area = 3483, faction = "Alliance" }, { npc = 17585, area = 3483 } } }, -- Figurine - Dawnstone Crab
-    { spell = 31081, skill = 370, creates = 24126, teach = 24181, reputation = { 989, 7, ns.L.FACTION_989 }, source = { "vendor" }, bound = true, vendors = { { npc = 21643, area = 440 } } }, -- Figurine - Living Ruby Serpent
-    { spell = 31082, skill = 370, creates = 24127, teach = 24182, reputation = { 935, 7, ns.L.FACTION_935 }, source = { "vendor" }, bound = true, vendors = { { npc = 21432, area = 3703 } } }, -- Figurine - Talasite Owl
-    { spell = 31083, skill = 370, creates = 24128, teach = 24183, reputation = { 942, 7, ns.L.FACTION_942 }, source = { "vendor" }, bound = true, vendors = { { npc = 17904, area = 3521 } } }, -- Figurine - Nightseye Panther
-    { spell = 46597, skill = 370, creates = 35501, teach = 35502, reputation = { 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25032, area = 4080 } } }, -- Eternal Earthstorm Diamond
-    { spell = 46601, skill = 370, creates = 35503, teach = 35505, reputation = { 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25032, area = 4080 } } }, -- Ember Skyfire Diamond
-    { spell = 38503, skill = 375, creates = 31398, teach = 31401, reputation = { 967, 6, ns.L.FACTION_967 }, source = { "vendor" }, bound = true, vendors = { { npc = 18255, area = 41 } } }, -- The Frozen Eye
-    { spell = 38504, skill = 375, creates = 31399, teach = 31402, reputation = { 942, 8, ns.L.FACTION_942 }, source = { "vendor" }, bound = true, vendors = { { npc = 17904, area = 3521 } } }, -- The Natural Ward
-    { spell = 39705, skill = 375, creates = 32193, teach = 32274, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Bold Crimson Spinel
-    { spell = 39706, skill = 375, creates = 32194, teach = 32277, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Delicate Crimson Spinel
-    { spell = 39710, skill = 375, creates = 32195, teach = 32281, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Teardrop Crimson Spinel
-    { spell = 39711, skill = 375, creates = 32196, teach = 32282, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Runed Crimson Spinel
-    { spell = 39712, skill = 375, creates = 32197, teach = 32283, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Bright Crimson Spinel
-    { spell = 39713, skill = 375, creates = 32198, teach = 32284, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Subtle Crimson Spinel
-    { spell = 39714, skill = 375, creates = 32199, teach = 32285, source = { "drop", "vendor" }, bound = true, vendors = { { npc = 27666, area = 3703 } } }, -- Flashing Crimson Spinel
-    { spell = 39715, skill = 375, creates = 32200, teach = 32286, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Solid Empyrean Sapphire
-    { spell = 39716, skill = 375, creates = 32201, teach = 32287, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Sparkling Empyrean Sapphire
-    { spell = 39717, skill = 375, creates = 32202, teach = 32288, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Lustrous Empyrean Sapphire
-    { spell = 39718, skill = 375, creates = 32203, teach = 32289, source = { "drop", "vendor" }, bound = true, vendors = { { npc = 27666, area = 3703 } } }, -- Stormy Empyrean Sapphire
-    { spell = 39719, skill = 375, creates = 32204, teach = 32290, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Brilliant Lionseye
-    { spell = 39720, skill = 375, creates = 32205, teach = 32291, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Smooth Lionseye
-    { spell = 39721, skill = 375, creates = 32206, teach = 32292, reputation = { 990, 7, ns.L.FACTION_990, 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Rigid Lionseye
-    { spell = 39722, skill = 375, creates = 32207, teach = 32293, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Gleaming Lionseye
-    { spell = 39723, skill = 375, creates = 32208, teach = 32294, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Thick Lionseye
-    { spell = 39724, skill = 375, creates = 32209, teach = 32295, source = { "drop", "vendor" }, bound = true, vendors = { { npc = 27666, area = 3703 } } }, -- Mystic Lionseye
-    { spell = 39725, skill = 375, creates = 32210, teach = 32296, source = { "drop", "vendor" }, bound = true, vendors = { { npc = 27666, area = 3703 } } }, -- Great Lionseye
-    { spell = 39727, skill = 375, creates = 32211, teach = 32297, source = { "drop", "vendor" }, bound = true, vendors = { { npc = 27666, area = 3703 } } }, -- Sovereign Shadowsong Amethyst
-    { spell = 39728, skill = 375, creates = 32212, teach = 32298, source = { "drop", "vendor" }, bound = true, vendors = { { npc = 27666, area = 3703 } } }, -- Shifting Shadowsong Amethyst
-    { spell = 39729, skill = 375, creates = 32213, teach = 32299, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Balanced Shadowsong Amethyst
-    { spell = 39730, skill = 375, creates = 32214, teach = 32300, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Infused Shadowsong Amethyst
-    { spell = 39731, skill = 375, creates = 32215, teach = 32301, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Glowing Shadowsong Amethyst
-    { spell = 39732, skill = 375, creates = 32216, teach = 32302, reputation = { 990, 7, ns.L.FACTION_990, 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Royal Shadowsong Amethyst
-    { spell = 39733, skill = 375, creates = 32217, teach = 32303, source = { "drop", "vendor" }, bound = true, vendors = { { npc = 27666, area = 3703 } } }, -- Inscribed Pyrestone
-    { spell = 39734, skill = 375, creates = 32218, teach = 32304, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Potent Pyrestone
-    { spell = 39735, skill = 375, creates = 32219, teach = 32305, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Luminous Pyrestone
-    { spell = 39736, skill = 375, creates = 32220, teach = 32306, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Glinting Pyrestone
-    { spell = 39737, skill = 375, creates = 32221, teach = 32307, source = { "drop", "vendor" }, bound = true, vendors = { { npc = 27666, area = 3703 } } }, -- Veiled Pyrestone
-    { spell = 39738, skill = 375, creates = 32222, teach = 32308, reputation = { 990, 7, ns.L.FACTION_990, 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Wicked Pyrestone
-    { spell = 39739, skill = 375, creates = 32223, teach = 32309, reputation = { 990, 7, ns.L.FACTION_990, 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Enduring Seaspray Emerald
-    { spell = 39740, skill = 375, creates = 32224, teach = 32310, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Radiant Seaspray Emerald
-    { spell = 39741, skill = 375, creates = 32225, teach = 32311, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Dazzling Seaspray Emerald
-    { spell = 39742, skill = 375, creates = 32226, teach = 32312, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } }, -- Jagged Seaspray Emerald
-    { spell = 46775, skill = 375, creates = 35693, teach = 35695, reputation = { 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25032, area = 4080 } } }, -- Figurine - Empyrean Tortoise
-    { spell = 46776, skill = 375, creates = 35694, teach = 35696, reputation = { 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25032, area = 4080 } } }, -- Figurine - Khorium Boar
-    { spell = 46777, skill = 375, creates = 35700, teach = 35697, reputation = { 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25032, area = 4080 } } }, -- Figurine - Crimson Serpent
-    { spell = 46778, skill = 375, creates = 35702, teach = 35698, reputation = { 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25032, area = 4080 } } }, -- Figurine - Shadowsong Panther
-    { spell = 46779, skill = 375, creates = 35703, teach = 35699, reputation = { 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25032, area = 4080 } } }, -- Figurine - Seaspray Albatross
-    { spell = 47053, skill = 375, creates = 35759, teach = 35765, reputation = { 990, 6, ns.L.FACTION_990, 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 25032, area = 4080 }, { npc = 27666, area = 3703 } } }, -- Forceful Seaspray Emerald
-    { spell = 47054, skill = 375, creates = 35758, teach = 35764, reputation = { 990, 6, ns.L.FACTION_990, 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 25032, area = 4080 }, { npc = 27666, area = 3703 } } }, -- Steady Seaspray Emerald
-    { spell = 47055, skill = 375, creates = 35760, teach = 35762, reputation = { 990, 6, ns.L.FACTION_990, 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 25032, area = 4080 }, { npc = 27666, area = 3703 } } }, -- Reckless Pyrestone
-    { spell = 47056, skill = 375, creates = 35761, teach = 35763, reputation = { 990, 6, ns.L.FACTION_990, 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 25032, area = 4080 }, { npc = 27666, area = 3703 } } }, -- Quick Lionseye
-    { spell = 48789, skill = 375, creates = 37503, teach = 37504, reputation = { 1077, 8, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25950, area = 4080 }, { npc = 27666, area = 3703 } } }, -- Purified Shadowsong Amethyst
+    { spell = 25255, skill = 1, autoLearned = true, creates = 20816 },
+    { spell = 25493, skill = 1, autoLearned = true, creates = 20906 },
+    { spell = 26925, skill = 1, autoLearned = true, creates = 21931 },
+    { spell = 32259, skill = 1, autoLearned = true, creates = 25498 },
+    { spell = 26926, skill = 5, creates = 21932, source = { "trainer" }, cost = 50 },
+    { spell = 32178, skill = 20, creates = 25438, source = { "trainer" }, cost = 100 },
+    { spell = 32179, skill = 20, creates = 25439, source = { "trainer" }, cost = 100 },
+    { spell = 25283, skill = 30, creates = 20821, source = { "trainer" }, cost = 100 },
+    { spell = 26928, skill = 30, creates = 21934, source = { "trainer" }, cost = 100 },
+    { spell = 25230, skill = 50, rank = "Journeyman", level = 10, source = { "trainer" }, cost = 500 },
+    { spell = 25278, skill = 50, creates = 20817, source = { "trainer" }, cost = 200 },
+    { spell = 25280, skill = 50, creates = 20818, source = { "trainer" }, cost = 200 },
+    { spell = 25490, skill = 50, creates = 20907, source = { "trainer" }, cost = 300 },
+    { spell = 26927, skill = 50, creates = 21933, source = { "trainer" }, cost = 300 },
+    { spell = 32801, skill = 50, creates = 25880, source = { "trainer" }, cost = 200 },
+    { spell = 25284, skill = 60, creates = 20820, source = { "trainer" }, cost = 400 },
+    { spell = 37818, skill = 65, creates = 30804, source = { "trainer" }, cost = 500 },
+    { spell = 25287, skill = 70, creates = 20823, source = { "trainer" }, cost = 400 },
+    { spell = 36523, skill = 75, creates = 30419, source = { "trainer" }, cost = 600 },
+    { spell = 25317, skill = 80, creates = 20827, source = { "trainer" }, cost = 600 },
+    { spell = 38175, skill = 80, creates = 31154, source = { "trainer" }, cost = 650 },
+    { spell = 25305, skill = 90, creates = 20826, source = { "trainer" }, cost = 1000 },
+    { spell = 25318, skill = 100, creates = 20828, source = { "trainer" }, cost = 800 },
+    { spell = 36524, skill = 105, creates = 30420, source = { "trainer" }, cost = 800 },
+    { spell = 25339, skill = 110, creates = 20830, teach = 20854, source = { "vendor" }, bound = false, vendors = { { npc = 4229, area = 1657, faction = "Alliance" }, { npc = 4561, area = 1497, faction = "Horde" }, { npc = 16624, area = 3487, faction = "Horde" }, { npc = 17512, area = 3557, faction = "Alliance" } } },
+    { spell = 25498, skill = 110, creates = 20909, source = { "trainer" }, cost = 600 },
+    { spell = 32807, skill = 110, creates = 25881, source = { "trainer" }, cost = 600 },
+    { spell = 25321, skill = 120, creates = 20832, source = { "trainer" }, cost = 1500 },
+    { spell = 25610, skill = 120, creates = 20950, teach = 20970, source = { "vendor" }, bound = false, vendors = { { npc = 1448, area = 11, faction = "Alliance" }, { npc = 4877, area = 400, faction = "Horde" } } },
+    { spell = 25323, skill = 125, creates = 20833, teach = 20855, source = { "vendor" }, bound = false, vendors = { { npc = 3499, area = 17 }, { npc = 3954, area = 331, faction = "Alliance" } } },
+    { spell = 25612, skill = 125, creates = 20954, teach = 20971, source = { "vendor" }, bound = false, vendors = { { npc = 2381, area = 267, faction = "Alliance" }, { npc = 2393, area = 267, faction = "Horde" } } },
+    { spell = 28894, skill = 125, rank = "Expert", level = 20, source = { "trainer" }, cost = 5000 },
+    { spell = 25613, skill = 135, creates = 20955, source = { "trainer" }, cost = 1200 },
+    { spell = 25320, skill = 150, creates = 20831, teach = 20856, source = { "vendor" }, bound = false, vendors = { { npc = 1286, area = 1519, faction = "Alliance" }, { npc = 3367, area = 1637, faction = "Horde" }, { npc = 16624, area = 3487, faction = "Horde" }, { npc = 17512, area = 3557, faction = "Alliance" } } },
+    { spell = 25615, skill = 150, creates = 20963, source = { "trainer" }, cost = 1500 },
+    { spell = 25617, skill = 150, creates = 20958, teach = 20973, source = { "vendor" }, bound = false, vendors = { { npc = 2381, area = 267, faction = "Alliance" }, { npc = 9636, area = 405, faction = "Horde" } } },
+    { spell = 25618, skill = 160, creates = 20966, teach = 20974, source = { "drop" }, bound = false },
+    { spell = 25619, skill = 170, creates = 20959, teach = 20975, source = { "vendor" }, bound = false, vendors = { { npc = 4775, area = 1497, faction = "Horde" }, { npc = 5163, area = 1537, faction = "Alliance" }, { npc = 16624, area = 3487, faction = "Horde" }, { npc = 17512, area = 3557, faction = "Alliance" } } },
+    { spell = 25620, skill = 170, creates = 20960, source = { "trainer" }, cost = 2000 },
+    { spell = 32808, skill = 175, creates = 25882, source = { "trainer" }, cost = 2000 },
+    { spell = 25621, skill = 180, creates = 20961, source = { "trainer" }, cost = 2000 },
+    { spell = 34955, skill = 180, creates = 29157, source = { "trainer" }, cost = 2500 },
+    { spell = 25622, skill = 190, creates = 20967, teach = 20976, source = { "drop" }, bound = true },
+    { spell = 26872, skill = 200, creates = 21748, source = { "trainer" }, cost = 2500 },
+    { spell = 26873, skill = 200, creates = 21756, teach = 21940, source = { "drop" }, bound = false },
+    { spell = 28895, skill = 200, rank = "Artisan", level = 35, source = { "trainer" }, cost = 50000 },
+    { spell = 34959, skill = 200, creates = 29158, source = { "trainer" }, cost = 3000 },
+    { spell = 26874, skill = 210, creates = 20964, source = { "trainer" }, cost = 5000 },
+    { spell = 26875, skill = 215, creates = 21758, teach = 21941, source = { "vendor" }, bound = false, vendors = { { npc = 989, area = 8, faction = "Horde" }, { npc = 4897, area = 15, faction = "Alliance" } } },
+    { spell = 26876, skill = 220, creates = 21755, source = { "trainer" }, cost = 3000 },
+    { spell = 26878, skill = 225, creates = 20969, teach = 21942, source = { "vendor" }, bound = false, vendors = { { npc = 2810, area = 45, faction = "Alliance" }, { npc = 2821, area = 45, faction = "Horde" } } },
+    { spell = 26880, skill = 225, creates = 21752, source = { "trainer" }, cost = 3500 },
+    { spell = 26881, skill = 225, creates = 21760, teach = 21943, source = { "vendor" }, bound = false, vendors = { { npc = 1148, area = 33, faction = "Horde" }, { npc = 4897, area = 15, faction = "Alliance" } } },
+    { spell = 32809, skill = 225, creates = 25883, source = { "trainer" }, cost = 3500 },
+    { spell = 36525, skill = 230, creates = 30421, source = { "trainer" }, cost = 4000 },
+    { spell = 26882, skill = 235, creates = 21763, teach = 21944, source = { "drop" }, bound = false },
+    { spell = 26883, skill = 235, creates = 21764, source = { "trainer" }, cost = 4000 },
+    { spell = 26885, skill = 240, creates = 21765, source = { "trainer" }, cost = 5000 },
+    { spell = 26887, skill = 245, creates = 21754, teach = 21945, source = { "drop" }, bound = false },
+    { spell = 26896, skill = 250, creates = 21753, teach = 21947, source = { "drop" }, bound = false },
+    { spell = 26897, skill = 250, creates = 21766, teach = 21948, source = { "vendor" }, bound = false, vendors = { { npc = 5163, area = 1537, faction = "Alliance" }, { npc = 8363, area = 1638, faction = "Horde" }, { npc = 16624, area = 3487, faction = "Horde" }, { npc = 17512, area = 3557, faction = "Alliance" } } },
+    { spell = 26900, skill = 260, creates = 21769, teach = 21949, source = { "drop" }, bound = false },
+    { spell = 26902, skill = 260, creates = 21767, source = { "trainer" }, cost = 10000 },
+    { spell = 36526, skill = 265, creates = 30422, source = { "trainer" }, cost = 10000 },
+    { spell = 26903, skill = 275, creates = 21768, source = { "trainer" }, cost = 10000 },
+    { spell = 26906, skill = 275, creates = 21774, teach = 21952, source = { "vendor" }, bound = false, vendors = { { npc = 15179, area = 1377 } } },
+    { spell = 28897, skill = 275, rank = "Master", level = 50, source = { "trainer" }, cost = 100000 },
+    { spell = 26907, skill = 280, creates = 21775, source = { "trainer" }, cost = 10000 },
+    { spell = 26908, skill = 280, creates = 21790, source = { "trainer" }, cost = 12000 },
+    { spell = 34960, skill = 280, creates = 29159, source = { "trainer" }, cost = 10000 },
+    { spell = 26909, skill = 285, creates = 21777, teach = 21953, source = { "drop" }, bound = false },
+    { spell = 26910, skill = 285, creates = 21778, teach = 21954, source = { "vendor" }, bound = false, vendors = { { npc = 12941, area = 139 } } },
+    { spell = 26911, skill = 290, creates = 21791, source = { "trainer" }, cost = 15000 },
+    { spell = 34961, skill = 290, creates = 29160, source = { "trainer" }, cost = 10000 },
+    { spell = 26912, skill = 300, creates = 21784, teach = 21955, source = { "drop" }, bound = true },
+    { spell = 26914, skill = 300, creates = 21789, teach = 21956, source = { "drop" }, bound = true },
+    { spell = 28903, skill = 300, creates = 23094, teach = 23130, source = { "vendor" }, bound = true, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } },
+    { spell = 28910, skill = 300, creates = 23098, teach = 23135, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } },
+    { spell = 28916, skill = 300, creates = 23103, teach = 23140, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } },
+    { spell = 28925, skill = 300, creates = 23108, teach = 23144, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } },
+    { spell = 28938, skill = 300, creates = 23113, teach = 23148, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } },
+    { spell = 28950, skill = 300, creates = 23118, teach = 23152, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } },
+    { spell = 26915, skill = 305, creates = 21792, teach = 21957, source = { "vendor" }, bound = false, vendors = { { npc = 11189, area = 618 } } },
+    { spell = 28905, skill = 305, creates = 23095, teach = 23131, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } },
+    { spell = 28912, skill = 305, creates = 23099, teach = 23136, reputation = { 933, 5, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } },
+    { spell = 28917, skill = 305, creates = 23104, teach = 23141, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } },
+    { spell = 28927, skill = 305, creates = 23109, teach = 23145, reputation = { 932, 6, ns.L.FACTION_932 }, source = { "vendor" }, bound = true, vendors = { { npc = 19321, area = 3703 } } },
+    { spell = 28944, skill = 305, creates = 23114, teach = 23149, reputation = { 932, 5, ns.L.FACTION_932 }, source = { "vendor" }, bound = true, vendors = { { npc = 19321, area = 3703 } } },
+    { spell = 28953, skill = 305, creates = 23119, teach = 23153, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } },
+    { spell = 34590, skill = 305, creates = 28595, teach = 28596, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } },
+    { spell = 26916, skill = 310, creates = 21779, source = { "trainer" }, cost = 20000 },
+    { spell = 31048, skill = 310, creates = 24074, source = { "trainer" }, cost = 20000 },
+    { spell = 31049, skill = 310, creates = 24075, source = { "trainer" }, cost = 20000 },
+    { spell = 26918, skill = 315, creates = 21793, teach = 21958, bound = false },
+    { spell = 28906, skill = 315, creates = 23096, teach = 23133, reputation = { 934, 5, ns.L.FACTION_934 }, source = { "vendor" }, bound = true, vendors = { { npc = 19331, area = 3703 } } },
+    { spell = 28914, skill = 315, creates = 23100, teach = 23137, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } },
+    { spell = 28918, skill = 315, creates = 23105, teach = 23142, reputation = { 946, 5, ns.L.FACTION_946, 947, 5, ns.L.FACTION_947 }, source = { "vendor" }, bound = true, vendors = { { npc = 17657, area = 3483, faction = "Alliance" }, { npc = 17585, area = 3483 } } },
+    { spell = 28933, skill = 315, creates = 23110, teach = 23146, reputation = { 933, 5, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } },
+    { spell = 28947, skill = 315, creates = 23115, teach = 23150, reputation = { 933, 6, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } },
+    { spell = 28955, skill = 315, creates = 23120, teach = 23154, source = { "drop" }, bound = false },
+    { spell = 31050, skill = 320, creates = 24076, source = { "trainer" }, cost = 25000 },
+    { spell = 26920, skill = 325, creates = 21780, teach = 21959, bound = false },
+    { spell = 28907, skill = 325, creates = 23097, teach = 23134, reputation = { 933, 6, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } },
+    { spell = 28915, skill = 325, creates = 23101, teach = 23138, reputation = { 1011, 5, ns.L.FACTION_1011 }, source = { "vendor" }, bound = true, vendors = { { npc = 21655, area = 3703 } } },
+    { spell = 28924, skill = 325, creates = 23106, teach = 23143, reputation = { 934, 6, ns.L.FACTION_934 }, source = { "vendor" }, bound = true, vendors = { { npc = 19331, area = 3703 } } },
+    { spell = 28936, skill = 325, creates = 23111, teach = 23147, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } },
+    { spell = 28948, skill = 325, creates = 23116, teach = 23151, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } },
+    { spell = 28957, skill = 325, creates = 23121, teach = 23155, reputation = { 933, 6, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } },
+    { spell = 34069, skill = 325, creates = 28290, teach = 28291, source = { "vendor" }, bound = false, vendors = { { npc = 18751, area = 3483, faction = "Horde" }, { npc = 18774, area = 3483, faction = "Alliance" } } },
+    { spell = 38068, skill = 325, creates = 31079, source = { "trainer" }, cost = 20000 },
+    { spell = 39451, skill = 325, creates = 31860, teach = 31870, source = { "drop" }, bound = false },
+    { spell = 39455, skill = 325, creates = 31862, teach = 31871, source = { "drop" }, bound = false },
+    { spell = 39458, skill = 325, creates = 31864, teach = 31872, source = { "drop" }, bound = false },
+    { spell = 39466, skill = 325, creates = 31866, teach = 31873, source = { "drop" }, bound = false },
+    { spell = 39467, skill = 325, creates = 31869, teach = 31874, source = { "drop" }, bound = false },
+    { spell = 41414, skill = 325, creates = 32772, source = { "trainer" }, cost = 10000 },
+    { spell = 41420, skill = 325, creates = 32833, source = { "trainer" }, cost = 8500 },
+    { spell = 41415, skill = 330, creates = 32774, source = { "trainer" }, cost = 10000 },
+    { spell = 31051, skill = 335, creates = 24077, source = { "trainer" }, cost = 30000 },
+    { spell = 31052, skill = 335, creates = 24078, source = { "trainer" }, cost = 30000 },
+    { spell = 40514, skill = 340, creates = 32508, source = { "trainer" }, cost = 8500 },
+    { spell = 31058, skill = 345, creates = 24087, teach = 24163, source = { "drop" }, bound = false },
+    { spell = 31053, skill = 350, creates = 24079, teach = 24158, source = { "drop" }, bound = true },
+    { spell = 31084, skill = 350, creates = 24027, teach = 24193, source = { "drop" }, bound = false },
+    { spell = 31085, skill = 350, creates = 24028, teach = 24194, source = { "drop" }, bound = false },
+    { spell = 31087, skill = 350, creates = 24029, teach = 24195, source = { "drop" }, bound = false },
+    { spell = 31088, skill = 350, creates = 24030, teach = 24196, source = { "drop" }, bound = false },
+    { spell = 31089, skill = 350, creates = 24031, teach = 24192, source = { "drop" }, bound = false },
+    { spell = 31090, skill = 350, creates = 24032, teach = 24197, source = { "drop" }, bound = false },
+    { spell = 31091, skill = 350, creates = 24036, teach = 24198, source = { "drop" }, bound = false },
+    { spell = 31092, skill = 350, creates = 24033, teach = 24199, source = { "drop" }, bound = false },
+    { spell = 31094, skill = 350, creates = 24037, teach = 24201, source = { "drop" }, bound = false },
+    { spell = 31095, skill = 350, creates = 24039, teach = 24202, source = { "drop" }, bound = false },
+    { spell = 31096, skill = 350, creates = 24047, teach = 24203, source = { "drop" }, bound = false },
+    { spell = 31097, skill = 350, creates = 24048, teach = 24204, source = { "drop" }, bound = false },
+    { spell = 31098, skill = 350, creates = 24051, teach = 24205, source = { "drop" }, bound = false },
+    { spell = 31099, skill = 350, creates = 24050, teach = 24206, source = { "drop" }, bound = false },
+    { spell = 31100, skill = 350, creates = 24052, teach = 24207, source = { "drop" }, bound = false },
+    { spell = 31101, skill = 350, creates = 24053, teach = 24208, source = { "vendor" }, bound = true, vendors = { { npc = 21474, area = 3518, faction = "Horde" }, { npc = 21485, area = 3518, faction = "Alliance" } } },
+    { spell = 31102, skill = 350, creates = 24054, teach = 24209, source = { "drop" }, bound = false },
+    { spell = 31103, skill = 350, creates = 24055, teach = 24210, source = { "drop" }, bound = false },
+    { spell = 31104, skill = 350, creates = 24056, teach = 24211, source = { "drop" }, bound = false },
+    { spell = 31105, skill = 350, creates = 24057, teach = 24212, source = { "drop" }, bound = false },
+    { spell = 31106, skill = 350, creates = 24058, teach = 24213, source = { "drop" }, bound = false },
+    { spell = 31107, skill = 350, creates = 24059, teach = 24214, source = { "drop" }, bound = false },
+    { spell = 31108, skill = 350, creates = 24060, teach = 24215, source = { "drop" }, bound = false },
+    { spell = 31109, skill = 350, creates = 24061, teach = 24216, source = { "drop" }, bound = false },
+    { spell = 31110, skill = 350, creates = 24062, teach = 24217, source = { "drop" }, bound = false },
+    { spell = 31111, skill = 350, creates = 24066, teach = 24218, source = { "drop" }, bound = false },
+    { spell = 31112, skill = 350, creates = 24065, teach = 24219, source = { "drop" }, bound = false },
+    { spell = 31113, skill = 350, creates = 24067, teach = 24220, source = { "drop" }, bound = false },
+    { spell = 31149, skill = 350, creates = 24035, teach = 24200, source = { "drop" }, bound = false },
+    { spell = 39452, skill = 350, creates = 31861, teach = 31875, source = { "drop" }, bound = false },
+    { spell = 39462, skill = 350, creates = 31865, teach = 31877, source = { "drop" }, bound = false },
+    { spell = 39463, skill = 350, creates = 31863, teach = 31876, source = { "drop" }, bound = false },
+    { spell = 39470, skill = 350, creates = 31867, teach = 31878, source = { "drop" }, bound = false },
+    { spell = 39471, skill = 350, creates = 31868, teach = 31879, source = { "drop" }, bound = false },
+    { spell = 41429, skill = 350, creates = 32836, source = { "trainer" }, cost = 10000 },
+    { spell = 43493, skill = 350, creates = 33782, teach = 33783, source = { "vendor" }, bound = true, vendors = { { npc = 18821, area = 3518, faction = "Horde" }, { npc = 18822, area = 3518, faction = "Alliance" } } },
+    { spell = 46403, skill = 350, creates = 35315, teach = 35322, reputation = { 1077, 8, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25950, area = 4080 }, { npc = 27666, area = 3703 } } },
+    { spell = 46404, skill = 350, creates = 35316, teach = 35323, reputation = { 1077, 8, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25950, area = 4080 }, { npc = 27666, area = 3703 } } },
+    { spell = 46405, skill = 350, creates = 35318, teach = 35325, reputation = { 1077, 8, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25950, area = 4080 }, { npc = 27666, area = 3703 } } },
+    { spell = 46803, skill = 350, creates = 35707, teach = 35708, reputation = { 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25032, area = 4080 } } },
+    { spell = 47280, skill = 350, creates = 35945, source = { "trainer" }, cost = 30000 },
+    { spell = 31054, skill = 355, creates = 24080, teach = 24159, source = { "drop" }, bound = true },
+    { spell = 31055, skill = 355, creates = 24082, teach = 24160, source = { "drop" }, bound = true },
+    { spell = 31060, skill = 355, creates = 24088, teach = 24164, source = { "drop" }, bound = false },
+    { spell = 31067, skill = 355, creates = 24106, teach = 24166, source = { "drop" }, bound = false },
+    { spell = 31068, skill = 355, creates = 24110, teach = 24167, source = { "drop" }, bound = false },
+    { spell = 31056, skill = 360, creates = 24085, teach = 24161, source = { "drop" }, bound = true },
+    { spell = 31062, skill = 360, creates = 24092, teach = 24174, reputation = { 989, 7, ns.L.FACTION_989 }, source = { "vendor" }, bound = true, vendors = { { npc = 21643, area = 440 } } },
+    { spell = 31063, skill = 360, creates = 24093, teach = 24175, reputation = { 1011, 7, ns.L.FACTION_1011 }, source = { "vendor" }, bound = true, vendors = { { npc = 21655, area = 3703 } } },
+    { spell = 31064, skill = 360, creates = 24095, teach = 24176, reputation = { 934, 7, ns.L.FACTION_934 }, source = { "vendor" }, bound = true, vendors = { { npc = 19331, area = 3703 } } },
+    { spell = 31065, skill = 360, creates = 24097, teach = 24177, reputation = { 932, 7, ns.L.FACTION_932 }, source = { "vendor" }, bound = true, vendors = { { npc = 19321, area = 3703 } } },
+    { spell = 31066, skill = 360, creates = 24098, teach = 24178, reputation = { 933, 7, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } },
+    { spell = 31070, skill = 360, creates = 24114, teach = 24168, source = { "drop" }, bound = false },
+    { spell = 31071, skill = 360, creates = 24116, teach = 24169, source = { "drop" }, bound = false },
+    { spell = 37855, skill = 360, creates = 30825, teach = 30826, reputation = { 935, 6, ns.L.FACTION_935 }, source = { "vendor" }, bound = true, vendors = { { npc = 21432, area = 3703 } } },
+    { spell = 42558, skill = 360, creates = 33133, teach = 33305, reputation = { 933, 7, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } },
+    { spell = 42588, skill = 360, creates = 33134, teach = 33155, reputation = { 935, 6, ns.L.FACTION_935 }, source = { "vendor" }, bound = true, vendors = { { npc = 21432, area = 3703 } } },
+    { spell = 42589, skill = 360, creates = 33131, teach = 33156, reputation = { 933, 7, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } },
+    { spell = 42590, skill = 360, creates = 33135, teach = 33157, reputation = { 1011, 7, ns.L.FACTION_1011 }, source = { "vendor" }, bound = true, vendors = { { npc = 21655, area = 3703 } } },
+    { spell = 42591, skill = 360, creates = 33143, teach = 33158, reputation = { 989, 7, ns.L.FACTION_989 }, source = { "vendor" }, bound = true, vendors = { { npc = 21643, area = 440 } } },
+    { spell = 42592, skill = 360, creates = 33140, teach = 33159, reputation = { 935, 7, ns.L.FACTION_935 }, source = { "vendor" }, bound = true, vendors = { { npc = 21432, area = 3703 } } },
+    { spell = 42593, skill = 360, creates = 33144, teach = 33160, reputation = { 989, 6, ns.L.FACTION_989 }, source = { "vendor" }, bound = true, vendors = { { npc = 21643, area = 440 } } },
+    { spell = 31057, skill = 365, creates = 24086, teach = 24162, source = { "drop" }, bound = true },
+    { spell = 31061, skill = 365, creates = 24089, teach = 24165, source = { "drop" }, bound = false },
+    { spell = 31072, skill = 365, creates = 24117, teach = 24170, source = { "drop" }, bound = false },
+    { spell = 31076, skill = 365, creates = 24121, teach = 24171, source = { "drop" }, bound = false },
+    { spell = 32866, skill = 365, creates = 25896, teach = 25902, reputation = { 933, 6, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 17518, area = 3457 } } },
+    { spell = 32867, skill = 365, creates = 25897, teach = 25903, reputation = { 933, 7, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 17518, area = 3457 } } },
+    { spell = 32868, skill = 365, creates = 25898, teach = 25905, source = { "drop" }, bound = false },
+    { spell = 32869, skill = 365, creates = 25899, teach = 25906, source = { "drop" }, bound = false },
+    { spell = 32870, skill = 365, creates = 25901, teach = 25904, reputation = { 935, 5, ns.L.FACTION_935 }, source = { "vendor" }, bound = true, vendors = { { npc = 21432, area = 3703 } } },
+    { spell = 32871, skill = 365, creates = 25890, teach = 25907, source = { "drop" }, bound = false },
+    { spell = 32872, skill = 365, creates = 25893, teach = 25909, source = { "drop" }, bound = false },
+    { spell = 32873, skill = 365, creates = 25894, teach = 25908, reputation = { 933, 6, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } },
+    { spell = 32874, skill = 365, creates = 25895, teach = 25910, reputation = { 989, 6, ns.L.FACTION_989 }, source = { "vendor" }, bound = true, vendors = { { npc = 21643, area = 440 } } },
+    { spell = 39961, skill = 365, creates = 32409, teach = 32412, reputation = { 933, 8, ns.L.FACTION_933 }, source = { "vendor" }, bound = true, vendors = { { npc = 20242, area = 3523 }, { npc = 23007, area = 3518 } } },
+    { spell = 39963, skill = 365, creates = 32410, teach = 32411, source = { "drop" }, bound = false },
+    { spell = 41418, skill = 365, creates = 32776, source = { "trainer" }, cost = 30000 },
+    { spell = 44794, skill = 365, creates = 34220, teach = 34221, source = { "drop" }, bound = false },
+    { spell = 46122, skill = 365, creates = 34362, teach = 35198, source = { "drop" }, bound = true },
+    { spell = 46123, skill = 365, creates = 34363, teach = 35199, source = { "drop" }, bound = true },
+    { spell = 46124, skill = 365, creates = 34361, teach = 35200, source = { "drop" }, bound = true },
+    { spell = 46125, skill = 365, creates = 34359, teach = 35201, source = { "drop" }, bound = false },
+    { spell = 46126, skill = 365, creates = 34360, teach = 35202, source = { "drop" }, bound = false },
+    { spell = 46127, skill = 365, creates = 34358, teach = 35203, source = { "drop" }, bound = false },
+    { spell = 31077, skill = 370, creates = 24122, teach = 24172, source = { "drop" }, bound = true },
+    { spell = 31078, skill = 370, creates = 24123, teach = 24173, source = { "drop" }, bound = true },
+    { spell = 31079, skill = 370, creates = 24124, teach = 24179, reputation = { 1011, 7, ns.L.FACTION_1011 }, source = { "vendor" }, bound = true, vendors = { { npc = 21655, area = 3703 } } },
+    { spell = 31080, skill = 370, creates = 24125, teach = 24180, reputation = { 946, 7, ns.L.FACTION_946, 947, 7, ns.L.FACTION_947 }, source = { "vendor" }, bound = true, vendors = { { npc = 17657, area = 3483, faction = "Alliance" }, { npc = 17585, area = 3483 } } },
+    { spell = 31081, skill = 370, creates = 24126, teach = 24181, reputation = { 989, 7, ns.L.FACTION_989 }, source = { "vendor" }, bound = true, vendors = { { npc = 21643, area = 440 } } },
+    { spell = 31082, skill = 370, creates = 24127, teach = 24182, reputation = { 935, 7, ns.L.FACTION_935 }, source = { "vendor" }, bound = true, vendors = { { npc = 21432, area = 3703 } } },
+    { spell = 31083, skill = 370, creates = 24128, teach = 24183, reputation = { 942, 7, ns.L.FACTION_942 }, source = { "vendor" }, bound = true, vendors = { { npc = 17904, area = 3521 } } },
+    { spell = 46597, skill = 370, creates = 35501, teach = 35502, reputation = { 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25032, area = 4080 } } },
+    { spell = 46601, skill = 370, creates = 35503, teach = 35505, reputation = { 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25032, area = 4080 } } },
+    { spell = 38503, skill = 375, creates = 31398, teach = 31401, reputation = { 967, 6, ns.L.FACTION_967 }, source = { "vendor" }, bound = true, vendors = { { npc = 18255, area = 41 } } },
+    { spell = 38504, skill = 375, creates = 31399, teach = 31402, reputation = { 942, 8, ns.L.FACTION_942 }, source = { "vendor" }, bound = true, vendors = { { npc = 17904, area = 3521 } } },
+    { spell = 39705, skill = 375, creates = 32193, teach = 32274, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39706, skill = 375, creates = 32194, teach = 32277, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39710, skill = 375, creates = 32195, teach = 32281, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39711, skill = 375, creates = 32196, teach = 32282, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39712, skill = 375, creates = 32197, teach = 32283, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39713, skill = 375, creates = 32198, teach = 32284, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39714, skill = 375, creates = 32199, teach = 32285, source = { "drop", "vendor" }, bound = true, vendors = { { npc = 27666, area = 3703 } } },
+    { spell = 39715, skill = 375, creates = 32200, teach = 32286, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39716, skill = 375, creates = 32201, teach = 32287, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39717, skill = 375, creates = 32202, teach = 32288, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39718, skill = 375, creates = 32203, teach = 32289, source = { "drop", "vendor" }, bound = true, vendors = { { npc = 27666, area = 3703 } } },
+    { spell = 39719, skill = 375, creates = 32204, teach = 32290, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39720, skill = 375, creates = 32205, teach = 32291, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39721, skill = 375, creates = 32206, teach = 32292, reputation = { 990, 7, ns.L.FACTION_990, 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39722, skill = 375, creates = 32207, teach = 32293, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39723, skill = 375, creates = 32208, teach = 32294, reputation = { 990, 5, ns.L.FACTION_990, 1077, 5, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39724, skill = 375, creates = 32209, teach = 32295, source = { "drop", "vendor" }, bound = true, vendors = { { npc = 27666, area = 3703 } } },
+    { spell = 39725, skill = 375, creates = 32210, teach = 32296, source = { "drop", "vendor" }, bound = true, vendors = { { npc = 27666, area = 3703 } } },
+    { spell = 39727, skill = 375, creates = 32211, teach = 32297, source = { "drop", "vendor" }, bound = true, vendors = { { npc = 27666, area = 3703 } } },
+    { spell = 39728, skill = 375, creates = 32212, teach = 32298, source = { "drop", "vendor" }, bound = true, vendors = { { npc = 27666, area = 3703 } } },
+    { spell = 39729, skill = 375, creates = 32213, teach = 32299, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39730, skill = 375, creates = 32214, teach = 32300, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39731, skill = 375, creates = 32215, teach = 32301, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39732, skill = 375, creates = 32216, teach = 32302, reputation = { 990, 7, ns.L.FACTION_990, 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39733, skill = 375, creates = 32217, teach = 32303, source = { "drop", "vendor" }, bound = true, vendors = { { npc = 27666, area = 3703 } } },
+    { spell = 39734, skill = 375, creates = 32218, teach = 32304, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39735, skill = 375, creates = 32219, teach = 32305, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39736, skill = 375, creates = 32220, teach = 32306, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39737, skill = 375, creates = 32221, teach = 32307, source = { "drop", "vendor" }, bound = true, vendors = { { npc = 27666, area = 3703 } } },
+    { spell = 39738, skill = 375, creates = 32222, teach = 32308, reputation = { 990, 7, ns.L.FACTION_990, 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39739, skill = 375, creates = 32223, teach = 32309, reputation = { 990, 7, ns.L.FACTION_990, 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39740, skill = 375, creates = 32224, teach = 32310, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39741, skill = 375, creates = 32225, teach = 32311, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 39742, skill = 375, creates = 32226, teach = 32312, reputation = { 990, 6, ns.L.FACTION_990, 1077, 6, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 27666, area = 3703 } } },
+    { spell = 46775, skill = 375, creates = 35693, teach = 35695, reputation = { 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25032, area = 4080 } } },
+    { spell = 46776, skill = 375, creates = 35694, teach = 35696, reputation = { 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25032, area = 4080 } } },
+    { spell = 46777, skill = 375, creates = 35700, teach = 35697, reputation = { 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25032, area = 4080 } } },
+    { spell = 46778, skill = 375, creates = 35702, teach = 35698, reputation = { 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25032, area = 4080 } } },
+    { spell = 46779, skill = 375, creates = 35703, teach = 35699, reputation = { 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25032, area = 4080 } } },
+    { spell = 47053, skill = 375, creates = 35759, teach = 35765, reputation = { 990, 6, ns.L.FACTION_990, 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 25032, area = 4080 }, { npc = 27666, area = 3703 } } },
+    { spell = 47054, skill = 375, creates = 35758, teach = 35764, reputation = { 990, 6, ns.L.FACTION_990, 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 25032, area = 4080 }, { npc = 27666, area = 3703 } } },
+    { spell = 47055, skill = 375, creates = 35760, teach = 35762, reputation = { 990, 6, ns.L.FACTION_990, 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 25032, area = 4080 }, { npc = 27666, area = 3703 } } },
+    { spell = 47056, skill = 375, creates = 35761, teach = 35763, reputation = { 990, 6, ns.L.FACTION_990, 1077, 7, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 23437 }, { npc = 25032, area = 4080 }, { npc = 27666, area = 3703 } } },
+    { spell = 48789, skill = 375, creates = 37503, teach = 37504, reputation = { 1077, 8, ns.L.FACTION_1077 }, source = { "vendor" }, bound = true, vendors = { { npc = 25950, area = 4080 }, { npc = 27666, area = 3703 } } },
 }
