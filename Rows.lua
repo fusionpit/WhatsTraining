@@ -72,7 +72,9 @@ function wt.SetTooltip(tooltip, row, palette)
         if row.cost and row.cost > 0 then
             if row.key == wt.AVAILABLE_KEY then
                 wt.addPricingBlock(tooltip, row, (wt.availableSpells()))
-                tooltip:AddLine(wt.L.PRICE_MENU_HINT, 0.5, 0.5, 0.5)
+                if not (InputUtil and InputUtil.IsGamepadUIEnabled()) then
+                    tooltip:AddLine(wt.L.PRICE_MENU_HINT, 0.5, 0.5, 0.5)
+                end
             elseif row.isHeader and (row.key == wt.NEXTLEVEL_KEY or row.level) then
                 wt.addPricingBlock(tooltip, row, row.level and row.spells or (wt.categorySpells(row.key)))
             elseif row.isHeader then

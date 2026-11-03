@@ -145,16 +145,16 @@ local function framePool(page, create)
     return pool
 end
 
-local function createHeading(page)
-    local heading = createRow(page)
-    local capWidth = heading:GetWidth() * HEADER_CAP_FRACTION
+local function roundHeaderBand(heading, inset, height)
+    local capWidth = (heading:GetWidth() - inset) * HEADER_CAP_FRACTION
     heading.band:ClearAllPoints()
-    heading.band:SetPoint("TOPLEFT", heading, "TOPLEFT", capWidth, 0)
-    heading.band:SetPoint("BOTTOMRIGHT", heading, "BOTTOMRIGHT", 0, 0)
+    heading.band:SetPoint("TOPLEFT", heading, "TOPLEFT", inset + capWidth, 0)
+    heading.band:SetPoint("TOPRIGHT")
+    heading.band:SetHeight(height)
     heading.band:SetTexCoord(HEADER_CAP_FRACTION, 1, 0, 1)
     heading.bandCap = heading:CreateTexture(nil, "BACKGROUND")
-    heading.bandCap:SetPoint("TOPLEFT")
-    heading.bandCap:SetSize(capWidth, ROW_HEIGHT)
+    heading.bandCap:SetPoint("TOPLEFT", inset, 0)
+    heading.bandCap:SetSize(capWidth, height)
     heading.bandCap:SetTexture("Interface\\AchievementFrame\\UI-Achievement-Parchment-Horizontal-Desaturated")
     heading.bandCap:SetTexCoord(0, HEADER_CAP_FRACTION, 0, 1)
     local mask = heading:CreateMaskTexture()
@@ -165,10 +165,15 @@ local function createHeading(page)
     local resizeRow = heading.Resize
     function heading:Resize()
         resizeRow(self)
-        local width = self:GetWidth() * HEADER_CAP_FRACTION
-        self.band:SetPoint("TOPLEFT", self, "TOPLEFT", width, 0)
+        local width = (self:GetWidth() - inset) * HEADER_CAP_FRACTION
+        self.band:SetPoint("TOPLEFT", self, "TOPLEFT", inset + width, 0)
         self.bandCap:SetWidth(width)
     end
+end
+
+local function createHeading(page)
+    local heading = createRow(page)
+    roundHeaderBand(heading, 0, ROW_HEIGHT)
     for _, region in ipairs({heading.icon, heading.iconBorder, heading.name, heading.rank, heading.level,
         heading.separator}) do region:Hide() end
     heading:GetHighlightTexture():SetAlpha(0)
@@ -249,11 +254,7 @@ local function createBlock(page)
     local width = page.content:GetWidth()
     block.heading:Hide()
     block.level:Hide()
-    block.band:ClearAllPoints()
-    block.band:SetPoint("TOPLEFT", block, "TOPLEFT", 52, 0)
-    block.band:SetPoint("TOPRIGHT")
-    block.band:SetHeight(WEAPON_HEADING_HEIGHT)
-    block.band:SetGradient("HORIZONTAL", CreateColor(unpack(wt.Theme.block)), CreateColor(unpack(wt.Theme.clear)))
+    block.icon:SetPoint("TOPLEFT", 8, 0)
     block.icon:SetSize(40, 40)
     block.iconBorder:SetSize(64, 64)
     block.name:SetPoint("TOPLEFT", 56, -5)
@@ -263,13 +264,16 @@ local function createBlock(page)
     block.rank:SetPoint("TOPRIGHT", -8, -5)
     block.rank:SetWidth(128)
     block.rank:SetJustifyH("RIGHT")
-    block.separator:ClearAllPoints()
-    block.separator:SetPoint("TOPLEFT", 8, 0)
-    block.separator:SetPoint("TOPRIGHT", -8, 0)
+    block.separator:Hide()
     function block:Resize()
         self:SetWidth(page.content:GetWidth())
         self.name:SetWidth(self:GetWidth() - 200)
     end
+    roundHeaderBand(block, 52, WEAPON_HEADING_HEIGHT)
+    local color, clear = wt.Theme.block, wt.Theme.clear
+    local capColor = CreateColor(color[1], color[2], color[3], color[4] + (clear[4] - color[4]) * HEADER_CAP_FRACTION)
+    block.bandCap:SetGradient("HORIZONTAL", CreateColor(unpack(color)), capColor)
+    block.band:SetGradient("HORIZONTAL", capColor, CreateColor(unpack(clear)))
     return block
 end
 

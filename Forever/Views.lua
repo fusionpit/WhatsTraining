@@ -235,7 +235,7 @@ local function renderByCity(page, items)
         elseif item.isHeader then
             trainer = nil
             if i > 1 then y = y + 10 end
-            showHeading(page, item, y, wt.Theme.weaponGroup, 0.9, 0.25)
+            showHeading(page, item, y, wt.Theme.weaponGroup, 0.9, 0)
             y = y + ROW_HEIGHT
             i = i + 1
         else

@@ -131,9 +131,29 @@ function wt.PaintBackground(frame, window)
     paintWindow(frame, window, wt.Theme == dark and style or "off")
 end
 
+local function copyHeaderTexture(texture, native)
+    local atlas = native:GetAtlas()
+    if atlas then texture:SetAtlas(atlas) else texture:SetTexture(native:GetTexture()) end
+    texture:SetTexCoord(native:GetTexCoord())
+    texture:SetHorizTile(native:GetHorizTile())
+    texture:SetVertTile(native:GetVertTile())
+    texture:SetVertexColor(native:GetVertexColor())
+    texture:SetAlpha(native:GetAlpha())
+    texture:SetSnapToPixelGrid(false)
+    texture:SetTexelSnappingBias(0)
+end
+
 function wt.PaintCraftingHeader(title, portrait, window)
-    title.backing:SetAtlas(window.NineSlice.TopEdge:GetAtlas())
-    paintWindow(title, window, windowStyle("professions"))
+    -- TopEdge is only the middle tile
+    copyHeaderTexture(title.backing, window.NineSlice.TopEdge)
+    copyHeaderTexture(portrait.Border, window.NineSlice.TopLeftCorner)
+    copyHeaderTexture(portrait.RightBorder, window.NineSlice.TopRightCorner)
+    local gamepad = InputUtil.IsGamepadUIEnabled()
+    portrait.Border:SetShown(gamepad and window.NineSlice.TopLeftCorner:IsVisible())
+    portrait.RightBorder:SetShown(gamepad and window.NineSlice.TopRightCorner:IsVisible())
+    local style = windowStyle("professions")
+    paintWindow(title, window, style)
+    if style ~= "off" then title.backing:SetAlpha(1) end
     local native = window.TitleContainer.TitleText
     title.Text:SetFontObject(native:GetFontObject())
     title.Text:SetFont(native:GetFont())

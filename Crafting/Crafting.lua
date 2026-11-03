@@ -76,7 +76,7 @@ local function attach()
     paint(page)
 
     local title = CreateFrame("Frame", "WhatsTrainingCraftingTitle", page)
-    title:SetAllPoints(book.TitleContainer)
+    title:SetAllPoints(book.NineSlice.TopEdge)
     title:SetClipsChildren(true)
     local titleCanvas = CreateFrame("Frame", nil, title)
     titleCanvas:SetAllPoints(book.NineSlice.TopEdge)
@@ -100,6 +100,13 @@ local function attach()
     mask:SetAllPoints(book.PortraitContainer.CircleMask)
     mask:SetTexture("Interface\\CharacterFrame\\TempPortraitAlphaMask", "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
     portrait.Icon:AddMaskTexture(mask)
+    -- gamepad raises the icon above NineSlice
+    portrait.Border = portrait:CreateTexture(nil, "OVERLAY", nil, 1)
+    portrait.Border:SetAllPoints(book.NineSlice.TopLeftCorner)
+    portrait.Border:Hide()
+    portrait.RightBorder = portrait:CreateTexture(nil, "OVERLAY", nil, 1)
+    portrait.RightBorder:SetAllPoints(book.NineSlice.TopRightCorner)
+    portrait.RightBorder:Hide()
 
     -- rank bars sit in HIGH strata: cover only their rectangles so the native portrait and border stay above the page
     local content = book.BookPage.ProfessionsContentFrame
@@ -174,7 +181,7 @@ local function attach()
     local function refreshPage()
         if InputUtil.IsGamepadUIEnabled() then
             title:SetFrameLevel(recipeList:GetFrameLevel() + 1)
-            portrait:SetFrameLevel(recipeList:GetFrameLevel() + 1)
+            portrait:SetFrameLevel(title.art:GetFrameLevel() + 1)
         end
         wt.PaintCraftingHeader(title, portrait, book)
         if recipeList.needsRefresh then recipeList:Refresh()

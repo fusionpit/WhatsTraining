@@ -9,6 +9,7 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
     root:SetFrameStrata("TOOLTIP")
     root:SetFrameLevel(500)
     local scroll, search = view.scrollBox, view.searchBox
+    local _, filters = search:GetPoint()
     local selectedNode, selectedData, selectedIndex, selectedRow
     local nativeTab, nativeButton
     local held, closing, capture = {}, false, false
@@ -231,7 +232,9 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         page:SetShown(active)
         returnTab:SetShown(active and nativeTab ~= nil)
         searchIcon:Show(); settingsIcon:Show()
-        search:SetWidth(410)
+        filters:SetWidth(511) -- 29 search prompt + 340 search + 34 filter prompt/gap + 108 Filter
+        search:SetPoint("TOPLEFT", filters, "TOPLEFT", 29, 0)
+        search:SetWidth(340)
         view.filterDropdown:SetPoint("LEFT", search, "RIGHT", 34, 0)
         view.footer:SetShown(not self:IsShown())
         if active then
@@ -274,6 +277,8 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         launcher:SetFrameStrata(book:GetFrameStrata())
         launcher:SetScale(1)
         searchIcon:Hide(); settingsIcon:Hide(); shoulder:Hide(); positionIcon:Hide()
+        filters:SetWidth(552)
+        search:SetPoint("TOPLEFT", filters, "TOPLEFT", 0, 0)
         search:SetWidth(440)
         view.filterDropdown:SetPoint("LEFT", search, "RIGHT", 4, 0)
         view.footer:Show()
