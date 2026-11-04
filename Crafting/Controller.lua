@@ -75,7 +75,6 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         { "StandardOneIcon", { GAMEPAD_FACE_BOTTOM }, ACTION_LABEL_SELECT },
         { "StandardOneIcon", { GAMEPAD_FACE_LEFT }, wt.L.GAMEPAD_OPTIONS },
         { "StandardTwoIcon", { GAMEPAD_STICK_LEFT, GAMEPAD_DPAD }, FRAME_ACTION_NAVIGATE },
-        { "StandardOneIcon", { GAMEPAD_STICK_RIGHT_PRESS }, PROMPT_TOGGLE_TOOLTIPS },
         { "StandardOneIcon", { GAMEPAD_FACE_RIGHT }, FRAME_ACTION_CLOSE },
     })
     footer:SetPoint("TOPLEFT", book, "BOTTOMLEFT", 0, -9)

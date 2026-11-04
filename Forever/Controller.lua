@@ -82,7 +82,6 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
         { "StandardOneIcon", { GAMEPAD_FACE_LEFT }, wt.L.GAMEPAD_OPTIONS },
         { "StandardOneIcon", { GAMEPAD_FACE_TOP }, wt.L.GAMEPAD_SWITCH_VIEW },
         { "StandardTwoIcon", { GAMEPAD_STICK_LEFT, GAMEPAD_DPAD }, FRAME_ACTION_NAVIGATE },
-        { "StandardOneIcon", { GAMEPAD_STICK_RIGHT_PRESS }, PROMPT_TOGGLE_TOOLTIPS },
         { "StandardOneIcon", { GAMEPAD_FACE_RIGHT }, FRAME_ACTION_CLOSE },
     })
     local panePrompt = legend:GetOrCreatePromptFrameUsingTemplateAndInputs("StandardTwoIcon",
