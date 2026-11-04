@@ -480,7 +480,13 @@ function Forever.openContextMenu(owner, generator, input)
     menu:SetFrameLevel(owner:GetFrameLevel() + 80)
     menu:SetScale(owner:GetEffectiveScale() / UIParent:GetEffectiveScale())
     menu:ClearAllPoints()
-    menu:SetPoint("TOPLEFT", owner, "BOTTOMLEFT", 0, -2)
+    if InputUtil.IsGamepadUIEnabled() then
+        menu:SetPoint("TOPLEFT", owner, "BOTTOMLEFT", 0, -2)
+    else
+        local x, y = GetCursorPosition()
+        local scale = menu:GetEffectiveScale()
+        menu:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x / scale, y / scale)
+    end
     if menu:IsShown() then menu:Rebuild(1); updateCapture(menu)
     else
         -- OnShow builds
