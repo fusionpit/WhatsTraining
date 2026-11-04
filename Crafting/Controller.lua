@@ -108,6 +108,7 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         showTooltip()
     end
     local function restoreSelection()
+        if scroll:GetDataProviderSize() == 0 then return selectNode(nil) end
         local fallback, fallbackIndex
         for index, node in scroll:EnumerateDataProvider() do
             local data = node:GetData()
@@ -202,8 +203,25 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         held, closing = {}, false
         releaseCapture()
     end)
-    function root:Sync()
-        local available = connected and activeBook() and not InCombatLockdown()
+    local syncedAvailable, syncedActive, syncedEdge, syncedPosition, syncedContext
+    local syncedScale, syncedLegend, syncedLegendWidth, syncedLegendHeight
+    function root:Sync(onlyIfChanged)
+        local available = connected and activeBook() and not InCombatLockdown() or false
+        local active, edge = self:IsShown(), atEdge()
+        local position = WT_ProfessionTabPosition
+        local scale = book:GetEffectiveScale() / UIParent:GetEffectiveScale()
+        local nativeFooter = book.BookPage:IsShown() and book.bookPageFooter or book.craftingPageFooter
+        local nativeLegend = nativeFooter and nativeFooter.inputLegend
+        local legendWidth, legendHeight = nativeLegend and nativeLegend:GetWidth() or 0, nativeLegend and nativeLegend:GetHeight() or 0
+        -- native setters allocate even when nothing changed
+        -- events call Sync() outright, idle frames only on a state change
+        if onlyIfChanged and available == syncedAvailable and active == syncedActive
+            and edge == syncedEdge and position == syncedPosition and contextKind == syncedContext
+            and scale == syncedScale and nativeLegend == syncedLegend
+            and legendWidth == syncedLegendWidth and legendHeight == syncedLegendHeight then return end
+        syncedAvailable, syncedActive, syncedEdge, syncedPosition, syncedContext =
+            available, active, edge, position, contextKind
+        syncedScale, syncedLegend, syncedLegendWidth, syncedLegendHeight = scale, nativeLegend, legendWidth, legendHeight
         if not available then
             self:Hide()
             launcher:Hide(); page:Hide(); returnTab:Hide()
@@ -212,7 +230,7 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         page:SetParent(root)
         launcher:SetParent(UIParent)
         returnTab:SetParent(root)
-        root:SetScale(book:GetEffectiveScale() / UIParent:GetEffectiveScale())
+        root:SetScale(scale)
         page:SetFrameLevel(root:GetFrameLevel() + 1)
         view:SetFrameStrata("TOOLTIP")
         view:SetFrameLevel(page:GetFrameLevel() + 1000)
@@ -222,11 +240,10 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         launcher:SetScale(root:GetScale())
         wt.PositionCraftingTab()
         launcher:Show()
-        local active = self:IsShown()
         launcher:SetChecked(active)
         local key = entryButton()
         if key ~= shoulderKey then shoulder:SetInputKey(key); shoulderKey = key end
-        shoulder:SetShown(atEdge() and not self:IsShown())
+        shoulder:SetShown(edge and not active)
         positionIcon:SetShown(active and contextKind ~= "positions")
         page:SetShown(active)
         returnTab:SetShown(active and nativeTab ~= nil)
@@ -243,11 +260,8 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
                 returnTab.Icon:SetTexture(nativeTab.Icon:GetTexture())
                 returnTab.tooltipText = nativeTab.tooltipText
             end
-            local nativeFooter = book.BookPage:IsShown() and book.bookPageFooter or book.craftingPageFooter
-            local nativeLegend = nativeFooter and nativeFooter.inputLegend
             if nativeLegend then footer:SetPoint("TOPLEFT", nativeLegend, "TOPLEFT") end
-            footer:SetSize(math.max(legend:GetWidth(), nativeLegend and nativeLegend:GetWidth() or 0),
-                math.max(legend:GetHeight(), nativeLegend and nativeLegend:GetHeight() or 0))
+            footer:SetSize(math.max(legend:GetWidth(), legendWidth), math.max(legend:GetHeight(), legendHeight))
             refreshPage()
         end
     end
@@ -381,7 +395,7 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
         end
         if not canNavigate() then stickDirection = nil end
         wasDown, wasAtEdge = down, edge
-        root:Sync()
+        root:Sync(true)
     end)
     return root
 end
