@@ -174,7 +174,7 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
                         if subgrid and page == subgrid.page then
                             eligible = header == subgrid.header and row ~= header
                         elseif header then eligible = row == header
-                        else eligible = spell and (not spell.isHeader or spell.npc or (spell.cost or 0) > 0) end
+                        else eligible = spell and (not spell.isHeader or spell.npc or spell.category or (spell.cost or 0) > 0) end
                         if row:IsShown() and spell and eligible then
                             count = count + 1
                             addButton(count, row, page)
@@ -239,6 +239,7 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
     end
     local function restoreSelection(spell, position, preferredPage)
         if spell == total and total:IsVisible() then return selectButton(total, mainFrame) end
+        local category = spell and spell.isHeader and spell.category
         local first, match
         for _, entry in ipairs(buttons()) do
             local x, y = navigationCenter(entry.row)
@@ -259,16 +260,23 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
                     entry.x, entry.y = x, y
                     first = entry
                 end
-                if entry.row.spell == spell then match = entry end
+                if entry.row.spell == spell or (category and entry.page == selectedPage
+                    and entry.row.spell and entry.row.spell.category == category) then match = entry end
             end
         end
         local entry = match or first
         selectButton(entry and entry.row, entry and entry.page)
     end
     local refresh = mainFrame.Refresh
+    local pageIndex = mainFrame.pagingControls:GetCurrentPage()
     function mainFrame:Refresh()
         local spell = selected == total and total or selected and selected.spell
         local groupPage = subgrid and subgrid.page
+        local positionX, positionTop
+        if selected and selected ~= total then
+            positionX = selected:GetCenter() - selectedPage:GetLeft()
+            positionTop = selected:GetTop() - selectedPage.scrollFrame:GetTop()
+        end
         clearSelection()
         -- reserve space for page buttons
         local bottom = Forever.CONTENT_RISE + (self.expanded and not self.sideBySide and 45 or 0)
@@ -276,9 +284,19 @@ function wt.EnableControllerBook(root, mainFrame, place, updatePreview)
             page.scrollFrame:SetPoint("BOTTOMRIGHT", page, "BOTTOMRIGHT", -20, bottom)
         end
         refresh(self)
+        local currentPage = self.pagingControls:GetCurrentPage()
+        local position
+        if currentPage ~= pageIndex and self.expanded and not self.sideBySide then
+            groupPage = currentPage > pageIndex and self or self.weaponPage
+            subgrid, spell = nil, nil
+            if positionX and positionTop then
+                position = {page = groupPage, x = positionX, top = positionTop}
+            end
+        end
+        pageIndex = currentPage
         self.footer:Hide()
         self.weaponPage.footer:Hide()
-        if root:IsShown() and not menuShown() and not search:HasFocus() then restoreSelection(spell, nil, groupPage) end
+        if root:IsShown() and not menuShown() and not search:HasFocus() then restoreSelection(spell, position, groupPage) end
         if prices:IsShown() then
             if total:IsVisible() then prices:Rebuild() else prices:Hide() end
         end

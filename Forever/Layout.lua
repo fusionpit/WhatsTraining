@@ -43,7 +43,7 @@ local function paginateLedger(data, pageHeight)
     end
     local function header(cat, suffix)
         local name = cat.name or cat.formattedName
-        return setmetatable({label = suffix and name .. " • " .. suffix or name}, {__index = cat})
+        return setmetatable({category = cat, label = suffix and name .. " • " .. suffix or name}, {__index = cat})
     end
     local halves, half, y = {}, {}, 0
     for _, s in ipairs(data) do
