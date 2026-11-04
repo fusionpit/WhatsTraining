@@ -33,7 +33,8 @@ local function sizePages(nativeBook)
         local pages = nativeBook.isMinimized and 1 or 2
         width = nativeBook:GetWidth() / pages - PAGE_LEFT - PAGE_RIGHT - 16
     end
-    if mainFrame:GetWidth() == width + 16 and mainFrame.numColumns == columns then return false end
+    -- account for floating point stuff or we get constant redraws
+    if math.abs(mainFrame:GetWidth() - (width + 16)) < 0.01 and mainFrame.numColumns == columns then return false end
     for _, page in ipairs({mainFrame, mainFrame.weaponPage}) do
         Forever.resizePage(page, width, columns)
     end
