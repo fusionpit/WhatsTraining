@@ -194,7 +194,7 @@ class.spellsByLevel = {
 	[60] = {
 		{id = 20904, cost = 42000, requiredIds = {20903}},
 		{id = 14287, cost = 42000, requiredIds = {14286}},
-		{id = 1299447, cost = 39000, requiredIds = {1299446}},
+		{id = 1299447, cost = 42000, requiredIds = {1299446}},
 		{id = 15632, cost = 42000, requiredIds = {15631}},
 		{id = 14311, cost = 42000, requiredIds = {14310}},
 		{id = 13544, cost = 42000, requiredIds = {13543}},
