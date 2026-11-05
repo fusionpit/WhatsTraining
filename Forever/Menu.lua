@@ -24,6 +24,9 @@ end
 function Description:CreateRadio(text, isSelected, action, value)
     return addEntry(self, {text = text, radio = true, isSelected = isSelected, action = action, value = value})
 end
+function Description:CreateIconRow(setting)
+    return addEntry(self, {kind = "iconrow", setting = setting})
+end
 
 local function createLegend(parent, prompts)
     local legend = InputPromptLegends.CreateInputLegend(parent, "inputLegend")
@@ -159,6 +162,35 @@ function Menu:AddOption(radio, text, isSelected, action, value)
     return item
 end
 
+local function iconEnter(row)
+    row.menu.rootMenu.hoverMenu = nil
+    row.menu:Select(row.index)
+end
+local function createIconRow(menu)
+    local row = wt.createIconPicker(menu)
+    row.menu = menu
+    row.onEnter, row.onLeave, row.onClick = iconEnter, optionLeave, optionClick
+    row.focus = row:CreateTexture(nil, "OVERLAY")
+    row.focus:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
+    row.focus:SetBlendMode("ADD")
+    return row
+end
+function Menu:AddIconRow(entry)
+    local row = acquire(self, "iconrow", createIconRow)
+    row:Setup(entry.setting)
+    row:SetPoint("TOPLEFT", 8, self.y - 2)
+    row.focus:Hide()
+    row.action = function()
+        row:Activate()
+        return MenuResponse.Refresh
+    end
+    self.items[#self.items + 1] = row
+    row.index = #self.items
+    self.width = math.max(self.width, row:GetWidth() + 16)
+    self.y = self.y - 36
+    return row
+end
+
 local function attachFontString(frame)
     frame.extraFontStrings = frame.extraFontStrings or {}
     frame.usedFonts = frame.usedFonts + 1
@@ -222,6 +254,10 @@ function Menu:Select(index)
     end
     self.index = math.max(1, math.min(#self.items, index))
     local item = self.items[self.index]
+    if item.icons then
+        item.focus:ClearAllPoints()
+        item.focus:SetAllPoints(item.icons[item.focusedIconIndex])
+    end
     item.focus:SetShown(InputUtil.IsGamepadUIEnabled() or item:IsMouseOver() or self:HasOpenSubmenu(self.index))
     local focused = InputUtil.IsGamepadUIEnabled() and not (self.submenu and self.submenu:IsShown())
     self.footer:SetShown(focused)
@@ -285,6 +321,12 @@ function Menu:HandleButton(button)
     self.rootMenu.hoverMenu, self.rootMenu.mouseNavigation = nil, false
     local leaf = self:GetActiveMenu()
     if leaf ~= self then return leaf:HandleButton(button) end
+    local row = self.items[self.index or 0]
+    if row and row.icons and (button == "PADDLEFT" or button == "PADDRIGHT") then
+        row.focusedIconIndex = math.max(1, math.min(#row.icons, row.focusedIconIndex + (button == "PADDLEFT" and -1 or 1)))
+        self:Select(self.index)
+        return true
+    end
     if button == "PADDUP" then self:Select((self.index or 1) - 1)
     elseif button == "PADDDOWN" then self:Select((self.index or 1) + 1)
     elseif button == "PAD1" then self:Activate()
@@ -309,6 +351,7 @@ function Menu:Rebuild(selection)
     for entryIndex, entry in ipairs(entries) do
         if entry.kind == "title" then self:Initialize(self:AddTitle(entry.text), entry)
         elseif entry.kind == "divider" then self:AddDivider()
+        elseif entry.kind == "iconrow" then self:AddIconRow(entry)
         else
             local item = self:AddOption(entry.radio, entry.text, entry.isSelected, entry.action, entry.value)
             item.entry = entry

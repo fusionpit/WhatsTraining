@@ -113,6 +113,7 @@ end
 local eventFrame = CreateFrame("Frame")
 eventFrame:SetScript("OnEvent", function(self, event, ...)
     if event == "ADDON_LOADED" and ... == addonName then
+        WT_SpellbookIcon = wt.SpellbookIcon.normalize(WT_SpellbookIcon)
         if WT_WeaponGrouping ~= "zone" and WT_WeaponGrouping ~= "weaponskill" and WT_WeaponGrouping ~= "list" then
             WT_WeaponGrouping = "weaponskill"
         end

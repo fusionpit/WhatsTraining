@@ -13,8 +13,6 @@ local LEFT_BG_TEXTURE_FILEID = GetFileIDFromPath(
                                    "Interface\\AddOns\\WhatsTraining\\left")
 local RIGHT_BG_TEXTURE_FILEID = GetFileIDFromPath(
                                     "Interface\\AddOns\\WhatsTraining\\right")
-local TAB_TEXTURE_FILEID = GetFileIDFromPath(
-                               "Interface\\Icons\\INV_Misc_QuestionMark")
 
 local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTooltip", UIParent,
                             "GameTooltipTemplate")
@@ -174,7 +172,7 @@ local function updateToggleIcon(frame)
 end
 
 local function updateGroupingButton(frame)
-    if wt.showingWeaponSkills then
+    if wt.gameVersion ~= "forever" or wt.showingWeaponSkills then
         frame.groupingButton:Show()
     else
         frame.groupingButton:Hide()
@@ -186,7 +184,9 @@ local function createWeaponSkillsButton()
     local button = CreateFrame("Button", "WhatsTrainingSkillsButton", SkillFrame, "SquareIconButtonTemplate")
     button:SetSize(18, 18)
     button.Icon:SetSize(12, 12)
-    button:SetIcon(TAB_TEXTURE_FILEID)
+    local function updateIcon(icon) button:SetIcon(GetFileIDFromPath(icon)) end
+    updateIcon(wt.SpellbookIcon.texture())
+    wt.SpellbookIcon.onChanged(updateIcon)
     button:SetScript("OnClick", function()
         if InCombatLockdown() then
             print(wt.L.BROKER_OPEN_IN_COMBAT)
@@ -254,8 +254,9 @@ local function attachClassicSpellBook(mainFrame)
         end
     end)
     local skillLineTab = _G["SpellBookSkillLineTab" .. SKILL_LINE_TAB]
+    wt.SpellbookIcon.onChanged(function(icon) skillLineTab:SetNormalTexture(icon) end)
     hooksecurefunc(SpellBookFrame, "UpdateSkillLineTabs", function()
-        skillLineTab:SetNormalTexture(TAB_TEXTURE_FILEID)
+        skillLineTab:SetNormalTexture(wt.SpellbookIcon.texture())
         skillLineTab.tooltip = wt.L.TAB_TEXT
         skillLineTab:Show()
         if SpellBookFrame.selectedSkillLine == SKILL_LINE_TAB then
@@ -320,7 +321,6 @@ function wt.CreateCompactFrame(mainFrame)
     mainFrame.weaponSkillToggleButton = toggleButton
 
     local noticeButton = CreateFrame("Button", "$parentNoticeButton", mainFrame, "UIPanelInfoButton")
-    noticeButton:SetPoint("LEFT", toggleButton, "RIGHT", 4, 0)
     noticeButton:Hide()
     noticeButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -356,6 +356,7 @@ function wt.CreateCompactFrame(mainFrame)
     local groupingButton = CreateFrame("Button", "$parentGroupingButton", mainFrame, "SquareIconButtonTemplate")
     groupingButton:SetSize(32, 32)
     groupingButton:SetPoint("LEFT", toggleButton, "RIGHT", -4, 0)
+    noticeButton:SetPoint("LEFT", groupingButton, "RIGHT", 4, 0)
     groupingButton:SetIcon("Interface\\Worldmap\\Gear_64Grey.blp")
     groupingButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -365,8 +366,10 @@ function wt.CreateCompactFrame(mainFrame)
     groupingButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
     mainFrame.groupingButton = groupingButton
 
+    local basePopupHeight = 156
+    local sectionTitleHeight, sectionSpacing, providerRowHeight = 24, 8, 22
     local popup = CreateFrame("Frame", "$parentGroupingPopup", mainFrame, "BackdropTemplate")
-    popup:SetSize(200, 156)
+    popup:SetSize(200, basePopupHeight)
     popup:SetPoint("TOPLEFT", groupingButton, "BOTTOMLEFT", 0, -2)
     popup:SetFrameStrata("DIALOG")
     popup:SetBackdrop(BACKDROP_DIALOG_32_32)
@@ -438,8 +441,16 @@ function wt.CreateCompactFrame(mainFrame)
         wt:ApplyFilter()
     end)
 
+    local iconTitle = popup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    iconTitle:SetPoint("TOPLEFT", showKnown, "BOTTOMLEFT", 3, -8)
+    iconTitle:SetText(wt.L.ADDON_ICON_TITLE)
+    local iconPicker = wt.createIconPicker(popup)
+    iconPicker:SetPoint("TOPLEFT", iconTitle, "BOTTOMLEFT", 0, -6)
+    iconPicker:Setup(wt.SpellbookIcon)
+    wt.SpellbookIcon.onChanged(function() iconPicker:Refresh() end)
+
     local providerTitle = popup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    providerTitle:SetPoint("TOPLEFT", showKnown, "BOTTOMLEFT", 3, -8)
+    providerTitle:SetPoint("TOPLEFT", iconPicker, "BOTTOMLEFT", 0, -8)
     providerTitle:SetText(wt.L.WAYPOINT_PROVIDER_TITLE)
     popup.providerRadios = {}
 
@@ -471,8 +482,10 @@ function wt.CreateCompactFrame(mainFrame)
             radio:SetShown(i <= count)
         end
         providerTitle:SetShown(count > 0)
-        -- 24 for the title, 22 per radio, keeping the done button below the last one
-        self:SetHeight(count > 0 and 156 + 24 + 22 * count or 156)
+        iconPicker:Refresh()
+        local height = basePopupHeight + sectionTitleHeight + iconPicker:GetHeight() + sectionSpacing
+        if count > 0 then height = height + sectionTitleHeight + providerRowHeight * count end
+        self:SetHeight(height)
     end)
 
     groupingButton:SetScript("OnClick", function()

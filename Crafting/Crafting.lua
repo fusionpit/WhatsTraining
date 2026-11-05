@@ -1,5 +1,12 @@
 local _, wt = ...
 
+wt.ProfessionIcon = wt.createIconSetting("WT_ProfessionIcon", {
+    {key = "question", texture = "Interface\\Icons\\INV_Misc_QuestionMark", name = wt.L.ADDON_ICON_QUESTION_MARK},
+    {key = "toolbox", texture = "Interface\\Icons\\INV_Misc_EngGizmos_19", name = wt.L.PROFESSION_ICON_TOOLBOX},
+    {key = "workshop", texture = "Interface\\Icons\\Garrison_Building_Workshop", name = wt.L.PROFESSION_ICON_WORKSHOP},
+    {key = "recipe", texture = "Interface\\Icons\\INV_Misc_Note_06", name = wt.L.PROFESSION_ICON_RECIPE_NOTE},
+})
+
 local function professionTabPosition()
     if WT_ProfessionTabPosition == "top" or WT_ProfessionTabPosition == "bottom" then return WT_ProfessionTabPosition end
     return "right"
@@ -19,6 +26,9 @@ function wt.GenerateProfessionTabMenu(_, menu)
         menu:CreateRadio(option[1], function(position) return professionTabPosition() == position end,
             setProfessionTabPosition, option[2])
     end
+    menu:CreateDivider()
+    menu:CreateTitle(wt.L.ADDON_ICON_TITLE)
+    menu:CreateIconRow(wt.ProfessionIcon)
 end
 
 function wt.MoveProfessionTab(direction)
@@ -141,7 +151,8 @@ local function attach()
     end
 
     local launcher = makeTab("WhatsTrainingCraftingTab")
-    launcher.Icon:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
+    launcher.Icon:SetTexture(wt.ProfessionIcon.texture())
+    wt.ProfessionIcon.onChanged(function(icon) launcher.Icon:SetTexture(icon) end)
     launcher.tooltipText = wt.L.TAB_TEXT
     local width, height = launcher:GetSize()
     local iconOffsets = launcher.GetFinalIconAnchorOffsets
@@ -311,5 +322,6 @@ local function attach()
 end
 
 function wt.AttachCrafting()
+    WT_ProfessionIcon = wt.ProfessionIcon.normalize(WT_ProfessionIcon)
     EventUtil.ContinueOnAddOnLoaded("Blizzard_Professions", attach)
 end
