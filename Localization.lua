@@ -111,6 +111,7 @@ local localeText = {
         PROFESSION_TAB_TOP = "Above Professions tab",
         PROFESSION_TAB_RIGHT = "Right edge, near bottom",
         PROFESSION_TAB_BOTTOM = "Bottom edge, near right corner",
+        HIDE_PROFESSION_TAB = "Hide profession tab",
         GAMEPAD_TAB_POSITION = "Tab position",
         TRAINER = "Trainer",
         VENDOR = "Vendor",
