@@ -9,6 +9,7 @@ local frostResistanceAura = {19888, 19897, 19898}
 local fireResistanceAura = {19891, 19899, 19900}
 
 class.overriddenGroups = {
+	{20154, 21084}, -- SoR rank 1 is replaced when Judgement is learned
 	devotionAura,
 	layOnHands,
 	retributionAura,

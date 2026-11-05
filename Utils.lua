@@ -3,6 +3,97 @@ local _, wt = ...
 local tinsert = tinsert
 local ipairs = ipairs
 
+function wt.createIconSetting(variable, choices)
+    local byKey, callbacks = {}, {}
+    for _, icon in ipairs(choices) do byKey[icon.key] = icon end
+    local function choice(key)
+        return byKey[key] or byKey.question
+    end
+    local setting = {choices = choices}
+    function setting.normalize(key) return choice(key).key end
+    function setting.texture() return choice(_G[variable]).texture end
+    function setting.isSelected(key) return choice(_G[variable]).key == key end
+    function setting.set(key)
+        _G[variable] = setting.normalize(key)
+        for _, callback in ipairs(callbacks) do callback(setting.texture()) end
+    end
+    function setting.onChanged(callback) tinsert(callbacks, callback) end
+    return setting
+end
+
+wt.SpellbookIcon = wt.createIconSetting("WT_SpellbookIcon", {
+    {key = "question", texture = "Interface\\Icons\\INV_Misc_QuestionMark", name = wt.L.ADDON_ICON_QUESTION_MARK},
+    {key = "tome", texture = "Interface\\Icons\\INV_Misc_Book_11", name = wt.L.ADDON_ICON_TOME},
+    {key = "spellbook", texture = "Interface\\Icons\\INV_Misc_Book_09", name = wt.L.ADDON_ICON_SPELLBOOK},
+    {key = "scroll", texture = "Interface\\Icons\\INV_Scroll_03", name = wt.L.ADDON_ICON_SCROLL},
+})
+
+local iconTooltip
+local function iconEnter(button)
+    local picker = button.picker
+    picker.focusedIconIndex = button.index
+    if picker.onEnter then picker.onEnter(picker) end
+    if not iconTooltip then
+        iconTooltip = CreateFrame("GameTooltip", "WhatsTrainingMenuTooltip", UIParent, "GameTooltipTemplate")
+    end
+    iconTooltip:SetOwner(button, "ANCHOR_RIGHT")
+    iconTooltip:SetFrameLevel(picker:GetParent():GetFrameLevel() + 10)
+    iconTooltip:SetText(picker.setting.choices[button.index].name)
+    iconTooltip:Show()
+end
+local function iconLeave(button)
+    if iconTooltip and iconTooltip:IsOwned(button) then iconTooltip:Hide() end
+    if button.picker.onLeave then button.picker.onLeave(button.picker) end
+end
+local function iconClick(button)
+    local picker = button.picker
+    picker.focusedIconIndex = button.index
+    if picker.onClick then picker.onClick(picker) else picker:Activate() end
+end
+function wt.createIconPicker(parent)
+    local picker = CreateFrame("Frame", nil, parent)
+    picker.icons = {}
+    function picker:Refresh()
+        for i, icon in ipairs(self.setting.choices) do
+            local button = self.icons[i]
+            local selected = self.setting.isSelected(icon.key)
+            if selected then self.focusedIconIndex = i end
+            button.border:SetColorTexture(1, .82, 0, selected and 1 or 0)
+            button.tex:SetTexture(icon.texture)
+            button.tex:SetDesaturated(not selected)
+        end
+    end
+    function picker:Activate()
+        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+        self.setting.set(self.setting.choices[self.focusedIconIndex].key)
+        self:Refresh()
+    end
+    function picker:Setup(setting)
+        self.setting, self.focusedIconIndex = setting, 1
+        self:SetSize(#setting.choices * 36 - 4, 32)
+        for i in ipairs(setting.choices) do
+            if not self.icons[i] then
+                local button = CreateFrame("Button", nil, self)
+                button.picker, button.index = self, i
+                button:SetSize(32, 32)
+                button:SetPoint("LEFT", (i - 1) * 36, 0)
+                button.border = self:CreateTexture(nil, "BACKGROUND")
+                button.border:SetAllPoints(button)
+                button.tex = self:CreateTexture(nil, "ARTWORK")
+                button.tex:SetPoint("TOPLEFT", button, 2, -2)
+                button.tex:SetPoint("BOTTOMRIGHT", button, -2, 2)
+                button:SetScript("OnEnter", iconEnter)
+                button:SetScript("OnLeave", iconLeave)
+                button:SetScript("OnHide", iconLeave)
+                button:SetScript("OnClick", iconClick)
+                self.icons[i] = button
+            end
+        end
+        self:Refresh()
+    end
+    return picker
+end
+
 wt.ClassData = {}
 function wt.forClass(token)
     wt.ClassData[token] = wt.ClassData[token] or {}

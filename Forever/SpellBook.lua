@@ -6,7 +6,6 @@ local views, updatePage, endsSplit = Forever.views, Forever.updatePage, Forever.
 local createCategoryBanner, updateBanner = Forever.createCategoryBanner, Forever.updateBanner
 
 local skin = {
-    icon = "Interface\\Icons\\INV_Misc_QuestionMark",
     tab = "spellbook-Tab-Frame-C60",
     tabActive = "spellbook-Tab-Frame-Glow-C60",
     tabGlow = "spellbook-Tab-Frame-glow-gradient-C60",
@@ -56,7 +55,10 @@ local function makeTab(name, parent)
     button.icon = button:CreateTexture(nil, "ARTWORK")
     button.icon:SetSize(34, 33)
     button.icon:SetPoint("BOTTOM", -1, 0)
-    button.icon:SetTexture(skin.icon)
+    button.icon:SetTexture(wt.SpellbookIcon.texture())
+    wt.SpellbookIcon.onChanged(function(icon)
+        if button ~= returnTab then button.icon:SetTexture(icon) end
+    end)
     local function frameArt(atlas, y)
         local texture = button:CreateTexture(nil, "ARTWORK", nil, 1)
         texture:SetAtlas(atlas, true)
@@ -432,6 +434,9 @@ local function createLedger(mainFrame)
                 rootDescription:CreateRadio(provider.name, isProvider, wt.setWaypointProvider, provider.id)
             end
         end
+        rootDescription:CreateDivider()
+        rootDescription:CreateTitle(wt.L.ADDON_ICON_TITLE)
+        rootDescription:CreateIconRow(wt.SpellbookIcon)
     end
     mainFrame.generateSettings = generateSettings
     dropdown:SetupMenu(generateSettings)
@@ -570,7 +575,7 @@ local function placeControllerBook(nativeBook)
         returnTab.icon:SetTexture(nativeTab.Icon:GetTexture())
     else
         returnTab:SetPoint("TOPLEFT", root, "TOPLEFT", 70, -26)
-        returnTab.icon:SetTexture(skin.icon)
+        returnTab.icon:SetTexture(wt.SpellbookIcon.texture())
     end
     launcher:ClearAllPoints()
     launcher:SetPoint(inverted and "TOPLEFT" or "LEFT", root, "BOTTOMLEFT", launcherX - left, launcherY - bottom)

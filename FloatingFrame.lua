@@ -33,8 +33,8 @@ local function floatingFrame()
         wt.CreateCompactFrame(frame)
         frame.searchBox:ClearAllPoints()
         frame.searchBox:SetPoint("TOPLEFT", 20, -28)
-        -- Leave room for the weapon toggle and grouping button / hunter notice.
-        frame.searchBox:SetWidth(290)
+        -- Leave room for the weapon toggle, settings button and hunter notice.
+        frame.searchBox:SetWidth(258)
         frame.rows[1]:SetPoint("TOPLEFT", frame, "TOPLEFT", 12, -64)
         frame.scrollBar:SetPoint("TOPLEFT", 0, -64)
         frame.scrollBar:SetPoint("BOTTOMRIGHT", -32, 16)
