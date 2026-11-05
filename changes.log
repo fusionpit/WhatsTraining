@@ -1,3 +1,8 @@
+* 11.2.0
+    - Add Icon selection for Spellbook and Profession tabs (Thanks to Firnael on GitHub!)
+        - In Era/Anniversary, too!
+    - Fix Paladin SoR Rank 2 showing up as missing requirements
+
 * 11.1.0
     - Update Forever class abilities from in-game trainers
 
