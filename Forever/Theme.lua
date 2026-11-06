@@ -84,8 +84,8 @@ local function paintWindow(frame, window, style)
     local textured = skinned and style ~= "modern"
     if skinned then
         local db = _G.EllesmereUIDB
-        local color = style == "modern" and db and db.blizzWindowModernDefault or {}
-        frame.backing:SetColorTexture(color.r or 0.067, color.g or 0.067, color.b or 0.067, 1)
+        local color = style == "modern" and db and db.blizzWindowModernDefault
+        frame.backing:SetColorTexture(color and color.r or 0.067, color and color.g or 0.067, color and color.b or 0.067, 1)
     end
     frame.art:Show()
     if skinned and not frame.shell then

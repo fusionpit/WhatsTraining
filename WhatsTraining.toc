@@ -1,11 +1,13 @@
 ## Interface: 20506, 16001, 11509
 ## Title: What's Training?
+## Title-zhCN: 能学什么？
 ## Version: @project-version@
 ## Author: Sveng
 ## Notes: Shows you what spells are available at your class trainer
 ## Notes-ruRU: Показывает, какие заклинания доступны у вашего классового наставника.
-## SavedVariables: WT_WeaponGrouping, WT_ShowKnownWeaponSkills, WT_FloatingFramePoint, WT_WaypointProvider [AllowLoadGameType classic][ExcludeLoadGameType camelot]
-## SavedVariables: WT_WeaponGrouping, WT_ShowKnownWeaponSkills, WT_SpellDisplay, WT_SideBySide, WT_ScrollTwoPages, WT_FloatingFramePoint, WT_WaypointProvider, WT_ProfessionTabPosition [AllowLoadGameType camelot][ExcludeLoadGameType classic]
+## Notes-zhCN: 显示你的职业训练师处有哪些法术可以学习。
+## SavedVariables: WT_SpellbookIcon, WT_WeaponGrouping, WT_ShowKnownWeaponSkills, WT_FloatingFramePoint, WT_WaypointProvider [AllowLoadGameType classic][ExcludeLoadGameType camelot]
+## SavedVariables: WT_SpellbookIcon, WT_WeaponGrouping, WT_ShowKnownWeaponSkills, WT_SpellDisplay, WT_SideBySide, WT_ScrollTwoPages, WT_FloatingFramePoint, WT_WaypointProvider, WT_ProfessionTabPosition, WT_ProfessionIcon, WT_HideProfessionTab [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 ## SavedVariablesPerCharacter: WT_LearnedPetAbilities, WT_NeedsToOpenBeastTraining, WT_IgnoredSpells, WT_PriceFaction, WT_HideWeaponSkillSwitcher, WT_Crafting
 ## OptionalDeps: ClassTrainerPlus, TomTom [AllowLoadGameType classic][ExcludeLoadGameType camelot]
 ## OptionalDeps: ClassTrainerPlusForever, EllesmereUI, EllesmereUIBlizzardSkin, TomTom [AllowLoadGameType camelot][ExcludeLoadGameType classic]

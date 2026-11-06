@@ -23,7 +23,7 @@ end
 plugin = ldb:NewDataObject(addonName, {
     type = "data source",
     text = addonTitle,
-    icon = "Interface\\Icons\\INV_Misc_QuestionMark",
+    icon = wt.SpellbookIcon.texture(),
     OnClick = function(_, button)
         if button == "RightButton" then
             wt:ToggleBrokerWeaponSkills()
@@ -42,6 +42,8 @@ plugin = ldb:NewDataObject(addonName, {
         end
     end
 })
+wt.SpellbookIcon.onChanged(function(icon) plugin.icon = icon end)
+EventUtil.ContinueOnAddOnLoaded(addonName, function() plugin.icon = wt.SpellbookIcon.texture() end)
 local function formatGreen(text)
     return '|cff19ff19'..text..'|r'
 end
