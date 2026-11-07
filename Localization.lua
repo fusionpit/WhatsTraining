@@ -121,6 +121,7 @@ local localeText = {
         TRAINER_IGNORED_HEADER = "Available spells ignored at this trainer:",
         TRAINER_IGNORED_RANKS_FORMAT = "%d |4rank:ranks; of %s",
         TRAINER_IGNORED_MORE_FORMAT = "...and %d more",
+        TRAIN_ALL_IGNORE_HINT = "Train All skips spells you ignore in the What's Training window",
         VENDOR = "Vendor",
         SOLD_IN = "Sold in %s",
         OBTAINED_FROM = "Obtained from %s",

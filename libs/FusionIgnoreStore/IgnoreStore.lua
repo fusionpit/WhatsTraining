@@ -1,4 +1,4 @@
-local lib = LibStub:NewLibrary("FusionIgnoreStore-1.0", 2)
+local lib = LibStub:NewLibrary("FusionIgnoreStore-1.0", 3)
 if not lib then return end
 
 lib.subs = lib.subs or {}
@@ -46,6 +46,13 @@ end
 
 function lib:IsIgnored(id)
     return self.ignored[id]
+end
+
+function lib:HasIgnored()
+    for _, ignored in pairs(self.ignored) do
+        if ignored == true then return true end
+    end
+    return false
 end
 
 function lib:AddSubscription(onChanged)

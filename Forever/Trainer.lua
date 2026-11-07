@@ -77,6 +77,10 @@ local function showTooltip()
         if shown < #ignored then
             addIgnoredLine(string.format(wt.L.TRAINER_IGNORED_MORE_FORMAT, #ignored - shown))
         end
+    elseif not ignoreStore:HasIgnored() then
+        -- nothing ignored anywhere yet: point out that ignoring shapes this button
+        tooltip:AddLine(wt.L.TRAIN_ALL_IGNORE_HINT, 0.6, 0.6, 0.6, true)
+        tooltip:GetLeftLine(tooltip:NumLines()):SetFontObject("GameFontHighlightSmall")
     end
     tooltip:Show()
 end
