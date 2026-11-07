@@ -23,7 +23,7 @@ local function setProfessionTabHidden(hidden)
     if refreshCraftingTab then refreshCraftingTab() end
 end
 
-function wt.GenerateProfessionTabMenu(_, menu)
+function wt.GenerateProfessionTabPositionMenu(_, menu)
     for _, option in ipairs({
         {wt.L.PROFESSION_TAB_TOP, "top"},
         {wt.L.PROFESSION_TAB_RIGHT, "right"},
@@ -32,6 +32,10 @@ function wt.GenerateProfessionTabMenu(_, menu)
         menu:CreateRadio(option[1], function(position) return professionTabPosition() == position end,
             setProfessionTabPosition, option[2])
     end
+end
+
+function wt.GenerateProfessionTabMenu(owner, menu)
+    wt.GenerateProfessionTabPositionMenu(owner, menu)
     menu:CreateDivider()
     menu:CreateCheckbox(wt.L.HIDE_PROFESSION_TAB, function() return WT_HideProfessionTab == true end, function()
         setProfessionTabHidden(not WT_HideProfessionTab)

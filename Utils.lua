@@ -288,13 +288,7 @@ local function setChoice(choice)
     wt.RefreshUI()
 end
 
-function wt.priceMenuGenerator(_, root, flat)
-    local rows, base, best = wt.availablePriceRows()
-    root:CreateTitle(wt.L.PRICE_MENU_TITLE)
-    local baseText = format(wt.L.BASE_COST_FORMAT, C_CurrencyInfo.GetCoinTextureString(base))
-    if flat then root:CreateTitle(HIGHLIGHT_FONT_COLOR_CODE .. baseText .. FONT_COLOR_CODE_CLOSE)
-    else root:CreateTitle(baseText):AddInitializer(function(frame) frame.fontString:SetTextColor(1, 1, 1) end) end
-    root:CreateDivider()
+local function addDiscountChoices(root, rows, best, flat)
     root:CreateTitle(wt.L.PRICE_MENU_DISCOUNT)
     root:CreateRadio(wt.L.PRICE_AUTO, isChoice, setChoice, "auto")
     root:CreateRadio(wt.L.PRICE_NONE, isChoice, setChoice, "none")
@@ -315,6 +309,21 @@ function wt.priceMenuGenerator(_, root, flat)
             return 40 + button.fontString:GetUnboundedStringWidth() + right:GetUnboundedStringWidth(), 20
         end) end
     end
+end
+
+function wt.discountMenuGenerator(_, root)
+    local rows, _, best = wt.availablePriceRows()
+    addDiscountChoices(root, rows, best)
+end
+
+function wt.priceMenuGenerator(_, root, flat)
+    local rows, base, best = wt.availablePriceRows()
+    root:CreateTitle(wt.L.PRICE_MENU_TITLE)
+    local baseText = format(wt.L.BASE_COST_FORMAT, C_CurrencyInfo.GetCoinTextureString(base))
+    if flat then root:CreateTitle(HIGHLIGHT_FONT_COLOR_CODE .. baseText .. FONT_COLOR_CODE_CLOSE)
+    else root:CreateTitle(baseText):AddInitializer(function(frame) frame.fontString:SetTextColor(1, 1, 1) end) end
+    root:CreateDivider()
+    addDiscountChoices(root, rows, best, flat)
 end
 
 local BEAST_TRAINING_SPELL = 5149

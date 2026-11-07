@@ -52,6 +52,10 @@ end
 SLASH_WHATSTRAINING1 = "/wt"
 SlashCmdList.WHATSTRAINING = function(message)
     local command, direction = (message or ""):lower():match("^%s*(%S+)%s*(.-)%s*$")
+    if (command == "options" or command == "settings") and wt.OpenSettings then
+        wt.OpenSettings()
+        return
+    end
     if command == "professionstab" and wt.MoveProfessionTab then
         wt.MoveProfessionTab(direction)
         return

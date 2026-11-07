@@ -368,44 +368,23 @@ local function createLedger(mainFrame)
     mainFrame.displayDropdown = dropdown
     dropdown:ClearAllPoints()
     dropdown:SetPoint("TOPRIGHT", root, "TOPRIGHT", -30, -27)
-    local function rescroll()
-        (mainFrame.expanded and weaponPage or mainFrame).scrollFrame:SetVerticalScroll(0)
-    end
     local function isStyle(style) return WT_SpellDisplay == style end
-    local function setStyle(style)
-        WT_SpellDisplay = style
-        mainFrame.scrollFrame:SetVerticalScroll(0)
-        wt.RefreshUI()
-    end
     local function isGrouping(mode) return WT_WeaponGrouping == mode end
-    local function setGrouping(mode)
-        WT_WeaponGrouping = mode
-        rescroll()
-        wt:ApplyFilter()
-    end
     local function showsKnown() return WT_ShowKnownWeaponSkills end
     local function hidesWeaponSwitcher() return WT_HideWeaponSkillSwitcher end
     local function toggleWeaponSwitcher()
-        WT_HideWeaponSkillSwitcher = not WT_HideWeaponSkillSwitcher
-        wt.RefreshUI()
+        wt.SetHideWeaponSkillSwitcher(not WT_HideWeaponSkillSwitcher)
     end
     local function toggleKnown()
-        WT_ShowKnownWeaponSkills = not WT_ShowKnownWeaponSkills
-        rescroll()
-        wt:ApplyFilter()
+        wt.SetShowKnownWeaponSkills(not WT_ShowKnownWeaponSkills)
     end
     local function isSideBySide() return WT_SideBySide end
     local function toggleSideBySide()
-        WT_SideBySide = not WT_SideBySide
-        mainFrame.sideBySide = WT_SideBySide
-        mainFrame:Refresh()
+        wt.SetSideBySide(not WT_SideBySide)
     end
     local function scrollsTwoPages() return WT_ScrollTwoPages ~= false end
     local function toggleScrollTwoPages()
-        local page = controls:GetCurrentPage()
-        WT_ScrollTwoPages = not scrollsTwoPages()
-        mainFrame:Refresh()
-        controls:SetCurrentPage(WT_ScrollTwoPages and math.ceil(page / 2) or page * 2 - 1)
+        wt.SetScrollTwoPages(not scrollsTwoPages())
     end
     local function isProvider(id)
         local active = wt.activeWaypointProvider()
@@ -413,13 +392,13 @@ local function createLedger(mainFrame)
     end
     local function generateSettings(_, rootDescription)
         rootDescription:CreateTitle(wt.L.LEDGER_OPT_CLASS_HEADER)
-        rootDescription:CreateRadio(wt.L.DISPLAY_LEVELS, isStyle, setStyle, "levels")
-        rootDescription:CreateRadio(wt.L.GROUP_LIST, isStyle, setStyle, "ledger")
+        rootDescription:CreateRadio(wt.L.DISPLAY_LEVELS, isStyle, wt.SetSpellDisplay, "levels")
+        rootDescription:CreateRadio(wt.L.GROUP_LIST, isStyle, wt.SetSpellDisplay, "ledger")
         rootDescription:CreateDivider()
         rootDescription:CreateTitle(wt.L.GROUPING_OPTIONS_TITLE)
-        rootDescription:CreateRadio(wt.L.GROUP_BY_ZONE, isGrouping, setGrouping, "zone")
-        rootDescription:CreateRadio(wt.L.GROUP_BY_WEAPON_SKILL, isGrouping, setGrouping, "weaponskill")
-        rootDescription:CreateRadio(wt.L.GROUP_LIST, isGrouping, setGrouping, "list")
+        rootDescription:CreateRadio(wt.L.GROUP_BY_ZONE, isGrouping, wt.SetWeaponGrouping, "zone")
+        rootDescription:CreateRadio(wt.L.GROUP_BY_WEAPON_SKILL, isGrouping, wt.SetWeaponGrouping, "weaponskill")
+        rootDescription:CreateRadio(wt.L.GROUP_LIST, isGrouping, wt.SetWeaponGrouping, "list")
         rootDescription:CreateCheckbox(wt.L.LEDGER_SHOW_KNOWN, showsKnown, toggleKnown)
         rootDescription:CreateCheckbox(wt.L.HIDE_WEAPON_SKILL_SWITCHER, hidesWeaponSwitcher, toggleWeaponSwitcher)
         rootDescription:CreateDivider()
