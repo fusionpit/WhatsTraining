@@ -213,7 +213,9 @@ function wt.GetRecipeGroups()
 end
 
 function wt.RecipeSpellDataLoaded(spellID, success)
-    if requested[spellID] ~= true then return false end
+    -- every recipe view receives the event
+    -- the first must not consume it for the others
+    if requested[spellID] == nil then return false end
     requested[spellID] = false
     return success
 end

@@ -4,7 +4,7 @@ local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
 local learnedSpellEvent = "LEARNED_SPELL_IN_SKILL_LINE"
 
 function wt.RefreshUI()
-    for _, frame in pairs({wt.MainFrame, wt.FloatingFrame}) do
+    for _, frame in pairs({wt.MainFrame, wt.FloatingFrame and wt.FloatingFrame.spellsPage}) do
         if frame.searchBox and strlower(frame.searchBox:GetText()) ~= wt.filter then
             frame.searchBox:SetText(wt.filter)
         end
