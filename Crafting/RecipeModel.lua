@@ -199,8 +199,17 @@ function wt.GetRecipeGroups()
     for _, id in ipairs(professions) do
         local skill = C_SkillInfo.GetSkillLineInfoByID(id)
         if skill then
+            -- a higher rank-up removes the lower ones from the spellbook
+            local knownRank = 0
+            for _, recipe in ipairs(wt.Recipes[id]) do
+                if recipe.rank and recipe.skill > knownRank
+                    and C_SpellBook.IsSpellKnown(recipe.spell, Enum.SpellBookSpellBank.Player) then
+                    knownRank = recipe.skill
+                end
+            end
             for _, recipe in ipairs(wt.Recipes[id]) do
                 if (not recipe.faction or recipe.faction == playerFaction)
+                    and not (recipe.rank and recipe.skill <= knownRank)
                     and not C_SpellBook.IsSpellKnown(recipe.spell, Enum.SpellBookSpellBank.Player) then
                     local row, category = rowFor(recipe, skill, id)
                     if row then tinsert(groups[category], row) end
