@@ -169,7 +169,7 @@ local function displayPage(page)
         end
         return wt.L.PRICE_AUTO
     end, wt.discountMenuGenerator)
-    checkbox(page, wt.L.ENABLE_TRAIN_ALL, function() return WT_TrainAll ~= false end,
+    checkbox(page, wt.L.ENABLE_TRAIN_ALL, function() return WT_TrainAll == true end,
         function(enabled) WT_TrainAll = enabled end)
     heading(page, wt.L.WEAPON_SKILLS_HEADER)
     choices(page, wt.L.SETTINGS_DISPLAY,

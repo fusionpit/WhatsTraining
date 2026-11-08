@@ -5,7 +5,7 @@ local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTrainerTooltip", UIPare
 local button, pending, timeout
 
 local function isClassTrainer()
-    return WT_TrainAll ~= false and ClassTrainerFrame and ClassTrainerFrame:IsVisible() and not InCombatLockdown()
+    return WT_TrainAll == true and ClassTrainerFrame and ClassTrainerFrame:IsVisible() and not InCombatLockdown()
         and not IsTradeskillTrainer() and C_Trainer.GetTrainerType() == Enum.TrainerType.General
 end
 
@@ -134,10 +134,16 @@ local function startTimeout()
     timeout = C_Timer.NewTimer(5, function() finishTraining(); refresh() end)
 end
 
-local function trainAll()
+local function purchaseAll(_, confirmed)
     if pending or not isClassTrainer() then return end
     local available, cost = services()
     if #available == 0 or GetMoney() < cost then return end
+    -- never purchase a different batch from the one the player confirmed
+    if #available ~= #confirmed then return end
+    for index, service in ipairs(available) do
+        local quoted = confirmed[index]
+        if service.id ~= quoted.id or service.index ~= quoted.index or service.cost ~= quoted.cost then return end
+    end
     pending = {costs = {}, learned = 0, cost = 0}
     for _, service in ipairs(available) do pending.costs[service.id] = service.cost end
     -- pending blocks a second click
@@ -146,6 +152,24 @@ local function trainAll()
     refresh()
     -- backwards, learned rows may leave the list at once
     for index = #available, 1, -1 do BuyTrainerService(available[index].index) end
+end
+
+StaticPopupDialogs["WHATS_TRAINING_TRAIN_ALL"] = {
+    text = wt.L.CONFIRM_TRAIN_ALL_FORMAT,
+    button1 = wt.L.TRAIN_ALL,
+    button2 = CANCEL,
+    OnAccept = purchaseAll,
+    timeout = 0,
+    whileDead = false,
+    hideOnEscape = true,
+}
+
+local function trainAll()
+    if pending or not isClassTrainer() then return end
+    local available, cost = services()
+    if #available == 0 or GetMoney() < cost then return end
+    hideTooltip()
+    StaticPopup_Show("WHATS_TRAINING_TRAIN_ALL", #available, GetMoneyString(cost), available)
 end
 
 local function createController(observer)
@@ -182,6 +206,7 @@ local function createController(observer)
     local suspended = InCombatLockdown()
     local function focused()
         return connected and not suspended and button:IsVisible() and InputUtil.IsGamepadUIEnabled() and not InCombatLockdown()
+            and not StaticPopup_Visible("WHATS_TRAINING_TRAIN_ALL")
             and SmartNavigation and SmartNavigation:IsShown() and SmartNavigation:GetActiveFrame() == ClassTrainerFrame
     end
     local function bind(mode)
@@ -317,7 +342,10 @@ EventUtil.ContinueOnAddOnLoaded("Blizzard_TrainerUI", function()
     button:SetScript("OnClick", trainAll)
     button:SetScript("OnEnter", showTooltip)
     button:SetScript("OnLeave", function() if not button.controllerActive then hideTooltip() end end)
-    button:SetScript("OnHide", hideTooltip)
+    button:SetScript("OnHide", function()
+        hideTooltip()
+        StaticPopup_Hide("WHATS_TRAINING_TRAIN_ALL")
+    end)
     button:Hide()
 
     -- shown from TRAINER_SHOW to TRAINER_CLOSED

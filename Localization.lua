@@ -137,6 +137,7 @@ local localeText = {
         ENABLE_TRAIN_ALL = "Enable Train All button",
         GAMEPAD_HOLD_TRAIN_ALL = "Hold to train all",
         TRAIN_ALL_FORMAT = "Train %d |4spell:spells; for %s",
+        CONFIRM_TRAIN_ALL_FORMAT = "Train %d |4spell:spells; for %s?",
         TRAIN_LEARNED_FORMAT = "Learned %d |4spell:spells; for %s",
         TRAINER_IGNORED_HEADER = "Available spells ignored at this trainer:",
         TRAINER_IGNORED_RANKS_FORMAT = "%d |4rank:ranks; of %s",
