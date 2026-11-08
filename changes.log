@@ -1,3 +1,11 @@
+* 11.3.0
+    - Add "Train All" button at Forever Class Trainers
+        - This button will NOT train spells you have ignored
+    - Add new options window (`/wt options` or `/wt settings`)
+    - Add minimap icon
+    - Fix old profession ranks showing up as Available Now
+    - Updated Simplified Chinese (zhCN) localization (Thanks to Loukky on GitHub!)
+
 * 11.2.0
     - Add Icon selection for Spellbook and Profession tabs (Thanks to Firnael on GitHub!)
         - In Era/Anniversary, too!
