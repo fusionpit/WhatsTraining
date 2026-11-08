@@ -1,4 +1,4 @@
-local _, wt = ...
+local addonName, wt = ...
 local Forever = wt.Forever
 
 local function resetScroll(weapons)
@@ -204,6 +204,12 @@ local function tabsPage(page)
     iconPicker(page, wt.ProfessionIcon)
     checkbox(page, wt.L.HIDE_PROFESSION_TAB, function() return WT_HideProfessionTab == true end,
         function(hidden) wt.MoveProfessionTab(hidden and "hide" or "show") end)
+    heading(page, wt.L.SETTINGS_MINIMAP)
+    checkbox(page, wt.L.HIDE_MINIMAP_ICON, function() return WT_Minimap and WT_Minimap.hide == true end,
+        function(hidden)
+            WT_Minimap.hide = hidden
+            LibStub("LibDBIcon-1.0"):Refresh(addonName .. "Minimap")
+        end)
 end
 
 local function waypointsPage(page)
