@@ -169,6 +169,8 @@ local function displayPage(page)
         end
         return wt.L.PRICE_AUTO
     end, wt.discountMenuGenerator)
+    checkbox(page, wt.L.ENABLE_TRAIN_ALL, function() return WT_TrainAll ~= false end,
+        function(enabled) WT_TrainAll = enabled end)
     heading(page, wt.L.WEAPON_SKILLS_HEADER)
     choices(page, wt.L.SETTINGS_DISPLAY,
         {{wt.L.GROUP_BY_ZONE, "zone"}, {wt.L.GROUP_BY_WEAPON_SKILL, "weaponskill"}, {wt.L.GROUP_LIST, "list"}},

@@ -10,4 +10,5 @@
     <Script file="Banner.lua"/>
     <Script file="SpellBook.lua"/>
     <Script file="Controller.lua"/>
+    <Script file="Trainer.lua"/>
 </Ui>
