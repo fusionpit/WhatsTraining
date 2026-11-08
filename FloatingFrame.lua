@@ -48,9 +48,12 @@ local function floatingFrame()
         local professions = CreateFrame("Frame", "$parentProfessions", frame)
         frame.professionsPage = professions
         professions:Hide()
-        professions:SetPoint("TOPLEFT", 12, -28)
+        -- match compact list's search and header centers
+        professions:SetPoint("TOPLEFT", 12, -26)
         professions:SetPoint("BOTTOMRIGHT", -12, 12)
         professions.recipeList = wt.CreateSkillsRecipeList(professions, nil, 24)
+        professions.recipeList.scroll:SetPoint("TOPLEFT", 4, -38)
+        professions.recipeList.scroll:SetPoint("BOTTOMRIGHT", -20, 4)
         local filters = professions.recipeList.filterDropdown
         filters:ClearAllPoints()
         filters:SetPoint("TOPRIGHT", -40, -8)
