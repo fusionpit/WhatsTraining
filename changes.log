@@ -1,3 +1,7 @@
+* 11.3.1
+    - Make "Train All" opt-in. Enable it from the options window (`/wt options`)
+    - "Train All" asks for confirmation before Training All
+
 * 11.3.0
     - Add "Train All" button at Forever Class Trainers
         - This button will NOT train spells you have ignored
