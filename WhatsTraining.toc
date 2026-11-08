@@ -6,8 +6,8 @@
 ## Notes: Shows you what spells are available at your class trainer
 ## Notes-ruRU: Показывает, какие заклинания доступны у вашего классового наставника.
 ## Notes-zhCN: 显示你的职业训练师处有哪些法术可以学习。
-## SavedVariables: WT_SpellbookIcon, WT_WeaponGrouping, WT_ShowKnownWeaponSkills, WT_FloatingFramePoint, WT_WaypointProvider [AllowLoadGameType classic][ExcludeLoadGameType camelot]
-## SavedVariables: WT_SpellbookIcon, WT_WeaponGrouping, WT_ShowKnownWeaponSkills, WT_SpellDisplay, WT_SideBySide, WT_ScrollTwoPages, WT_FloatingFramePoint, WT_WaypointProvider, WT_ProfessionTabPosition, WT_ProfessionIcon, WT_HideProfessionTab [AllowLoadGameType camelot][ExcludeLoadGameType classic]
+## SavedVariables: WT_SpellbookIcon, WT_Minimap, WT_WeaponGrouping, WT_ShowKnownWeaponSkills, WT_FloatingFramePoint, WT_WaypointProvider [AllowLoadGameType classic][ExcludeLoadGameType camelot]
+## SavedVariables: WT_SpellbookIcon, WT_Minimap, WT_WeaponGrouping, WT_ShowKnownWeaponSkills, WT_SpellDisplay, WT_SideBySide, WT_ScrollTwoPages, WT_FloatingFramePoint, WT_WaypointProvider, WT_ProfessionTabPosition, WT_ProfessionIcon, WT_HideProfessionTab [AllowLoadGameType camelot][ExcludeLoadGameType classic]
 ## SavedVariablesPerCharacter: WT_LearnedPetAbilities, WT_NeedsToOpenBeastTraining, WT_IgnoredSpells, WT_PriceFaction, WT_HideWeaponSkillSwitcher, WT_Crafting
 ## OptionalDeps: ClassTrainerPlus, TomTom [AllowLoadGameType classic][ExcludeLoadGameType camelot]
 ## OptionalDeps: ClassTrainerPlusForever, EllesmereUI, EllesmereUIBlizzardSkin, TomTom [AllowLoadGameType camelot][ExcludeLoadGameType classic]
@@ -18,6 +18,7 @@
 libs\LibStub.lua
 libs\CallbackHandler-1.0.lua
 libs\LibDataBroker-1.1.lua
+libs\LibDBIcon-1.0.lua
 libs\LibBabble-CreatureType-3.0\lib.xml
 libs\FusionIgnoreStore\IgnoreStore.lua
 
@@ -68,4 +69,5 @@ DataBuilder.lua
 WhatsTraining.lua
 
 Broker.lua
+Minimap.lua
 Api.lua
