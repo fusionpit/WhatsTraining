@@ -599,8 +599,31 @@ function wt.CreateOptionsPopup(parent)
         wt:ApplyFilter()
     end)
 
+    -- forever has this in its settings window
+    local hideMinimap
+    if wt.gameVersion ~= "forever" then
+        hideMinimap = CreateFrame("CheckButton", "$parentHideMinimap", popup, "UICheckButtonTemplate")
+        hideMinimap:SetSize(22, 22)
+        hideMinimap:SetPoint("TOPLEFT", showKnown, "BOTTOMLEFT", 0, -4)
+        local hideMinimapText = hideMinimap.text or hideMinimap.Text
+        hideMinimapText:SetFontObject("GameFontNormalSmall")
+        hideMinimapText:SetText(wt.L.HIDE_MINIMAP_ICON)
+        hideMinimapText:ClearAllPoints()
+        hideMinimapText:SetPoint("LEFT", hideMinimap, "RIGHT", 0, 0)
+        hideMinimap:SetHitRectInsets(0, -(hideMinimapText:GetStringWidth() + 2), 0, 0)
+        hideMinimap:SetScript("OnClick", function(self)
+            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+            wt.SetMinimapHidden(self:GetChecked())
+            -- the minimap button's own popup would otherwise reopen with the button
+            if not popup:IsVisible() then popup:Hide() end
+        end)
+        basePopupHeight = basePopupHeight + 26
+        popup:SetHeight(basePopupHeight)
+    end
+    popup.hideMinimap = hideMinimap
+
     local iconTitle = popup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    iconTitle:SetPoint("TOPLEFT", showKnown, "BOTTOMLEFT", 3, -8)
+    iconTitle:SetPoint("TOPLEFT", hideMinimap or showKnown, "BOTTOMLEFT", 3, -8)
     iconTitle:SetText(wt.L.ADDON_ICON_TITLE)
     local iconPicker = wt.createIconPicker(popup)
     iconPicker:SetPoint("TOPLEFT", iconTitle, "BOTTOMLEFT", 0, -6)
@@ -624,6 +647,7 @@ function wt.CreateOptionsPopup(parent)
             r:SetChecked(r.value == mode)
         end
         showKnown:SetChecked(WT_ShowKnownWeaponSkills)
+        if hideMinimap then hideMinimap:SetChecked(WT_Minimap and WT_Minimap.hide == true) end
 
         -- plugins can register providers after this popup was built, so refresh on every show
         local providers = wt.waypointProviders()

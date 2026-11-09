@@ -1,5 +1,10 @@
 local addonName, wt = ...
 
+function wt.SetMinimapHidden(hidden)
+    WT_Minimap.hide = hidden == true
+    LibStub("LibDBIcon-1.0"):Refresh(addonName .. "Minimap")
+end
+
 EventUtil.ContinueOnAddOnLoaded(addonName, function()
     if type(WT_Minimap) ~= "table" then WT_Minimap = {} end
     local name = addonName .. "Minimap"
