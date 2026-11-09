@@ -2,7 +2,7 @@ local _, wt = ...
 local ignoreStore = LibStub:GetLibrary("FusionIgnoreStore-1.0")
 -- own tooltip: the ignored lines use a smaller font
 local tooltip = CreateFrame("GameTooltip", "WhatsTrainingTrainerTooltip", UIParent, "GameTooltipTemplate")
-local button, pending, timeout
+local button, confirmation, pending, timeout
 
 local function isClassTrainer()
     return WT_TrainAll == true and ClassTrainerFrame and ClassTrainerFrame:IsVisible() and not InCombatLockdown()
@@ -52,6 +52,7 @@ local function addIgnoredLine(text)
 end
 
 local function showTooltip()
+    if confirmation and confirmation:IsShown() then return end
     local available, cost, ignored = services()
     local money = GetMoneyString(cost)
     if GetMoney() < cost then money = RED_FONT_COLOR:WrapTextInColorCode(money) end
@@ -134,7 +135,7 @@ local function startTimeout()
     timeout = C_Timer.NewTimer(5, function() finishTraining(); refresh() end)
 end
 
-local function purchaseAll(_, confirmed)
+local function purchaseAll(confirmed)
     if pending or not isClassTrainer() then return end
     local available, cost = services()
     if #available == 0 or GetMoney() < cost then return end
@@ -154,22 +155,103 @@ local function purchaseAll(_, confirmed)
     for index = #available, 1, -1 do BuyTrainerService(available[index].index) end
 end
 
-StaticPopupDialogs["WHATS_TRAINING_TRAIN_ALL"] = {
-    text = wt.L.CONFIRM_TRAIN_ALL_FORMAT,
-    button1 = wt.L.TRAIN_ALL,
-    button2 = CANCEL,
-    OnAccept = purchaseAll,
-    timeout = 0,
-    whileDead = false,
-    hideOnEscape = true,
-}
+local function acceptConfirmation()
+    local confirmed = confirmation.confirmed
+    confirmation:Hide()
+    if confirmed then purchaseAll(confirmed) end
+end
+
+-- StaticPopupButtonTemplate template registers with TextSizeManager, which taints it in some circumstances
+local function createDialogButton(name, parent)
+    local button = CreateFrame("Button", name, parent)
+    local text = button:CreateFontString(nil, "OVERLAY")
+    text:SetPoint("CENTER", 0, 1)
+    button:SetFontString(text)
+    button:SetNormalFontObject("UserScaledFontGameNormal")
+    button:SetDisabledFontObject("UserScaledFontGameDisable")
+    button:SetHighlightFontObject("UserScaledFontGameHighlight")
+    button:SetNormalTexture("Interface\\Buttons\\UI-DialogBox-Button-Up")
+    button:SetPushedTexture("Interface\\Buttons\\UI-DialogBox-Button-Down")
+    button:SetDisabledTexture("Interface\\Buttons\\UI-DialogBox-Button-Disabled")
+    button:SetHighlightTexture("Interface\\Buttons\\UI-DialogBox-Button-Highlight", "ADD")
+    for _, texture in ipairs({button:GetNormalTexture(), button:GetPushedTexture(), button:GetDisabledTexture(), button:GetHighlightTexture()}) do
+        texture:SetTexCoord(0, 1, 0, 0.71875)
+    end
+    return button
+end
+
+local function createConfirmation()
+    local frame = CreateFrame("Frame", "WhatsTrainingTrainAllConfirmation", UIParent)
+    frame:Hide()
+    frame:SetFrameStrata("DIALOG")
+    frame:SetFrameLevel(600)
+    frame:SetPoint("TOP", UIParent, "TOP", 0, -135)
+    frame:SetWidth(320)
+    frame:SetClampedToScreen(true)
+    local background = frame:CreateTexture(nil, "BACKGROUND", nil, -7)
+    background:SetAtlas("UI-DialogBox-Background-Dark")
+    background:SetPoint("TOPLEFT", 7, -7)
+    background:SetPoint("BOTTOMRIGHT", -7, 7)
+    local border = frame:CreateTexture(nil, "BACKGROUND", nil, -4)
+    border:SetAtlas("UI-DiamondDialogBox-Border")
+    border:SetAllPoints()
+    frame:EnableMouse(true)
+    frame:EnableKeyboard(true)
+    frame:SetScript("OnKeyDown", function(self, key)
+        if InCombatLockdown() then return end
+        self:SetPropagateKeyboardInput(key ~= "ESCAPE")
+        if key == "ESCAPE" then self:Hide() end
+    end)
+    frame:SetScript("OnHide", function(self)
+        self.confirmed = nil
+        PlaySound(SOUNDKIT.IG_MAINMENU_CLOSE)
+    end)
+    frame.text = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+    frame.text:SetPoint("TOP", 0, -16)
+    frame.text:SetWidth(290)
+    -- native visuals, own handlers
+    local accept = createDialogButton("WhatsTrainingTrainAllAccept", frame)
+    accept:SetSize(120, 21)
+    accept:SetPoint("BOTTOMRIGHT", frame, "BOTTOM", -5, 16)
+    accept:SetText(wt.L.TRAIN_ALL)
+    accept:SetScript("OnClick", acceptConfirmation)
+    local cancel = createDialogButton("WhatsTrainingTrainAllCancel", frame)
+    cancel:SetSize(120, 21)
+    cancel:SetPoint("BOTTOMLEFT", frame, "BOTTOM", 5, 16)
+    cancel:SetText(CANCEL)
+    cancel:SetScript("OnClick", function() frame:Hide() end)
+    -- reserve the gamepad icon: AddGamepadIconToButton's floor(21 * 0.8) icon plus its 3px gap
+    local pad = 20 + 16 + 3
+    local width = math.max(120, accept:GetTextWidth() + pad, cancel:GetTextWidth() + pad)
+    accept:SetWidth(width)
+    cancel:SetWidth(width)
+    frame:SetWidth(math.max(320, width * 2 + 10 + 32))
+    local acceptIcon = GamepadMode.AddGamepadIconToButton(accept, GAMEPAD_FACE_BOTTOM)
+    local cancelIcon = GamepadMode.AddGamepadIconToButton(cancel, GAMEPAD_FACE_RIGHT)
+    local function updateIcons()
+        local shown = InputUtil.IsGamepadUIEnabled()
+        GamepadMode.SetGamepadIconShown(acceptIcon, shown)
+        GamepadMode.SetGamepadIconShown(cancelIcon, shown)
+    end
+    frame:RegisterEvent("INPUT_DEVICE_INTERFACE_TRANSITION")
+    frame:SetScript("OnEvent", updateIcons)
+    frame:SetScript("OnShow", function()
+        updateIcons()
+        PlaySound(SOUNDKIT.IG_MAINMENU_OPEN)
+    end)
+    updateIcons()
+    return frame
+end
 
 local function trainAll()
-    if pending or not isClassTrainer() then return end
+    if pending or confirmation:IsShown() or not isClassTrainer() then return end
     local available, cost = services()
     if #available == 0 or GetMoney() < cost then return end
     hideTooltip()
-    StaticPopup_Show("WHATS_TRAINING_TRAIN_ALL", #available, GetMoneyString(cost), available)
+    confirmation.confirmed = available
+    confirmation.text:SetText(string.format(wt.L.CONFIRM_TRAIN_ALL_FORMAT, #available, GetMoneyString(cost)))
+    confirmation:SetHeight(confirmation.text:GetStringHeight() + 62)
+    confirmation:Show()
 end
 
 local function createController(observer)
@@ -198,6 +280,11 @@ local function createController(observer)
         {GAMEPAD_FACE_BOTTOM}, GAMEPAD_PROMPT_DIVIDER_SLASH)
     holdPrompt:SetIsHoldAction(true)
     confirmLegend:Hide()
+    local dialogLegend = wt.Forever.createInputLegend(root, {
+        {"StandardOneIcon", {GAMEPAD_FACE_BOTTOM}, wt.L.TRAIN_ALL},
+        {"StandardOneIcon", {GAMEPAD_FACE_RIGHT}, CANCEL},
+    })
+    dialogLegend:Hide()
 
     local sink = CreateFrame("Button", "WhatsTrainingTrainerControllerSink", root)
     sink:RegisterForClicks("AnyDown", "AnyUp")
@@ -206,7 +293,6 @@ local function createController(observer)
     local suspended = InCombatLockdown()
     local function focused()
         return connected and not suspended and button:IsVisible() and InputUtil.IsGamepadUIEnabled() and not InCombatLockdown()
-            and not StaticPopup_Visible("WHATS_TRAINING_TRAIN_ALL")
             and SmartNavigation and SmartNavigation:IsShown() and SmartNavigation:GetActiveFrame() == ClassTrainerFrame
     end
     local function bind(mode)
@@ -241,7 +327,11 @@ local function createController(observer)
         end
         if held[key] then return end
         held[key] = true
-        if key == "PAD3" and not draining then
+        if draining then return end
+        if confirmation:IsShown() then
+            if key == "PAD1" then acceptConfirmation()
+            elseif key == "PAD2" then confirmation:Hide() end
+        elseif key == "PAD3" then
             if button.controllerActive then dismiss()
             else
                 button.controllerActive = true
@@ -266,28 +356,38 @@ local function createController(observer)
     end)
     button:HookScript("OnHide", dismiss)
     button:HookScript("OnClick", dismiss)
+    confirmation:HookScript("OnShow", function()
+        dismiss()
+        if focused() then bind(2) end
+    end)
+    confirmation:HookScript("OnHide", dismiss)
 
-    local selectText, selectEnabled, confirmEnabled
+    local selectText, selectEnabled, confirmEnabled, wasFocused
     local function sync()
         if not focused() then
+            -- only on losing focus, so a mouse-opened dialog survives while unfocused
+            if wasFocused and InputUtil.IsGamepadUIEnabled() then confirmation:Hide() end
+            wasFocused = false
             if button.controllerActive or holdTimer then dismiss() end
             held, draining = {}, false
             root:Hide()
             bind(0) -- deferred in combat
             return
         end
+        wasFocused = true
         if button.controllerActive and SmartNavigation:GetCurrentButton() ~= selected then dismiss() end
         if draining and not IsKeyDown("PAD1") and not IsKeyDown("PAD2") and not IsKeyDown("PAD3") then
             draining = false
         end
-        bind((button.controllerActive or draining) and 2 or 1)
+        local confirming = confirmation:IsShown()
+        bind((button.controllerActive or draining or confirming) and 2 or 1)
         local active = button.controllerActive == true
         if active and not button:IsEnabled() then cancelHold() end
         local nativeFooter = ClassTrainerFrame.footer and ClassTrainerFrame.footer.inputLegend
         if nativeFooter then
             local left, bottom, width, height = nativeFooter:GetRect()
             if left and bottom then
-                local shownLegend = active and confirmLegend or legend
+                local shownLegend = confirming and dialogLegend or active and confirmLegend or legend
                 root:SetScale(nativeFooter:GetEffectiveScale() / UIParent:GetEffectiveScale())
                 root:ClearAllPoints()
                 root:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left, bottom + height)
@@ -307,8 +407,9 @@ local function createController(observer)
             if button:IsEnabled() then holdPrompt:EnablePrompt() else holdPrompt:DisablePrompt() end
             confirmEnabled = button:IsEnabled()
         end
-        legend:SetShown(not active)
+        legend:SetShown(not active and not confirming)
         confirmLegend:SetShown(active)
+        dialogLegend:SetShown(confirming)
         root:Show()
         if active and not tooltip:IsShown() then showTooltip() end
     end
@@ -333,6 +434,7 @@ end
 
 EventUtil.ContinueOnAddOnLoaded("Blizzard_TrainerUI", function()
     -- never parent to, anchor to or change native frames
+    confirmation = createConfirmation()
     button = CreateFrame("Button", "WhatsTrainingTrainAllButton", UIParent, "UIPanelButtonTemplate")
     -- the trainer's ScrollBox is HIGH
     button:SetFrameStrata("DIALOG")
@@ -344,7 +446,7 @@ EventUtil.ContinueOnAddOnLoaded("Blizzard_TrainerUI", function()
     button:SetScript("OnLeave", function() if not button.controllerActive then hideTooltip() end end)
     button:SetScript("OnHide", function()
         hideTooltip()
-        StaticPopup_Hide("WHATS_TRAINING_TRAIN_ALL")
+        confirmation:Hide()
     end)
     button:Hide()
 
