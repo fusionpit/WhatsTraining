@@ -1,3 +1,8 @@
+* 11.4.2
+    - Fix minimap icon showing back up in some "minimap button frame" or minimap mods
+    - Fix Bear Form showing up as available after learning Dire Bear Form
+        - Also fix Lacerate rank 2 showing up as available
+
 * 11.4.1
     - Add "hide minimap" to Era and Anniversary
 
