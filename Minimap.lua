@@ -1,14 +1,23 @@
 local addonName, wt = ...
 
+local name = addonName .. "Minimap"
+local launcher
+
+-- LibDBIcon creates hidden buttons shown and only hides them at PLAYER_LOGIN, 
+-- which lets button collectors and outdated embedded copies show them again
 function wt.SetMinimapHidden(hidden)
     WT_Minimap.hide = hidden == true
-    LibStub("LibDBIcon-1.0"):Refresh(addonName .. "Minimap")
+    local icons = LibStub("LibDBIcon-1.0")
+    if icons:IsRegistered(name) then
+        icons:Refresh(name)
+    elseif not hidden then
+        icons:Register(name, launcher, WT_Minimap)
+    end
 end
 
 EventUtil.ContinueOnAddOnLoaded(addonName, function()
     if type(WT_Minimap) ~= "table" then WT_Minimap = {} end
-    local name = addonName .. "Minimap"
-    local launcher = LibStub("LibDataBroker-1.1"):NewDataObject(name, {
+    launcher = LibStub("LibDataBroker-1.1"):NewDataObject(name, {
         type = "launcher",
         text = wt.L.TAB_TEXT,
         icon = wt.SpellbookIcon.texture(),
@@ -44,5 +53,5 @@ EventUtil.ContinueOnAddOnLoaded(addonName, function()
         end,
     })
     wt.SpellbookIcon.onChanged(function(texture) launcher.icon = texture end)
-    LibStub("LibDBIcon-1.0"):Register(name, launcher, WT_Minimap)
+    if not WT_Minimap.hide then LibStub("LibDBIcon-1.0"):Register(name, launcher, WT_Minimap) end
 end)
