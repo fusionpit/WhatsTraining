@@ -18,6 +18,8 @@ local prowl = {5215, 6783, 9913}
 local primalBite = {407995, 1238069, 1238070}
 
 class.overriddenGroups = {
+	{5487, 9634}, -- Bear Form is replaced when Dire Bear Form is learned
+	{414647, 1328617}, -- Lacerate rank 1's replacement also satisfies rank 2's prerequisite
 	demoralizingRoar,
 	bash,
 	swipe,
