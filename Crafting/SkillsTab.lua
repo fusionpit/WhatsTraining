@@ -37,10 +37,12 @@ local function attach()
     tab:SetPoint("TOPLEFT", SkillFrameExpandButtonFrame, "TOPRIGHT", 4, 6)
 
     local function selectTab(professions)
+        professions = professions and WT_EnableProfessions ~= false
         native:SetShown(not professions)
         page:SetShown(professions)
         all:SetShown(not professions)
         back:SetShown(professions)
+        tab:SetShown(WT_EnableProfessions ~= false)
         if professions then PanelTemplates_SelectTab(tab)
         else PanelTemplates_DeselectTab(tab) end
     end
@@ -52,6 +54,7 @@ local function attach()
         PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB)
         selectTab(true)
     end)
+    EventRegistry:RegisterCallback("WhatsTraining.ProfessionsChanged", function() selectTab(false) end, page)
     selectTab(false)
 end
 

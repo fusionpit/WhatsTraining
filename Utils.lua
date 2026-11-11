@@ -3,6 +3,11 @@ local _, wt = ...
 local tinsert = tinsert
 local ipairs = ipairs
 
+function wt.SetProfessionsEnabled(enabled)
+    WT_EnableProfessions = enabled == true
+    EventRegistry:TriggerEvent("WhatsTraining.ProfessionsChanged")
+end
+
 function wt.createIconSetting(variable, choices)
     local byKey, callbacks = {}, {}
     for _, icon in ipairs(choices) do byKey[icon.key] = icon end

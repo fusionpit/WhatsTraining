@@ -62,6 +62,7 @@ local function floatingFrame()
         toggle:SetSize(32, 32)
         toggle:SetPoint("TOPRIGHT", -12, -29)
         function frame:SetProfessionView(shown)
+            shown = shown and (wt.gameVersion == "forever" or WT_EnableProfessions ~= false)
             spells:SetShown(not shown)
             professions:SetShown(shown)
             toggle:SetIcon(shown and "Interface\\Icons\\INV_Misc_Book_09"
@@ -82,6 +83,14 @@ local function floatingFrame()
         end
         toggle:SetScript("OnLeave", hideTooltip)
         toggle:SetScript("OnHide", hideTooltip)
+        if wt.gameVersion ~= "forever" then
+            local function syncProfessions()
+                toggle:SetShown(WT_EnableProfessions ~= false)
+                if WT_EnableProfessions == false then frame:SetProfessionView(false) end
+            end
+            EventRegistry:RegisterCallback("WhatsTraining.ProfessionsChanged", syncProfessions, frame)
+            syncProfessions()
+        end
         frame:SetProfessionView(false)
         frame:SetScript("OnShow", function()
             PlaySound(SOUNDKIT.IG_SPELLBOOK_OPEN)

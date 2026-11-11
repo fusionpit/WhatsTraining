@@ -25,6 +25,13 @@ local function attach(prefix, getSkillName)
     local active, tabs = false, {}
 
     local function sync()
+        if WT_EnableProfessions == false then
+            active = false
+            native:Show()
+            page:Hide()
+            for _, tab in ipairs(tabs) do tab:Hide() end
+            return
+        end
         if not book:IsVisible() then return end
         -- recipe addons can add price labels after Blizzard's frame has loaded
         for _, child in ipairs({book:GetChildren()}) do
@@ -78,6 +85,7 @@ local function attach(prefix, getSkillName)
     end
     book:HookScript("OnShow", sync)
     book:HookScript("OnEvent", sync)
+    EventRegistry:RegisterCallback("WhatsTraining.ProfessionsChanged", sync, page)
     sync()
 end
 

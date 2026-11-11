@@ -61,6 +61,7 @@ local localeText = {
         SETTINGS_PROFESSION = "Profession",
         SETTINGS_MINIMAP = "Minimap",
         HIDE_MINIMAP_ICON = "Hide minimap icon",
+        ENABLE_PROFESSIONS = "Enable Professions",
         SETTINGS_ICON = "Icon",
         SETTINGS_WAYPOINTS = "Waypoints",
         SETTINGS_PROVIDER = "Provider",

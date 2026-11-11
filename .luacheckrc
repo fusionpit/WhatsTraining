@@ -212,6 +212,7 @@ globals = {
     "WT_PriceFaction",
     "WT_WaypointProvider",
     "WT_Crafting",
+    "WT_EnableProfessions",
     "WT_ProfessionTabPosition",
     "WT_SpellbookIcon",
     "WT_ProfessionIcon",

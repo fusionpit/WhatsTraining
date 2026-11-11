@@ -600,7 +600,7 @@ function wt.CreateOptionsPopup(parent)
     end)
 
     -- forever has this in its settings window
-    local hideMinimap
+    local hideMinimap, enableProfessions
     if wt.gameVersion ~= "forever" then
         hideMinimap = CreateFrame("CheckButton", "$parentHideMinimap", popup, "UICheckButtonTemplate")
         hideMinimap:SetSize(22, 22)
@@ -618,12 +618,27 @@ function wt.CreateOptionsPopup(parent)
             if not popup:IsVisible() then popup:Hide() end
         end)
         basePopupHeight = basePopupHeight + 26
+        enableProfessions = CreateFrame("CheckButton", "$parentEnableProfessions", popup, "UICheckButtonTemplate")
+        enableProfessions:SetSize(22, 22)
+        enableProfessions:SetPoint("TOPLEFT", hideMinimap, "BOTTOMLEFT", 0, -4)
+        local text = enableProfessions.text or enableProfessions.Text
+        text:SetFontObject("GameFontNormalSmall")
+        text:SetText(wt.L.ENABLE_PROFESSIONS)
+        text:ClearAllPoints()
+        text:SetPoint("LEFT", enableProfessions, "RIGHT", 0, 0)
+        enableProfessions:SetHitRectInsets(0, -(text:GetStringWidth() + 2), 0, 0)
+        enableProfessions:SetScript("OnClick", function(self)
+            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+            wt.SetProfessionsEnabled(self:GetChecked())
+        end)
+        basePopupHeight = basePopupHeight + 26
         popup:SetHeight(basePopupHeight)
     end
     popup.hideMinimap = hideMinimap
+    popup.enableProfessions = enableProfessions
 
     local iconTitle = popup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    iconTitle:SetPoint("TOPLEFT", hideMinimap or showKnown, "BOTTOMLEFT", 3, -8)
+    iconTitle:SetPoint("TOPLEFT", enableProfessions or hideMinimap or showKnown, "BOTTOMLEFT", 3, -8)
     iconTitle:SetText(wt.L.ADDON_ICON_TITLE)
     local iconPicker = wt.createIconPicker(popup)
     iconPicker:SetPoint("TOPLEFT", iconTitle, "BOTTOMLEFT", 0, -6)
@@ -648,6 +663,7 @@ function wt.CreateOptionsPopup(parent)
         end
         showKnown:SetChecked(WT_ShowKnownWeaponSkills)
         if hideMinimap then hideMinimap:SetChecked(WT_Minimap and WT_Minimap.hide == true) end
+        if enableProfessions then enableProfessions:SetChecked(WT_EnableProfessions ~= false) end
 
         -- plugins can register providers after this popup was built, so refresh on every show
         local providers = wt.waypointProviders()
