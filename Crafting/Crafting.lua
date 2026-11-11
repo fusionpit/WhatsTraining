@@ -199,6 +199,13 @@ local function attach()
     end
     local returnTab = makeTab("WhatsTrainingCraftingReturnTab")
     local recipeList = wt.CreateRecipeList(page)
+    -- make sure we cover everything below us, like auctionator prices
+    local background = CreateFrame("Frame", nil, recipeList)
+    background:SetPoint("TOPLEFT", page, "TOPLEFT", 0, -51) -- matches the recipe viewport
+    background:SetPoint("BOTTOMRIGHT", page, "BOTTOMRIGHT")
+    background:SetClipsChildren(true)
+    background:SetFrameLevel(recipeList:GetFrameLevel() - 2)
+    paint(background)
 
     local function selectedNativeTab()
         local selected
