@@ -16,10 +16,12 @@ local ravage = {6785, 6787, 9866, 9867}
 local pounce = {9005, 9823, 9827}
 local prowl = {5215, 6783, 9913}
 local primalBite = {407995, 1238069, 1238070}
+local lacerate = {414647, 1328617, 1328616, 414644, 1235826, 1235827} -- Both rank 1 IDs, then ranks 2-5
+local bearForm = {5487, 9634} -- Bear Form is replaced when Dire Bear Form is learned
 
 class.overriddenGroups = {
-	{5487, 9634}, -- Bear Form is replaced when Dire Bear Form is learned
-	{414647, 1328617}, -- Lacerate rank 1's replacement also satisfies rank 2's prerequisite
+	bearForm,
+	lacerate,
 	demoralizingRoar,
 	bash,
 	swipe,
