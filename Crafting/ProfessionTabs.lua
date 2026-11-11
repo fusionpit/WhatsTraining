@@ -5,10 +5,15 @@ local function attach(prefix, getSkillName)
     local native = CreateFrame("Frame", nil, book)
     native:SetAllPoints()
 
+    -- follow the native footer vertically, so things like letrix works
+    local bounds = CreateFrame("Frame", nil, book)
+    bounds:SetPoint("TOPLEFT", 20, -70)
+    bounds:SetPoint("BOTTOMRIGHT", _G[prefix .. "CancelButton"], "TOPRIGHT", -1, 6)
     local page = CreateFrame("Frame", "WhatsTraining" .. prefix .. "Page", book)
     page:Hide()
-    page:SetPoint("TOPLEFT", 20, -70)
-    page:SetPoint("BOTTOMRIGHT", book, "TOPLEFT", 344, -405)
+    page:SetPoint("TOPLEFT", bounds, "TOPLEFT")
+    page:SetPoint("BOTTOMLEFT", bounds, "BOTTOMLEFT")
+    page:SetWidth(324)
     page:EnableMouse(true)
     page:EnableMouseWheel(true)
     page:SetScript("OnMouseWheel", function() end)
@@ -23,7 +28,7 @@ local function attach(prefix, getSkillName)
         if not book:IsVisible() then return end
         -- recipe addons can add price labels after Blizzard's frame has loaded
         for _, child in ipairs({book:GetChildren()}) do
-            if child ~= native and child ~= page and child ~= tabs[1] and child ~= tabs[2]
+            if child ~= native and child ~= bounds and child ~= page and child ~= tabs[1] and child ~= tabs[2]
                 and child ~= _G[prefix .. "RankFrame"] and child ~= _G[prefix .. "FrameCloseButton"]
                 and child ~= _G[prefix .. "CancelButton"] then child:SetParent(native) end
         end
@@ -63,7 +68,7 @@ local function attach(prefix, getSkillName)
         tab:SetScript("OnShow", resize)
         tab:SetScript("OnEvent", resize)
         resize()
-        if index == 1 then tab:SetPoint("TOPLEFT", book, "TOPLEFT", 22, -434)
+        if index == 1 then tab:SetPoint("TOPLEFT", page, "BOTTOMLEFT", 2, -29)
         else tab:SetPoint("LEFT", tabs[1], "RIGHT", -16, 0) end
         tab:SetScript("OnClick", function()
             active = index == 2
