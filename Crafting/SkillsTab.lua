@@ -1,15 +1,15 @@
 local _, wt = ...
+local attached = false
 
 local function attach()
+    if WT_EnableProfessions == false or attached or not SkillFrame then return end
+    attached = true
     local skills = SkillFrame
-    -- Keep the native controls together so skill updates cannot show them over our page
-    local children = {skills:GetChildren()}
     local native = CreateFrame("Frame", nil, skills)
     native:SetAllPoints()
-    for _, child in ipairs(children) do
-        if child ~= SkillFrameCancelButton and child ~= SkillFrameExpandButtonFrame then child:SetParent(native) end
-    end
+    local nativeLevels = {}
     local page = CreateFrame("Frame", "WhatsTrainingCraftingSkillsPage", skills)
+    page:Hide()
     page:SetPoint("TOPLEFT", 20, -76)
     page:SetPoint("BOTTOMRIGHT", skills, "TOPLEFT", 344, -405)
     page:EnableMouse(true)
@@ -38,6 +38,26 @@ local function attach()
 
     local function selectTab(professions)
         professions = professions and WT_EnableProfessions ~= false
+        if professions then
+            -- only group content while our page is open
+            for _, child in ipairs({skills:GetChildren()}) do
+                if child ~= native and child ~= page and child ~= tab
+                    and child ~= skills.backdrop and child ~= skills.shadow and child ~= skills.NineSlice
+                    and child ~= skills.TitleContainer and child ~= skills.PortraitContainer
+                    and child ~= SkillFrameCancelButton and child ~= SkillFrameExpandButtonFrame then
+                    nativeLevels[child] = child:GetFrameLevel() - skills:GetFrameLevel()
+                    child:SetParent(native)
+                end
+            end
+        else
+            for child, level in pairs(nativeLevels) do
+                if child:GetParent() == native then
+                    child:SetParent(skills)
+                    child:SetFrameLevel(skills:GetFrameLevel() + level)
+                end
+                nativeLevels[child] = nil
+            end
+        end
         native:SetShown(not professions)
         page:SetShown(professions)
         all:SetShown(not professions)
@@ -59,3 +79,4 @@ local function attach()
 end
 
 EventUtil.ContinueOnAddOnLoaded("Blizzard_UIPanels_Game", attach)
+EventRegistry:RegisterCallback("WhatsTraining.ProfessionsChanged", attach, wt)

@@ -1,6 +1,9 @@
 local _, wt = ...
+local attached = {}
 
 local function attach(prefix, getSkillName)
+    if WT_EnableProfessions == false or attached[prefix] then return end
+    attached[prefix] = true
     local book = _G[prefix .. "Frame"]
     local native = CreateFrame("Frame", nil, book)
     native:SetAllPoints()
@@ -22,29 +25,33 @@ local function attach(prefix, getSkillName)
     background:SetColorTexture(0, 0, 0, 1)
     local view = wt.CreateSkillsRecipeList(page, true)
     page.recipeList = view
-    local active, tabs = false, {}
+    local active, tabs, nativeLevels = false, {}, {}
+
+    local function isTrainingFrame(child)
+        return child == native or child == bounds or child == page or child == tabs[1] or child == tabs[2]
+    end
+
+    local function isWindowDecoration(child)
+        return child == book.backdrop or child == book.shadow or child == book.NineSlice
+            or child == book.TitleContainer or child == book.PortraitContainer
+    end
+
+    local function isPersistentNativeControl(child)
+        return child == _G[prefix .. "RankFrame"] or child == _G[prefix .. "FrameCloseButton"]
+            or child == _G[prefix .. "CancelButton"]
+    end
 
     local function sync()
-        if WT_EnableProfessions == false then
-            active = false
-            native:Show()
-            page:Hide()
-            for _, tab in ipairs(tabs) do tab:Hide() end
-            return
-        end
-        if not book:IsVisible() then return end
-        -- recipe addons can add price labels after Blizzard's frame has loaded
-        for _, child in ipairs({book:GetChildren()}) do
-            if child ~= native and child ~= bounds and child ~= page and child ~= tabs[1] and child ~= tabs[2]
-                and child ~= _G[prefix .. "RankFrame"] and child ~= _G[prefix .. "FrameCloseButton"]
-                and child ~= _G[prefix .. "CancelButton"] then child:SetParent(native) end
-        end
-        local name = getSkillName()
+        local enabled = WT_EnableProfessions ~= false
+        if enabled and not book:IsVisible() then return end
         local id
-        for _, profession in ipairs(wt.Professions) do
-            local skill = C_SkillInfo.GetSkillLineInfoByID(profession)
-            local smelting = profession == 186 and C_Spell.GetSpellInfo(2656)
-            if skill and (skill.name == name or smelting and smelting.name == name) then id = profession; break end
+        if enabled then
+            local name = getSkillName()
+            for _, profession in ipairs(wt.Professions) do
+                local skill = C_SkillInfo.GetSkillLineInfoByID(profession)
+                local smelting = profession == 186 and C_Spell.GetSpellInfo(2656)
+                if skill and (skill.name == name or smelting and smelting.name == name) then id = profession; break end
+            end
         end
         local changed = view.professionID ~= id
         view.professionID = id
@@ -55,6 +62,23 @@ local function attach(prefix, getSkillName)
             view.scroll.ScrollBar:SetValue(0)
         end
         if not id then active = false end -- CraftFrame also hosts Beast Training
+        if active then
+            -- only group recipe content while our page is open
+            for _, child in ipairs({book:GetChildren()}) do
+                if not isTrainingFrame(child) and not isWindowDecoration(child) and not isPersistentNativeControl(child) then
+                    nativeLevels[child] = child:GetFrameLevel() - book:GetFrameLevel()
+                    child:SetParent(native)
+                end
+            end
+        else
+            for child, level in pairs(nativeLevels) do
+                if child:GetParent() == native then
+                    child:SetParent(book)
+                    child:SetFrameLevel(book:GetFrameLevel() + level)
+                end
+                nativeLevels[child] = nil
+            end
+        end
         local wasShown = page:IsVisible()
         native:SetShown(not active)
         page:SetShown(active)
@@ -75,7 +99,7 @@ local function attach(prefix, getSkillName)
         tab:SetScript("OnShow", resize)
         tab:SetScript("OnEvent", resize)
         resize()
-        if index == 1 then tab:SetPoint("TOPLEFT", page, "BOTTOMLEFT", 2, -29)
+        if index == 1 then tab:SetPoint("TOPLEFT", page, "BOTTOMLEFT", 2, -32)
         else tab:SetPoint("LEFT", tabs[1], "RIGHT", -16, 0) end
         tab:SetScript("OnClick", function()
             active = index == 2
@@ -91,3 +115,7 @@ end
 
 EventUtil.ContinueOnAddOnLoaded("Blizzard_TradeSkillUI", function() attach("TradeSkill", GetTradeSkillLine) end)
 EventUtil.ContinueOnAddOnLoaded("Blizzard_CraftUI", function() attach("Craft", GetCraftDisplaySkillLine) end)
+EventRegistry:RegisterCallback("WhatsTraining.ProfessionsChanged", function()
+    if _G.TradeSkillFrame then attach("TradeSkill", GetTradeSkillLine) end
+    if _G.CraftFrame then attach("Craft", GetCraftDisplaySkillLine) end
+end, attached)
