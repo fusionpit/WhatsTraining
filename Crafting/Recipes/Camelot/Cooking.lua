@@ -132,7 +132,5 @@ ns.Recipes[185] = {
     { spell = 1225763, skill = 280, creates = 238642 },
     { spell = 24801, skill = 285, creates = 20452, source = { "quest" }, quests = { { id = 8307, area = 1377, level = 54 } } },
     { spell = 25659, skill = 300, creates = 21023, count = 5, teach = 21025, source = { "quest" }, reputation = { 910, 4, ns.L.FACTION_910 }, bound = false, quests = { { id = 8586, area = 440, level = 60 } } },
-    { spell = 470359, skill = 300, creates = 232436, teach = 232437, source = { "vendor" }, bound = false, vendors = { { npc = 17068, area = 1377, faction = "Alliance" }, { npc = 17070, area = 1377, faction = "Horde" } } },
-    { spell = 470370, skill = 300, creates = 232438, teach = 232443, source = { "vendor" }, bound = false, vendors = { { npc = 17068, area = 1377, faction = "Alliance" }, { npc = 17070, area = 1377, faction = "Horde" } } },
     { spell = 1263067, skill = 300, creates = 279982, teach = 273115, bound = false },
 }

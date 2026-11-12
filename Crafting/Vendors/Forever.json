@@ -1,0 +1,7311 @@
+{
+  "version": "forever",
+  "locale": "enUS",
+  "npcs": {
+    "66": {
+      "source": "https://www.wowhead.com/forever/npc=66/tharynn-bouden",
+      "fetched_at": "2026-11-10T03:08:00Z",
+      "name": "Tharynn Bouden",
+      "title": "Trade Supplies",
+      "locations": [
+        {
+          "area": 12,
+          "count": 1,
+          "coords": [
+            [
+              41.8,
+              67
+            ]
+          ],
+          "uiMapId": 1429,
+          "uiMapName": "Elwynn Forest"
+        }
+      ],
+      "status": "ok"
+    },
+    "340": {
+      "source": "https://www.wowhead.com/forever/npc=340/kendor-kabonka",
+      "fetched_at": "2026-11-10T03:08:14Z",
+      "name": "Kendor Kabonka",
+      "title": "Master of Cooking Recipes",
+      "locations": [
+        {
+          "area": 1519,
+          "count": 6,
+          "coords": [
+            [
+              74.4,
+              36.4
+            ],
+            [
+              74.4,
+              36.6
+            ],
+            [
+              74.6,
+              36.4
+            ],
+            [
+              74.6,
+              36.8
+            ],
+            [
+              74.6,
+              37.6
+            ],
+            [
+              77.4,
+              52.8
+            ]
+          ],
+          "uiMapId": 1453,
+          "uiMapName": "Stormwind City"
+        }
+      ],
+      "status": "ok"
+    },
+    "734": {
+      "source": "https://www.wowhead.com/forever/npc=734/corporal-bluth",
+      "fetched_at": "2026-11-10T03:08:22Z",
+      "name": "Corporal Bluth",
+      "title": "Camp Trader",
+      "locations": [
+        {
+          "area": 33,
+          "count": 1,
+          "coords": [
+            [
+              38,
+              3
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "777": {
+      "source": "https://www.wowhead.com/forever/npc=777/amy-davenport",
+      "fetched_at": "2026-11-10T03:08:25Z",
+      "name": "Amy Davenport",
+      "title": "Tradeswoman",
+      "locations": [
+        {
+          "area": 44,
+          "count": 4,
+          "coords": [
+            [
+              23.8,
+              47.6
+            ],
+            [
+              24,
+              47.4
+            ],
+            [
+              29,
+              47.4
+            ],
+            [
+              29,
+              47.6
+            ]
+          ],
+          "uiMapId": 1433,
+          "uiMapName": "Redridge Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "843": {
+      "source": "https://www.wowhead.com/forever/npc=843/gina-macgregor",
+      "fetched_at": "2026-11-10T03:08:33Z",
+      "name": "Gina MacGregor",
+      "title": "Trade Supplies",
+      "locations": [
+        {
+          "area": 40,
+          "count": 2,
+          "coords": [
+            [
+              57.4,
+              54
+            ],
+            [
+              57.6,
+              54
+            ]
+          ],
+          "uiMapId": 1436,
+          "uiMapName": "Westfall"
+        }
+      ],
+      "status": "ok"
+    },
+    "989": {
+      "source": "https://www.wowhead.com/forever/npc=989/banalash",
+      "fetched_at": "2026-11-10T03:08:40Z",
+      "name": "Banalash",
+      "title": "Trade Goods",
+      "locations": [
+        {
+          "area": 8,
+          "count": 2,
+          "coords": [
+            [
+              44.4,
+              57
+            ],
+            [
+              44.6,
+              56.8
+            ]
+          ],
+          "uiMapId": 1435,
+          "uiMapName": "Swamp of Sorrows"
+        }
+      ],
+      "status": "ok"
+    },
+    "1146": {
+      "source": "https://www.wowhead.com/forever/npc=1146/vharr",
+      "fetched_at": "2026-11-10T03:08:48Z",
+      "name": "Vharr",
+      "title": "Superior Weaponsmith",
+      "locations": [
+        {
+          "area": 33,
+          "count": 1,
+          "coords": [
+            [
+              32.2,
+              28
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "1148": {
+      "source": "https://www.wowhead.com/forever/npc=1148/nerrist",
+      "fetched_at": "2026-11-10T03:08:53Z",
+      "name": "Nerrist",
+      "title": "Trade Goods",
+      "locations": [
+        {
+          "area": 33,
+          "count": 1,
+          "coords": [
+            [
+              32.6,
+              29.2
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "1149": {
+      "source": "https://www.wowhead.com/forever/npc=1149/uthok",
+      "fetched_at": "2026-11-10T03:09:01Z",
+      "name": "Uthok",
+      "title": "General Supplies",
+      "locations": [
+        {
+          "area": 33,
+          "count": 2,
+          "coords": [
+            [
+              31.4,
+              28
+            ],
+            [
+              31.6,
+              28
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "1250": {
+      "source": "https://www.wowhead.com/forever/npc=1250/drake-lindgren",
+      "fetched_at": "2026-11-10T03:09:09Z",
+      "name": "Drake Lindgren",
+      "title": "General & Trade Supplies",
+      "locations": [
+        {
+          "area": 12,
+          "count": 2,
+          "coords": [
+            [
+              83,
+              66.4
+            ],
+            [
+              83.2,
+              66.6
+            ]
+          ],
+          "uiMapId": 1429,
+          "uiMapName": "Elwynn Forest"
+        }
+      ],
+      "status": "ok"
+    },
+    "1304": {
+      "source": "https://www.wowhead.com/forever/npc=1304/darian-singh",
+      "fetched_at": "2026-11-10T03:09:18Z",
+      "name": "Darian Singh",
+      "title": "Fireworks Vendor",
+      "locations": [
+        {
+          "area": 1519,
+          "count": 3,
+          "coords": [
+            [
+              29.4,
+              67.8
+            ],
+            [
+              29.6,
+              67.8
+            ],
+            [
+              42.6,
+              76.8
+            ]
+          ],
+          "uiMapId": 1453,
+          "uiMapName": "Stormwind City"
+        }
+      ],
+      "status": "ok"
+    },
+    "1313": {
+      "source": "https://www.wowhead.com/forever/npc=1313/maria-lumere",
+      "fetched_at": "2026-11-10T03:09:27Z",
+      "name": "Maria Lumere",
+      "title": "Alchemy Supplies",
+      "locations": [
+        {
+          "area": 1519,
+          "count": 4,
+          "coords": [
+            [
+              46.4,
+              78.8
+            ],
+            [
+              46.6,
+              78.8
+            ],
+            [
+              55.6,
+              85.4
+            ],
+            [
+              55.6,
+              85.6
+            ]
+          ],
+          "uiMapId": 1453,
+          "uiMapName": "Stormwind City"
+        }
+      ],
+      "status": "ok"
+    },
+    "1318": {
+      "source": "https://www.wowhead.com/forever/npc=1318/jessara-cordell",
+      "fetched_at": "2026-11-10T03:09:34Z",
+      "name": "Jessara Cordell",
+      "title": "Enchanting Supplies",
+      "locations": [
+        {
+          "area": 1519,
+          "count": 2,
+          "coords": [
+            [
+              43,
+              64.2
+            ],
+            [
+              53,
+              74.2
+            ]
+          ],
+          "uiMapId": 1453,
+          "uiMapName": "Stormwind City"
+        }
+      ],
+      "status": "ok"
+    },
+    "1347": {
+      "source": "https://www.wowhead.com/forever/npc=1347/alexandra-bolero",
+      "fetched_at": "2026-11-10T03:05:50Z",
+      "name": "Alexandra Bolero",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 1519,
+          "count": 3,
+          "coords": [
+            [
+              43.4,
+              74
+            ],
+            [
+              43.6,
+              74
+            ],
+            [
+              53.2,
+              81.6
+            ]
+          ],
+          "uiMapId": 1453,
+          "uiMapName": "Stormwind City"
+        }
+      ],
+      "status": "ok"
+    },
+    "1454": {
+      "source": "https://www.wowhead.com/forever/npc=1454/jennabink-powerseam",
+      "fetched_at": "2026-11-10T03:09:42Z",
+      "name": "Jennabink Powerseam",
+      "title": "Tailoring Supplies & Specialty Goods",
+      "locations": [
+        {
+          "area": 11,
+          "count": 1,
+          "coords": [
+            [
+              8,
+              55.8
+            ]
+          ],
+          "uiMapId": 1437,
+          "uiMapName": "Wetlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "1465": {
+      "source": "https://www.wowhead.com/forever/npc=1465/drac-roughcut",
+      "fetched_at": "2026-11-10T03:09:50Z",
+      "name": "Drac Roughcut",
+      "title": "Tradesman",
+      "locations": [
+        {
+          "area": 38,
+          "count": 2,
+          "coords": [
+            [
+              35.4,
+              48.8
+            ],
+            [
+              35.6,
+              49
+            ]
+          ],
+          "uiMapId": 1432,
+          "uiMapName": "Loch Modan"
+        }
+      ],
+      "status": "ok"
+    },
+    "1471": {
+      "source": "https://www.wowhead.com/forever/npc=1471/jannos-ironwill",
+      "fetched_at": "2026-11-10T03:09:56Z",
+      "name": "Jannos Ironwill",
+      "title": "Superior Macecrafter",
+      "locations": [
+        {
+          "area": 45,
+          "count": 2,
+          "coords": [
+            [
+              46,
+              47.4
+            ],
+            [
+              46,
+              47.6
+            ]
+          ],
+          "uiMapId": 1417,
+          "uiMapName": "Arathi Highlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "1474": {
+      "source": "https://www.wowhead.com/forever/npc=1474/rann-flamespinner",
+      "fetched_at": "2026-11-10T03:10:05Z",
+      "name": "Rann Flamespinner",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 38,
+          "count": 1,
+          "coords": [
+            [
+              36,
+              46
+            ]
+          ],
+          "uiMapId": 1432,
+          "uiMapName": "Loch Modan"
+        }
+      ],
+      "status": "ok"
+    },
+    "1669": {
+      "source": "https://www.wowhead.com/forever/npc=1669/defias-profiteer",
+      "fetched_at": "2026-11-10T03:10:13Z",
+      "name": "Defias Profiteer",
+      "title": "Free Wheeling Merchant",
+      "locations": [
+        {
+          "area": 40,
+          "count": 2,
+          "coords": [
+            [
+              43.4,
+              66.8
+            ],
+            [
+              43.6,
+              67
+            ]
+          ],
+          "uiMapId": 1436,
+          "uiMapName": "Westfall"
+        }
+      ],
+      "status": "ok"
+    },
+    "1672": {
+      "source": "https://www.wowhead.com/forever/npc=1672/lohgan-eva",
+      "fetched_at": "2026-11-10T03:10:24Z",
+      "name": "Lohgan Eva",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 10,
+          "count": 2,
+          "coords": [
+            [
+              75.6,
+              44.6
+            ],
+            [
+              75.8,
+              44.4
+            ]
+          ],
+          "uiMapId": 1431,
+          "uiMapName": "Duskwood"
+        }
+      ],
+      "status": "ok"
+    },
+    "1684": {
+      "source": "https://www.wowhead.com/forever/npc=1684/khara-deepwater",
+      "fetched_at": "2026-11-10T03:10:27Z",
+      "name": "Khara Deepwater",
+      "title": "Fishing Supplies",
+      "locations": [
+        {
+          "area": 38,
+          "count": 2,
+          "coords": [
+            [
+              39.4,
+              39.2
+            ],
+            [
+              40.4,
+              39.4
+            ]
+          ],
+          "uiMapId": 1432,
+          "uiMapName": "Loch Modan"
+        }
+      ],
+      "status": "ok"
+    },
+    "1685": {
+      "source": "https://www.wowhead.com/forever/npc=1685/xandar-goodbeard",
+      "fetched_at": "2026-11-10T03:10:34Z",
+      "name": "Xandar Goodbeard",
+      "title": "General Supplies",
+      "locations": [
+        {
+          "area": 38,
+          "count": 4,
+          "coords": [
+            [
+              82.4,
+              63.4
+            ],
+            [
+              82.4,
+              63.6
+            ],
+            [
+              82.6,
+              63.4
+            ],
+            [
+              82.6,
+              63.6
+            ]
+          ],
+          "uiMapId": 1432,
+          "uiMapName": "Loch Modan"
+        }
+      ],
+      "status": "ok"
+    },
+    "2118": {
+      "source": "https://www.wowhead.com/forever/npc=2118/abigail-shiel",
+      "fetched_at": "2026-11-10T03:10:39Z",
+      "name": "Abigail Shiel",
+      "title": "Trade Supplies",
+      "locations": [
+        {
+          "area": 85,
+          "count": 2,
+          "coords": [
+            [
+              61,
+              52.4
+            ],
+            [
+              61,
+              52.6
+            ]
+          ],
+          "uiMapId": 1420,
+          "uiMapName": "Tirisfal Glades"
+        }
+      ],
+      "status": "ok"
+    },
+    "2380": {
+      "source": "https://www.wowhead.com/forever/npc=2380/nandar-branson",
+      "fetched_at": "2026-11-10T03:10:48Z",
+      "name": "Nandar Branson",
+      "title": "Alchemy Supplies",
+      "locations": [
+        {
+          "area": 267,
+          "count": 1,
+          "coords": [
+            [
+              50.8,
+              57
+            ]
+          ],
+          "uiMapId": 1424,
+          "uiMapName": "Hillsbrad Foothills"
+        }
+      ],
+      "status": "ok"
+    },
+    "2381": {
+      "source": "https://www.wowhead.com/forever/npc=2381/micha-yance",
+      "fetched_at": "2026-11-10T03:10:56Z",
+      "name": "Micha Yance",
+      "title": "Trade Goods",
+      "locations": [
+        {
+          "area": 267,
+          "count": 1,
+          "coords": [
+            [
+              49,
+              55
+            ]
+          ],
+          "uiMapId": 1424,
+          "uiMapName": "Hillsbrad Foothills"
+        }
+      ],
+      "status": "ok"
+    },
+    "2383": {
+      "source": "https://www.wowhead.com/forever/npc=2383/lindea-rabonne",
+      "fetched_at": "2026-11-10T03:11:04Z",
+      "name": "Lindea Rabonne",
+      "title": "Tackle and Bait",
+      "locations": [
+        {
+          "area": 267,
+          "count": 4,
+          "coords": [
+            [
+              50,
+              62.4
+            ],
+            [
+              50,
+              62.6
+            ],
+            [
+              50.4,
+              61
+            ],
+            [
+              50.6,
+              61
+            ]
+          ],
+          "uiMapId": 1424,
+          "uiMapName": "Hillsbrad Foothills"
+        }
+      ],
+      "status": "ok"
+    },
+    "2393": {
+      "source": "https://www.wowhead.com/forever/npc=2393/christoph-jeffcoat",
+      "fetched_at": "2026-11-10T03:11:13Z",
+      "name": "Christoph Jeffcoat",
+      "title": "Tradesman",
+      "locations": [
+        {
+          "area": 267,
+          "count": 1,
+          "coords": [
+            [
+              62.2,
+              19
+            ]
+          ],
+          "uiMapId": 1424,
+          "uiMapName": "Hillsbrad Foothills"
+        }
+      ],
+      "status": "ok"
+    },
+    "2394": {
+      "source": "https://www.wowhead.com/forever/npc=2394/mallen-swain",
+      "fetched_at": "2026-11-10T03:11:20Z",
+      "name": "Mallen Swain",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 267,
+          "count": 1,
+          "coords": [
+            [
+              62,
+              21
+            ]
+          ],
+          "uiMapId": 1424,
+          "uiMapName": "Hillsbrad Foothills"
+        }
+      ],
+      "status": "ok"
+    },
+    "2397": {
+      "source": "https://www.wowhead.com/forever/npc=2397/derak-nightfall",
+      "fetched_at": "2026-11-10T03:11:27Z",
+      "name": "Derak Nightfall",
+      "title": "Cook",
+      "locations": [
+        {
+          "area": 267,
+          "count": 2,
+          "coords": [
+            [
+              63,
+              19.4
+            ],
+            [
+              63,
+              19.6
+            ]
+          ],
+          "uiMapId": 1424,
+          "uiMapName": "Hillsbrad Foothills"
+        }
+      ],
+      "status": "ok"
+    },
+    "2480": {
+      "source": "https://www.wowhead.com/forever/npc=2480/brokin",
+      "fetched_at": "2026-11-10T03:11:32Z",
+      "name": "Bro'kin",
+      "title": "Alchemy Supplies",
+      "locations": [
+        {
+          "area": 36,
+          "count": 1,
+          "coords": [
+            [
+              38.4,
+              38.8
+            ]
+          ],
+          "uiMapId": 1416,
+          "uiMapName": "Alterac Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "2481": {
+      "source": "https://www.wowhead.com/forever/npc=2481/bliztik",
+      "fetched_at": "2026-11-10T03:11:39Z",
+      "name": "Bliztik",
+      "title": "Alchemy Supplies",
+      "locations": [
+        {
+          "area": 10,
+          "count": 2,
+          "coords": [
+            [
+              18,
+              54.4
+            ],
+            [
+              18,
+              54.6
+            ]
+          ],
+          "uiMapId": 1431,
+          "uiMapName": "Duskwood"
+        }
+      ],
+      "status": "ok"
+    },
+    "2482": {
+      "source": "https://www.wowhead.com/forever/npc=2482/zarena-cromwind",
+      "fetched_at": "2026-11-10T03:11:42Z",
+      "name": "Zarena Cromwind",
+      "title": "Superior Weaponsmith",
+      "locations": [
+        {
+          "area": 33,
+          "count": 1,
+          "coords": [
+            [
+              28.4,
+              75.4
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "2483": {
+      "source": "https://www.wowhead.com/forever/npc=2483/jaquilina-dramet",
+      "fetched_at": "2026-11-10T03:11:50Z",
+      "name": "Jaquilina Dramet",
+      "title": "Superior Axecrafter",
+      "locations": [
+        {
+          "area": 33,
+          "count": 1,
+          "coords": [
+            [
+              35.6,
+              10.6
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "2626": {
+      "source": "https://www.wowhead.com/forever/npc=2626/old-man-heming",
+      "fetched_at": "2026-11-10T03:11:54Z",
+      "name": "Old Man Heming",
+      "title": "Fisherman",
+      "locations": [
+        {
+          "area": 33,
+          "count": 1,
+          "coords": [
+            [
+              27.4,
+              77
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "2663": {
+      "source": "https://www.wowhead.com/forever/npc=2663/narkk",
+      "fetched_at": "2026-11-10T03:11:58Z",
+      "name": "Narkk",
+      "title": "Pirate Supplies",
+      "locations": [
+        {
+          "area": 33,
+          "count": 2,
+          "coords": [
+            [
+              28.2,
+              74.4
+            ],
+            [
+              28.2,
+              74.6
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "2664": {
+      "source": "https://www.wowhead.com/forever/npc=2664/kelsey-yance",
+      "fetched_at": "2026-11-10T03:12:02Z",
+      "name": "Kelsey Yance",
+      "title": "Cook",
+      "locations": [
+        {
+          "area": 33,
+          "count": 1,
+          "coords": [
+            [
+              28.2,
+              74.4
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "2668": {
+      "source": "https://www.wowhead.com/forever/npc=2668/danielle-zipstitch",
+      "fetched_at": "2026-11-10T03:14:36Z",
+      "name": "Danielle Zipstitch",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 10,
+          "count": 2,
+          "coords": [
+            [
+              75.8,
+              45.4
+            ],
+            [
+              75.8,
+              45.6
+            ]
+          ],
+          "uiMapId": 1431,
+          "uiMapName": "Duskwood"
+        }
+      ],
+      "status": "ok"
+    },
+    "2669": {
+      "source": "https://www.wowhead.com/forever/npc=2669/sheri-zipstitch",
+      "fetched_at": "2026-11-10T03:14:45Z",
+      "name": "Sheri Zipstitch",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 10,
+          "count": 2,
+          "coords": [
+            [
+              75.6,
+              45.4
+            ],
+            [
+              75.6,
+              45.6
+            ]
+          ],
+          "uiMapId": 1431,
+          "uiMapName": "Duskwood"
+        }
+      ],
+      "status": "ok"
+    },
+    "2670": {
+      "source": "https://www.wowhead.com/forever/npc=2670/xizk-goodstitch",
+      "fetched_at": "2026-11-10T03:14:54Z",
+      "name": "Xizk Goodstitch",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 33,
+          "count": 1,
+          "coords": [
+            [
+              28.6,
+              76.8
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "2672": {
+      "source": "https://www.wowhead.com/forever/npc=2672/cowardly-crosby",
+      "fetched_at": "2026-11-10T03:14:58Z",
+      "name": "Cowardly Crosby",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 33,
+          "count": 2,
+          "coords": [
+            [
+              27,
+              82.4
+            ],
+            [
+              27,
+              82.6
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "2679": {
+      "source": "https://www.wowhead.com/forever/npc=2679/wenna-silkbeard",
+      "fetched_at": "2026-11-10T03:15:02Z",
+      "name": "Wenna Silkbeard",
+      "title": "Special Goods Dealer",
+      "locations": [
+        {
+          "area": 11,
+          "count": 1,
+          "coords": [
+            [
+              25.6,
+              25.8
+            ]
+          ],
+          "uiMapId": 1437,
+          "uiMapName": "Wetlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "2682": {
+      "source": "https://www.wowhead.com/forever/npc=2682/fradd-swiftgear",
+      "fetched_at": "2026-11-10T03:15:09Z",
+      "name": "Fradd Swiftgear",
+      "title": "Engineering Supplies",
+      "locations": [
+        {
+          "area": 11,
+          "count": 2,
+          "coords": [
+            [
+              26.2,
+              25.4
+            ],
+            [
+              26.4,
+              25.8
+            ]
+          ],
+          "uiMapId": 1437,
+          "uiMapName": "Wetlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "2683": {
+      "source": "https://www.wowhead.com/forever/npc=2683/namdo-bizzfizzle",
+      "fetched_at": "2026-11-10T03:15:19Z",
+      "name": "Namdo Bizzfizzle",
+      "title": "Engineering Supplies",
+      "locations": [
+        {
+          "area": -3,
+          "count": 1,
+          "coords": [
+            [
+              43.4,
+              52.8
+            ]
+          ],
+          "uiMapId": 1415,
+          "uiMapName": "Eastern Kingdoms"
+        }
+      ],
+      "status": "ok"
+    },
+    "2684": {
+      "source": "https://www.wowhead.com/forever/npc=2684/rizz-loosebolt",
+      "fetched_at": "2026-11-10T03:15:26Z",
+      "name": "Rizz Loosebolt",
+      "title": "Engineering Supplies",
+      "locations": [
+        {
+          "area": 36,
+          "count": 3,
+          "coords": [
+            [
+              47.2,
+              35.2
+            ],
+            [
+              47.2,
+              35.6
+            ],
+            [
+              47.6,
+              35.4
+            ]
+          ],
+          "uiMapId": 1416,
+          "uiMapName": "Alterac Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "2685": {
+      "source": "https://www.wowhead.com/forever/npc=2685/mazk-snipeshot",
+      "fetched_at": "2026-11-10T03:15:30Z",
+      "name": "Mazk Snipeshot",
+      "title": "Engineering Supplies",
+      "locations": [
+        {
+          "area": 33,
+          "count": 1,
+          "coords": [
+            [
+              28.4,
+              75
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "2687": {
+      "source": "https://www.wowhead.com/forever/npc=2687/gnaz-blunderflame",
+      "fetched_at": "2026-11-10T03:15:35Z",
+      "name": "Gnaz Blunderflame",
+      "title": "Engineering Supplies",
+      "locations": [
+        {
+          "area": 33,
+          "count": 1,
+          "coords": [
+            [
+              51,
+              35.2
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "2688": {
+      "source": "https://www.wowhead.com/forever/npc=2688/ruppo-zipcoil",
+      "fetched_at": "2026-11-10T03:15:40Z",
+      "name": "Ruppo Zipcoil",
+      "title": "Engineering Supplies",
+      "locations": [
+        {
+          "area": 47,
+          "count": 1,
+          "coords": [
+            [
+              34.2,
+              37.8
+            ]
+          ],
+          "uiMapId": 1425,
+          "uiMapName": "The Hinterlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "2697": {
+      "source": "https://www.wowhead.com/forever/npc=2697/clyde-ranthal",
+      "fetched_at": "2026-11-10T03:15:43Z",
+      "name": "Clyde Ranthal",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 44,
+          "count": 3,
+          "coords": [
+            [
+              83.8,
+              70.8
+            ],
+            [
+              88.8,
+              71
+            ],
+            [
+              89,
+              70.2
+            ]
+          ],
+          "uiMapId": 1433,
+          "uiMapName": "Redridge Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "2698": {
+      "source": "https://www.wowhead.com/forever/npc=2698/george-candarte",
+      "fetched_at": "2026-11-10T03:15:51Z",
+      "name": "George Candarte",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 267,
+          "count": 2,
+          "coords": [
+            [
+              92,
+              38.2
+            ],
+            [
+              92,
+              38.6
+            ]
+          ],
+          "uiMapId": 1424,
+          "uiMapName": "Hillsbrad Foothills"
+        }
+      ],
+      "status": "ok"
+    },
+    "2699": {
+      "source": "https://www.wowhead.com/forever/npc=2699/rikqiz",
+      "fetched_at": "2026-11-10T03:15:56Z",
+      "name": "Rikqiz",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 33,
+          "count": 1,
+          "coords": [
+            [
+              28.4,
+              76
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "2803": {
+      "source": "https://www.wowhead.com/forever/npc=2803/malygen",
+      "fetched_at": "2026-11-10T03:16:05Z",
+      "name": "Malygen",
+      "title": "General Goods",
+      "locations": [
+        {
+          "area": 361,
+          "count": 2,
+          "coords": [
+            [
+              62.2,
+              25.4
+            ],
+            [
+              62.2,
+              25.6
+            ]
+          ],
+          "uiMapId": 1448,
+          "uiMapName": "Felwood"
+        }
+      ],
+      "status": "ok"
+    },
+    "2805": {
+      "source": "https://www.wowhead.com/forever/npc=2805/deneb-walker",
+      "fetched_at": "2026-11-10T03:16:09Z",
+      "name": "Deneb Walker",
+      "title": "Scrolls & Potions",
+      "locations": [
+        {
+          "area": 45,
+          "count": 1,
+          "coords": [
+            [
+              27,
+              58.8
+            ]
+          ],
+          "uiMapId": 1417,
+          "uiMapName": "Arathi Highlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "2806": {
+      "source": "https://www.wowhead.com/forever/npc=2806/bale",
+      "fetched_at": "2026-11-10T03:16:15Z",
+      "name": "Bale",
+      "title": "General Goods",
+      "locations": [
+        {
+          "area": 361,
+          "count": 1,
+          "coords": [
+            [
+              34.8,
+              53.2
+            ]
+          ],
+          "uiMapId": 1448,
+          "uiMapName": "Felwood"
+        }
+      ],
+      "status": "ok"
+    },
+    "2810": {
+      "source": "https://www.wowhead.com/forever/npc=2810/hammon-karwn",
+      "fetched_at": "2026-11-10T03:16:22Z",
+      "name": "Hammon Karwn",
+      "title": "Superior Tradesman",
+      "locations": [
+        {
+          "area": 45,
+          "count": 1,
+          "coords": [
+            [
+              46.4,
+              47.4
+            ]
+          ],
+          "uiMapId": 1417,
+          "uiMapName": "Arathi Highlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "2812": {
+      "source": "https://www.wowhead.com/forever/npc=2812/drovnar-strongbrew",
+      "fetched_at": "2026-11-10T03:16:30Z",
+      "name": "Drovnar Strongbrew",
+      "title": "Alchemy Supplies",
+      "locations": [
+        {
+          "area": 45,
+          "count": 2,
+          "coords": [
+            [
+              46.4,
+              47
+            ],
+            [
+              46.6,
+              47
+            ]
+          ],
+          "uiMapId": 1417,
+          "uiMapName": "Arathi Highlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "2814": {
+      "source": "https://www.wowhead.com/forever/npc=2814/narj-deepslice",
+      "fetched_at": "2026-11-10T03:16:33Z",
+      "name": "Narj Deepslice",
+      "title": "Butcher",
+      "locations": [
+        {
+          "area": 45,
+          "count": 4,
+          "coords": [
+            [
+              45.4,
+              47.4
+            ],
+            [
+              45.4,
+              47.6
+            ],
+            [
+              45.6,
+              47.4
+            ],
+            [
+              45.6,
+              47.6
+            ]
+          ],
+          "uiMapId": 1417,
+          "uiMapName": "Arathi Highlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "2816": {
+      "source": "https://www.wowhead.com/forever/npc=2816/androd-fadran",
+      "fetched_at": "2026-11-10T03:16:37Z",
+      "name": "Androd Fadran",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 45,
+          "count": 1,
+          "coords": [
+            [
+              45,
+              46.8
+            ]
+          ],
+          "uiMapId": 1417,
+          "uiMapName": "Arathi Highlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "2819": {
+      "source": "https://www.wowhead.com/forever/npc=2819/tunkk",
+      "fetched_at": "2026-11-10T03:16:41Z",
+      "name": "Tunkk",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 45,
+          "count": 2,
+          "coords": [
+            [
+              74.8,
+              34.4
+            ],
+            [
+              74.8,
+              34.6
+            ]
+          ],
+          "uiMapId": 1417,
+          "uiMapName": "Arathi Highlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "2821": {
+      "source": "https://www.wowhead.com/forever/npc=2821/keena",
+      "fetched_at": "2026-11-10T03:16:45Z",
+      "name": "Keena",
+      "title": "Trade Goods",
+      "locations": [
+        {
+          "area": 45,
+          "count": 2,
+          "coords": [
+            [
+              74,
+              32.4
+            ],
+            [
+              74,
+              32.6
+            ]
+          ],
+          "uiMapId": 1417,
+          "uiMapName": "Arathi Highlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "2838": {
+      "source": "https://www.wowhead.com/forever/npc=2838/crazk-sparks",
+      "fetched_at": "2026-11-10T03:16:53Z",
+      "name": "Crazk Sparks",
+      "title": "Fireworks Merchant",
+      "locations": [
+        {
+          "area": 33,
+          "count": 1,
+          "coords": [
+            [
+              28.2,
+              76.6
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "2843": {
+      "source": "https://www.wowhead.com/forever/npc=2843/jutak",
+      "fetched_at": "2026-11-10T03:17:01Z",
+      "name": "Jutak",
+      "title": "Blade Trader",
+      "locations": [
+        {
+          "area": 33,
+          "count": 1,
+          "coords": [
+            [
+              27.4,
+              77.4
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "2846": {
+      "source": "https://www.wowhead.com/forever/npc=2846/blixrez-goodstitch",
+      "fetched_at": "2026-11-10T03:17:09Z",
+      "name": "Blixrez Goodstitch",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 33,
+          "count": 2,
+          "coords": [
+            [
+              28.2,
+              77.4
+            ],
+            [
+              28.2,
+              77.6
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "2848": {
+      "source": "https://www.wowhead.com/forever/npc=2848/glyx-brewright",
+      "fetched_at": "2026-11-10T03:17:17Z",
+      "name": "Glyx Brewright",
+      "title": "Alchemy Supplies",
+      "locations": [
+        {
+          "area": 33,
+          "count": 1,
+          "coords": [
+            [
+              28,
+              78
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "3005": {
+      "source": "https://www.wowhead.com/forever/npc=3005/mahu",
+      "fetched_at": "2026-11-10T03:17:25Z",
+      "name": "Mahu",
+      "title": "Leatherworking & Tailoring Supplies",
+      "locations": [
+        {
+          "area": 1638,
+          "count": 4,
+          "coords": [
+            [
+              43.4,
+              43.8
+            ],
+            [
+              43.4,
+              44.6
+            ],
+            [
+              43.8,
+              44.4
+            ],
+            [
+              43.8,
+              44.6
+            ]
+          ],
+          "uiMapId": 1456,
+          "uiMapName": "Thunder Bluff"
+        }
+      ],
+      "status": "ok"
+    },
+    "3012": {
+      "source": "https://www.wowhead.com/forever/npc=3012/nata-dawnstrider",
+      "fetched_at": "2026-11-10T03:17:32Z",
+      "name": "Nata Dawnstrider",
+      "title": "Enchanting Supplies",
+      "locations": [
+        {
+          "area": 1638,
+          "count": 6,
+          "coords": [
+            [
+              45,
+              38.4
+            ],
+            [
+              45,
+              39
+            ],
+            [
+              45.2,
+              40
+            ],
+            [
+              45.6,
+              39.6
+            ],
+            [
+              45.8,
+              38.2
+            ],
+            [
+              45.8,
+              39
+            ]
+          ],
+          "uiMapId": 1456,
+          "uiMapName": "Thunder Bluff"
+        }
+      ],
+      "status": "ok"
+    },
+    "3027": {
+      "source": "https://www.wowhead.com/forever/npc=3027/naal-mistrunner",
+      "fetched_at": "2026-11-10T03:17:41Z",
+      "name": "Naal Mistrunner",
+      "title": "Cooking Supplier",
+      "locations": [
+        {
+          "area": 1638,
+          "count": 9,
+          "coords": [
+            [
+              50.2,
+              51.6
+            ],
+            [
+              50.4,
+              51.4
+            ],
+            [
+              50.6,
+              51.2
+            ],
+            [
+              51,
+              52.2
+            ],
+            [
+              51,
+              52.8
+            ],
+            [
+              51.4,
+              53.6
+            ],
+            [
+              51.6,
+              51.4
+            ],
+            [
+              51.6,
+              53.4
+            ],
+            [
+              51.8,
+              52
+            ]
+          ],
+          "uiMapId": 1456,
+          "uiMapName": "Thunder Bluff"
+        }
+      ],
+      "status": "ok"
+    },
+    "3029": {
+      "source": "https://www.wowhead.com/forever/npc=3029/sewa-mistrunner",
+      "fetched_at": "2026-11-10T03:17:48Z",
+      "name": "Sewa Mistrunner",
+      "title": "Fishing Supplier",
+      "locations": [
+        {
+          "area": 1638,
+          "count": 6,
+          "coords": [
+            [
+              55.2,
+              48
+            ],
+            [
+              55.4,
+              47.2
+            ],
+            [
+              55.6,
+              47.6
+            ],
+            [
+              55.8,
+              47.2
+            ],
+            [
+              56.6,
+              47.4
+            ],
+            [
+              56.6,
+              47.6
+            ]
+          ],
+          "uiMapId": 1456,
+          "uiMapName": "Thunder Bluff"
+        }
+      ],
+      "status": "ok"
+    },
+    "3081": {
+      "source": "https://www.wowhead.com/forever/npc=3081/wunna-darkmane",
+      "fetched_at": "2026-11-10T03:17:52Z",
+      "name": "Wunna Darkmane",
+      "title": "Trade Goods",
+      "locations": [
+        {
+          "area": 215,
+          "count": 3,
+          "coords": [
+            [
+              45.4,
+              61.8
+            ],
+            [
+              45.6,
+              61.8
+            ],
+            [
+              46.2,
+              58.2
+            ]
+          ],
+          "uiMapId": 1412,
+          "uiMapName": "Mulgore"
+        }
+      ],
+      "status": "ok"
+    },
+    "3085": {
+      "source": "https://www.wowhead.com/forever/npc=3085/gloria-femmel",
+      "fetched_at": "2026-11-10T03:18:01Z",
+      "name": "Gloria Femmel",
+      "title": "Cooking Supplies",
+      "locations": [
+        {
+          "area": 44,
+          "count": 4,
+          "coords": [
+            [
+              21.6,
+              43.4
+            ],
+            [
+              21.6,
+              43.6
+            ],
+            [
+              26.6,
+              43.4
+            ],
+            [
+              26.8,
+              43.6
+            ]
+          ],
+          "uiMapId": 1433,
+          "uiMapName": "Redridge Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "3091": {
+      "source": "https://www.wowhead.com/forever/npc=3091/franklin-hamar",
+      "fetched_at": "2026-11-10T03:18:09Z",
+      "name": "Franklin Hamar",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 44,
+          "count": 3,
+          "coords": [
+            [
+              22,
+              45.4
+            ],
+            [
+              27.2,
+              45.4
+            ],
+            [
+              27.2,
+              45.6
+            ]
+          ],
+          "uiMapId": 1433,
+          "uiMapName": "Redridge Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "3096": {
+      "source": "https://www.wowhead.com/forever/npc=3096/captured-servant-of-azora",
+      "fetched_at": "2026-11-10T03:18:16Z",
+      "name": "Captured Servant of Azora",
+      "title": "Specialist Tailoring Supplies",
+      "locations": [
+        {
+          "area": 44,
+          "count": 6,
+          "coords": [
+            [
+              69.2,
+              79.4
+            ],
+            [
+              69.4,
+              79.6
+            ],
+            [
+              74.4,
+              79.4
+            ],
+            [
+              74.4,
+              79.6
+            ],
+            [
+              74.6,
+              79.2
+            ],
+            [
+              74.6,
+              79.6
+            ]
+          ],
+          "uiMapId": 1433,
+          "uiMapName": "Redridge Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "3134": {
+      "source": "https://www.wowhead.com/forever/npc=3134/kzixx",
+      "fetched_at": "2026-11-10T03:20:21Z",
+      "name": "Kzixx",
+      "title": "Rare Goods",
+      "locations": [
+        {
+          "area": 10,
+          "count": 2,
+          "coords": [
+            [
+              81.4,
+              19.8
+            ],
+            [
+              81.8,
+              19.8
+            ]
+          ],
+          "uiMapId": 1431,
+          "uiMapName": "Duskwood"
+        }
+      ],
+      "status": "ok"
+    },
+    "3178": {
+      "source": "https://www.wowhead.com/forever/npc=3178/stuart-fleming",
+      "fetched_at": "2026-11-10T03:20:30Z",
+      "name": "Stuart Fleming",
+      "title": "Fisherman",
+      "locations": [
+        {
+          "area": 11,
+          "count": 2,
+          "coords": [
+            [
+              8,
+              58.2
+            ],
+            [
+              8.2,
+              58.6
+            ]
+          ],
+          "uiMapId": 1437,
+          "uiMapName": "Wetlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "3333": {
+      "source": "https://www.wowhead.com/forever/npc=3333/shankys",
+      "fetched_at": "2026-11-10T03:20:39Z",
+      "name": "Shankys",
+      "title": "Fishing Supplies",
+      "locations": [
+        {
+          "area": 1637,
+          "count": 5,
+          "coords": [
+            [
+              69.4,
+              29
+            ],
+            [
+              69.4,
+              30.2
+            ],
+            [
+              69.8,
+              29.6
+            ],
+            [
+              70,
+              29.4
+            ],
+            [
+              70,
+              30.6
+            ]
+          ],
+          "uiMapId": 1454,
+          "uiMapName": "Orgrimmar"
+        }
+      ],
+      "status": "ok"
+    },
+    "3335": {
+      "source": "https://www.wowhead.com/forever/npc=3335/hagrus",
+      "fetched_at": "2026-11-10T03:20:48Z",
+      "name": "Hagrus",
+      "title": "Reagents Vendor",
+      "locations": [
+        {
+          "area": 1637,
+          "count": 2,
+          "coords": [
+            [
+              46,
+              46
+            ],
+            [
+              46.2,
+              46.6
+            ]
+          ],
+          "uiMapId": 1454,
+          "uiMapName": "Orgrimmar"
+        }
+      ],
+      "status": "ok"
+    },
+    "3346": {
+      "source": "https://www.wowhead.com/forever/npc=3346/kithas",
+      "fetched_at": "2026-11-10T03:20:56Z",
+      "name": "Kithas",
+      "title": "Enchanting Supplies",
+      "locations": [
+        {
+          "area": 1637,
+          "count": 3,
+          "coords": [
+            [
+              53.4,
+              37.2
+            ],
+            [
+              53.6,
+              37.4
+            ],
+            [
+              53.6,
+              38
+            ]
+          ],
+          "uiMapId": 1454,
+          "uiMapName": "Orgrimmar"
+        }
+      ],
+      "status": "ok"
+    },
+    "3348": {
+      "source": "https://www.wowhead.com/forever/npc=3348/korgeld",
+      "fetched_at": "2026-11-10T03:21:05Z",
+      "name": "Kor'geld",
+      "title": "Alchemy Supplies",
+      "locations": [
+        {
+          "area": 1637,
+          "count": 2,
+          "coords": [
+            [
+              56.2,
+              34.2
+            ],
+            [
+              56.2,
+              34.6
+            ]
+          ],
+          "uiMapId": 1454,
+          "uiMapName": "Orgrimmar"
+        }
+      ],
+      "status": "ok"
+    },
+    "3356": {
+      "source": "https://www.wowhead.com/forever/npc=3356/sumi",
+      "fetched_at": "2026-11-10T03:21:14Z",
+      "name": "Sumi",
+      "title": "Blacksmithing Supplier",
+      "locations": [
+        {
+          "area": 1637,
+          "count": 2,
+          "coords": [
+            [
+              82.4,
+              23.4
+            ],
+            [
+              82.4,
+              23.8
+            ]
+          ],
+          "uiMapId": 1454,
+          "uiMapName": "Orgrimmar"
+        }
+      ],
+      "status": "ok"
+    },
+    "3364": {
+      "source": "https://www.wowhead.com/forever/npc=3364/borya",
+      "fetched_at": "2026-11-10T03:21:22Z",
+      "name": "Borya",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 1637,
+          "count": 2,
+          "coords": [
+            [
+              63,
+              51.2
+            ],
+            [
+              63.2,
+              50.4
+            ]
+          ],
+          "uiMapId": 1454,
+          "uiMapName": "Orgrimmar"
+        }
+      ],
+      "status": "ok"
+    },
+    "3366": {
+      "source": "https://www.wowhead.com/forever/npc=3366/tamar",
+      "fetched_at": "2026-11-10T03:21:30Z",
+      "name": "Tamar",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 1637,
+          "count": 4,
+          "coords": [
+            [
+              62.4,
+              45.4
+            ],
+            [
+              62.4,
+              45.6
+            ],
+            [
+              62.8,
+              45.6
+            ],
+            [
+              63,
+              45.2
+            ]
+          ],
+          "uiMapId": 1454,
+          "uiMapName": "Orgrimmar"
+        }
+      ],
+      "status": "ok"
+    },
+    "3400": {
+      "source": "https://www.wowhead.com/forever/npc=3400/xento",
+      "fetched_at": "2026-11-10T03:21:37Z",
+      "name": "Xen'to",
+      "title": "Cooking Supplier",
+      "locations": [
+        {
+          "area": 1637,
+          "count": 2,
+          "coords": [
+            [
+              57.4,
+              53.2
+            ],
+            [
+              57.6,
+              53.2
+            ]
+          ],
+          "uiMapId": 1454,
+          "uiMapName": "Orgrimmar"
+        }
+      ],
+      "status": "ok"
+    },
+    "3413": {
+      "source": "https://www.wowhead.com/forever/npc=3413/sovik",
+      "fetched_at": "2026-11-10T03:21:41Z",
+      "name": "Sovik",
+      "title": "Engineering Supplies",
+      "locations": [
+        {
+          "area": 1637,
+          "count": 3,
+          "coords": [
+            [
+              75,
+              24.4
+            ],
+            [
+              75.4,
+              25
+            ],
+            [
+              75.6,
+              25.2
+            ]
+          ],
+          "uiMapId": 1454,
+          "uiMapName": "Orgrimmar"
+        }
+      ],
+      "status": "ok"
+    },
+    "3482": {
+      "source": "https://www.wowhead.com/forever/npc=3482/tariqa",
+      "fetched_at": "2026-11-10T03:21:45Z",
+      "name": "Tari'qa",
+      "title": "Trade Supplies",
+      "locations": [
+        {
+          "area": 17,
+          "count": 1,
+          "coords": [
+            [
+              51.6,
+              30
+            ]
+          ],
+          "uiMapId": 1413,
+          "uiMapName": "The Barrens"
+        }
+      ],
+      "status": "ok"
+    },
+    "3485": {
+      "source": "https://www.wowhead.com/forever/npc=3485/wrahk",
+      "fetched_at": "2026-11-10T03:21:52Z",
+      "name": "Wrahk",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 17,
+          "count": 1,
+          "coords": [
+            [
+              52.2,
+              31.6
+            ]
+          ],
+          "uiMapId": 1413,
+          "uiMapName": "The Barrens"
+        }
+      ],
+      "status": "ok"
+    },
+    "3489": {
+      "source": "https://www.wowhead.com/forever/npc=3489/zargh",
+      "fetched_at": "2026-11-10T03:21:57Z",
+      "name": "Zargh",
+      "title": "Butcher",
+      "locations": [
+        {
+          "area": 17,
+          "count": 2,
+          "coords": [
+            [
+              52.4,
+              29.8
+            ],
+            [
+              52.6,
+              29.8
+            ]
+          ],
+          "uiMapId": 1413,
+          "uiMapName": "The Barrens"
+        }
+      ],
+      "status": "ok"
+    },
+    "3490": {
+      "source": "https://www.wowhead.com/forever/npc=3490/hulamahi",
+      "fetched_at": "2026-11-10T03:22:06Z",
+      "name": "Hula'mahi",
+      "title": "Reagents and Herbs",
+      "locations": [
+        {
+          "area": 17,
+          "count": 1,
+          "coords": [
+            [
+              51.4,
+              30.2
+            ]
+          ],
+          "uiMapId": 1413,
+          "uiMapName": "The Barrens"
+        }
+      ],
+      "status": "ok"
+    },
+    "3495": {
+      "source": "https://www.wowhead.com/forever/npc=3495/gagsprocket",
+      "fetched_at": "2026-11-10T03:22:13Z",
+      "name": "Gagsprocket",
+      "title": "Engineering Goods",
+      "locations": [
+        {
+          "area": 17,
+          "count": 1,
+          "coords": [
+            [
+              62.6,
+              36.2
+            ]
+          ],
+          "uiMapId": 1413,
+          "uiMapName": "The Barrens"
+        }
+      ],
+      "status": "ok"
+    },
+    "3497": {
+      "source": "https://www.wowhead.com/forever/npc=3497/kilxx",
+      "fetched_at": "2026-11-10T03:22:20Z",
+      "name": "Kilxx",
+      "title": "Fisherman",
+      "locations": [
+        {
+          "area": 17,
+          "count": 1,
+          "coords": [
+            [
+              62.8,
+              38.2
+            ]
+          ],
+          "uiMapId": 1413,
+          "uiMapName": "The Barrens"
+        }
+      ],
+      "status": "ok"
+    },
+    "3499": {
+      "source": "https://www.wowhead.com/forever/npc=3499/ranik",
+      "fetched_at": "2026-11-10T03:22:28Z",
+      "name": "Ranik",
+      "title": "Trade Supplies",
+      "locations": [
+        {
+          "area": 17,
+          "count": 1,
+          "coords": [
+            [
+              61.8,
+              38.6
+            ]
+          ],
+          "uiMapId": 1413,
+          "uiMapName": "The Barrens"
+        }
+      ],
+      "status": "ok"
+    },
+    "3522": {
+      "source": "https://www.wowhead.com/forever/npc=3522/constance-brisboise",
+      "fetched_at": "2026-11-10T03:22:37Z",
+      "name": "Constance Brisboise",
+      "title": "Apprentice Clothier",
+      "locations": [
+        {
+          "area": 85,
+          "count": 2,
+          "coords": [
+            [
+              52.4,
+              55.6
+            ],
+            [
+              52.6,
+              55.6
+            ]
+          ],
+          "uiMapId": 1420,
+          "uiMapName": "Tirisfal Glades"
+        }
+      ],
+      "status": "ok"
+    },
+    "3537": {
+      "source": "https://www.wowhead.com/forever/npc=3537/zixil",
+      "fetched_at": "2026-11-10T03:22:41Z",
+      "name": "Zixil",
+      "title": "Merchant Supreme",
+      "locations": [
+        {
+          "area": 267,
+          "count": 8,
+          "coords": [
+            [
+              50.4,
+              50.8
+            ],
+            [
+              51,
+              48
+            ],
+            [
+              54.4,
+              33.8
+            ],
+            [
+              55.6,
+              34.6
+            ],
+            [
+              55.8,
+              28.2
+            ],
+            [
+              60.4,
+              21
+            ],
+            [
+              60.6,
+              20.6
+            ],
+            [
+              60.8,
+              19.8
+            ]
+          ],
+          "uiMapId": 1424,
+          "uiMapName": "Hillsbrad Foothills"
+        }
+      ],
+      "status": "ok"
+    },
+    "3550": {
+      "source": "https://www.wowhead.com/forever/npc=3550/martine-tramblay",
+      "fetched_at": "2026-11-10T03:22:48Z",
+      "name": "Martine Tramblay",
+      "title": "Fishing Supplies",
+      "locations": [
+        {
+          "area": 85,
+          "count": 2,
+          "coords": [
+            [
+              65.8,
+              59.4
+            ],
+            [
+              65.8,
+              59.6
+            ]
+          ],
+          "uiMapId": 1420,
+          "uiMapName": "Tirisfal Glades"
+        }
+      ],
+      "status": "ok"
+    },
+    "3556": {
+      "source": "https://www.wowhead.com/forever/npc=3556/andrew-hilbert",
+      "fetched_at": "2026-11-10T03:22:56Z",
+      "name": "Andrew Hilbert",
+      "title": "Trade Goods",
+      "locations": [
+        {
+          "area": 130,
+          "count": 1,
+          "coords": [
+            [
+              43.2,
+              40.6
+            ]
+          ],
+          "uiMapId": 1421,
+          "uiMapName": "Silverpine Forest"
+        }
+      ],
+      "status": "ok"
+    },
+    "3683": {
+      "source": "https://www.wowhead.com/forever/npc=3683/kiknikle",
+      "fetched_at": "2026-11-10T03:23:05Z",
+      "name": "Kiknikle",
+      "title": "Stylish Clothier",
+      "locations": [
+        {
+          "area": 17,
+          "count": 1,
+          "coords": [
+            [
+              41.8,
+              38.6
+            ]
+          ],
+          "uiMapId": 1413,
+          "uiMapName": "The Barrens"
+        }
+      ],
+      "status": "ok"
+    },
+    "3881": {
+      "source": "https://www.wowhead.com/forever/npc=3881/grimtak",
+      "fetched_at": "2026-11-10T03:23:14Z",
+      "name": "Grimtak",
+      "title": "Butcher",
+      "locations": [
+        {
+          "area": 14,
+          "count": 2,
+          "coords": [
+            [
+              51.2,
+              42.4
+            ],
+            [
+              51.2,
+              42.6
+            ]
+          ],
+          "uiMapId": 1411,
+          "uiMapName": "Durotar"
+        }
+      ],
+      "status": "ok"
+    },
+    "3954": {
+      "source": "https://www.wowhead.com/forever/npc=3954/dalria",
+      "fetched_at": "2026-11-10T03:23:22Z",
+      "name": "Dalria",
+      "title": "Trade Goods",
+      "locations": [
+        {
+          "area": 331,
+          "count": 1,
+          "coords": [
+            [
+              35,
+              52
+            ]
+          ],
+          "uiMapId": 1440,
+          "uiMapName": "Ashenvale"
+        }
+      ],
+      "status": "ok"
+    },
+    "3955": {
+      "source": "https://www.wowhead.com/forever/npc=3955/shandrina",
+      "fetched_at": "2026-11-10T03:23:29Z",
+      "name": "Shandrina",
+      "title": "Trade Goods",
+      "locations": [
+        {
+          "area": 331,
+          "count": 2,
+          "coords": [
+            [
+              49.4,
+              67
+            ],
+            [
+              49.6,
+              67
+            ]
+          ],
+          "uiMapId": 1440,
+          "uiMapName": "Ashenvale"
+        }
+      ],
+      "status": "ok"
+    },
+    "3956": {
+      "source": "https://www.wowhead.com/forever/npc=3956/harklan-moongrove",
+      "fetched_at": "2026-11-10T03:23:37Z",
+      "name": "Harklan Moongrove",
+      "title": "Alchemy Supplies",
+      "locations": [
+        {
+          "area": 331,
+          "count": 1,
+          "coords": [
+            [
+              50.8,
+              67
+            ]
+          ],
+          "uiMapId": 1440,
+          "uiMapName": "Ashenvale"
+        }
+      ],
+      "status": "ok"
+    },
+    "3958": {
+      "source": "https://www.wowhead.com/forever/npc=3958/lardan",
+      "fetched_at": "2026-11-10T03:23:46Z",
+      "name": "Lardan",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 331,
+          "count": 1,
+          "coords": [
+            [
+              34.8,
+              49.8
+            ]
+          ],
+          "uiMapId": 1440,
+          "uiMapName": "Ashenvale"
+        }
+      ],
+      "status": "ok"
+    },
+    "3960": {
+      "source": "https://www.wowhead.com/forever/npc=3960/ulthaan",
+      "fetched_at": "2026-11-10T03:23:50Z",
+      "name": "Ulthaan",
+      "title": "Butcher",
+      "locations": [
+        {
+          "area": 331,
+          "count": 2,
+          "coords": [
+            [
+              50,
+              66.4
+            ],
+            [
+              50,
+              66.6
+            ]
+          ],
+          "uiMapId": 1440,
+          "uiMapName": "Ashenvale"
+        }
+      ],
+      "status": "ok"
+    },
+    "4083": {
+      "source": "https://www.wowhead.com/forever/npc=4083/jeeda",
+      "fetched_at": "2026-11-10T03:23:58Z",
+      "name": "Jeeda",
+      "title": "Apprentice Witch Doctor",
+      "locations": [
+        {
+          "area": 406,
+          "count": 2,
+          "coords": [
+            [
+              47.4,
+              61.8
+            ],
+            [
+              47.6,
+              61.6
+            ]
+          ],
+          "uiMapId": 1442,
+          "uiMapName": "Stonetalon Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "4086": {
+      "source": "https://www.wowhead.com/forever/npc=4086/veenix",
+      "fetched_at": "2026-11-10T03:24:06Z",
+      "name": "Veenix",
+      "title": "Venture Co. Merchant",
+      "locations": [
+        {
+          "area": 406,
+          "count": 1,
+          "coords": [
+            [
+              58.2,
+              51.6
+            ]
+          ],
+          "uiMapId": 1442,
+          "uiMapName": "Stonetalon Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "4168": {
+      "source": "https://www.wowhead.com/forever/npc=4168/elynna",
+      "fetched_at": "2026-11-10T03:24:13Z",
+      "name": "Elynna",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 1657,
+          "count": 4,
+          "coords": [
+            [
+              64.2,
+              21.4
+            ],
+            [
+              64.2,
+              21.6
+            ],
+            [
+              64.6,
+              21.4
+            ],
+            [
+              64.6,
+              21.6
+            ]
+          ],
+          "uiMapId": 1457,
+          "uiMapName": "Darnassus"
+        }
+      ],
+      "status": "ok"
+    },
+    "4186": {
+      "source": "https://www.wowhead.com/forever/npc=4186/mavralyn",
+      "fetched_at": "2026-11-10T03:24:20Z",
+      "name": "Mavralyn",
+      "title": "Leather Armor & Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 148,
+          "count": 1,
+          "coords": [
+            [
+              37,
+              41.2
+            ]
+          ],
+          "uiMapId": 1439,
+          "uiMapName": "Darkshore"
+        }
+      ],
+      "status": "ok"
+    },
+    "4189": {
+      "source": "https://www.wowhead.com/forever/npc=4189/valdaron",
+      "fetched_at": "2026-11-10T03:26:29Z",
+      "name": "Valdaron",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 148,
+          "count": 2,
+          "coords": [
+            [
+              38,
+              40.6
+            ],
+            [
+              38.2,
+              40.4
+            ]
+          ],
+          "uiMapId": 1439,
+          "uiMapName": "Darkshore"
+        }
+      ],
+      "status": "ok"
+    },
+    "4200": {
+      "source": "https://www.wowhead.com/forever/npc=4200/laird",
+      "fetched_at": "2026-11-10T03:26:33Z",
+      "name": "Laird",
+      "title": "Fish Vendor",
+      "locations": [
+        {
+          "area": 148,
+          "count": 1,
+          "coords": [
+            [
+              36.8,
+              44.2
+            ]
+          ],
+          "uiMapId": 1439,
+          "uiMapName": "Darkshore"
+        }
+      ],
+      "status": "ok"
+    },
+    "4223": {
+      "source": "https://www.wowhead.com/forever/npc=4223/fyldan",
+      "fetched_at": "2026-11-10T03:26:42Z",
+      "name": "Fyldan",
+      "title": "Cooking Supplier",
+      "locations": [
+        {
+          "area": 1657,
+          "count": 4,
+          "coords": [
+            [
+              48.4,
+              21.4
+            ],
+            [
+              48.4,
+              21.6
+            ],
+            [
+              48.6,
+              21.4
+            ],
+            [
+              48.6,
+              21.6
+            ]
+          ],
+          "uiMapId": 1457,
+          "uiMapName": "Darnassus"
+        }
+      ],
+      "status": "ok"
+    },
+    "4225": {
+      "source": "https://www.wowhead.com/forever/npc=4225/saenorion",
+      "fetched_at": "2026-11-10T03:26:46Z",
+      "name": "Saenorion",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 1657,
+          "count": 4,
+          "coords": [
+            [
+              63.2,
+              22.6
+            ],
+            [
+              63.4,
+              22.2
+            ],
+            [
+              63.8,
+              22
+            ],
+            [
+              64.2,
+              21.4
+            ]
+          ],
+          "uiMapId": 1457,
+          "uiMapName": "Darnassus"
+        }
+      ],
+      "status": "ok"
+    },
+    "4226": {
+      "source": "https://www.wowhead.com/forever/npc=4226/ulthir",
+      "fetched_at": "2026-11-10T03:26:56Z",
+      "name": "Ulthir",
+      "title": "Alchemy Supplies",
+      "locations": [
+        {
+          "area": 1657,
+          "count": 7,
+          "coords": [
+            [
+              55.4,
+              23.2
+            ],
+            [
+              55.4,
+              24.4
+            ],
+            [
+              55.4,
+              24.6
+            ],
+            [
+              55.6,
+              23.4
+            ],
+            [
+              55.6,
+              24.4
+            ],
+            [
+              55.8,
+              24.6
+            ],
+            [
+              56.6,
+              24.6
+            ]
+          ],
+          "uiMapId": 1457,
+          "uiMapName": "Darnassus"
+        }
+      ],
+      "status": "ok"
+    },
+    "4228": {
+      "source": "https://www.wowhead.com/forever/npc=4228/vaean",
+      "fetched_at": "2026-11-10T03:27:04Z",
+      "name": "Vaean",
+      "title": "Enchanting Supplies",
+      "locations": [
+        {
+          "area": 1657,
+          "count": 5,
+          "coords": [
+            [
+              58.4,
+              14.4
+            ],
+            [
+              58.4,
+              14.6
+            ],
+            [
+              58.6,
+              14.4
+            ],
+            [
+              58.6,
+              14.6
+            ],
+            [
+              58.8,
+              13.4
+            ]
+          ],
+          "uiMapId": 1457,
+          "uiMapName": "Darnassus"
+        }
+      ],
+      "status": "ok"
+    },
+    "4229": {
+      "source": "https://www.wowhead.com/forever/npc=4229/mythrindir",
+      "fetched_at": "2026-11-10T03:27:13Z",
+      "name": "Mythrin'dir",
+      "title": "General Trade Supplier",
+      "locations": [
+        {
+          "area": 1657,
+          "count": 3,
+          "coords": [
+            [
+              61,
+              17.4
+            ],
+            [
+              61,
+              18
+            ],
+            [
+              61.4,
+              18.8
+            ]
+          ],
+          "uiMapId": 1457,
+          "uiMapName": "Darnassus"
+        }
+      ],
+      "status": "ok"
+    },
+    "4265": {
+      "source": "https://www.wowhead.com/forever/npc=4265/nyoma",
+      "fetched_at": "2026-11-10T03:27:19Z",
+      "name": "Nyoma",
+      "title": "Cooking Supplies",
+      "locations": [
+        {
+          "area": 141,
+          "count": 1,
+          "coords": [
+            [
+              57.2,
+              61.2
+            ]
+          ],
+          "uiMapId": 1438,
+          "uiMapName": "Teldrassil"
+        }
+      ],
+      "status": "ok"
+    },
+    "4305": {
+      "source": "https://www.wowhead.com/forever/npc=4305/kriggon-talsone",
+      "fetched_at": "2026-11-10T03:27:28Z",
+      "name": "Kriggon Talsone",
+      "title": "Fisherman",
+      "locations": [
+        {
+          "area": 40,
+          "count": 1,
+          "coords": [
+            [
+              36.2,
+              90
+            ]
+          ],
+          "uiMapId": 1436,
+          "uiMapName": "Westfall"
+        }
+      ],
+      "status": "ok"
+    },
+    "4307": {
+      "source": "https://www.wowhead.com/forever/npc=4307/heldan-galesong",
+      "fetched_at": "2026-11-10T03:27:35Z",
+      "name": "Heldan Galesong",
+      "title": "Fisherman",
+      "locations": [
+        {
+          "area": 148,
+          "count": 1,
+          "coords": [
+            [
+              37,
+              56.2
+            ]
+          ],
+          "uiMapId": 1439,
+          "uiMapName": "Darkshore"
+        }
+      ],
+      "status": "ok"
+    },
+    "4553": {
+      "source": "https://www.wowhead.com/forever/npc=4553/ronald-burch",
+      "fetched_at": "2026-11-10T03:27:43Z",
+      "name": "Ronald Burch",
+      "title": "Cooking Supplier",
+      "locations": [
+        {
+          "area": 1497,
+          "count": 5,
+          "coords": [
+            [
+              62.4,
+              43.4
+            ],
+            [
+              62.4,
+              43.6
+            ],
+            [
+              62.4,
+              44.6
+            ],
+            [
+              62.6,
+              43.4
+            ],
+            [
+              62.6,
+              43.6
+            ]
+          ],
+          "uiMapId": 1458,
+          "uiMapName": "Undercity"
+        }
+      ],
+      "status": "ok"
+    },
+    "4561": {
+      "source": "https://www.wowhead.com/forever/npc=4561/daniel-bartlett",
+      "fetched_at": "2026-11-10T03:27:50Z",
+      "name": "Daniel Bartlett",
+      "title": "General Trade Supplier",
+      "locations": [
+        {
+          "area": 1497,
+          "count": 5,
+          "coords": [
+            [
+              64,
+              38.8
+            ],
+            [
+              64.2,
+              37.4
+            ],
+            [
+              64.2,
+              37.8
+            ],
+            [
+              64.6,
+              38.6
+            ],
+            [
+              64.8,
+              38.2
+            ]
+          ],
+          "uiMapId": 1458,
+          "uiMapName": "Undercity"
+        }
+      ],
+      "status": "ok"
+    },
+    "4574": {
+      "source": "https://www.wowhead.com/forever/npc=4574/lizbeth-cromwell",
+      "fetched_at": "2026-11-10T03:27:58Z",
+      "name": "Lizbeth Cromwell",
+      "title": "Fishing Supplier",
+      "locations": [
+        {
+          "area": 1497,
+          "count": 6,
+          "coords": [
+            [
+              81,
+              29.2
+            ],
+            [
+              81,
+              32
+            ],
+            [
+              81.2,
+              30.2
+            ],
+            [
+              81.2,
+              30.8
+            ],
+            [
+              82,
+              30.4
+            ],
+            [
+              82,
+              30.6
+            ]
+          ],
+          "uiMapId": 1458,
+          "uiMapName": "Undercity"
+        }
+      ],
+      "status": "ok"
+    },
+    "4577": {
+      "source": "https://www.wowhead.com/forever/npc=4577/millie-gregorian",
+      "fetched_at": "2026-11-10T03:28:05Z",
+      "name": "Millie Gregorian",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 1497,
+          "count": 4,
+          "coords": [
+            [
+              70.4,
+              29.4
+            ],
+            [
+              70.4,
+              30.2
+            ],
+            [
+              70.8,
+              29.4
+            ],
+            [
+              70.8,
+              29.6
+            ]
+          ],
+          "uiMapId": 1458,
+          "uiMapName": "Undercity"
+        }
+      ],
+      "status": "ok"
+    },
+    "4589": {
+      "source": "https://www.wowhead.com/forever/npc=4589/joseph-moore",
+      "fetched_at": "2026-11-10T03:28:12Z",
+      "name": "Joseph Moore",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 1497,
+          "count": 4,
+          "coords": [
+            [
+              70.2,
+              58
+            ],
+            [
+              70.4,
+              58.8
+            ],
+            [
+              70.6,
+              58.8
+            ],
+            [
+              70.6,
+              59.6
+            ]
+          ],
+          "uiMapId": 1458,
+          "uiMapName": "Undercity"
+        }
+      ],
+      "status": "ok"
+    },
+    "4610": {
+      "source": "https://www.wowhead.com/forever/npc=4610/algernon",
+      "fetched_at": "2026-11-10T03:28:19Z",
+      "name": "Algernon",
+      "title": "Alchemy Supplies",
+      "locations": [
+        {
+          "area": 1497,
+          "count": 6,
+          "coords": [
+            [
+              51.4,
+              74.4
+            ],
+            [
+              51.4,
+              74.6
+            ],
+            [
+              51.8,
+              74.4
+            ],
+            [
+              51.8,
+              74.6
+            ],
+            [
+              52.2,
+              73.4
+            ],
+            [
+              52.6,
+              74
+            ]
+          ],
+          "uiMapId": 1458,
+          "uiMapName": "Undercity"
+        }
+      ],
+      "status": "ok"
+    },
+    "4617": {
+      "source": "https://www.wowhead.com/forever/npc=4617/thaddeus-webb",
+      "fetched_at": "2026-11-10T03:28:27Z",
+      "name": "Thaddeus Webb",
+      "title": "Enchanting Supplies",
+      "locations": [
+        {
+          "area": 1497,
+          "count": 6,
+          "coords": [
+            [
+              61.4,
+              60.4
+            ],
+            [
+              61.4,
+              60.6
+            ],
+            [
+              62,
+              60.4
+            ],
+            [
+              62,
+              60.8
+            ],
+            [
+              62.2,
+              61.6
+            ],
+            [
+              62.6,
+              60.8
+            ]
+          ],
+          "uiMapId": 1458,
+          "uiMapName": "Undercity"
+        }
+      ],
+      "status": "ok"
+    },
+    "4782": {
+      "source": "https://www.wowhead.com/forever/npc=4782/truk-wildbeard",
+      "fetched_at": "2026-11-10T03:28:35Z",
+      "name": "Truk Wildbeard",
+      "title": "Bartender",
+      "locations": [
+        {
+          "area": 47,
+          "count": 2,
+          "coords": [
+            [
+              14.4,
+              42.4
+            ],
+            [
+              14.4,
+              42.6
+            ]
+          ],
+          "uiMapId": 1425,
+          "uiMapName": "The Hinterlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "4877": {
+      "source": "https://www.wowhead.com/forever/npc=4877/jandia",
+      "fetched_at": "2026-11-10T03:28:42Z",
+      "name": "Jandia",
+      "title": "Trade Supplies",
+      "locations": [
+        {
+          "area": 400,
+          "count": 2,
+          "coords": [
+            [
+              46,
+              51.4
+            ],
+            [
+              46,
+              51.6
+            ]
+          ],
+          "uiMapId": 1441,
+          "uiMapName": "Thousand Needles"
+        }
+      ],
+      "status": "ok"
+    },
+    "4878": {
+      "source": "https://www.wowhead.com/forever/npc=4878/montarr",
+      "fetched_at": "2026-11-10T03:28:52Z",
+      "name": "Montarr",
+      "title": "Lorekeeper",
+      "locations": [
+        {
+          "area": 400,
+          "count": 2,
+          "coords": [
+            [
+              45,
+              50.4
+            ],
+            [
+              45.2,
+              50.6
+            ]
+          ],
+          "uiMapId": 1441,
+          "uiMapName": "Thousand Needles"
+        }
+      ],
+      "status": "ok"
+    },
+    "4879": {
+      "source": "https://www.wowhead.com/forever/npc=4879/oggmarr",
+      "fetched_at": "2026-11-10T03:28:55Z",
+      "name": "Ogg'marr",
+      "title": "Butcher",
+      "locations": [
+        {
+          "area": 15,
+          "count": 1,
+          "coords": [
+            [
+              36.6,
+              31
+            ]
+          ],
+          "uiMapId": 1445,
+          "uiMapName": "Dustwallow Marsh"
+        }
+      ],
+      "status": "ok"
+    },
+    "4897": {
+      "source": "https://www.wowhead.com/forever/npc=4897/helenia-olden",
+      "fetched_at": "2026-11-10T03:29:02Z",
+      "name": "Helenia Olden",
+      "title": "Trade Supplies",
+      "locations": [
+        {
+          "area": 15,
+          "count": 2,
+          "coords": [
+            [
+              66.4,
+              51.4
+            ],
+            [
+              66.4,
+              51.6
+            ]
+          ],
+          "uiMapId": 1445,
+          "uiMapName": "Dustwallow Marsh"
+        }
+      ],
+      "status": "ok"
+    },
+    "5128": {
+      "source": "https://www.wowhead.com/forever/npc=5128/bombus-finespindle",
+      "fetched_at": "2026-11-10T03:29:10Z",
+      "name": "Bombus Finespindle",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 1537,
+          "count": 5,
+          "coords": [
+            [
+              39.2,
+              33.2
+            ],
+            [
+              39.4,
+              34
+            ],
+            [
+              39.6,
+              34
+            ],
+            [
+              40,
+              33.4
+            ],
+            [
+              40.2,
+              35.2
+            ]
+          ],
+          "uiMapId": 1455,
+          "uiMapName": "Ironforge"
+        }
+      ],
+      "status": "ok"
+    },
+    "5154": {
+      "source": "https://www.wowhead.com/forever/npc=5154/poranna-snowbraid",
+      "fetched_at": "2026-11-10T03:29:19Z",
+      "name": "Poranna Snowbraid",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 1537,
+          "count": 4,
+          "coords": [
+            [
+              43.2,
+              28.4
+            ],
+            [
+              43.2,
+              28.6
+            ],
+            [
+              43.8,
+              29.4
+            ],
+            [
+              43.8,
+              29.6
+            ]
+          ],
+          "uiMapId": 1455,
+          "uiMapName": "Ironforge"
+        }
+      ],
+      "status": "ok"
+    },
+    "5158": {
+      "source": "https://www.wowhead.com/forever/npc=5158/tilli-thistlefuzz",
+      "fetched_at": "2026-11-10T03:29:29Z",
+      "name": "Tilli Thistlefuzz",
+      "title": "Enchanting Supplies",
+      "locations": [
+        {
+          "area": 1537,
+          "count": 3,
+          "coords": [
+            [
+              60.4,
+              44.2
+            ],
+            [
+              60.6,
+              44.6
+            ],
+            [
+              60.8,
+              44.2
+            ]
+          ],
+          "uiMapId": 1455,
+          "uiMapName": "Ironforge"
+        }
+      ],
+      "status": "ok"
+    },
+    "5160": {
+      "source": "https://www.wowhead.com/forever/npc=5160/emrul-riknussun",
+      "fetched_at": "2026-11-10T03:29:37Z",
+      "name": "Emrul Riknussun",
+      "title": "Cooking Supplier",
+      "locations": [
+        {
+          "area": 1537,
+          "count": 8,
+          "coords": [
+            [
+              58.8,
+              37.2
+            ],
+            [
+              59.2,
+              37.8
+            ],
+            [
+              60,
+              37.4
+            ],
+            [
+              60,
+              37.8
+            ],
+            [
+              60.2,
+              38.6
+            ],
+            [
+              60.6,
+              37
+            ],
+            [
+              60.6,
+              38.2
+            ],
+            [
+              60.6,
+              38.6
+            ]
+          ],
+          "uiMapId": 1455,
+          "uiMapName": "Ironforge"
+        }
+      ],
+      "status": "ok"
+    },
+    "5162": {
+      "source": "https://www.wowhead.com/forever/npc=5162/tansy-puddlefizz",
+      "fetched_at": "2026-11-10T03:29:45Z",
+      "name": "Tansy Puddlefizz",
+      "title": "Fishing Supplier",
+      "locations": [
+        {
+          "area": 1537,
+          "count": 3,
+          "coords": [
+            [
+              47.8,
+              6.4
+            ],
+            [
+              47.8,
+              6.6
+            ],
+            [
+              48.4,
+              8.2
+            ]
+          ],
+          "uiMapId": 1455,
+          "uiMapName": "Ironforge"
+        }
+      ],
+      "status": "ok"
+    },
+    "5175": {
+      "source": "https://www.wowhead.com/forever/npc=5175/gearcutter-cogspinner",
+      "fetched_at": "2026-11-10T03:29:53Z",
+      "name": "Gearcutter Cogspinner",
+      "title": "Engineering Supplies",
+      "locations": [
+        {
+          "area": 1537,
+          "count": 2,
+          "coords": [
+            [
+              67.8,
+              43
+            ],
+            [
+              68.2,
+              44
+            ]
+          ],
+          "uiMapId": 1455,
+          "uiMapName": "Ironforge"
+        }
+      ],
+      "status": "ok"
+    },
+    "5178": {
+      "source": "https://www.wowhead.com/forever/npc=5178/soolie-berryfizz",
+      "fetched_at": "2026-11-10T03:30:02Z",
+      "name": "Soolie Berryfizz",
+      "title": "Alchemy Supplies",
+      "locations": [
+        {
+          "area": 1537,
+          "count": 4,
+          "coords": [
+            [
+              66.4,
+              54.4
+            ],
+            [
+              66.4,
+              54.6
+            ],
+            [
+              66.6,
+              54.4
+            ],
+            [
+              66.6,
+              54.6
+            ]
+          ],
+          "uiMapId": 1455,
+          "uiMapName": "Ironforge"
+        }
+      ],
+      "status": "ok"
+    },
+    "5411": {
+      "source": "https://www.wowhead.com/forever/npc=5411/krinkle-goodsteel",
+      "fetched_at": "2026-11-10T03:30:06Z",
+      "name": "Krinkle Goodsteel",
+      "title": "Blacksmithing Supplies",
+      "locations": [
+        {
+          "area": 440,
+          "count": 2,
+          "coords": [
+            [
+              51.4,
+              28.8
+            ],
+            [
+              51.6,
+              28.8
+            ]
+          ],
+          "uiMapId": 1446,
+          "uiMapName": "Tanaris"
+        }
+      ],
+      "status": "ok"
+    },
+    "5483": {
+      "source": "https://www.wowhead.com/forever/npc=5483/erika-tate",
+      "fetched_at": "2026-11-10T03:30:15Z",
+      "name": "Erika Tate",
+      "title": "Cooking Supplier",
+      "locations": [
+        {
+          "area": 1519,
+          "count": 3,
+          "coords": [
+            [
+              75.4,
+              37.2
+            ],
+            [
+              75.8,
+              36.8
+            ],
+            [
+              78.4,
+              53
+            ]
+          ],
+          "uiMapId": 1453,
+          "uiMapName": "Stormwind City"
+        }
+      ],
+      "status": "ok"
+    },
+    "5494": {
+      "source": "https://www.wowhead.com/forever/npc=5494/catherine-leland",
+      "fetched_at": "2026-11-10T03:30:22Z",
+      "name": "Catherine Leland",
+      "title": "Fishing Supplier",
+      "locations": [
+        {
+          "area": 1519,
+          "count": 5,
+          "coords": [
+            [
+              45.4,
+              57.6
+            ],
+            [
+              45.8,
+              57.4
+            ],
+            [
+              45.8,
+              58.2
+            ],
+            [
+              55,
+              69.4
+            ],
+            [
+              55,
+              69.6
+            ]
+          ],
+          "uiMapId": 1453,
+          "uiMapName": "Stormwind City"
+        }
+      ],
+      "status": "ok"
+    },
+    "5512": {
+      "source": "https://www.wowhead.com/forever/npc=5512/kaita-deepforge",
+      "fetched_at": "2026-11-10T03:32:31Z",
+      "name": "Kaita Deepforge",
+      "title": "Blacksmithing Supplies",
+      "locations": [
+        {
+          "area": 1519,
+          "count": 6,
+          "coords": [
+            [
+              56.4,
+              16.2
+            ],
+            [
+              56.4,
+              17
+            ],
+            [
+              56.6,
+              17
+            ],
+            [
+              56.8,
+              16.4
+            ],
+            [
+              63.2,
+              37.4
+            ],
+            [
+              63.4,
+              37.6
+            ]
+          ],
+          "uiMapId": 1453,
+          "uiMapName": "Stormwind City"
+        }
+      ],
+      "status": "ok"
+    },
+    "5565": {
+      "source": "https://www.wowhead.com/forever/npc=5565/jillian-tanner",
+      "fetched_at": "2026-11-10T03:32:39Z",
+      "name": "Jillian Tanner",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 1519,
+          "count": 3,
+          "coords": [
+            [
+              67.2,
+              49.4
+            ],
+            [
+              67.2,
+              49.6
+            ],
+            [
+              71.6,
+              62.6
+            ]
+          ],
+          "uiMapId": 1453,
+          "uiMapName": "Stormwind City"
+        }
+      ],
+      "status": "ok"
+    },
+    "5594": {
+      "source": "https://www.wowhead.com/forever/npc=5594/alchemist-pestlezugg",
+      "fetched_at": "2026-11-10T03:32:42Z",
+      "name": "Alchemist Pestlezugg",
+      "title": "Alchemy Supplies",
+      "locations": [
+        {
+          "area": 440,
+          "count": 1,
+          "coords": [
+            [
+              50.8,
+              27
+            ]
+          ],
+          "uiMapId": 1446,
+          "uiMapName": "Tanaris"
+        }
+      ],
+      "status": "ok"
+    },
+    "5695": {
+      "source": "https://www.wowhead.com/forever/npc=5695/vance-undergloom",
+      "fetched_at": "2026-11-10T03:32:50Z",
+      "name": "Vance Undergloom",
+      "title": "Journeyman Enchanter",
+      "locations": [
+        {
+          "area": 85,
+          "count": 2,
+          "coords": [
+            [
+              61.6,
+              51.4
+            ],
+            [
+              61.6,
+              51.6
+            ]
+          ],
+          "uiMapId": 1420,
+          "uiMapName": "Tirisfal Glades"
+        }
+      ],
+      "status": "ok"
+    },
+    "5748": {
+      "source": "https://www.wowhead.com/forever/npc=5748/killian-sanatha",
+      "fetched_at": "2026-11-10T03:32:59Z",
+      "name": "Killian Sanatha",
+      "title": "Fisherman",
+      "locations": [
+        {
+          "area": 130,
+          "count": 2,
+          "coords": [
+            [
+              33,
+              17.4
+            ],
+            [
+              33,
+              17.8
+            ]
+          ],
+          "uiMapId": 1421,
+          "uiMapName": "Silverpine Forest"
+        }
+      ],
+      "status": "ok"
+    },
+    "5757": {
+      "source": "https://www.wowhead.com/forever/npc=5757/lilly",
+      "fetched_at": "2026-11-10T03:33:06Z",
+      "name": "Lilly",
+      "title": "Enchanting Supplies",
+      "locations": [
+        {
+          "area": 130,
+          "count": 1,
+          "coords": [
+            [
+              43,
+              50.8
+            ]
+          ],
+          "uiMapId": 1421,
+          "uiMapName": "Silverpine Forest"
+        }
+      ],
+      "status": "ok"
+    },
+    "5758": {
+      "source": "https://www.wowhead.com/forever/npc=5758/leo-sarn",
+      "fetched_at": "2026-11-10T03:33:13Z",
+      "name": "Leo Sarn",
+      "title": "Enchanting Supplies",
+      "locations": [
+        {
+          "area": 130,
+          "count": 2,
+          "coords": [
+            [
+              53.8,
+              82.6
+            ],
+            [
+              54,
+              82.2
+            ]
+          ],
+          "uiMapId": 1421,
+          "uiMapName": "Silverpine Forest"
+        }
+      ],
+      "status": "ok"
+    },
+    "5783": {
+      "source": "https://www.wowhead.com/forever/npc=5783/kalldan-felmoon",
+      "fetched_at": "2026-11-10T03:33:16Z",
+      "name": "Kalldan Felmoon",
+      "title": "Specialist Leatherworking Supplies",
+      "locations": [
+        {
+          "area": -6,
+          "count": 1,
+          "coords": [
+            [
+              51.8,
+              55.4
+            ]
+          ],
+          "uiMapId": 1414,
+          "uiMapName": "Kalimdor"
+        }
+      ],
+      "status": "ok"
+    },
+    "5940": {
+      "source": "https://www.wowhead.com/forever/npc=5940/harn-longcast",
+      "fetched_at": "2026-11-10T03:33:24Z",
+      "name": "Harn Longcast",
+      "title": "Fishing Supplies",
+      "locations": [
+        {
+          "area": 215,
+          "count": 3,
+          "coords": [
+            [
+              46.6,
+              59.2
+            ],
+            [
+              47.4,
+              55
+            ],
+            [
+              47.6,
+              55
+            ]
+          ],
+          "uiMapId": 1412,
+          "uiMapName": "Mulgore"
+        }
+      ],
+      "status": "ok"
+    },
+    "5942": {
+      "source": "https://www.wowhead.com/forever/npc=5942/zansoa",
+      "fetched_at": "2026-11-10T03:33:32Z",
+      "name": "Zansoa",
+      "title": "Fishing Supplies",
+      "locations": [
+        {
+          "area": 14,
+          "count": 1,
+          "coords": [
+            [
+              56,
+              73.4
+            ]
+          ],
+          "uiMapId": 1411,
+          "uiMapName": "Durotar"
+        }
+      ],
+      "status": "ok"
+    },
+    "5944": {
+      "source": "https://www.wowhead.com/forever/npc=5944/yonada",
+      "fetched_at": "2026-11-10T03:33:38Z",
+      "name": "Yonada",
+      "title": "Tailoring & Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 17,
+          "count": 1,
+          "coords": [
+            [
+              45,
+              59.2
+            ]
+          ],
+          "uiMapId": 1413,
+          "uiMapName": "The Barrens"
+        }
+      ],
+      "status": "ok"
+    },
+    "6567": {
+      "source": "https://www.wowhead.com/forever/npc=6567/ghokkah",
+      "fetched_at": "2026-11-10T03:33:46Z",
+      "name": "Ghok'kah",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 15,
+          "count": 1,
+          "coords": [
+            [
+              35.2,
+              30.8
+            ]
+          ],
+          "uiMapId": 1445,
+          "uiMapName": "Dustwallow Marsh"
+        }
+      ],
+      "status": "ok"
+    },
+    "6568": {
+      "source": "https://www.wowhead.com/forever/npc=6568/vizzklick",
+      "fetched_at": "2026-11-10T03:33:50Z",
+      "name": "Vizzklick",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 440,
+          "count": 1,
+          "coords": [
+            [
+              51,
+              27.4
+            ]
+          ],
+          "uiMapId": 1446,
+          "uiMapName": "Tanaris"
+        }
+      ],
+      "status": "ok"
+    },
+    "6574": {
+      "source": "https://www.wowhead.com/forever/npc=6574/junha",
+      "fetched_at": "2026-11-10T03:33:58Z",
+      "name": "Jun'ha",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 45,
+          "count": 2,
+          "coords": [
+            [
+              72.6,
+              36.4
+            ],
+            [
+              72.8,
+              36.6
+            ]
+          ],
+          "uiMapId": 1417,
+          "uiMapName": "Arathi Highlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "6576": {
+      "source": "https://www.wowhead.com/forever/npc=6576/brienna-starglow",
+      "fetched_at": "2026-11-10T03:34:06Z",
+      "name": "Brienna Starglow",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 357,
+          "count": 1,
+          "coords": [
+            [
+              89,
+              45.8
+            ]
+          ],
+          "uiMapId": 1444,
+          "uiMapName": "Feralas"
+        }
+      ],
+      "status": "ok"
+    },
+    "6730": {
+      "source": "https://www.wowhead.com/forever/npc=6730/jinky-twizzlefixxit",
+      "fetched_at": "2026-11-10T03:34:14Z",
+      "name": "Jinky Twizzlefixxit",
+      "title": "Engineering Supplies",
+      "locations": [
+        {
+          "area": 400,
+          "count": 1,
+          "coords": [
+            [
+              77.6,
+              77.8
+            ]
+          ],
+          "uiMapId": 1441,
+          "uiMapName": "Thousand Needles"
+        }
+      ],
+      "status": "ok"
+    },
+    "6731": {
+      "source": "https://www.wowhead.com/forever/npc=6731/harlown-darkweave",
+      "fetched_at": "2026-11-10T03:34:18Z",
+      "name": "Harlown Darkweave",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 331,
+          "count": 1,
+          "coords": [
+            [
+              18.2,
+              60
+            ]
+          ],
+          "uiMapId": 1440,
+          "uiMapName": "Ashenvale"
+        }
+      ],
+      "status": "ok"
+    },
+    "6777": {
+      "source": "https://www.wowhead.com/forever/npc=6777/zan-shivsproket",
+      "fetched_at": "2026-11-10T03:34:22Z",
+      "name": "Zan Shivsproket",
+      "title": "Specialty Engineer",
+      "locations": [
+        {
+          "area": 36,
+          "count": 1,
+          "coords": [
+            [
+              86,
+              80
+            ]
+          ],
+          "uiMapId": 1416,
+          "uiMapName": "Alterac Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "6779": {
+      "source": "https://www.wowhead.com/forever/npc=6779/smudge-thunderwood",
+      "fetched_at": "2026-11-10T03:34:26Z",
+      "name": "Smudge Thunderwood",
+      "title": "Poison Vendor",
+      "locations": [
+        {
+          "area": 36,
+          "count": 2,
+          "coords": [
+            [
+              86,
+              79.4
+            ],
+            [
+              86,
+              79.6
+            ]
+          ],
+          "uiMapId": 1416,
+          "uiMapName": "Alterac Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "7733": {
+      "source": "https://www.wowhead.com/forever/npc=7733/innkeeper-fizzgrimble",
+      "fetched_at": "2026-11-10T03:34:35Z",
+      "name": "Innkeeper Fizzgrimble",
+      "title": "Innkeeper",
+      "locations": [
+        {
+          "area": 440,
+          "count": 2,
+          "coords": [
+            [
+              52.4,
+              27.8
+            ],
+            [
+              52.6,
+              28
+            ]
+          ],
+          "uiMapId": 1446,
+          "uiMapName": "Tanaris"
+        }
+      ],
+      "status": "ok"
+    },
+    "7852": {
+      "source": "https://www.wowhead.com/forever/npc=7852/pratt-mcgrubben",
+      "fetched_at": "2026-11-10T03:34:43Z",
+      "name": "Pratt McGrubben",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 357,
+          "count": 2,
+          "coords": [
+            [
+              30.4,
+              42.8
+            ],
+            [
+              30.6,
+              42.6
+            ]
+          ],
+          "uiMapId": 1444,
+          "uiMapName": "Feralas"
+        }
+      ],
+      "status": "ok"
+    },
+    "7854": {
+      "source": "https://www.wowhead.com/forever/npc=7854/jangdor-swiftstrider",
+      "fetched_at": "2026-11-10T03:34:51Z",
+      "name": "Jangdor Swiftstrider",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 357,
+          "count": 2,
+          "coords": [
+            [
+              74.4,
+              42.8
+            ],
+            [
+              74.6,
+              42.8
+            ]
+          ],
+          "uiMapId": 1444,
+          "uiMapName": "Feralas"
+        }
+      ],
+      "status": "ok"
+    },
+    "7940": {
+      "source": "https://www.wowhead.com/forever/npc=7940/darnall",
+      "fetched_at": "2026-11-10T03:34:55Z",
+      "name": "Darnall",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 493,
+          "count": 3,
+          "coords": [
+            [
+              51.4,
+              33.2
+            ],
+            [
+              51.6,
+              33.2
+            ],
+            [
+              51.6,
+              33.6
+            ]
+          ],
+          "uiMapId": 1450,
+          "uiMapName": "Moonglade"
+        }
+      ],
+      "status": "ok"
+    },
+    "7947": {
+      "source": "https://www.wowhead.com/forever/npc=7947/vivianna",
+      "fetched_at": "2026-11-10T03:35:02Z",
+      "name": "Vivianna",
+      "title": "Trade Supplies",
+      "locations": [
+        {
+          "area": 357,
+          "count": 1,
+          "coords": [
+            [
+              31.2,
+              43.4
+            ]
+          ],
+          "uiMapId": 1444,
+          "uiMapName": "Feralas"
+        }
+      ],
+      "status": "ok"
+    },
+    "8125": {
+      "source": "https://www.wowhead.com/forever/npc=8125/dirge-quikcleave",
+      "fetched_at": "2026-11-10T03:35:07Z",
+      "name": "Dirge Quikcleave",
+      "title": "Butcher",
+      "locations": [
+        {
+          "area": 440,
+          "count": 1,
+          "coords": [
+            [
+              52.6,
+              28
+            ]
+          ],
+          "uiMapId": 1446,
+          "uiMapName": "Tanaris"
+        }
+      ],
+      "status": "ok"
+    },
+    "8131": {
+      "source": "https://www.wowhead.com/forever/npc=8131/blizrik-buckshot",
+      "fetched_at": "2026-11-10T03:35:14Z",
+      "name": "Blizrik Buckshot",
+      "title": "Gunsmith",
+      "locations": [
+        {
+          "area": 440,
+          "count": 2,
+          "coords": [
+            [
+              50.8,
+              27.4
+            ],
+            [
+              50.8,
+              27.6
+            ]
+          ],
+          "uiMapId": 1446,
+          "uiMapName": "Tanaris"
+        }
+      ],
+      "status": "ok"
+    },
+    "8137": {
+      "source": "https://www.wowhead.com/forever/npc=8137/gikkix",
+      "fetched_at": "2026-11-10T03:35:20Z",
+      "name": "Gikkix",
+      "title": "Fisherman",
+      "locations": [
+        {
+          "area": 440,
+          "count": 1,
+          "coords": [
+            [
+              66.6,
+              22
+            ]
+          ],
+          "uiMapId": 1446,
+          "uiMapName": "Tanaris"
+        }
+      ],
+      "status": "ok"
+    },
+    "8139": {
+      "source": "https://www.wowhead.com/forever/npc=8139/jabbey",
+      "fetched_at": "2026-11-10T03:35:31Z",
+      "name": "Jabbey",
+      "title": "General Goods",
+      "locations": [
+        {
+          "area": 440,
+          "count": 1,
+          "coords": [
+            [
+              67,
+              22
+            ]
+          ],
+          "uiMapId": 1446,
+          "uiMapName": "Tanaris"
+        }
+      ],
+      "status": "ok"
+    },
+    "8145": {
+      "source": "https://www.wowhead.com/forever/npc=8145/sheendra-tallgrass",
+      "fetched_at": "2026-11-10T03:35:43Z",
+      "name": "Sheendra Tallgrass",
+      "title": "Trade Supplies",
+      "locations": [
+        {
+          "area": 357,
+          "count": 2,
+          "coords": [
+            [
+              74.4,
+              42.8
+            ],
+            [
+              74.6,
+              42.8
+            ]
+          ],
+          "uiMapId": 1444,
+          "uiMapName": "Feralas"
+        }
+      ],
+      "status": "ok"
+    },
+    "8150": {
+      "source": "https://www.wowhead.com/forever/npc=8150/janet-hommers",
+      "fetched_at": "2026-11-10T03:35:54Z",
+      "name": "Janet Hommers",
+      "title": "Food & Drink",
+      "locations": [
+        {
+          "area": 405,
+          "count": 1,
+          "coords": [
+            [
+              66.2,
+              6.6
+            ]
+          ],
+          "uiMapId": 1443,
+          "uiMapName": "Desolace"
+        }
+      ],
+      "status": "ok"
+    },
+    "8157": {
+      "source": "https://www.wowhead.com/forever/npc=8157/logannas",
+      "fetched_at": "2026-11-10T03:36:06Z",
+      "name": "Logannas",
+      "title": "Alchemy Supplies",
+      "locations": [
+        {
+          "area": 357,
+          "count": 2,
+          "coords": [
+            [
+              32.4,
+              44
+            ],
+            [
+              32.6,
+              44
+            ]
+          ],
+          "uiMapId": 1444,
+          "uiMapName": "Feralas"
+        }
+      ],
+      "status": "ok"
+    },
+    "8158": {
+      "source": "https://www.wowhead.com/forever/npc=8158/bronk",
+      "fetched_at": "2026-11-10T03:36:18Z",
+      "name": "Bronk",
+      "title": "Alchemy Supplies",
+      "locations": [
+        {
+          "area": 357,
+          "count": 1,
+          "coords": [
+            [
+              76,
+              43.4
+            ]
+          ],
+          "uiMapId": 1444,
+          "uiMapName": "Feralas"
+        }
+      ],
+      "status": "ok"
+    },
+    "8160": {
+      "source": "https://www.wowhead.com/forever/npc=8160/nioma",
+      "fetched_at": "2026-11-10T03:38:30Z",
+      "name": "Nioma",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 47,
+          "count": 1,
+          "coords": [
+            [
+              13.4,
+              43.4
+            ]
+          ],
+          "uiMapId": 1425,
+          "uiMapName": "The Hinterlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "8161": {
+      "source": "https://www.wowhead.com/forever/npc=8161/harggan",
+      "fetched_at": "2026-11-10T03:38:43Z",
+      "name": "Harggan",
+      "title": "Blacksmithing Supplies",
+      "locations": [
+        {
+          "area": 47,
+          "count": 1,
+          "coords": [
+            [
+              13.4,
+              44
+            ]
+          ],
+          "uiMapId": 1425,
+          "uiMapName": "The Hinterlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "8176": {
+      "source": "https://www.wowhead.com/forever/npc=8176/gharash",
+      "fetched_at": "2026-11-10T03:38:54Z",
+      "name": "Gharash",
+      "title": "Blacksmithing Supplies",
+      "locations": [
+        {
+          "area": 8,
+          "count": 4,
+          "coords": [
+            [
+              45.4,
+              51.4
+            ],
+            [
+              45.4,
+              51.6
+            ],
+            [
+              45.6,
+              51.4
+            ],
+            [
+              45.6,
+              51.6
+            ]
+          ],
+          "uiMapId": 1435,
+          "uiMapName": "Swamp of Sorrows"
+        }
+      ],
+      "status": "ok"
+    },
+    "8177": {
+      "source": "https://www.wowhead.com/forever/npc=8177/rartar",
+      "fetched_at": "2026-11-10T03:39:05Z",
+      "name": "Rartar",
+      "title": "Alchemy Supplies",
+      "locations": [
+        {
+          "area": 8,
+          "count": 1,
+          "coords": [
+            [
+              45.4,
+              57
+            ]
+          ],
+          "uiMapId": 1435,
+          "uiMapName": "Swamp of Sorrows"
+        }
+      ],
+      "status": "ok"
+    },
+    "8178": {
+      "source": "https://www.wowhead.com/forever/npc=8178/nina-lightbrew",
+      "fetched_at": "2026-11-10T03:39:17Z",
+      "name": "Nina Lightbrew",
+      "title": "Alchemy Supplies",
+      "locations": [
+        {
+          "area": 4,
+          "count": 2,
+          "coords": [
+            [
+              66.8,
+              18.2
+            ],
+            [
+              66.8,
+              18.6
+            ]
+          ],
+          "uiMapId": 1419,
+          "uiMapName": "Blasted Lands"
+        }
+      ],
+      "status": "ok"
+    },
+    "8307": {
+      "source": "https://www.wowhead.com/forever/npc=8307/tarban-hearthgrain",
+      "fetched_at": "2026-11-10T03:39:29Z",
+      "name": "Tarban Hearthgrain",
+      "title": "Baker",
+      "locations": [
+        {
+          "area": 17,
+          "count": 1,
+          "coords": [
+            [
+              55,
+              32
+            ]
+          ],
+          "uiMapId": 1413,
+          "uiMapName": "The Barrens"
+        }
+      ],
+      "status": "ok"
+    },
+    "8508": {
+      "source": "https://www.wowhead.com/forever/npc=8508/gretta-ganter",
+      "fetched_at": "2026-11-10T03:39:40Z",
+      "name": "Gretta Ganter",
+      "title": "Fisherman Supplies",
+      "locations": [
+        {
+          "area": 1,
+          "count": 3,
+          "coords": [
+            [
+              31.4,
+              44.6
+            ],
+            [
+              31.6,
+              44.4
+            ],
+            [
+              31.6,
+              44.6
+            ]
+          ],
+          "uiMapId": 1426,
+          "uiMapName": "Dun Morogh"
+        }
+      ],
+      "status": "ok"
+    },
+    "8678": {
+      "source": "https://www.wowhead.com/forever/npc=8678/jubie-gadgetspring",
+      "fetched_at": "2026-11-10T03:39:48Z",
+      "name": "Jubie Gadgetspring",
+      "title": "Engineering Supplier",
+      "locations": [
+        {
+          "area": 16,
+          "count": 1,
+          "coords": [
+            [
+              45.2,
+              90.8
+            ]
+          ],
+          "uiMapId": 1447,
+          "uiMapName": "Azshara"
+        }
+      ],
+      "status": "ok"
+    },
+    "8679": {
+      "source": "https://www.wowhead.com/forever/npc=8679/knaz-blunderflame",
+      "fetched_at": "2026-11-10T03:40:00Z",
+      "name": "Knaz Blunderflame",
+      "title": "Engineering Supplies",
+      "locations": [
+        {
+          "area": 33,
+          "count": 1,
+          "coords": [
+            [
+              51,
+              35.2
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "8681": {
+      "source": "https://www.wowhead.com/forever/npc=8681/outfitter-eric",
+      "fetched_at": "2026-11-10T03:40:10Z",
+      "name": "Outfitter Eric",
+      "title": "Speciality Tailoring Supplies",
+      "locations": [
+        {
+          "area": 1537,
+          "count": 4,
+          "coords": [
+            [
+              43.2,
+              29.2
+            ],
+            [
+              43.4,
+              28
+            ],
+            [
+              43.6,
+              29
+            ],
+            [
+              44,
+              30.2
+            ]
+          ],
+          "uiMapId": 1455,
+          "uiMapName": "Ironforge"
+        }
+      ],
+      "status": "ok"
+    },
+    "8878": {
+      "source": "https://www.wowhead.com/forever/npc=8878/muuran",
+      "fetched_at": "2026-11-10T03:40:21Z",
+      "name": "Muuran",
+      "title": "Superior Macecrafter",
+      "locations": [
+        {
+          "area": 405,
+          "count": 2,
+          "coords": [
+            [
+              55.6,
+              56.4
+            ],
+            [
+              55.6,
+              56.6
+            ]
+          ],
+          "uiMapId": 1443,
+          "uiMapName": "Desolace"
+        }
+      ],
+      "status": "ok"
+    },
+    "9179": {
+      "source": "https://www.wowhead.com/forever/npc=9179/jazzrik",
+      "fetched_at": "2026-11-10T03:40:32Z",
+      "name": "Jazzrik",
+      "title": "Blacksmithing Supplies",
+      "locations": [
+        {
+          "area": 3,
+          "count": 4,
+          "coords": [
+            [
+              42.4,
+              52.4
+            ],
+            [
+              42.4,
+              52.6
+            ],
+            [
+              42.6,
+              52.4
+            ],
+            [
+              42.6,
+              52.6
+            ]
+          ],
+          "uiMapId": 1418,
+          "uiMapName": "Badlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "9499": {
+      "source": "https://www.wowhead.com/forever/npc=9499/plugger-spazzring",
+      "fetched_at": "2026-11-10T03:40:40Z",
+      "name": "Plugger Spazzring",
+      "locations": [],
+      "status": "no_coordinates"
+    },
+    "9544": {
+      "source": "https://www.wowhead.com/forever/npc=9544/yuka-screwspigot",
+      "fetched_at": "2026-11-10T03:40:57Z",
+      "name": "Yuka Screwspigot",
+      "locations": [
+        {
+          "area": 46,
+          "count": 1,
+          "coords": [
+            [
+              66,
+              22
+            ]
+          ],
+          "uiMapId": 1428,
+          "uiMapName": "Burning Steppes"
+        }
+      ],
+      "status": "ok"
+    },
+    "9636": {
+      "source": "https://www.wowhead.com/forever/npc=9636/kireena",
+      "fetched_at": "2026-11-10T03:41:09Z",
+      "name": "Kireena",
+      "title": "Trade Goods",
+      "locations": [
+        {
+          "area": 405,
+          "count": 2,
+          "coords": [
+            [
+              51,
+              53.4
+            ],
+            [
+              51,
+              53.6
+            ]
+          ],
+          "uiMapId": 1443,
+          "uiMapName": "Desolace"
+        }
+      ],
+      "status": "ok"
+    },
+    "10118": {
+      "source": "https://www.wowhead.com/forever/npc=10118/nessa-shadowsong",
+      "fetched_at": "2026-11-10T03:41:19Z",
+      "name": "Nessa Shadowsong",
+      "title": "Fishing Supplies",
+      "locations": [
+        {
+          "area": 141,
+          "count": 1,
+          "coords": [
+            [
+              56.2,
+              92.4
+            ]
+          ],
+          "uiMapId": 1438,
+          "uiMapName": "Teldrassil"
+        }
+      ],
+      "status": "ok"
+    },
+    "10856": {
+      "source": "https://www.wowhead.com/forever/npc=10856/argent-quartermaster-hasana",
+      "fetched_at": "2026-11-10T03:41:31Z",
+      "name": "Argent Quartermaster Hasana",
+      "title": "The Argent Dawn",
+      "locations": [
+        {
+          "area": 85,
+          "count": 1,
+          "coords": [
+            [
+              83.2,
+              68.2
+            ]
+          ],
+          "uiMapId": 1420,
+          "uiMapName": "Tirisfal Glades"
+        }
+      ],
+      "status": "ok"
+    },
+    "10857": {
+      "source": "https://www.wowhead.com/forever/npc=10857/argent-quartermaster-lightspark",
+      "fetched_at": "2026-11-10T03:41:42Z",
+      "name": "Argent Quartermaster Lightspark",
+      "title": "The Argent Dawn",
+      "locations": [
+        {
+          "area": 28,
+          "count": 1,
+          "coords": [
+            [
+              42.8,
+              83.8
+            ]
+          ],
+          "uiMapId": 1422,
+          "uiMapName": "Western Plaguelands"
+        }
+      ],
+      "status": "ok"
+    },
+    "11185": {
+      "source": "https://www.wowhead.com/forever/npc=11185/xizzer-fizzbolt",
+      "fetched_at": "2026-11-10T03:41:49Z",
+      "name": "Xizzer Fizzbolt",
+      "title": "Engineering Supplies",
+      "locations": [
+        {
+          "area": 618,
+          "count": 2,
+          "coords": [
+            [
+              60.8,
+              38.4
+            ],
+            [
+              60.8,
+              38.6
+            ]
+          ],
+          "uiMapId": 1452,
+          "uiMapName": "Winterspring"
+        }
+      ],
+      "status": "ok"
+    },
+    "11187": {
+      "source": "https://www.wowhead.com/forever/npc=11187/himmik",
+      "fetched_at": "2026-11-10T03:42:00Z",
+      "name": "Himmik",
+      "title": "Food & Drink",
+      "locations": [
+        {
+          "area": 618,
+          "count": 1,
+          "coords": [
+            [
+              61.2,
+              39
+            ]
+          ],
+          "uiMapId": 1452,
+          "uiMapName": "Winterspring"
+        }
+      ],
+      "status": "ok"
+    },
+    "11189": {
+      "source": "https://www.wowhead.com/forever/npc=11189/qia",
+      "fetched_at": "2026-11-10T03:42:08Z",
+      "name": "Qia",
+      "title": "Trade Goods Supplies",
+      "locations": [
+        {
+          "area": 618,
+          "count": 1,
+          "coords": [
+            [
+              61.2,
+              37.2
+            ]
+          ],
+          "uiMapId": 1452,
+          "uiMapName": "Winterspring"
+        }
+      ],
+      "status": "ok"
+    },
+    "11278": {
+      "source": "https://www.wowhead.com/forever/npc=11278/magnus-frostwake",
+      "fetched_at": "2026-11-10T03:42:15Z",
+      "name": "Magnus Frostwake",
+      "locations": [
+        {
+          "area": 28,
+          "count": 2,
+          "coords": [
+            [
+              68,
+              77.4
+            ],
+            [
+              68,
+              77.6
+            ]
+          ],
+          "uiMapId": 1422,
+          "uiMapName": "Western Plaguelands"
+        }
+      ],
+      "status": "ok"
+    },
+    "11536": {
+      "source": "https://www.wowhead.com/forever/npc=11536/quartermaster-miranda-breechlock",
+      "fetched_at": "2026-11-10T03:42:26Z",
+      "name": "Quartermaster Miranda Breechlock",
+      "title": "The Argent Dawn",
+      "locations": [
+        {
+          "area": 139,
+          "count": 2,
+          "coords": [
+            [
+              81.4,
+              60
+            ],
+            [
+              81.6,
+              60
+            ]
+          ],
+          "uiMapId": 1423,
+          "uiMapName": "Eastern Plaguelands"
+        }
+      ],
+      "status": "ok"
+    },
+    "11557": {
+      "source": "https://www.wowhead.com/forever/npc=11557/meilosh",
+      "fetched_at": "2026-11-10T03:42:34Z",
+      "name": "Meilosh",
+      "locations": [
+        {
+          "area": 361,
+          "count": 2,
+          "coords": [
+            [
+              65.4,
+              2.8
+            ],
+            [
+              65.6,
+              2.8
+            ]
+          ],
+          "uiMapId": 1448,
+          "uiMapName": "Felwood"
+        }
+      ],
+      "status": "ok"
+    },
+    "11874": {
+      "source": "https://www.wowhead.com/forever/npc=11874/masat-tandr",
+      "fetched_at": "2026-11-10T03:42:41Z",
+      "name": "Masat T'andr",
+      "title": "Superior Leatherworker",
+      "locations": [
+        {
+          "area": 8,
+          "count": 3,
+          "coords": [
+            [
+              26.2,
+              31.4
+            ],
+            [
+              26.4,
+              31.6
+            ],
+            [
+              26.6,
+              31.6
+            ]
+          ],
+          "uiMapId": 1435,
+          "uiMapName": "Swamp of Sorrows"
+        }
+      ],
+      "status": "ok"
+    },
+    "12022": {
+      "source": "https://www.wowhead.com/forever/npc=12022/lorelae-wintersong",
+      "fetched_at": "2026-11-10T03:42:49Z",
+      "name": "Lorelae Wintersong",
+      "title": "Trade Supplies",
+      "locations": [
+        {
+          "area": 493,
+          "count": 3,
+          "coords": [
+            [
+              48.4,
+              40
+            ],
+            [
+              48.4,
+              40.6
+            ],
+            [
+              48.6,
+              40.2
+            ]
+          ],
+          "uiMapId": 1450,
+          "uiMapName": "Moonglade"
+        }
+      ],
+      "status": "ok"
+    },
+    "12033": {
+      "source": "https://www.wowhead.com/forever/npc=12033/wulan",
+      "fetched_at": "2026-11-10T03:43:01Z",
+      "name": "Wulan",
+      "title": "Cooking Supplies",
+      "locations": [
+        {
+          "area": 405,
+          "count": 1,
+          "coords": [
+            [
+              26.2,
+              69.8
+            ]
+          ],
+          "uiMapId": 1443,
+          "uiMapName": "Desolace"
+        }
+      ],
+      "status": "ok"
+    },
+    "12043": {
+      "source": "https://www.wowhead.com/forever/npc=12043/kulwia",
+      "fetched_at": "2026-11-10T03:43:13Z",
+      "name": "Kulwia",
+      "title": "Trade Supplies",
+      "locations": [
+        {
+          "area": 406,
+          "count": 2,
+          "coords": [
+            [
+              45.4,
+              59.4
+            ],
+            [
+              45.4,
+              59.6
+            ]
+          ],
+          "uiMapId": 1442,
+          "uiMapName": "Stonetalon Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "12245": {
+      "source": "https://www.wowhead.com/forever/npc=12245/vendor-tron-1000",
+      "fetched_at": "2026-11-10T03:43:24Z",
+      "name": "Vendor-Tron 1000",
+      "locations": [
+        {
+          "area": 405,
+          "count": 1,
+          "coords": [
+            [
+              60.2,
+              38.2
+            ]
+          ],
+          "uiMapId": 1443,
+          "uiMapName": "Desolace"
+        }
+      ],
+      "status": "ok"
+    },
+    "12246": {
+      "source": "https://www.wowhead.com/forever/npc=12246/super-seller-680",
+      "fetched_at": "2026-11-10T03:43:31Z",
+      "name": "Super-Seller 680",
+      "locations": [
+        {
+          "area": 405,
+          "count": 2,
+          "coords": [
+            [
+              40.4,
+              79.2
+            ],
+            [
+              40.6,
+              79.2
+            ]
+          ],
+          "uiMapId": 1443,
+          "uiMapName": "Desolace"
+        }
+      ],
+      "status": "ok"
+    },
+    "12941": {
+      "source": "https://www.wowhead.com/forever/npc=12941/jase-farlane",
+      "fetched_at": "2026-11-10T03:43:39Z",
+      "name": "Jase Farlane",
+      "title": "Trade Supplies",
+      "locations": [
+        {
+          "area": 139,
+          "count": 2,
+          "coords": [
+            [
+              80.4,
+              57.6
+            ],
+            [
+              80.6,
+              57.6
+            ]
+          ],
+          "uiMapId": 1423,
+          "uiMapName": "Eastern Plaguelands"
+        }
+      ],
+      "status": "ok"
+    },
+    "12942": {
+      "source": "https://www.wowhead.com/forever/npc=12942/leonard-porter",
+      "fetched_at": "2026-11-10T03:43:50Z",
+      "name": "Leonard Porter",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 28,
+          "count": 1,
+          "coords": [
+            [
+              43,
+              84.2
+            ]
+          ],
+          "uiMapId": 1422,
+          "uiMapName": "Western Plaguelands"
+        }
+      ],
+      "status": "ok"
+    },
+    "12943": {
+      "source": "https://www.wowhead.com/forever/npc=12943/werg-thickblade",
+      "fetched_at": "2026-11-10T03:44:01Z",
+      "name": "Werg Thickblade",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 85,
+          "count": 1,
+          "coords": [
+            [
+              83.2,
+              69.6
+            ]
+          ],
+          "uiMapId": 1420,
+          "uiMapName": "Tirisfal Glades"
+        }
+      ],
+      "status": "ok"
+    },
+    "12944": {
+      "source": "https://www.wowhead.com/forever/npc=12944/lokhtos-darkbargainer",
+      "fetched_at": "2026-11-10T03:44:09Z",
+      "name": "Lokhtos Darkbargainer",
+      "title": "The Thorium Brotherhood",
+      "locations": [],
+      "status": "no_coordinates"
+    },
+    "12956": {
+      "source": "https://www.wowhead.com/forever/npc=12956/zannok-hidepiercer",
+      "fetched_at": "2026-11-10T03:44:16Z",
+      "name": "Zannok Hidepiercer",
+      "title": "Leatherworking Supplies",
+      "locations": [
+        {
+          "area": 1377,
+          "count": 2,
+          "coords": [
+            [
+              81.8,
+              17.8
+            ],
+            [
+              82.2,
+              17.4
+            ]
+          ],
+          "uiMapId": 1451,
+          "uiMapName": "Silithus"
+        }
+      ],
+      "status": "ok"
+    },
+    "12957": {
+      "source": "https://www.wowhead.com/forever/npc=12957/blimo-gadgetspring",
+      "fetched_at": "2026-11-10T03:44:23Z",
+      "name": "Blimo Gadgetspring",
+      "title": "Trade Supplier",
+      "locations": [
+        {
+          "area": 16,
+          "count": 1,
+          "coords": [
+            [
+              45.2,
+              90.8
+            ]
+          ],
+          "uiMapId": 1447,
+          "uiMapName": "Azshara"
+        }
+      ],
+      "status": "ok"
+    },
+    "12958": {
+      "source": "https://www.wowhead.com/forever/npc=12958/gigget-zipcoil",
+      "fetched_at": "2026-11-10T03:44:31Z",
+      "name": "Gigget Zipcoil",
+      "title": "Trade Supplies",
+      "locations": [
+        {
+          "area": 47,
+          "count": 4,
+          "coords": [
+            [
+              34.4,
+              38.4
+            ],
+            [
+              34.4,
+              38.6
+            ],
+            [
+              34.6,
+              38.4
+            ],
+            [
+              34.6,
+              38.6
+            ]
+          ],
+          "uiMapId": 1425,
+          "uiMapName": "The Hinterlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "12959": {
+      "source": "https://www.wowhead.com/forever/npc=12959/nergal",
+      "fetched_at": "2026-11-10T03:44:38Z",
+      "name": "Nergal",
+      "title": "General Goods Vendor",
+      "locations": [
+        {
+          "area": 490,
+          "count": 1,
+          "coords": [
+            [
+              43.2,
+              7.8
+            ]
+          ],
+          "uiMapId": 1449,
+          "uiMapName": "Un'Goro Crater"
+        }
+      ],
+      "status": "ok"
+    },
+    "12962": {
+      "source": "https://www.wowhead.com/forever/npc=12962/wiktar",
+      "fetched_at": "2026-11-10T03:44:49Z",
+      "name": "Wik'Tar",
+      "title": "Fish Merchant & Supplies",
+      "locations": [
+        {
+          "area": 331,
+          "count": 1,
+          "coords": [
+            [
+              11.8,
+              34
+            ]
+          ],
+          "uiMapId": 1440,
+          "uiMapName": "Ashenvale"
+        }
+      ],
+      "status": "ok"
+    },
+    "13278": {
+      "source": "https://www.wowhead.com/forever/npc=13278/duke-hydraxis",
+      "fetched_at": "2026-11-10T03:44:57Z",
+      "name": "Duke Hydraxis",
+      "locations": [
+        {
+          "area": 16,
+          "count": 2,
+          "coords": [
+            [
+              79.2,
+              73.4
+            ],
+            [
+              79.2,
+              73.6
+            ]
+          ],
+          "uiMapId": 1447,
+          "uiMapName": "Azshara"
+        }
+      ],
+      "status": "ok"
+    },
+    "13420": {
+      "source": "https://www.wowhead.com/forever/npc=13420/penney-copperpinch",
+      "fetched_at": "2026-11-10T03:45:04Z",
+      "name": "Penney Copperpinch",
+      "title": "Smokywood Pastures",
+      "locations": [
+        {
+          "area": 1637,
+          "count": 3,
+          "coords": [
+            [
+              52.8,
+              66.6
+            ],
+            [
+              53,
+              66
+            ],
+            [
+              53.2,
+              65.4
+            ]
+          ],
+          "uiMapId": 1454,
+          "uiMapName": "Orgrimmar"
+        }
+      ],
+      "status": "ok"
+    },
+    "13429": {
+      "source": "https://www.wowhead.com/forever/npc=13429/nardstrum-copperpinch",
+      "fetched_at": "2026-11-10T03:45:15Z",
+      "name": "Nardstrum Copperpinch",
+      "title": "Smokywood Pastures",
+      "locations": [
+        {
+          "area": 1497,
+          "count": 6,
+          "coords": [
+            [
+              67.2,
+              38.4
+            ],
+            [
+              67.2,
+              38.6
+            ],
+            [
+              67.8,
+              38.4
+            ],
+            [
+              68,
+              38.8
+            ],
+            [
+              68.4,
+              39.6
+            ],
+            [
+              68.6,
+              40
+            ]
+          ],
+          "uiMapId": 1458,
+          "uiMapName": "Undercity"
+        }
+      ],
+      "status": "ok"
+    },
+    "13432": {
+      "source": "https://www.wowhead.com/forever/npc=13432/seersa-copperpinch",
+      "fetched_at": "2026-11-10T03:45:26Z",
+      "name": "Seersa Copperpinch",
+      "title": "Smokywood Pastures",
+      "locations": [
+        {
+          "area": 1638,
+          "count": 7,
+          "coords": [
+            [
+              43.4,
+              57.8
+            ],
+            [
+              43.4,
+              59.4
+            ],
+            [
+              43.4,
+              59.6
+            ],
+            [
+              43.8,
+              58.4
+            ],
+            [
+              43.8,
+              59
+            ],
+            [
+              43.8,
+              59.6
+            ],
+            [
+              44.6,
+              59
+            ]
+          ],
+          "uiMapId": 1456,
+          "uiMapName": "Thunder Bluff"
+        }
+      ],
+      "status": "ok"
+    },
+    "13433": {
+      "source": "https://www.wowhead.com/forever/npc=13433/wulmort-jinglepocket",
+      "fetched_at": "2026-11-10T03:45:34Z",
+      "name": "Wulmort Jinglepocket",
+      "title": "Smokywood Pastures",
+      "locations": [
+        {
+          "area": 1537,
+          "count": 7,
+          "coords": [
+            [
+              33.4,
+              65.4
+            ],
+            [
+              33.4,
+              66.4
+            ],
+            [
+              33.4,
+              67
+            ],
+            [
+              33.4,
+              67.6
+            ],
+            [
+              33.6,
+              66.4
+            ],
+            [
+              33.6,
+              66.8
+            ],
+            [
+              33.6,
+              67.8
+            ]
+          ],
+          "uiMapId": 1455,
+          "uiMapName": "Ironforge"
+        }
+      ],
+      "status": "ok"
+    },
+    "13435": {
+      "source": "https://www.wowhead.com/forever/npc=13435/khole-jinglepocket",
+      "fetched_at": "2026-11-10T03:45:46Z",
+      "name": "Khole Jinglepocket",
+      "title": "Smokywood Pastures",
+      "locations": [
+        {
+          "area": 1519,
+          "count": 2,
+          "coords": [
+            [
+              55,
+              59.2
+            ],
+            [
+              55,
+              60
+            ]
+          ],
+          "uiMapId": 1453,
+          "uiMapName": "Stormwind City"
+        }
+      ],
+      "status": "ok"
+    },
+    "13476": {
+      "source": "https://www.wowhead.com/forever/npc=13476/balai-lokwein",
+      "fetched_at": "2026-11-10T03:45:53Z",
+      "name": "Balai Lok'Wein",
+      "title": "Potions, Scrolls and Reagents",
+      "locations": [
+        {
+          "area": 15,
+          "count": 4,
+          "coords": [
+            [
+              36.4,
+              30.4
+            ],
+            [
+              36.4,
+              30.6
+            ],
+            [
+              36.6,
+              30.4
+            ],
+            [
+              36.6,
+              30.6
+            ]
+          ],
+          "uiMapId": 1445,
+          "uiMapName": "Dustwallow Marsh"
+        }
+      ],
+      "status": "ok"
+    },
+    "14371": {
+      "source": "https://www.wowhead.com/forever/npc=14371/shendralar-provisioner",
+      "fetched_at": "2026-11-10T03:46:02Z",
+      "name": "Shen'dralar Provisioner",
+      "locations": [],
+      "status": "no_coordinates"
+    },
+    "14637": {
+      "source": "https://www.wowhead.com/forever/npc=14637/zorbin-fandazzle",
+      "fetched_at": "2026-11-10T03:46:09Z",
+      "name": "Zorbin Fandazzle",
+      "locations": [
+        {
+          "area": 357,
+          "count": 1,
+          "coords": [
+            [
+              44.8,
+              43.4
+            ]
+          ],
+          "uiMapId": 1444,
+          "uiMapName": "Feralas"
+        }
+      ],
+      "status": "ok"
+    },
+    "14738": {
+      "source": "https://www.wowhead.com/forever/npc=14738/otho-mojiko",
+      "fetched_at": "2026-11-10T03:46:20Z",
+      "name": "Otho Moji'ko",
+      "title": "Cooking Supplier",
+      "locations": [
+        {
+          "area": 47,
+          "count": 1,
+          "coords": [
+            [
+              79.2,
+              79
+            ]
+          ],
+          "uiMapId": 1425,
+          "uiMapName": "The Hinterlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "14921": {
+      "source": "https://www.wowhead.com/forever/npc=14921/rinwosho-the-trader",
+      "fetched_at": "2026-11-10T03:46:27Z",
+      "name": "Rin'wosho the Trader",
+      "title": "Zandalar Supplies and Repair",
+      "locations": [
+        {
+          "area": 33,
+          "count": 1,
+          "coords": [
+            [
+              15,
+              16
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "15176": {
+      "source": "https://www.wowhead.com/forever/npc=15176/vargus",
+      "fetched_at": "2026-11-10T03:46:35Z",
+      "name": "Vargus",
+      "title": "Blacksmith",
+      "locations": [
+        {
+          "area": 1377,
+          "count": 1,
+          "coords": [
+            [
+              51.2,
+              38.8
+            ]
+          ],
+          "uiMapId": 1451,
+          "uiMapName": "Silithus"
+        }
+      ],
+      "status": "ok"
+    },
+    "15179": {
+      "source": "https://www.wowhead.com/forever/npc=15179/mishta",
+      "fetched_at": "2026-11-10T03:46:42Z",
+      "name": "Mishta",
+      "title": "General Trade Goods Vendor",
+      "locations": [
+        {
+          "area": 1377,
+          "count": 2,
+          "coords": [
+            [
+              49.8,
+              36.4
+            ],
+            [
+              49.8,
+              36.6
+            ]
+          ],
+          "uiMapId": 1451,
+          "uiMapName": "Silithus"
+        }
+      ],
+      "status": "ok"
+    },
+    "15419": {
+      "source": "https://www.wowhead.com/forever/npc=15419/kania",
+      "fetched_at": "2026-11-10T03:46:50Z",
+      "name": "Kania",
+      "title": "Enchanting Supplier",
+      "locations": [
+        {
+          "area": 1377,
+          "count": 2,
+          "coords": [
+            [
+              52,
+              39.4
+            ],
+            [
+              52,
+              39.6
+            ]
+          ],
+          "uiMapId": 1451,
+          "uiMapName": "Silithus"
+        }
+      ],
+      "status": "ok"
+    },
+    "15471": {
+      "source": "https://www.wowhead.com/forever/npc=15471/lieutenant-general-andorov",
+      "fetched_at": "2026-11-10T03:46:57Z",
+      "name": "Lieutenant General Andorov",
+      "locations": [],
+      "status": "no_coordinates"
+    },
+    "17068": {
+      "source": "https://www.wowhead.com/forever/npc=17068/chief-expeditionary-requisitioner-enkles",
+      "fetched_at": "2026-11-10T03:47:09Z",
+      "name": "Chief Expeditionary Requisitioner Enkles",
+      "locations": [
+        {
+          "area": 1377,
+          "count": 1,
+          "coords": [
+            [
+              33.2,
+              51
+            ]
+          ],
+          "uiMapId": 1451,
+          "uiMapName": "Silithus"
+        }
+      ],
+      "status": "ok"
+    },
+    "17070": {
+      "source": "https://www.wowhead.com/forever/npc=17070/apothecary-quinard",
+      "fetched_at": "2026-11-10T03:47:21Z",
+      "name": "Apothecary Quinard",
+      "locations": [
+        {
+          "area": 1377,
+          "count": 2,
+          "coords": [
+            [
+              50.8,
+              69.4
+            ],
+            [
+              50.8,
+              69.6
+            ]
+          ],
+          "uiMapId": 1451,
+          "uiMapName": "Silithus"
+        }
+      ],
+      "status": "ok"
+    },
+    "32287": {
+      "source": "https://www.wowhead.com/forever/npc=32287/archmage-alvareaux",
+      "fetched_at": "2026-11-10T03:47:28Z",
+      "name": "Archmage Alvareaux",
+      "title": "Quartermaster",
+      "locations": [
+        {
+          "area": 36,
+          "count": 2,
+          "coords": [
+            [
+              13.8,
+              63.6
+            ],
+            [
+              14,
+              63.2
+            ]
+          ],
+          "uiMapId": 1416,
+          "uiMapName": "Alterac Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "213077": {
+      "source": "https://www.wowhead.com/forever/npc=213077/elaine-compton",
+      "fetched_at": "2026-11-10T03:47:40Z",
+      "name": "Elaine Compton",
+      "title": "Supply Officer",
+      "locations": [
+        {
+          "area": 1519,
+          "count": 5,
+          "coords": [
+            [
+              54.4,
+              60.2
+            ],
+            [
+              54.4,
+              60.8
+            ],
+            [
+              54.6,
+              60.4
+            ],
+            [
+              54.6,
+              61.2
+            ],
+            [
+              54.8,
+              62
+            ]
+          ],
+          "uiMapId": 1453,
+          "uiMapName": "Stormwind City"
+        }
+      ],
+      "status": "ok"
+    },
+    "214070": {
+      "source": "https://www.wowhead.com/forever/npc=214070/jornah",
+      "fetched_at": "2026-11-10T03:47:50Z",
+      "name": "Jornah",
+      "title": "Supply Officer",
+      "locations": [
+        {
+          "area": 1637,
+          "count": 4,
+          "coords": [
+            [
+              51.4,
+              63.8
+            ],
+            [
+              51.4,
+              64.6
+            ],
+            [
+              51.6,
+              63.8
+            ],
+            [
+              51.6,
+              64.6
+            ]
+          ],
+          "uiMapId": 1454,
+          "uiMapName": "Orgrimmar"
+        }
+      ],
+      "status": "ok"
+    },
+    "214096": {
+      "source": "https://www.wowhead.com/forever/npc=214096/dokimi",
+      "fetched_at": "2026-11-10T03:48:01Z",
+      "name": "Dokimi",
+      "title": "Supply Officer",
+      "locations": [
+        {
+          "area": 1638,
+          "count": 4,
+          "coords": [
+            [
+              39.4,
+              53.4
+            ],
+            [
+              39.4,
+              53.6
+            ],
+            [
+              39.6,
+              53.4
+            ],
+            [
+              39.6,
+              53.6
+            ]
+          ],
+          "uiMapId": 1456,
+          "uiMapName": "Thunder Bluff"
+        }
+      ],
+      "status": "ok"
+    },
+    "214098": {
+      "source": "https://www.wowhead.com/forever/npc=214098/gishah",
+      "fetched_at": "2026-11-10T03:48:12Z",
+      "name": "Gishah",
+      "title": "Supply Officer",
+      "locations": [
+        {
+          "area": 1497,
+          "count": 6,
+          "coords": [
+            [
+              64.4,
+              38.4
+            ],
+            [
+              64.4,
+              38.6
+            ],
+            [
+              64.6,
+              38.6
+            ],
+            [
+              64.8,
+              38.2
+            ],
+            [
+              65.6,
+              38.4
+            ],
+            [
+              65.6,
+              38.6
+            ]
+          ],
+          "uiMapId": 1458,
+          "uiMapName": "Undercity"
+        }
+      ],
+      "status": "ok"
+    },
+    "214099": {
+      "source": "https://www.wowhead.com/forever/npc=214099/tamelyn-aldridge",
+      "fetched_at": "2026-11-10T03:48:23Z",
+      "name": "Tamelyn Aldridge",
+      "title": "Supply Officer",
+      "locations": [
+        {
+          "area": 1537,
+          "count": 4,
+          "coords": [
+            [
+              24.4,
+              67.4
+            ],
+            [
+              24.4,
+              67.6
+            ],
+            [
+              24.6,
+              67.4
+            ],
+            [
+              24.6,
+              67.6
+            ]
+          ],
+          "uiMapId": 1455,
+          "uiMapName": "Ironforge"
+        }
+      ],
+      "status": "ok"
+    },
+    "214101": {
+      "source": "https://www.wowhead.com/forever/npc=214101/marcy-baker",
+      "fetched_at": "2026-11-10T03:48:35Z",
+      "name": "Marcy Baker",
+      "title": "Supply Officer",
+      "locations": [
+        {
+          "area": 1657,
+          "count": 4,
+          "coords": [
+            [
+              59.2,
+              56.6
+            ],
+            [
+              59.4,
+              56
+            ],
+            [
+              59.8,
+              56.4
+            ],
+            [
+              59.8,
+              56.6
+            ]
+          ],
+          "uiMapId": 1457,
+          "uiMapName": "Darnassus"
+        }
+      ],
+      "status": "ok"
+    },
+    "216672": {
+      "source": "https://www.wowhead.com/forever/npc=216672/namdo-bizzfizzle",
+      "fetched_at": "2026-11-10T03:48:47Z",
+      "name": "Namdo Bizzfizzle",
+      "title": "Engineering Supplies",
+      "locations": [],
+      "status": "no_coordinates"
+    },
+    "216902": {
+      "source": "https://www.wowhead.com/forever/npc=216902/wulmort-jinglepocket",
+      "fetched_at": "2026-11-10T03:49:17Z",
+      "name": "Wulmort Jinglepocket",
+      "title": "Smokywood Pastures",
+      "locations": [
+        {
+          "area": 1537,
+          "count": 9,
+          "coords": [
+            [
+              32.4,
+              67.4
+            ],
+            [
+              33,
+              68.6
+            ],
+            [
+              33.4,
+              65.4
+            ],
+            [
+              33.4,
+              66.4
+            ],
+            [
+              33.4,
+              67
+            ],
+            [
+              33.4,
+              67.6
+            ],
+            [
+              33.6,
+              66
+            ],
+            [
+              33.6,
+              66.8
+            ],
+            [
+              33.6,
+              67.8
+            ]
+          ],
+          "uiMapId": 1455,
+          "uiMapName": "Ironforge"
+        }
+      ],
+      "status": "ok"
+    },
+    "217689": {
+      "source": "https://www.wowhead.com/forever/npc=217689/ziri-the-wrench-littlesprocket",
+      "fetched_at": "2026-11-10T03:49:25Z",
+      "name": "Ziri \"The Wrench\" Littlesprocket",
+      "title": "Gearhead",
+      "locations": [],
+      "status": "no_coordinates"
+    },
+    "222261": {
+      "source": "https://www.wowhead.com/forever/npc=222261/maximillian-the-greaser",
+      "fetched_at": "2026-11-10T03:49:32Z",
+      "name": "Maximillian \"The Greaser\"",
+      "locations": [
+        {
+          "area": 400,
+          "count": 1,
+          "coords": [
+            [
+              79.8,
+              77.2
+            ]
+          ],
+          "uiMapId": 1441,
+          "uiMapName": "Thousand Needles"
+        }
+      ],
+      "status": "ok"
+    },
+    "227853": {
+      "source": "https://www.wowhead.com/forever/npc=227853/pix-xizzix",
+      "fetched_at": "2026-11-10T03:49:39Z",
+      "name": "Pix Xizzix",
+      "title": "Undermine Trader",
+      "locations": [
+        {
+          "area": 33,
+          "count": 1,
+          "coords": [
+            [
+              28.4,
+              75.8
+            ]
+          ],
+          "uiMapId": 1434,
+          "uiMapName": "Stranglethorn Vale"
+        }
+      ],
+      "status": "ok"
+    },
+    "240604": {
+      "source": "https://www.wowhead.com/forever/npc=240604/carrie-hearthfire",
+      "fetched_at": "2026-11-10T03:49:50Z",
+      "name": "Carrie Hearthfire",
+      "title": "Head Chef",
+      "locations": [
+        {
+          "area": 139,
+          "count": 2,
+          "coords": [
+            [
+              95.2,
+              78.4
+            ],
+            [
+              95.2,
+              78.6
+            ]
+          ],
+          "uiMapId": 1423,
+          "uiMapName": "Eastern Plaguelands"
+        }
+      ],
+      "status": "ok"
+    },
+    "242498": {
+      "source": "https://www.wowhead.com/forever/npc=242498/reagent-bot",
+      "fetched_at": "2026-11-10T03:50:01Z",
+      "name": "Reagent Bot",
+      "locations": [],
+      "status": "no_coordinates"
+    },
+    "248196": {
+      "source": "https://www.wowhead.com/forever/npc=248196/apothecary-durelle",
+      "fetched_at": "2026-11-10T03:50:08Z",
+      "name": "Apothecary Durelle",
+      "title": "Alchemist",
+      "locations": [
+        {
+          "area": 17,
+          "count": 2,
+          "coords": [
+            [
+              49.8,
+              29.4
+            ],
+            [
+              49.8,
+              29.6
+            ]
+          ],
+          "uiMapId": 1413,
+          "uiMapName": "The Barrens"
+        }
+      ],
+      "status": "ok"
+    },
+    "248197": {
+      "source": "https://www.wowhead.com/forever/npc=248197/gormak",
+      "fetched_at": "2026-11-10T03:50:20Z",
+      "name": "Gor'mak",
+      "title": "Blacksmith",
+      "locations": [
+        {
+          "area": 17,
+          "count": 1,
+          "coords": [
+            [
+              49.8,
+              29.6
+            ]
+          ],
+          "uiMapId": 1413,
+          "uiMapName": "The Barrens"
+        }
+      ],
+      "status": "ok"
+    },
+    "248198": {
+      "source": "https://www.wowhead.com/forever/npc=248198/azabek",
+      "fetched_at": "2026-11-10T03:50:31Z",
+      "name": "Aza'bek",
+      "title": "Chef",
+      "locations": [
+        {
+          "area": 17,
+          "count": 1,
+          "coords": [
+            [
+              49.6,
+              29.2
+            ]
+          ],
+          "uiMapId": 1413,
+          "uiMapName": "The Barrens"
+        }
+      ],
+      "status": "ok"
+    },
+    "248199": {
+      "source": "https://www.wowhead.com/forever/npc=248199/beneris",
+      "fetched_at": "2026-11-10T03:50:41Z",
+      "name": "Beneris",
+      "title": "Enchanter",
+      "locations": [
+        {
+          "area": 17,
+          "count": 1,
+          "coords": [
+            [
+              49.6,
+              29.8
+            ]
+          ],
+          "uiMapId": 1413,
+          "uiMapName": "The Barrens"
+        }
+      ],
+      "status": "ok"
+    },
+    "248200": {
+      "source": "https://www.wowhead.com/forever/npc=248200/fizzlefuse",
+      "fetched_at": "2026-11-10T03:50:52Z",
+      "name": "Fizzlefuse",
+      "title": "Opportunist Engineer",
+      "locations": [
+        {
+          "area": 17,
+          "count": 1,
+          "coords": [
+            [
+              49.8,
+              29.6
+            ]
+          ],
+          "uiMapId": 1413,
+          "uiMapName": "The Barrens"
+        }
+      ],
+      "status": "ok"
+    },
+    "248201": {
+      "source": "https://www.wowhead.com/forever/npc=248201/pawani",
+      "fetched_at": "2026-11-10T03:51:03Z",
+      "name": "Pawani",
+      "title": "Leatherworker",
+      "locations": [
+        {
+          "area": 17,
+          "count": 1,
+          "coords": [
+            [
+              49.6,
+              29.6
+            ]
+          ],
+          "uiMapId": 1413,
+          "uiMapName": "The Barrens"
+        }
+      ],
+      "status": "ok"
+    },
+    "248202": {
+      "source": "https://www.wowhead.com/forever/npc=248202/jimbek",
+      "fetched_at": "2026-11-10T03:51:13Z",
+      "name": "Jim'bek",
+      "title": "Tailor",
+      "locations": [
+        {
+          "area": 17,
+          "count": 2,
+          "coords": [
+            [
+              49.6,
+              29.4
+            ],
+            [
+              49.6,
+              29.6
+            ]
+          ],
+          "uiMapId": 1413,
+          "uiMapName": "The Barrens"
+        }
+      ],
+      "status": "ok"
+    },
+    "251905": {
+      "source": "https://www.wowhead.com/forever/npc=251905/zerril-softbreeze",
+      "fetched_at": "2026-11-10T03:51:24Z",
+      "name": "Zerril Softbreeze",
+      "title": "Cook",
+      "locations": [
+        {
+          "area": 16593,
+          "count": 1,
+          "coords": [
+            [
+              43.8,
+              43.8
+            ]
+          ],
+          "uiMapId": 2521,
+          "uiMapName": "Zephras Isle"
+        }
+      ],
+      "status": "ok"
+    },
+    "251973": {
+      "source": "https://www.wowhead.com/forever/npc=251973/dominique-stefano",
+      "fetched_at": "2026-11-10T03:51:36Z",
+      "name": "Dominique Stefano",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 36,
+          "count": 2,
+          "coords": [
+            [
+              17.4,
+              60
+            ],
+            [
+              17.6,
+              60.2
+            ]
+          ],
+          "uiMapId": 1416,
+          "uiMapName": "Alterac Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "251991": {
+      "source": "https://www.wowhead.com/forever/npc=251991/taleen-shimmerthread",
+      "fetched_at": "2026-11-10T03:51:48Z",
+      "name": "Taleen Shimmerthread",
+      "title": "Tailor",
+      "locations": [
+        {
+          "area": 16593,
+          "count": 1,
+          "coords": [
+            [
+              44.8,
+              44.2
+            ]
+          ],
+          "uiMapId": 2521,
+          "uiMapName": "Zephras Isle"
+        }
+      ],
+      "status": "ok"
+    },
+    "251997": {
+      "source": "https://www.wowhead.com/forever/npc=251997/norvin-alderman",
+      "fetched_at": "2026-11-10T03:52:00Z",
+      "name": "Norvin Alderman",
+      "title": "Cloaks",
+      "locations": [
+        {
+          "area": 36,
+          "count": 2,
+          "coords": [
+            [
+              16,
+              65.4
+            ],
+            [
+              16,
+              65.6
+            ]
+          ],
+          "uiMapId": 1416,
+          "uiMapName": "Alterac Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "252083": {
+      "source": "https://www.wowhead.com/forever/npc=252083/derek-odds",
+      "fetched_at": "2026-11-10T03:52:10Z",
+      "name": "Derek Odds",
+      "title": "Cooking Supplies",
+      "locations": [
+        {
+          "area": 36,
+          "count": 2,
+          "coords": [
+            [
+              12.4,
+              65.8
+            ],
+            [
+              12.6,
+              66
+            ]
+          ],
+          "uiMapId": 1416,
+          "uiMapName": "Alterac Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "252380": {
+      "source": "https://www.wowhead.com/forever/npc=252380/othesia-evengale",
+      "fetched_at": "2026-11-10T03:52:20Z",
+      "name": "Othesia Evengale",
+      "title": "Tailor",
+      "locations": [
+        {
+          "area": 16593,
+          "count": 1,
+          "coords": [
+            [
+              64.4,
+              81
+            ]
+          ],
+          "uiMapId": 2521,
+          "uiMapName": "Zephras Isle"
+        }
+      ],
+      "status": "ok"
+    },
+    "253139": {
+      "source": "https://www.wowhead.com/forever/npc=253139/gorhak",
+      "fetched_at": "2026-11-10T03:52:28Z",
+      "name": "Gorhak",
+      "title": "Magram Clan Quartermaster",
+      "locations": [
+        {
+          "area": 405,
+          "count": 2,
+          "coords": [
+            [
+              66.2,
+              79.4
+            ],
+            [
+              66.4,
+              79.6
+            ]
+          ],
+          "uiMapId": 1443,
+          "uiMapName": "Desolace"
+        }
+      ],
+      "status": "ok"
+    },
+    "253140": {
+      "source": "https://www.wowhead.com/forever/npc=253140/molkar",
+      "fetched_at": "2026-11-10T03:53:35Z",
+      "name": "Molkar",
+      "title": "Gelkis Clan Quartermaster",
+      "locations": [
+        {
+          "area": 405,
+          "count": 1,
+          "coords": [
+            [
+              35.6,
+              92
+            ]
+          ],
+          "uiMapId": 1443,
+          "uiMapName": "Desolace"
+        }
+      ],
+      "status": "ok"
+    },
+    "254151": {
+      "source": "https://www.wowhead.com/forever/npc=254151/vayn-moongaze",
+      "fetched_at": "2026-11-10T03:53:42Z",
+      "name": "Vayn Moongaze",
+      "locations": [
+        {
+          "area": 16593,
+          "count": 5,
+          "coords": [
+            [
+              63.3,
+              38.1
+            ],
+            [
+              63.4,
+              36.3
+            ],
+            [
+              63.8,
+              36
+            ],
+            [
+              63.8,
+              36.7
+            ],
+            [
+              64.1,
+              37.7
+            ]
+          ],
+          "uiMapId": 2521,
+          "uiMapName": "Zephras Isle"
+        }
+      ],
+      "status": "ok"
+    },
+    "254695": {
+      "source": "https://www.wowhead.com/forever/npc=254695/repair-bot",
+      "fetched_at": "2026-11-10T03:53:54Z",
+      "name": "Repair Bot",
+      "locations": [],
+      "status": "no_coordinates"
+    },
+    "255894": {
+      "source": "https://www.wowhead.com/forever/npc=255894/innkeeper-zizplink",
+      "fetched_at": "2026-11-10T03:54:05Z",
+      "name": "Innkeeper Zizplink",
+      "title": "Innkeeper",
+      "locations": [
+        {
+          "area": 16591,
+          "count": 1,
+          "coords": [
+            [
+              78.8,
+              54
+            ]
+          ],
+          "uiMapId": 2548,
+          "uiMapName": "Riverglades"
+        }
+      ],
+      "status": "ok"
+    },
+    "255895": {
+      "source": "https://www.wowhead.com/forever/npc=255895/grizzek",
+      "fetched_at": "2026-11-10T03:54:16Z",
+      "name": "Grizzek",
+      "title": "General Goods",
+      "locations": [
+        {
+          "area": 16591,
+          "count": 1,
+          "coords": [
+            [
+              76.6,
+              53.2
+            ]
+          ],
+          "uiMapId": 2548,
+          "uiMapName": "Riverglades"
+        }
+      ],
+      "status": "ok"
+    },
+    "256629": {
+      "source": "https://www.wowhead.com/forever/npc=256629/dala-fairmaw",
+      "fetched_at": "2026-11-10T03:54:24Z",
+      "name": "Dala Fairmaw",
+      "title": "Quartermaster",
+      "locations": [
+        {
+          "area": 616,
+          "count": 1,
+          "coords": [
+            [
+              21,
+              78.6
+            ]
+          ],
+          "uiMapId": 2482,
+          "uiMapName": "Mount Hyjal"
+        }
+      ],
+      "status": "ok"
+    },
+    "256729": {
+      "source": "https://www.wowhead.com/forever/npc=256729/nina-surefire",
+      "fetched_at": "2026-11-10T03:54:31Z",
+      "name": "Nina Surefire",
+      "title": "Alchemist",
+      "locations": [
+        {
+          "area": 44,
+          "count": 2,
+          "coords": [
+            [
+              10.8,
+              72.4
+            ],
+            [
+              10.8,
+              72.6
+            ]
+          ],
+          "uiMapId": 1433,
+          "uiMapName": "Redridge Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "256730": {
+      "source": "https://www.wowhead.com/forever/npc=256730/stondry-darkhammer",
+      "fetched_at": "2026-11-10T03:54:43Z",
+      "name": "Stondry Darkhammer",
+      "title": "Blacksmith",
+      "locations": [
+        {
+          "area": 44,
+          "count": 2,
+          "coords": [
+            [
+              10.4,
+              74.4
+            ],
+            [
+              10.4,
+              74.6
+            ]
+          ],
+          "uiMapId": 1433,
+          "uiMapName": "Redridge Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "256731": {
+      "source": "https://www.wowhead.com/forever/npc=256731/kalsey-sanden",
+      "fetched_at": "2026-11-10T03:54:54Z",
+      "name": "Kalsey Sanden",
+      "title": "Chef",
+      "locations": [
+        {
+          "area": 44,
+          "count": 2,
+          "coords": [
+            [
+              10.8,
+              72.4
+            ],
+            [
+              10.8,
+              72.6
+            ]
+          ],
+          "uiMapId": 1433,
+          "uiMapName": "Redridge Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "256732": {
+      "source": "https://www.wowhead.com/forever/npc=256732/alynsia",
+      "fetched_at": "2026-11-10T03:55:06Z",
+      "name": "Alynsia",
+      "title": "Enchanter",
+      "locations": [
+        {
+          "area": 44,
+          "count": 2,
+          "coords": [
+            [
+              11.2,
+              71.4
+            ],
+            [
+              11.2,
+              71.6
+            ]
+          ],
+          "uiMapId": 1433,
+          "uiMapName": "Redridge Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "256733": {
+      "source": "https://www.wowhead.com/forever/npc=256733/fritz-fizzle",
+      "fetched_at": "2026-11-10T03:55:17Z",
+      "name": "Fritz Fizzle",
+      "title": "Engineer",
+      "locations": [
+        {
+          "area": 44,
+          "count": 2,
+          "coords": [
+            [
+              10.4,
+              74.2
+            ],
+            [
+              10.4,
+              74.6
+            ]
+          ],
+          "uiMapId": 1433,
+          "uiMapName": "Redridge Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "256734": {
+      "source": "https://www.wowhead.com/forever/npc=256734/daniel-stitchsong",
+      "fetched_at": "2026-11-10T03:55:27Z",
+      "name": "Daniel Stitchsong",
+      "title": "Leatherworker",
+      "locations": [
+        {
+          "area": 44,
+          "count": 2,
+          "coords": [
+            [
+              10,
+              72.4
+            ],
+            [
+              10,
+              72.6
+            ]
+          ],
+          "uiMapId": 1433,
+          "uiMapName": "Redridge Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "256735": {
+      "source": "https://www.wowhead.com/forever/npc=256735/mivin-shadowweave",
+      "fetched_at": "2026-11-10T03:55:40Z",
+      "name": "Mivin Shadowweave",
+      "title": "Tailor",
+      "locations": [
+        {
+          "area": 44,
+          "count": 2,
+          "coords": [
+            [
+              10,
+              72.4
+            ],
+            [
+              10,
+              72.8
+            ]
+          ],
+          "uiMapId": 1433,
+          "uiMapName": "Redridge Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "257004": {
+      "source": "https://www.wowhead.com/forever/npc=257004/eaysaa-brightgust",
+      "fetched_at": "2026-11-10T03:55:51Z",
+      "name": "Eaysaa Brightgust",
+      "title": "Enchanter",
+      "locations": [
+        {
+          "area": 16593,
+          "count": 1,
+          "coords": [
+            [
+              59.2,
+              76.2
+            ]
+          ],
+          "uiMapId": 2521,
+          "uiMapName": "Zephras Isle"
+        }
+      ],
+      "status": "ok"
+    },
+    "257006": {
+      "source": "https://www.wowhead.com/forever/npc=257006/nyalah-brightfire",
+      "fetched_at": "2026-11-10T03:56:02Z",
+      "name": "Nyalah Brightfire",
+      "title": "Cook",
+      "locations": [
+        {
+          "area": 16593,
+          "count": 1,
+          "coords": [
+            [
+              60.6,
+              72.6
+            ]
+          ],
+          "uiMapId": 2521,
+          "uiMapName": "Zephras Isle"
+        }
+      ],
+      "status": "ok"
+    },
+    "257020": {
+      "source": "https://www.wowhead.com/forever/npc=257020/nasalanna-windsinger",
+      "fetched_at": "2026-11-10T03:56:14Z",
+      "name": "Nasalanna Windsinger",
+      "title": "Enchanter",
+      "locations": [
+        {
+          "area": 16593,
+          "count": 1,
+          "coords": [
+            [
+              43.2,
+              43.2
+            ]
+          ],
+          "uiMapId": 2521,
+          "uiMapName": "Zephras Isle"
+        }
+      ],
+      "status": "ok"
+    },
+    "258306": {
+      "source": "https://www.wowhead.com/forever/npc=258306/granny-finespindle",
+      "fetched_at": "2026-11-10T03:56:22Z",
+      "name": "Granny Finespindle",
+      "title": "Leatherworking Recipes",
+      "locations": [
+        {
+          "area": 1537,
+          "count": 3,
+          "coords": [
+            [
+              39.2,
+              33.4
+            ],
+            [
+              39.2,
+              33.6
+            ],
+            [
+              39.8,
+              34
+            ]
+          ],
+          "uiMapId": 1455,
+          "uiMapName": "Ironforge"
+        }
+      ],
+      "status": "ok"
+    },
+    "258415": {
+      "source": "https://www.wowhead.com/forever/npc=258415/angela-ward",
+      "fetched_at": "2026-11-10T03:56:32Z",
+      "name": "Angela Ward",
+      "title": "Tailoring Recipes",
+      "locations": [
+        {
+          "area": 1497,
+          "count": 4,
+          "coords": [
+            [
+              70.4,
+              29.4
+            ],
+            [
+              70.4,
+              29.6
+            ],
+            [
+              70.6,
+              29.4
+            ],
+            [
+              70.6,
+              29.6
+            ]
+          ],
+          "uiMapId": 1458,
+          "uiMapName": "Undercity"
+        }
+      ],
+      "status": "ok"
+    },
+    "258463": {
+      "source": "https://www.wowhead.com/forever/npc=258463/darah",
+      "fetched_at": "2026-11-10T03:56:43Z",
+      "name": "Darah",
+      "title": "Recipe Vendor",
+      "locations": [
+        {
+          "area": 1637,
+          "count": 4,
+          "coords": [
+            [
+              63.4,
+              50.4
+            ],
+            [
+              63.4,
+              50.6
+            ],
+            [
+              63.6,
+              50.4
+            ],
+            [
+              63.6,
+              50.6
+            ]
+          ],
+          "uiMapId": 1454,
+          "uiMapName": "Orgrimmar"
+        }
+      ],
+      "status": "ok"
+    },
+    "258466": {
+      "source": "https://www.wowhead.com/forever/npc=258466/boramu",
+      "fetched_at": "2026-11-10T03:56:54Z",
+      "name": "Boramu",
+      "title": "Tailoring Recipes",
+      "locations": [
+        {
+          "area": 1638,
+          "count": 2,
+          "coords": [
+            [
+              44,
+              44.4
+            ],
+            [
+              44,
+              44.8
+            ]
+          ],
+          "uiMapId": 1456,
+          "uiMapName": "Thunder Bluff"
+        }
+      ],
+      "status": "ok"
+    },
+    "258548": {
+      "source": "https://www.wowhead.com/forever/npc=258548/ellie-stonebrow",
+      "fetched_at": "2026-11-10T03:57:05Z",
+      "name": "Ellie Stonebrow",
+      "title": "Tailoring Recipes",
+      "locations": [
+        {
+          "area": 1537,
+          "count": 4,
+          "coords": [
+            [
+              43.4,
+              27.4
+            ],
+            [
+              43.4,
+              27.8
+            ],
+            [
+              43.6,
+              27.4
+            ],
+            [
+              43.6,
+              27.8
+            ]
+          ],
+          "uiMapId": 1455,
+          "uiMapName": "Ironforge"
+        }
+      ],
+      "status": "ok"
+    },
+    "258568": {
+      "source": "https://www.wowhead.com/forever/npc=258568/antonio-bolero",
+      "fetched_at": "2026-11-10T03:57:16Z",
+      "name": "Antonio Bolero",
+      "title": "Tailoring Recipes",
+      "locations": [
+        {
+          "area": 1519,
+          "count": 2,
+          "coords": [
+            [
+              53.4,
+              81.8
+            ],
+            [
+              53.6,
+              81.8
+            ]
+          ],
+          "uiMapId": 1453,
+          "uiMapName": "Stormwind City"
+        }
+      ],
+      "status": "ok"
+    },
+    "258572": {
+      "source": "https://www.wowhead.com/forever/npc=258572/daniill",
+      "fetched_at": "2026-11-10T03:57:27Z",
+      "name": "Dani'ill",
+      "title": "Tailoring Recipes",
+      "locations": [
+        {
+          "area": 1657,
+          "count": 3,
+          "coords": [
+            [
+              63.4,
+              21.8
+            ],
+            [
+              63.8,
+              21.2
+            ],
+            [
+              63.8,
+              21.6
+            ]
+          ],
+          "uiMapId": 1457,
+          "uiMapName": "Darnassus"
+        }
+      ],
+      "status": "ok"
+    },
+    "259860": {
+      "source": "https://www.wowhead.com/forever/npc=259860/martha-wellsworth",
+      "fetched_at": "2026-11-10T03:57:35Z",
+      "name": "Martha Wellsworth",
+      "title": "General Goods",
+      "locations": [
+        {
+          "area": 16591,
+          "count": 1,
+          "coords": [
+            [
+              64.2,
+              84
+            ]
+          ],
+          "uiMapId": 2548,
+          "uiMapName": "Riverglades"
+        }
+      ],
+      "status": "ok"
+    },
+    "259962": {
+      "source": "https://www.wowhead.com/forever/npc=259962/fimbo-greasemitz",
+      "fetched_at": "2026-11-10T03:57:46Z",
+      "name": "Fimbo Greasemitz",
+      "locations": [
+        {
+          "area": 16591,
+          "count": 1,
+          "coords": [
+            [
+              79,
+              54.2
+            ]
+          ],
+          "uiMapId": 2548,
+          "uiMapName": "Riverglades"
+        }
+      ],
+      "status": "ok"
+    },
+    "260487": {
+      "source": "https://www.wowhead.com/forever/npc=260487/gritta-chumwater",
+      "fetched_at": "2026-11-10T03:57:58Z",
+      "name": "Gritta Chumwater",
+      "title": "Fisherman",
+      "locations": [
+        {
+          "area": 16591,
+          "count": 1,
+          "coords": [
+            [
+              78.4,
+              55
+            ]
+          ],
+          "uiMapId": 2548,
+          "uiMapName": "Riverglades"
+        }
+      ],
+      "status": "ok"
+    },
+    "260565": {
+      "source": "https://www.wowhead.com/forever/npc=260565/korgar",
+      "fetched_at": "2026-11-10T03:58:09Z",
+      "name": "Kor'gar",
+      "title": "Engineering Supplies",
+      "locations": [
+        {
+          "area": 16591,
+          "count": 1,
+          "coords": [
+            [
+              77.6,
+              50.8
+            ]
+          ],
+          "uiMapId": 2548,
+          "uiMapName": "Riverglades"
+        }
+      ],
+      "status": "ok"
+    },
+    "260566": {
+      "source": "https://www.wowhead.com/forever/npc=260566/fizzix-boomshot",
+      "fetched_at": "2026-11-10T03:58:21Z",
+      "name": "Fizzix Boomshot",
+      "title": "Gunsmith",
+      "locations": [
+        {
+          "area": 16591,
+          "count": 3,
+          "coords": [
+            [
+              78.4,
+              53.6
+            ],
+            [
+              78.6,
+              53.4
+            ],
+            [
+              78.6,
+              53.6
+            ]
+          ],
+          "uiMapId": 2548,
+          "uiMapName": "Riverglades"
+        }
+      ],
+      "status": "ok"
+    },
+    "260570": {
+      "source": "https://www.wowhead.com/forever/npc=260570/stitch-pinwizzle",
+      "fetched_at": "2026-11-10T03:58:32Z",
+      "name": "Stitch Pinwizzle",
+      "title": "Tailoring Supplies",
+      "locations": [
+        {
+          "area": 16591,
+          "count": 2,
+          "coords": [
+            [
+              77.2,
+              51.4
+            ],
+            [
+              77.2,
+              51.6
+            ]
+          ],
+          "uiMapId": 2548,
+          "uiMapName": "Riverglades"
+        }
+      ],
+      "status": "ok"
+    },
+    "261313": {
+      "source": "https://www.wowhead.com/forever/npc=261313/naluk",
+      "fetched_at": "2026-11-10T03:58:44Z",
+      "name": "Naluk",
+      "title": "Butcher",
+      "locations": [
+        {
+          "area": 16591,
+          "count": 1,
+          "coords": [
+            [
+              58,
+              45.8
+            ]
+          ],
+          "uiMapId": 2548,
+          "uiMapName": "Riverglades"
+        }
+      ],
+      "status": "ok"
+    },
+    "264078": {
+      "source": "https://www.wowhead.com/forever/npc=264078/sutara-plainstalker",
+      "fetched_at": "2026-11-10T03:58:51Z",
+      "name": "Sutara Plainstalker",
+      "title": "Quartermaster",
+      "locations": [
+        {
+          "area": 215,
+          "count": 2,
+          "coords": [
+            [
+              34.4,
+              22.8
+            ],
+            [
+              34.6,
+              22.8
+            ]
+          ],
+          "uiMapId": 1412,
+          "uiMapName": "Mulgore"
+        }
+      ],
+      "status": "ok"
+    },
+    "266901": {
+      "source": "https://www.wowhead.com/forever/npc=266901/pexmit",
+      "fetched_at": "2026-11-10T03:58:58Z",
+      "name": "Pexmit",
+      "title": "Someone's Minion",
+      "locations": [
+        {
+          "area": 616,
+          "count": 2,
+          "coords": [
+            [
+              58.8,
+              41.8
+            ],
+            [
+              59.6,
+              49.2
+            ]
+          ],
+          "uiMapId": 2482,
+          "uiMapName": "Mount Hyjal"
+        }
+      ],
+      "status": "ok"
+    },
+    "267000": {
+      "source": "https://www.wowhead.com/forever/npc=267000/paige",
+      "fetched_at": "2026-11-10T03:59:10Z",
+      "name": "Paige",
+      "title": "Chef",
+      "locations": [
+        {
+          "area": 36,
+          "count": 2,
+          "coords": [
+            [
+              20.8,
+              74.6
+            ],
+            [
+              21,
+              74.4
+            ]
+          ],
+          "uiMapId": 1416,
+          "uiMapName": "Alterac Mountains"
+        }
+      ],
+      "status": "ok"
+    },
+    "270780": {
+      "source": "https://www.wowhead.com/forever/npc=270780/qujo",
+      "fetched_at": "2026-11-10T03:59:21Z",
+      "name": "Qujo",
+      "locations": [
+        {
+          "area": 47,
+          "count": 1,
+          "coords": [
+            [
+              77.8,
+              78
+            ]
+          ],
+          "uiMapId": 1425,
+          "uiMapName": "The Hinterlands"
+        }
+      ],
+      "status": "ok"
+    },
+    "272646": {
+      "source": "https://www.wowhead.com/forever/npc=272646/miranda-turner",
+      "fetched_at": "2026-11-10T03:59:33Z",
+      "name": "Miranda Turner",
+      "title": "Cooking Supplier",
+      "locations": [
+        {
+          "area": 16591,
+          "count": 3,
+          "coords": [
+            [
+              63.4,
+              82.4
+            ],
+            [
+              63.4,
+              82.6
+            ],
+            [
+              63.6,
+              82.6
+            ]
+          ],
+          "uiMapId": 2548,
+          "uiMapName": "Riverglades"
+        }
+      ],
+      "status": "ok"
+    }
+  }
+}

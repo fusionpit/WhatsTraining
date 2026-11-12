@@ -33,6 +33,5 @@ ns.Recipes[129] = {
     { spell = 1259345, skill = 280, creates = 255719, count = 3, teach = 255731, bound = false },
     { spell = 18630, skill = 290, creates = 14530 },
     { spell = 23787, skill = 300, creates = 19440, count = 3, teach = 19442, source = { "vendor" }, reputation = { 529, 6, ns.L.FACTION_529 }, bound = true, vendors = { { npc = 10856, area = 85 }, { npc = 10857, area = 28 }, { npc = 11536, area = 139 } } },
-    { spell = 470349, skill = 300, creates = 232433, teach = 232434, source = { "vendor" }, bound = false, vendors = { { npc = 17068, area = 1377, faction = "Alliance" }, { npc = 17070, area = 1377, faction = "Horde" } } },
     { spell = 1263001, skill = 300, creates = 279951, teach = 273118, bound = false },
 }
