@@ -254,6 +254,8 @@ local function attach()
         end
 
         local selected = selectedNativeTab()
+        -- opened over a forevercore tab, no native tab was checked yet
+        if active and not selectedTab then selectedTab = selected end
         if selected ~= selectedTab then active = false end
 
         local level = book.PortraitContainer:GetFrameLevel() - 10
@@ -304,6 +306,8 @@ local function attach()
             return
         end
         if button ~= "LeftButton" then return end
+        -- skillup forever's tabs share this window
+        if ForeverCore and ForeverCore.ProfessionTabs and ForeverCore.ProfessionTabs.Selected() then ForeverCore.ProfessionTabs.ShowNative() end
         if InputUtil.IsGamepadUIEnabled() then
             if controller then controller:Toggle() end
             return
@@ -328,6 +332,7 @@ local function attach()
     EventRegistry:RegisterCallback("Professions.ProfessionSelected", deactivate, launcher)
     EventRegistry:RegisterCallback("Professions.ShowSelectedCraftingPage", deactivate, launcher)
     book:HookScript("OnSizeChanged", request)
+    if ForeverCore and ForeverCore.ProfessionTabs then hooksecurefunc(ForeverCore.ProfessionTabs, "Select", deactivate) end
     local function dataChanged()
         recipeList.needsRefresh = true
         request()
