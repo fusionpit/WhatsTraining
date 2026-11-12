@@ -39,6 +39,27 @@ local function levelText(category, spell)
     return string.format("|cff%02x%02x%02x%s|r", r * 255 + 0.5, g * 255 + 0.5, b * 255 + 0.5, spell.formattedLevel)
 end
 
+-- plus/minus box before a header's text. collapsed == nil resets a pooled frame
+local TOGGLE_SIZE, TOGGLE_GAP = 16, 4
+local function setToggle(frame, text, textX, textY, collapsed, section, level)
+    if collapsed == nil then
+        if frame.toggle then frame.toggle:Hide() end
+        frame.collapsible, frame.collapseSection, frame.collapseLevel = nil, nil, nil
+        text:SetPoint("TOPLEFT", frame, "TOPLEFT", textX, textY)
+        return
+    end
+    if not frame.toggle then
+        frame.toggle = frame:CreateTexture(nil, "OVERLAY")
+        frame.toggle:SetSize(TOGGLE_SIZE, TOGGLE_SIZE)
+    end
+    frame.toggle:SetTexture(collapsed and "Interface\\Buttons\\UI-PlusButton-Up" or "Interface\\Buttons\\UI-MinusButton-Up")
+    frame.toggle:ClearAllPoints()
+    frame.toggle:SetPoint("LEFT", text, "LEFT", -(TOGGLE_SIZE + TOGGLE_GAP), 0)
+    frame.toggle:Show()
+    frame.collapsible, frame.collapseSection, frame.collapseLevel = true, section, level
+    text:SetPoint("TOPLEFT", frame, "TOPLEFT", textX + TOGGLE_SIZE + TOGGLE_GAP, textY)
+end
+
 -- lays out blocks ({group, first, last} slices of a group's spells) and returns the content height
 local function renderLevels(page, blocks)
     local levels, y = page.levels, 0
@@ -51,7 +72,7 @@ local function renderLevels(page, blocks)
         header.spell = setmetatable({cost = group.cost, level = group.level, spells = group.spells},
             {__index = group.category})
         header.navigationHeader, header.navigationChildren = header, {}
-        local total = #group.spells
+        local total = group.total or #group.spells
         local rows = math.ceil((last - first + 1) / columns)
         header:SetPoint("TOPLEFT", levels, "TOPLEFT", 0, -y)
         header:SetPoint("TOPRIGHT", levels, "TOPRIGHT", 0, -y)
@@ -59,8 +80,9 @@ local function renderLevels(page, blocks)
         local title, r, g, b = groupTitle(group)
         header.title:SetText(first > 1 and title .. " " .. wt.L.CONTINUED or title)
         header.title:SetTextColor(r, g, b)
+        setToggle(header, header.title, 8, -12, group.collapsed or false, group.category, group.level)
         local count
-        if first == 1 and last == total then
+        if group.collapsed or (first == 1 and last == total) then
             count = string.format(total == 1 and wt.L.LEVELS_SPELL_COUNT or wt.L.LEVELS_SPELLS_COUNT, total)
         elseif first == last then
             count = string.format(wt.L.LEVELS_SPLIT_ONE, first, total)
@@ -96,6 +118,7 @@ end
 local function showHeading(page, item, y, color, fromAlpha, toAlpha)
     local heading = page.headings:Acquire()
     heading.spell = item
+    setToggle(heading, heading.heading, 8, 0, nil)
     heading:SetPoint("TOPLEFT", page.content, "TOPLEFT", 0, -y)
     local capAlpha = fromAlpha + (toAlpha - fromAlpha) * (8 / 1024)
     heading.bandCap:SetGradient("HORIZONTAL", CreateColor(color[1], color[2], color[3], fromAlpha),
@@ -135,6 +158,10 @@ local function renderLedger(page, items)
         if item.isHeader then
             heading, count = showHeading(page, item, y,
                 wt.Theme.sectionColors[item.key] or wt.Theme.otherSection, 0.75, 0), 0
+            setToggle(heading, heading.heading, 8, 0, item.collapsed or false, item, nil)
+            if item.collapsed and not item.label then
+                heading.heading:SetText(string.format("%s • %d", item.name or item.formattedName, item.hiddenCount))
+            end
         else
             local category = heading.spell
             count = count + 1
@@ -290,8 +317,8 @@ end
 -- free for the "Continues on ..." note. Items: what the view shows when it isn't paged.
 local views = {
     ledger = {top = -84, footer = wt.L.LEDGER_HINT, empty = wt.L.LEDGER_EMPTY, Render = renderLedger,
-        Items = function() return wt.spellListData end,
-        Paginate = function(height) return paginateLedger(wt.spellListData, height) end},
+        Items = function() return Forever.collapseLedger(wt.spellListData) end,
+        Paginate = function(height) return paginateLedger(Forever.collapseLedger(wt.spellListData), height) end},
     levels = {top = -72, reserve = 12, footer = wt.L.LEDGER_HINT, empty = wt.L.LEDGER_EMPTY,
         Render = renderLevels,
         Items = function() return wholeBlocks(buildGroups(wt.spellListData)) end,

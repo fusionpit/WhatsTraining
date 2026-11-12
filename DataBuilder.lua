@@ -415,6 +415,7 @@ local function filterCategoryData(categoryData, resultsList)
                     if family and #family.spells > 0 then
                         tinsert(resultsList, {
                             formattedName = family.localFamily,
+                            family = englishFamily,
                             isHeader = true,
                             cost = family.cost
                         })
