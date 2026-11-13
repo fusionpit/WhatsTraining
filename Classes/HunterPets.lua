@@ -44,9 +44,9 @@ end
 local learnedSpellMatchPattern = string.gsub(ERR_LEARN_SPELL_S, "%%s",
                                              "(.+)")
 local petChatParserFrame = CreateFrame("Frame")
-petChatParserFrame:SetScript("OnEvent", function(_, _, ...)
-    local matchedSpellName = string.match(select(1, ...),
-                                          learnedSpellMatchPattern)
+petChatParserFrame:SetScript("OnEvent", function(_, _, message)
+    if issecretvalue and issecretvalue(message) then return end
+    local matchedSpellName = string.match(message, learnedSpellMatchPattern)
     if matchedSpellName == nil then return end
     -- Forever sends a spell link instead of a plain name
     local spellId = tonumber(string.match(matchedSpellName, "|Hspell:(%d+)"))

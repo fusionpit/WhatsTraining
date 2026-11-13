@@ -236,6 +236,7 @@ local function updateMerchantFrame()
     end
     if C_AddOns.IsAddOnLoaded('GrimoireKeeper') then return end
     local guid = UnitGUID("npc")
+    if issecretvalue and issecretvalue(guid) then return end
     if guid == nil then return end
     local npcId = select(6, strsplit("-", guid))
     if npcId == nil then return end
