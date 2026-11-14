@@ -18,7 +18,7 @@ ns.Recipes[186] = {
     { spell = 14891, skill = 230, creates = 11371 },
     { spell = 16153, skill = 250, creates = 12359, source = { "trainer" }, cost = 20000 },
     { spell = 1249637, skill = 275, creates = 249726, source = { "trainer" }, cost = 50000 },
-    { spell = 1263071, skill = 300, creates = 279952, teach = 273122, bound = false },
+    { spell = 1263071, skill = 300, creates = 279952, teach = 273122, source = { "drop" }, bound = false },
     { spell = 1306126, skill = 300, creates = 251291, source = { "trainer" }, cost = 50000 },
     { spell = 22967, skill = 310, creates = 17771 },
 }
