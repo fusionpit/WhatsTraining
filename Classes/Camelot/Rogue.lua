@@ -24,6 +24,7 @@ local kidneyShot = {408, 8643}
 local woundPoison = {13220, 13228, 13229, 13230}
 local deathMark = {1316709, 1325756, 1325757, 1325758}
 local mutilate = {1310706, 1241582, 1241584}
+local shank = {1329283, 1329549}
 
 class.overriddenGroups = {
 	stealth,
@@ -48,7 +49,8 @@ class.overriddenGroups = {
 	kidneyShot,
 	woundPoison,
 	deathMark,
-	mutilate
+	mutilate,
+	shank
 }
 
 class.spellsByLevel = {
