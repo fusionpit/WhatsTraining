@@ -66,6 +66,11 @@ end
 
 -- covers the native profession page
 local function attach()
+    if InCombatLockdown() then
+        EventUtil.RegisterOnceFrameEventAndCallback("PLAYER_REGEN_ENABLED", attach)
+        return
+    end
+
     local book = ProfessionsFrame
     if not book.ProfessionsOverviewTab then return end
 
