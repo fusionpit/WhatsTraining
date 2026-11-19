@@ -6,5 +6,5 @@ ns.Recipes[356] = {
     { spell = 7732, skill = 125, rank = "Expert", level = 20, teach = 16083, source = { "vendor" }, bound = false, vendors = { { npc = 2626, area = 33 } } },
     { spell = 1262990, skill = 140, creates = 279965, teach = 273141, source = { "drop" }, bound = false },
     { spell = 18248, skill = 225, rank = "Artisan", level = 35, source = { "quest" }, quests = { { id = 6607, area = 15, level = 35 } } },
-    { spell = 1262998, skill = 300, creates = 279966 },
+    { spell = 1262998, skill = 300, creates = 279966, teach = 273119, source = { "drop" }, bound = false },
 }

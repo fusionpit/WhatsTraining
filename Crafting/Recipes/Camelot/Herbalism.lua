@@ -6,5 +6,5 @@ ns.Recipes[182] = {
     { spell = 3570, skill = 125, rank = "Expert", source = { "trainer" }, cost = 5000, level = 0 },
     { spell = 1262980, skill = 140, creates = 279964, teach = 273106, source = { "drop" }, bound = false },
     { spell = 11993, skill = 200, rank = "Artisan", source = { "trainer" }, cost = 50000, level = 0 },
-    { spell = 1263070, skill = 300, creates = 279947, teach = 273120, bound = false },
+    { spell = 1263070, skill = 300, creates = 279947, teach = 273120, source = { "drop" }, bound = false },
 }
