@@ -1,3 +1,7 @@
+* 11.4.9
+    - Add more sources for some Forever recipes that didn't have enough data
+    - Fix Rogue Shank ranks (Thanks to cubicroots on GitHub!)
+
 * 11.4.8
     - Update Lacerate to need a talent
     - Updated Simplified Chinese (zhCN) localization (Thanks to Loukky on GitHub!)
