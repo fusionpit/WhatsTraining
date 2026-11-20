@@ -16,7 +16,8 @@ local function activeBook()
     local root = PlayerSpellsFrame
     local book = root and root.SpellBookFrame
     if book and book:IsVisible() and InputUtil.IsGamepadUIEnabled()
-        and SmartNavigation and SmartNavigation:IsShown() and SmartNavigation:GetActiveFrame() == root
+        and SmartNavigation and SmartNavigation:CanBeAccessedInContext()
+        and SmartNavigation:IsShown() and SmartNavigation:GetActiveFrame() == root
         and not book.SearchBox:HasFocus() and not book:IsInSearchResultsMode() and book:GetTab() ~= nil then
         return book
     end

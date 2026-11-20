@@ -293,7 +293,8 @@ local function createController(observer)
     local suspended = InCombatLockdown()
     local function focused()
         return connected and not suspended and button:IsVisible() and InputUtil.IsGamepadUIEnabled() and not InCombatLockdown()
-            and SmartNavigation and SmartNavigation:IsShown() and SmartNavigation:GetActiveFrame() == ClassTrainerFrame
+            and SmartNavigation and SmartNavigation:CanBeAccessedInContext()
+            and SmartNavigation:IsShown() and SmartNavigation:GetActiveFrame() == ClassTrainerFrame
     end
     local function bind(mode)
         if mode == bindingMode or InCombatLockdown() then return end

@@ -176,8 +176,9 @@ function wt.EnableCraftingController(book, page, view, launcher, returnTab, sele
 
     local function activeBook()
         return not WT_HideProfessionTab and book:IsVisible() and InputUtil.IsGamepadUIEnabled()
-            and SmartNavigation and SmartNavigation:IsShown()
-            and SmartNavigation:GetActiveFrame() == book and not book.CraftingPage.RecipeList.SearchBox:HasFocus()
+            and SmartNavigation and SmartNavigation:CanBeAccessedInContext()
+            and SmartNavigation:IsShown() and SmartNavigation:GetActiveFrame() == book
+            and not book.CraftingPage.RecipeList.SearchBox:HasFocus()
     end
     local function atEdge()
         local tabs = book.TabIndicators
