@@ -37,11 +37,20 @@ end
 
 local function categoryScripts(header)
     header:EnableMouse(true)
-    header:RegisterForClicks("RightButtonUp")
+    header:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     header:SetScript("OnEnter", showTooltip)
     header:SetScript("OnLeave", hideTooltip)
     header:SetScript("OnHide", hideTooltip)
-    header:SetScript("OnClick", function(self, button) wt.RowClick(self, self.spell, button) end)
+    header:SetScript("OnClick", function(self, button)
+        -- left click folds the section
+        if button == "LeftButton" and self.collapsible then
+            PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+            Forever.toggleCollapsed(self.collapseSection, self.collapseLevel)
+            wt.RefreshUI()
+            return
+        end
+        wt.RowClick(self, self.spell, button)
+    end)
 end
 
 local function createRow(page, parent)

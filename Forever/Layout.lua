@@ -6,6 +6,43 @@ local Forever = wt.Forever
 local ROW_HEIGHT = 28
 local COLS, CELL, GROUP_HEADER, GROUP_GAP = 3, 44, 42, 8
 
+-- per-character collapse state (WT_Collapsed). keys: category key, "pet/<family>", "<key>/<level>"
+local function collapseKey(section, level)
+    local key = section.key or (section.family and "pet/" .. section.family)
+    if not key then return end
+    return level and key .. "/" .. level or key
+end
+
+local function isCollapsed(section, level)
+    -- a search shows everything
+    if wt.filter ~= "" or not WT_Collapsed then return false end
+    local key = collapseKey(section, level)
+    return key ~= nil and WT_Collapsed[key] == true
+end
+
+local function toggleCollapsed(section, level)
+    local key = collapseKey(section, level)
+    if not key then return end
+    WT_Collapsed = WT_Collapsed or {}
+    WT_Collapsed[key] = not WT_Collapsed[key] or nil
+end
+
+-- hides the spells of collapsed sections and counts them on a copy of the header
+local function collapseLedger(data)
+    local out, header = {}, nil
+    for _, item in ipairs(data) do
+        if item.isHeader then
+            header = isCollapsed(item) and setmetatable({collapsed = true, hiddenCount = 0}, {__index = item})
+            tinsert(out, header or item)
+        elseif header then
+            header.hiddenCount = header.hiddenCount + 1
+        else
+            tinsert(out, item)
+        end
+    end
+    return out
+end
+
 local function buildGroups(data)
     local groups, group, category = {}, nil, nil
     for _, spell in ipairs(data) do
@@ -19,6 +56,13 @@ local function buildGroups(data)
             end
             tinsert(group.spells, spell)
             group.cost = group.cost + spell.cost
+        end
+    end
+    -- collapsed groups keep their count but no cells
+    for _, g in ipairs(groups) do
+        g.total = #g.spells
+        if isCollapsed(g.category, g.level) then
+            g.collapsed, g.spells = true, {}
         end
     end
     return groups
@@ -60,7 +104,7 @@ local function paginateLedger(data, pageHeight)
             end
         end
         if s.isHeader then category = s end
-        tinsert(half, s.isHeader and header(s, counts[s] > 0 and counts[s]) or s)
+        tinsert(half, s.isHeader and header(s, counts[s] > 0 and counts[s] or s.hiddenCount) or s)
         y = y + gap + height
     end
     tinsert(halves, half)
@@ -76,6 +120,15 @@ local function paginateLevels(groups, height, columns)
     local maxRows = math.floor((height - GROUP_HEADER) / CELL)
     for _, group in ipairs(groups) do
         local first, total = 1, #group.spells
+        if total == 0 then
+            -- collapsed: header only
+            if #half > 0 and y + GROUP_HEADER > height then
+                tinsert(halves, half)
+                half, y = {}, 0
+            end
+            tinsert(half, {group = group, first = 1, last = 0})
+            y = y + GROUP_HEADER + GROUP_GAP
+        end
         while first <= total do
             local rowsLeft = math.floor((height - y - GROUP_HEADER) / CELL)
             local rowsNeeded = math.ceil((total - first + 1) / columns)
@@ -102,6 +155,10 @@ end
 
 Forever.ROW_HEIGHT = ROW_HEIGHT
 Forever.COLS, Forever.CELL, Forever.GROUP_HEADER, Forever.GROUP_GAP = COLS, CELL, GROUP_HEADER, GROUP_GAP
+Forever.collapseKey = collapseKey
+Forever.isCollapsed = isCollapsed
+Forever.toggleCollapsed = toggleCollapsed
+Forever.collapseLedger = collapseLedger
 Forever.buildGroups = buildGroups
 Forever.wholeBlocks = wholeBlocks
 Forever.ledgerSpan = ledgerSpan
