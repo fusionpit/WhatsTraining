@@ -12,9 +12,21 @@ function wt.RefreshUI()
     end
 end
 
-local function rebuildIfNotCached(fromCache)
-    if fromCache or wt.MainFrame == nil then return end
+-- One rebuild for a burst of loads, not one per spell. Every spell's cache callback lands here, and
+-- at login they all arrive on the same frame (the first one after the loading screen): rebuilding
+-- everything once per spell made that frame a few hundred full rebuilds long. The rebuild now runs
+-- once, as the cache goes idle (Cache.lua) or on the next frame, whichever comes first.
+local rebuildQueued = false
+function wt.flushRebuild()
+    if not rebuildQueued then return end
+    rebuildQueued = false
     wt:RebuildData()
+end
+
+local function rebuildIfNotCached(fromCache)
+    if fromCache or wt.MainFrame == nil or rebuildQueued then return end
+    rebuildQueued = true
+    RunNextFrame(wt.flushRebuild)
 end
 
 function wt:RebuildData()

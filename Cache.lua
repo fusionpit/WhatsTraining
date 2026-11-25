@@ -18,7 +18,11 @@ local function trackRequest(done)
         -- complete chained requests and rebuilds before announcing idle
         if callback then callback(...) end
         pending = pending - 1
-        if pending == 0 and wt.onCacheIdle then wt.onCacheIdle() end
+        if pending == 0 then
+            -- the burst's one queued rebuild (WhatsTraining.lua), still before announcing idle
+            if wt.flushRebuild then wt.flushRebuild() end
+            if wt.onCacheIdle then wt.onCacheIdle() end
+        end
     end
     return function(...) complete(done, ...) end, function() complete() end
 end
