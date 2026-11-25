@@ -1,3 +1,7 @@
+* 11.4.10
+    - Fix some gamepad errors
+    - Fix issue with broker display showing when it shouldn't
+
 * 11.4.9
     - Add more sources for some Forever recipes that didn't have enough data
     - Fix Rogue Shank ranks (Thanks to cubicroots on GitHub!)
