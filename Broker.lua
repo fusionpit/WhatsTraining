@@ -6,11 +6,13 @@ local FONT_SIZE = 12
 local _, addonTitle = C_AddOns.GetAddOnInfo(addonName)
 
 local plugin
-local activeTooltip
+local activeTooltip, activeOwner
 
 local function refreshTooltip()
     local tt = activeTooltip
     if not tt or not tt:IsShown() or not tt.ClearLines then return end
+    -- GameTooltip is shared; only refresh while it still belongs to the broker frame
+    if not activeOwner or not tt.GetOwner or tt:GetOwner() ~= activeOwner then return end
     tt:ClearLines()
     plugin.OnTooltipShow(tt)
     tt:Show()
@@ -64,7 +66,7 @@ local OPEN_BEAST_TRAINING_HINT = formatGreen(wt.L.BROKER_CLICK_BEAST_TRAIN)
 local TOGGLE_SPELLS_HINT = formatGreen(wt.L.BROKER_CLICK_TOGGLE_SPELLS)
 local TOGGLE_WEAPONS_HINT = formatGreen(wt.L.BROKER_CLICK_TOGGLE_WEAPONS)
 function plugin.OnTooltipShow(tt)
-    activeTooltip = tt
+    activeTooltip, activeOwner = tt, tt.GetOwner and tt:GetOwner()
 
     tt:AddLine(wt.L.TAB_TEXT)
     tt:AddLine(" ")
