@@ -227,12 +227,12 @@ local QuestSpells = {
             { races = {6, 96}, level = 20, area = 1638, quests = {98362} },
         },
         [8946] = { -- Cure Poison
-            { races = {4}, level = 14, area = 1657, quests = {6125} },
-            { races = {6}, level = 14, area = 1638, quests = {6130} },
+            { races = {4, 95}, level = 14, area = 1657, quests = {6125} },
+            { races = {6, 96}, level = 14, area = 1638, quests = {6130} },
         },
         [1066] = { -- Aquatic Form
-            { races = {4}, level = 16, area = 1657, quests = {5061} },
-            { races = {6}, level = 16, area = 1638, quests = {31} },
+            { races = {4, 95}, level = 16, area = 1657, quests = {5061} },
+            { races = {6, 96}, level = 16, area = 1638, quests = {31} },
         },
     },
 }
